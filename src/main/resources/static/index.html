@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>All's Contracting Leads</title>
+
+<!-- BOOSTSTRAP -->
+<link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+<script src="bootstrap/jquery-3.5.1.slim.min.js" ></script>
+<script src="bootstrap/popper.min.js" ></script>
+<script src="bootstrap/bootstrap.min.js" ></script>
+
+<!-- ANGULARJS -->
+<script src="js/angularjs/1.4.3/angular.min.js" ></script>
+<script src="js/leads.js" ></script>
+
+</head>
+<body ng-app="leads">
+  <div class="container-fluid" ng-controller="MainController" >
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li  ng-click="exibitLeads()" class="nav-item"><a class="nav-link active" id="leads-tab" data-toggle="tab" href="#leads" role="tab" aria-controls="leads" aria-selected="true">Leads</a></li>
+      <li class="nav-item"><a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Upload File</a>      </li>
+      <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Send Email</a>      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane show active col-sm-12" style="margin-top: 12px;" id="leads" role="tabpanel" aria-labelledby="leads-tab">
+        <div class="row" id="leads-list" ng-if="showLeads">
+          <div class="col-sm-3">
+            <h2>
+              Leads <small>({{totalLeads}})</small>
+            </h2>
+          </div>
+          <div class="col-sm-9">
+            <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
+            &nbsp;&nbsp;&nbsp;
+            <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
+          </div>
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr>
+                <th scope="col" colspan="1"></th>
+                <th scope="col" colspan="1">Lead</th>
+                <th scope="col" colspan="3">Client</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="lead in leads">
+                <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
+                <td><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small> <br> <b>${{lead.fee | currency:""}}</b> <small>{{lead.date |
+                    date:'MMMM dd, yyyy'}}</small></td>
+
+                <td><em>{{lead.client.name}}</em> <small>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
+                    {{lead.client.email}}</small></td>
+                <td><small>{{lead.client.address}}<br>{{lead.description}}
+                </small></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <a type="button" class="btn btn-danger" ng-click="drop()" >Erase all Leads</a>
+        </div>
+        <div class="row" id="lead-details" ng-if="!showLeads">
+          <div>
+          <a href="#" class="btn btn-light"  ng-click="exibitLeads()" >Voltar</a>
+          <div class="card">
+            <div class="card-header"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small></div>
+            <div class="card-body">
+              <h5 class="card-title">{{lead.client.name}}</h5>
+              <p class="card-text">{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
+                    {{lead.client.email}}</small></p>
+              <p class="card-text"><small>{{lead.client.address}}<br>{{lead.description}}
+                </small></p>
+              <span>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item"><a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal"
+                    aria-selected="true">Proposal</a></li>
+                  <li class="nav-item"><a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event"
+                    aria-selected="true">Events</a></li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab">
+                    <span ng-repeat="proposal in lead.proposals">
+                      <p>{{proposal.fileName}} <button type="button" class="btn btn-primary btn-small" ng-click="sendProposalByMail(proposal, lead)">Send by Email</button></p>
+                    </span>
+                  </div>
+                  <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">Lista de eventos.....</div>
+                </div>
+              </span>
+            </div>
+          </div>
+        
+        </div>
+        </div>
+      </div>
+      <div class="tab-pane " id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        <div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
+          <div class="card-body">
+            <h5 class="card-title">Upload Lead File</h5>
+            <p></p>
+            <form action="file/upload" method="post" enctype="multipart/form-data">
+              Select file:
+              <p>
+                <input type="file" name="file" id="file" class="btn btn-secondary ">
+              </p>
+              <p>Select Lead Source<br>
+                <input type="radio" id="homeadvisor" name="vendor" ng-model="radio_vendor" value="HOME_ADVISOR"> 
+                <label for="homeadvisor">Home Advisor</label><br> 
+                <input type="radio" ng-model="radio_vendor" id="networx" name="vendor" value="NETWORX"> 
+                <label for="networx">Networx</label>
+                </p>
+              <p>
+                <input type="submit" value="Upload" name="submit" class="btn btn-primary " ng-if="radio_vendor">
+              </p>
+            </form>
+            <p></p>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane " id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
+          <div class="card-body">
+            <h5 class="card-title">Send Email</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+</html>
