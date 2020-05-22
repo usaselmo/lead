@@ -10,15 +10,15 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class EstimateScheduledEvent implements DomainEvent{
+public class EstimateScheduledEvent implements DomainEvent {
 
 	private Lead lead;
 	private Client client;
 	private LocalDateTime time;
 	
 	@Override
-	public StateEnum getStateEnum() {
-		return StateEnum.ESTIMATE_SCHEDULED;
+	public EventType getEventType() {
+		return EventType.ESTIMATE_SCHEDULED;
 	}
-	
+
 }

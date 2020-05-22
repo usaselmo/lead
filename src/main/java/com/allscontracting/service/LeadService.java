@@ -16,9 +16,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.EstimateScheduledEvent;
-import com.allscontracting.event.ListenerManager;
-import com.allscontracting.event.StateDispatcher;
-import com.allscontracting.event.StateEnum;
+import com.allscontracting.event.EventManager;
+import com.allscontracting.event.EventTypeDispatcher;
+import com.allscontracting.event.EventType;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.model.Proposal;
@@ -31,10 +31,10 @@ import com.allscontracting.tradutor.TranslaterDispatcher;
 public class LeadService {
 
 	private static final int LEADS_PER_PAGE = 5;
-	@Autowired ListenerManager listenerManager;
 	@Autowired	LeadJpaRepository leadRepo;
 	@Autowired	TranslaterDispatcher tradutorFinder;
-	@Autowired StateDispatcher eventDispatcher;
+	@Autowired EventTypeDispatcher eventDispatcher;
+	@Autowired EventManager eventManage;
 
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)
@@ -81,17 +81,17 @@ public class LeadService {
 		//return Arrays.asList(Proposal.builder().total(BigDecimal.valueOf(120.36)).build());
 	}
 	
-	public List<StateEnum> findNextEvents(String leadId) {
+	public List<EventType> findNextEvents(String leadId) {
 		Lead lead = this.leadRepo.findOne(leadId);
-		StateEnum currentEvent = lead.getEvent();
+		EventType currentEvent = lead.getEvent();
 		if(null == currentEvent)
-			currentEvent = StateEnum.BEGIN;
+			currentEvent = EventType.BEGIN;
 		return this.eventDispatcher.findNextEvents(currentEvent);
 	}
 
 	public void scheduleAVisit(Lead lead, LocalDateTime visit) {
 		lead.setVisit(visit);
-		this.listenerManager.notifyAllListeners(new EstimateScheduledEvent(null, null, LocalDateTime.now()));
+		this.eventManage.notifyAllListeners(new EstimateScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
 	}
 
 }

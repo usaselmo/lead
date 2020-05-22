@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 
-import com.allscontracting.event.StateEnum;
+import com.allscontracting.event.EventType;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -71,7 +71,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 					.description(splitedLine[NX_Additional_Information])
 					.fee(LeadHelper.defineCost(splitedLine[NX_Cost]))
 					.type(splitedLine[NX_Task])
-					.event(StateEnum.BEGIN)
+					.event(EventType.BEGIN)
 					.client(Client.builder()
 							.address(splitedLine[NX_Address] + ", " + splitedLine[NX_City] + ", " + splitedLine[NX_State] + " " + splitedLine[NX_Zip_Code])
 							.cellPhone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))

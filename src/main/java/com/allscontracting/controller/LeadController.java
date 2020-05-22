@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.allscontracting.event.StateEnum;
+import com.allscontracting.event.EventType;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
@@ -26,9 +26,9 @@ public class LeadController {
 	@Autowired LeadJpaRepository leadRepo;
 
 	@GetMapping(value = "{id}/nextevents")
-	public List<StateEnum> findNextEvents(@PathVariable String id) {
+	public List<EventType> findNextEvents(@PathVariable String id) {
 		try {
-			List<StateEnum> res = this.leadService.findNextEvents(id);
+			List<EventType> res = this.leadService.findNextEvents(id);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,5 +1,5 @@
 package com.allscontracting.event;
 
-public enum StateEnum {
+public enum EventType {
 	BEGIN, ESTIMATE_SCHEDULED, MARK_AS_VISITED, SEND_ESTIMATE, BEGIN_WORK, FINISH_WORK, SEND_INVOICE, RECEIVE_PAYMENT , WASTE_LEAD, END_LEAD
 }

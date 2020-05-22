@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-import com.allscontracting.event.StateEnum;
+import com.allscontracting.event.EventType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,7 +55,7 @@ public class Lead implements Entity<String> {
 
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private StateEnum event;
+	private EventType event;
 
 	public enum Vendor {
 		HOME_ADVISOR, NETWORX

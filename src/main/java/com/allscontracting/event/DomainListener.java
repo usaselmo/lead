@@ -1,5 +1,5 @@
 package com.allscontracting.event;
 
-public interface DomainListener<T> {
-	void doAction(T domainEvent);
+public interface DomainListener {
+	void update(DomainEvent domainEvent);
 }
