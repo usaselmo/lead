@@ -2,6 +2,7 @@ package com.allscontracting.tradutor.impl;
 
 import org.springframework.stereotype.Component;
 
+import com.allscontracting.event.StateEnum;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -55,6 +56,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 					.description(splitedLine[HA_DESCRIPTION])
 					.fee(LeadHelper.defineCost(splitedLine[HA_FEE]))
 					.type(splitedLine[HA_TYPE])
+					.event(StateEnum.BEGIN)
 					.client(Client.builder()
 							.address(splitedLine[HA_ADDRESS] + ", " + splitedLine[HA_CITY] + ", " + splitedLine[HA_STATE] + " " + splitedLine[HA_ZIP_CODE])
 							.cellPhone(splitedLine[HA_CELL_PHONE].replaceAll("\\(|\\)|\\-| ", ""))

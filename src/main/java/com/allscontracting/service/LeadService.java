@@ -2,6 +2,7 @@ package com.allscontracting.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.Event;
-import com.allscontracting.event.LeadEventManager;
+import com.allscontracting.event.EstimateScheduledEvent;
+import com.allscontracting.event.ListenerManager;
+import com.allscontracting.event.StateDispatcher;
+import com.allscontracting.event.StateEnum;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.model.Proposal;
@@ -28,17 +31,10 @@ import com.allscontracting.tradutor.TranslaterDispatcher;
 public class LeadService {
 
 	private static final int LEADS_PER_PAGE = 5;
-	@Autowired LeadEventManager leadEventManager;
+	@Autowired ListenerManager listenerManager;
 	@Autowired	LeadJpaRepository leadRepo;
 	@Autowired	TranslaterDispatcher tradutorFinder;
-
-	public LeadService(LeadEventManager leadEventManager, LeadJpaRepository leadRepo,
-			TranslaterDispatcher tradutorFinder) {
-		super();
-		this.leadEventManager = leadEventManager;
-		this.leadRepo = leadRepo;
-		this.tradutorFinder = tradutorFinder;
-	}
+	@Autowired StateDispatcher eventDispatcher;
 
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)
@@ -85,10 +81,17 @@ public class LeadService {
 		//return Arrays.asList(Proposal.builder().total(BigDecimal.valueOf(120.36)).build());
 	}
 	
-	public void registryEvent(Lead lead, Event event) {
-		lead.setEvent(event);
-		leadEventManager.notifyAllListeners(event, lead);
+	public List<StateEnum> findNextEvents(String leadId) {
+		Lead lead = this.leadRepo.findOne(leadId);
+		StateEnum currentEvent = lead.getEvent();
+		if(null == currentEvent)
+			currentEvent = StateEnum.BEGIN;
+		return this.eventDispatcher.findNextEvents(currentEvent);
 	}
 
+	public void scheduleAVisit(Lead lead, LocalDateTime visit) {
+		lead.setVisit(visit);
+		this.listenerManager.notifyAllListeners(new EstimateScheduledEvent(null, null, LocalDateTime.now()));
+	}
 
 }

@@ -49,7 +49,7 @@
               <tr ng-repeat="lead in leads">
                 <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
                 <td><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small> <br> <b>${{lead.fee | currency:""}}</b> <small>{{lead.date |
-                    date:'MMMM dd, yyyy'}}</small></td>
+                    date:'MMMM dd, yyyy'}} <i><b>{{lead.event}}</b></i></small></td>
 
                 <td><em>{{lead.client.name}}</em> <small>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
                     {{lead.client.email}}</small></td>

@@ -1,6 +1,8 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.allscontracting.event.Event;
+import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.service.LeadService;
 
@@ -28,8 +30,11 @@ public class DemoApplicationTests {
 	}
 	
 	@Test
-	public void testName() throws Exception {
-		this.leadService.registryEvent(Lead.builder().id("isifido").build(), Event.BEGIN_WORK);
+	public void changeLeadEvent() throws Exception {
+		LocalDateTime dateTime;
+		Lead lead;
+		Client client;
+		this.leadService.scheduleAVisit(Lead.builder().build(), LocalDateTime.now());
 	}
 
 }

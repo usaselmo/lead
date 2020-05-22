@@ -15,6 +15,18 @@ angular.module('leads', [])
 	
 	$scope.exibitLeads = function(){$scope.showLeads=true}
 	
+	var findNextEvents = function(lead){
+    $http.get(local_server_url + "/leads/" + lead.id + "/nextevents").then(function(response){
+    	/* SUCESSO */
+    	console.log(response.data)
+    	//console.log('found leads total: ' + response.data)
+    }, function(response){
+    	/* ERRO */
+    	console.log('error....')
+    	console.log(response)
+    });
+	}
+	
 	$scope.sendProposalByMail = function(proposal, lead){
     $http.post(local_server_url + "/proposals/" + proposal.id + "/lead/" + lead.id, proposal).then(function(response){
     	/* SUCESSO */
@@ -30,10 +42,11 @@ angular.module('leads', [])
 	$scope.showLeadDetails = function (lead){
 		$scope.showLeads=false
 		$scope.lead = lead
-		findLeadProposal(lead)
+		findLeadProposals(lead)
+		findNextEvents(lead)
 	}
 	
-	var findLeadProposal = function(lead){
+	var findLeadProposals = function(lead){
     $http.get(local_server_url + "/leads/"+lead.id+"/proposals").then(function(response){
     	$scope.lead.proposals = response.data
     }, function(response){
