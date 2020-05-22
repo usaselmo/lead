@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.allscontracting.event.EventType;
 
@@ -16,11 +18,11 @@ import lombok.Data;
 
 @Data
 @Entity(name="event_log")
+@Table(uniqueConstraints= {@UniqueConstraint(columnNames= {"object_name", "object_id"})})
 public class EventLog {
 
 	@javax.persistence.Id @GeneratedValue
 	private Long Id;
-	
 	private String objectName;
 	private String objectId;
 	
