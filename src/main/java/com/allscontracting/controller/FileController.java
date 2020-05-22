@@ -23,7 +23,7 @@ public class FileController {
 	@PostMapping(value = "upload")
 	public String upload(@RequestParam("file") MultipartFile file, @RequestParam String vendor) {
 		try {
-			this.leadService.saveLeadFile(file, Vendor.valueOf(vendor));
+			this.leadService.loadLeadFile(file, Vendor.valueOf(vendor));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

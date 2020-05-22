@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.allscontracting.event.EstimateScheduledEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventTypeDispatcher;
+import com.allscontracting.event.VendorFileLoadedEvent;
 import com.allscontracting.event.EventType;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -34,7 +35,7 @@ public class LeadService {
 	@Autowired	LeadJpaRepository leadRepo;
 	@Autowired	TranslaterDispatcher tradutorFinder;
 	@Autowired EventTypeDispatcher eventDispatcher;
-	@Autowired EventManager eventManage;
+	@Autowired EventManager eventManager;
 
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)
@@ -43,7 +44,7 @@ public class LeadService {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void saveLeadFile(MultipartFile file, Vendor vendor) throws Exception {
+	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
 		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new Exception("File and Vendor do not match.");
 		List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
@@ -57,6 +58,7 @@ public class LeadService {
 			throw new Exception("Found no Leads in this file. Make sure ';' is the file delimiter. "); 
 		//save all
 		leads.stream().forEach(lead->this.leadRepo.save(lead));
+		this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(leads, vendor));
 	}
 
 	public void drop() throws Exception {
@@ -91,7 +93,7 @@ public class LeadService {
 
 	public void scheduleAVisit(Lead lead, LocalDateTime visit) {
 		lead.setVisit(visit);
-		this.eventManage.notifyAllListeners(new EstimateScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
+		this.eventManager.notifyAllListeners(new EstimateScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
 	}
 
 }

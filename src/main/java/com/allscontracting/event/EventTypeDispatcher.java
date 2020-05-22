@@ -22,7 +22,8 @@ public class EventTypeDispatcher {
 
 	public List<EventType> findNextEvents(EventType event) {
 
-		EventType[] START = { ESTIMATE_SCHEDULED, WASTE_LEAD, END_LEAD };
+		EventType[] VENDOR_FILE_LOADED = { BEGIN };
+		EventType[] BEGIN_ = { ESTIMATE_SCHEDULED, WASTE_LEAD, END_LEAD };
 		EventType[] ESTIMATE_SCHEDULED = { MARK_AS_VISITED, WASTE_LEAD, END_LEAD };
 		EventType[] MARK_AS_VISITED = { SEND_ESTIMATE, WASTE_LEAD, END_LEAD };
 		EventType[] SEND_ESTIMATE = { BEGIN_WORK, WASTE_LEAD, END_LEAD };
@@ -34,8 +35,10 @@ public class EventTypeDispatcher {
 		EventType[] END_LEAD = {BEGIN};
 
 		switch (event) {
+		case VENDOR_FILE_LOADED:
+			return Arrays.asList(VENDOR_FILE_LOADED);
 		case BEGIN:
-			return Arrays.asList(START);
+			return Arrays.asList(BEGIN_);
 		case ESTIMATE_SCHEDULED:
 			return Arrays.asList(ESTIMATE_SCHEDULED);
 		case MARK_AS_VISITED:
