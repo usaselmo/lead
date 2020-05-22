@@ -20,11 +20,10 @@ public class EventConfig {
 		/**
 		 * Register here all the event listeners
 		 */
-		em.subscribe(EventType.ESTIMATE_SCHEDULED, this.emailListener);
-		em.subscribe(EventType.SEND_ESTIMATE, this.emailListener);
+		em.subscribe(EventType.SCHEDULE_VISIT, this.emailListener);
+		em.subscribe(EventType.SEND_PROPOSAL, this.emailListener);
 		em.subscribe(EventType.SEND_INVOICE, this.emailListener);
-		em.subscribe(EventType.WASTE_LEAD, this.emailListener);
-		em.subscribe(EventType.VENDOR_FILE_LOADED, vendorFileListener);
+		em.subscribe(EventType.LOAD_VENDOR_FILE, vendorFileListener);
 		
 		return em;
 	}

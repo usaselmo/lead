@@ -2,14 +2,14 @@ package com.allscontracting.event;
 
 import static com.allscontracting.event.EventType.BEGIN;
 import static com.allscontracting.event.EventType.BEGIN_WORK;
+import static com.allscontracting.event.EventType.CREATE_PROPOSAL;
 import static com.allscontracting.event.EventType.END_LEAD;
-import static com.allscontracting.event.EventType.ESTIMATE_SCHEDULED;
 import static com.allscontracting.event.EventType.FINISH_WORK;
 import static com.allscontracting.event.EventType.MARK_AS_VISITED;
 import static com.allscontracting.event.EventType.RECEIVE_PAYMENT;
-import static com.allscontracting.event.EventType.SEND_ESTIMATE;
+import static com.allscontracting.event.EventType.SCHEDULE_VISIT;
+import static com.allscontracting.event.EventType.SEND_PROPOSAL;
 import static com.allscontracting.event.EventType.SEND_INVOICE;
-import static com.allscontracting.event.EventType.WASTE_LEAD;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,27 +23,29 @@ public class EventTypeDispatcher {
 	public List<EventType> findNextEvents(EventType event) {
 
 		EventType[] VENDOR_FILE_LOADED = { BEGIN };
-		EventType[] BEGIN_ = { ESTIMATE_SCHEDULED, WASTE_LEAD, END_LEAD };
-		EventType[] ESTIMATE_SCHEDULED = { MARK_AS_VISITED, WASTE_LEAD, END_LEAD };
-		EventType[] MARK_AS_VISITED = { SEND_ESTIMATE, WASTE_LEAD, END_LEAD };
-		EventType[] SEND_ESTIMATE = { BEGIN_WORK, WASTE_LEAD, END_LEAD };
-		EventType[] BEGIN_WORK = { FINISH_WORK, WASTE_LEAD, END_LEAD };
+		EventType[] BEGIN_ = { SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] ESTIMATE_SCHEDULED = { MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] MARK_AS_VISITED = { CREATE_PROPOSAL, END_LEAD };
+		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
+		EventType[] SEND_ESTIMATE = { BEGIN_WORK, END_LEAD };
+		EventType[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
 		EventType[] FINISH_WORK = { SEND_INVOICE, END_LEAD };
 		EventType[] SEND_INVOICE = { RECEIVE_PAYMENT, END_LEAD };
 		EventType[] RECEIVE_PAYMENT = { END_LEAD };
-		EventType[] WASTE_LEAD = { END_LEAD };
 		EventType[] END_LEAD = {BEGIN};
 
 		switch (event) {
-		case VENDOR_FILE_LOADED:
+		case LOAD_VENDOR_FILE:
 			return Arrays.asList(VENDOR_FILE_LOADED);
 		case BEGIN:
 			return Arrays.asList(BEGIN_);
-		case ESTIMATE_SCHEDULED:
+		case SCHEDULE_VISIT:
 			return Arrays.asList(ESTIMATE_SCHEDULED);
 		case MARK_AS_VISITED:
 			return Arrays.asList(MARK_AS_VISITED);
-		case SEND_ESTIMATE:
+		case CREATE_PROPOSAL:
+			return Arrays.asList(CREATE_ESTIMATE);
+		case SEND_PROPOSAL:
 			return Arrays.asList(SEND_ESTIMATE);
 		case BEGIN_WORK:
 			return Arrays.asList(BEGIN_WORK);
@@ -53,8 +55,6 @@ public class EventTypeDispatcher {
 			return Arrays.asList(SEND_INVOICE);
 		case RECEIVE_PAYMENT:
 			return Arrays.asList(RECEIVE_PAYMENT);
-		case WASTE_LEAD:
-			return Arrays.asList(WASTE_LEAD);
 		case END_LEAD:
 			return Arrays.asList(END_LEAD);
 		default:

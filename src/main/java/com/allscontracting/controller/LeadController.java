@@ -1,11 +1,14 @@
 package com.allscontracting.controller;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +27,17 @@ public class LeadController {
 	LeadService leadService;
 	
 	@Autowired LeadJpaRepository leadRepo;
+
+	@PostMapping(value = "{id}/fireevent")
+	public void fireEvent(@PathVariable String id, @RequestBody String event) {
+		switch (EventType.valueOf(event)) {
+		case SCHEDULE_VISIT:
+			this.leadService.scheduleAVisit(id, new Date());
+			break;
+		default:
+			break;
+		}
+	}
 
 	@GetMapping(value = "{id}/nextevents")
 	public List<EventType> findNextEvents(@PathVariable String id) {

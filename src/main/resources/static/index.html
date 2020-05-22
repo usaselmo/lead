@@ -18,14 +18,23 @@
 
 </head>
 <body ng-app="leads">
-  <div class="container-fluid" ng-controller="MainController" >
+  <div class="container" style="width: 80%" ng-controller="MainController">
+    <div class="row">
+    <div class="col">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li  ng-click="exibitLeads()" class="nav-item"><a class="nav-link active" id="leads-tab" data-toggle="tab" href="#leads" role="tab" aria-controls="leads" aria-selected="true">Leads</a></li>
       <li class="nav-item"><a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Upload File</a>      </li>
       <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Send Email</a>      </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane show active col-sm-12" style="margin-top: 12px;" id="leads" role="tabpanel" aria-labelledby="leads-tab">
+      
+            
+      
+            
+      <div class="tab-pane show active col" style="margin-top: 12px;" id="leads" role="tabpanel" aria-labelledby="leads-tab">
+        <!-- ****************** -->
+        <!-- ****LEADS LIST****-->
+        <!-- ****************** -->
         <div class="row" id="leads-list" ng-if="showLeads">
           <div class="col-sm-3">
             <h2>
@@ -59,41 +68,56 @@
               </tr>
             </tbody>
           </table>
-          <a type="button" class="btn btn-danger" ng-click="drop()" >Erase all Leads</a>
+          <!-- <a type="button" class="btn btn-danger" ng-click="drop()" >Erase all Leads</a> -->
         </div>
+        <!--******************-->
+        <!--***LEADS DETAILS**-->
+        <!--******************-->
         <div class="row" id="lead-details" ng-if="!showLeads">
-          <div>
-          <a href="#" class="btn btn-light"  ng-click="exibitLeads()" >Voltar</a>
-          <div class="card">
+          <a href="#" class="btn btn-light" ng-click="exibitLeads()">Voltar</a><div class="card" style="width: 100%">
             <div class="card-header"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small></div>
             <div class="card-body">
-              <h5 class="card-title">{{lead.client.name}}</h5>
-              <p class="card-text">{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
-                    {{lead.client.email}}</small></p>
-              <p class="card-text"><small>{{lead.client.address}}<br>{{lead.description}}
-                </small></p>
-              <span>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item"><a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal"
-                    aria-selected="true">Proposal</a></li>
-                  <li class="nav-item"><a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event"
-                    aria-selected="true">Events</a></li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab">
-                    <span ng-repeat="proposal in lead.proposals">
-                      <p>{{proposal.fileName}} <button type="button" class="btn btn-primary btn-small" ng-click="sendProposalByMail(proposal, lead)">Send by Email</button></p>
-                    </span>
+
+                  <div class="row">
+                    <div class="col-8">
+                      <h5 class="card-title">{{lead.client.name}}</h5>
+                      <p class="card-text">
+                        {{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}} {{lead.client.email}}<small></small>
+                      </p>
+                      <p class="card-text">
+                        <small>{{lead.client.address}}<br>{{lead.description}}
+                        </small> {{lead.visit}}
+                      </p>
+                    </div>
+                    <div class="col-4">
+                    <div class="list-group" ng-repeat="event in lead.nextEvents" >
+                      <a href="#" class="list-group-item list-group-item-action" ng-click="fireEvent(lead, event)">{{event}}</a>
+                    </div>
+                    </div>
                   </div>
-                  <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">Lista de eventos.....</div>
                 </div>
-              </span>
-            </div>
-          </div>
-        
-        </div>
+          </div><span style="margin-top: 6px;">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item"><a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal" aria-selected="true">Proposal</a></li>
+                      <li class="nav-item"><a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Events</a></li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab">
+                        <span ng-repeat="proposal in lead.proposals">
+                          <p>
+                            {{proposal.fileName}}
+                            <button type="button" class="btn btn-primary btn-small" ng-click="sendProposalByMail(proposal, lead)">Send by Email</button>
+                          </p>
+                        </span>
+                      </div>
+                      <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">Lista de eventos.....</div>
+                    </div>
+                  </span>
         </div>
       </div>
+        <!-- ****************** -->
+        <!-- ***UPLOAD FILE****-->
+        <!-- ****************** -->
       <div class="tab-pane " id="profile" role="tabpanel" aria-labelledby="profile-tab">
         <div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
           <div class="card-body">
@@ -126,4 +150,7 @@
         </div>
       </div>
     </div>
+    </div>
+    </div>  
+  </div>
 </html>

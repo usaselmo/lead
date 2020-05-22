@@ -3,6 +3,7 @@ package com.allscontracting;
 import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +35,7 @@ public class DemoApplicationTests {
 		LocalDateTime dateTime;
 		Lead lead;
 		Client client;
-		this.leadService.scheduleAVisit(Lead.builder().build(), LocalDateTime.now());
+		this.leadService.scheduleAVisit("", new Date());
 	}
 
 }

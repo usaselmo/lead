@@ -15,8 +15,8 @@ public class EmailListener implements DomainListener {
 	public void update(DomainEvent domainEvent) {
 
 		switch (domainEvent.getEventType()) {
-		case ESTIMATE_SCHEDULED:
-			this.handleEstimateScheduled((EstimateScheduledEvent) domainEvent);
+		case SCHEDULE_VISIT:
+			this.handleEstimateScheduled((VisitScheduledEvent) domainEvent);
 			break;
 		default:
 			break;
@@ -24,10 +24,10 @@ public class EmailListener implements DomainListener {
 
 		System.out.println("Email listener agindo....., Autowired Mail Service: " + this.mailService);
 		System.out.println("Tipo de evento: " + domainEvent.getEventType());
-		System.out.println(((EstimateScheduledEvent) domainEvent).getTime());
+		System.out.println(((VisitScheduledEvent) domainEvent).getVisitSchedule());
 	}
 
-	private void handleEstimateScheduled(EstimateScheduledEvent domainEvent) {
+	private void handleEstimateScheduled(VisitScheduledEvent domainEvent) {
 		// TODO Auto-generated method stub
 	}
 

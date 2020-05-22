@@ -15,10 +15,25 @@ angular.module('leads', [])
 	
 	$scope.exibitLeads = function(){$scope.showLeads=true}
 	
+	$scope.fireEvent = function(lead, event){
+		console.log(lead)
+		console.log(event)
+    $http.post(local_server_url + "/leads/" + lead.id + "/fireevent", event).then(function(response){
+    	/* SUCESSO */
+    	console.log(response.data)
+    	findNextEvents(lead)
+    }, function(response){
+    	/* ERRO */
+    	console.log('error....')
+    	console.log(response)
+    });
+	}
+	
 	var findNextEvents = function(lead){
     $http.get(local_server_url + "/leads/" + lead.id + "/nextevents").then(function(response){
     	/* SUCESSO */
     	console.log(response.data)
+    	lead.nextEvents=response.data
     	//console.log('found leads total: ' + response.data)
     }, function(response){
     	/* ERRO */

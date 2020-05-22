@@ -12,8 +12,8 @@ import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
-import com.allscontracting.repo.fsimpl.LeadRepository;
 import com.allscontracting.repo.jpaimpl.ClientJpaRepository;
+import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,18 +21,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class VendorFileListener implements DomainListener {
 
-	@Autowired LeadRepository leadRepo;
-	@Autowired ClientJpaRepository clientRepo;
+	@Autowired
+	LeadJpaRepository leadRepo;
+	@Autowired
+	ClientJpaRepository clientRepo;
 	final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	@Override
 	public void update(DomainEvent domainEvent) {
 		try {
-			if (domainEvent.getEventType().equals(EventType.VENDOR_FILE_LOADED)) {
+			if (domainEvent.getEventType().equals(EventType.LOAD_VENDOR_FILE)) {
 				this.executor.execute(() -> {
 					VendorFileLoadedEvent event = (VendorFileLoadedEvent) domainEvent;
-					List<Lead> leads = event.getLeadsLoaded();
-					leads.forEach(lead -> verifyPhoneNumber(lead.getClient()));
+					Lead lead = event.getLeadLoaded();
+					verifyPhoneNumber(lead.getClient());
 					log.info("Vendor File Listener fixed client's phone number positions.");
 				});
 				executor.shutdown();
@@ -47,10 +49,12 @@ public class VendorFileListener implements DomainListener {
 		final String p1 = clientFromEvent.getPhone();
 		final String p2 = clientFromEvent.getCellPhone();
 		Client client = this.clientRepo.findOne(clientFromEvent.getId());
-		if(StringUtils.isEmpty(p1) && !StringUtils.isEmpty(p2)) {
-			client.setPhone(p2); client.setPhone(p1); 
-		}else if(!StringUtils.isEmpty(p1) && StringUtils.isEmpty(p2)) {
-			client.setPhone(p1); client.setCellPhone(p2);
+		if (StringUtils.isEmpty(p1) && !StringUtils.isEmpty(p2)) {
+			client.setPhone(p2);
+			client.setPhone(p1);
+		} else if (!StringUtils.isEmpty(p1) && StringUtils.isEmpty(p2)) {
+			client.setPhone(p1);
+			client.setCellPhone(p2);
 		}
 		this.clientRepo.save(client);
 	}

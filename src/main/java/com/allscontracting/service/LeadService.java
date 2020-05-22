@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -15,11 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.EstimateScheduledEvent;
 import com.allscontracting.event.EventManager;
+import com.allscontracting.event.EventType;
 import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VendorFileLoadedEvent;
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.model.Proposal;
@@ -40,10 +43,11 @@ public class LeadService {
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)
 			pageRange=0;
-		return leadRepo.findAll(new PageRequest(pageRange, LEADS_PER_PAGE, new Sort(Sort.Direction.DESC, "date") )).getContent();
+		return leadRepo.findAll(new PageRequest(pageRange, LEADS_PER_PAGE, new Sort(Sort.Direction.ASC, "date") )).getContent();
 	}
 
 	@SuppressWarnings("unchecked")
+	@Transactional
 	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
 		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new Exception("File and Vendor do not match.");
@@ -57,8 +61,10 @@ public class LeadService {
 		if(leads.isEmpty())
 			throw new Exception("Found no Leads in this file. Make sure ';' is the file delimiter. "); 
 		//save all
-		leads.stream().forEach(lead->this.leadRepo.save(lead));
-		this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(leads, vendor));
+		leads.stream().forEach(lead->{
+			this.leadRepo.save(lead);
+			this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor));
+		});
 	}
 
 	public void drop() throws Exception {
@@ -91,9 +97,13 @@ public class LeadService {
 		return this.eventDispatcher.findNextEvents(currentEvent);
 	}
 
-	public void scheduleAVisit(Lead lead, LocalDateTime visit) {
+	@Transactional
+	public void scheduleAVisit(String leadId, Date visit) {
+		Lead lead = this.leadRepo.findOne(leadId);
 		lead.setVisit(visit);
-		this.eventManager.notifyAllListeners(new EstimateScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
+		lead.setEvent(EventType.SCHEDULE_VISIT);
+		this.leadRepo.save(lead);
+		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.allscontracting.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +60,7 @@ public class Lead implements Entity<String> {
 		HOME_ADVISOR, NETWORX
 	}
 	
-	private LocalDateTime visit;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date visit;
 
 }

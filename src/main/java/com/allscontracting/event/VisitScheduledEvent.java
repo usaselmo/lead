@@ -1,26 +1,28 @@
 package com.allscontracting.event;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.Lead.Vendor;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class VendorFileLoadedEvent implements DomainEvent {
+public class VisitScheduledEvent implements DomainEvent {
 
-	private Lead leadLoaded;
-	private Vendor vendor;
-	private final EventType eventType = EventType.LOAD_VENDOR_FILE;
+	private Lead lead;
+	private Client client;
+	private LocalDateTime visitSchedule;
+	private final EventType eventType = EventType.SCHEDULE_VISIT;
 	private final Date eventTime = new Date();
 	private final String objectName = Lead.class.getSimpleName();
-
+	
 	@Override
 	public String getObjectId() {
-		return leadLoaded.getId();
+		return this.lead.getId();
 	}
 
 }
