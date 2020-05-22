@@ -4,6 +4,8 @@ public class EventLogListener implements DomainListener{
 
 	@Override
 	public void update(DomainEvent domainEvent) {
+		
+		domainEvent.get
 
 	}
 
