@@ -45,17 +45,23 @@ public class VendorFileListener implements DomainListener {
 
 	@Transactional
 	private void verifyPhoneNumber(Client clientFromEvent) {
-		final String p1 = clientFromEvent.getPhone();
-		final String p2 = clientFromEvent.getCellPhone();
-		Client client = this.clientRepo.findOne(clientFromEvent.getId());
-		if (StringUtils.isEmpty(p1) && !StringUtils.isEmpty(p2)) {
-			client.setPhone(p2);
-			client.setPhone(p1);
-		} else if (!StringUtils.isEmpty(p1) && StringUtils.isEmpty(p2)) {
-			client.setPhone(p1);
-			client.setCellPhone(p2);
+		try {
+			Client client = this.clientRepo.findOne(clientFromEvent.getId());
+			if(client==null) {
+				final String p1 = clientFromEvent.getPhone();
+				final String p2 = clientFromEvent.getCellPhone();
+				if (StringUtils.isEmpty(p1) && !StringUtils.isEmpty(p2)) {
+					client.setPhone(p2);
+					client.setPhone(p1);
+				} else if (!StringUtils.isEmpty(p1) && StringUtils.isEmpty(p2)) {
+					client.setPhone(p1);
+					client.setCellPhone(p2);
+				}
+				this.clientRepo.save(client);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage());
 		}
-		this.clientRepo.save(client);
 	}
 
 }

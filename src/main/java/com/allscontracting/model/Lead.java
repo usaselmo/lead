@@ -49,7 +49,7 @@ public class Lead implements Entity<String> {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
 
-	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)
 	private List<Proposal> proposals;
 
 	@NotNull
@@ -59,7 +59,7 @@ public class Lead implements Entity<String> {
 	public enum Vendor {
 		HOME_ADVISOR, NETWORX
 	}
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visit;
 

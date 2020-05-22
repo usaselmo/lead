@@ -21,6 +21,7 @@ public class EventConfig {
 		 * Register here all the event listeners
 		 */
 		em.subscribe(EventType.SCHEDULE_VISIT, this.emailListener);
+		
 		em.subscribe(EventType.SEND_PROPOSAL, this.emailListener);
 		em.subscribe(EventType.SEND_INVOICE, this.emailListener);
 		em.subscribe(EventType.LOAD_VENDOR_FILE, vendorFileListener);

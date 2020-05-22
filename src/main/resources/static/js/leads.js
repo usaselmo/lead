@@ -16,12 +16,11 @@ angular.module('leads', [])
 	$scope.exibitLeads = function(){$scope.showLeads=true}
 	
 	$scope.fireEvent = function(lead, event){
-		console.log(lead)
-		console.log(event)
     $http.post(local_server_url + "/leads/" + lead.id + "/fireevent", event).then(function(response){
     	/* SUCESSO */
-    	console.log(response.data)
-    	findNextEvents(lead)
+    	lead.event = event
+    	$scope.showLeadDetails(lead)
+    	//findNextEvents(lead)
     }, function(response){
     	/* ERRO */
     	console.log('error....')

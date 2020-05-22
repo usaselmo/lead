@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.allscontracting.model.Lead;
 
 @Repository
-public interface LeadJpaRepository extends JpaRepository<Lead, String>{
-	
+public interface LeadJpaRepository extends JpaRepository<Lead, String> {
+
 }

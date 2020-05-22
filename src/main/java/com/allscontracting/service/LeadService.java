@@ -47,7 +47,6 @@ public class LeadService {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Transactional
 	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
 		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new Exception("File and Vendor do not match.");
