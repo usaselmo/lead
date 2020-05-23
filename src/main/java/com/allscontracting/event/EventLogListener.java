@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.Rollback;
 
 import com.allscontracting.model.EventLog;
-import com.allscontracting.repo.EventoLogJpaRepository;
+import com.allscontracting.repo.EventoLogRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class EventLogListener implements DomainListener {
 	
-	@Autowired EventoLogJpaRepository eventLogRepo;
+	@Autowired EventoLogRepository eventLogRepo;
 
 	@Override
 	@Transactional

@@ -19,18 +19,18 @@ import com.allscontracting.event.VendorFileLoadedEvent;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
-import com.allscontracting.repo.LeadJpaRepository;
+import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.tradutor.Translater;
 import com.allscontracting.tradutor.TranslaterDispatcher;
 
 @Service
 public class FileService {
-	@Autowired private LeadJpaRepository leadRepo;
+	@Autowired private LeadRepository leadRepo;
 	@Autowired private TranslaterDispatcher tradutorFinder;
 	@Autowired private EventManager eventManager;
 	@Autowired private MailService mailService;
-	@Autowired private LeadJpaRepository leadRepository;
+	@Autowired private LeadRepository leadRepository;
 	
 	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);

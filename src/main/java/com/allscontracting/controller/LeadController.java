@@ -17,7 +17,7 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
-import com.allscontracting.repo.LeadJpaRepository;
+import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
 
@@ -29,7 +29,7 @@ public class LeadController {
 	LeadService leadService;
 	@Autowired FileService fileService;
 	
-	@Autowired LeadJpaRepository leadRepo;
+	@Autowired LeadRepository leadRepo;
 
 	@GetMapping(value = "{id}/eventlogs")
 	public List<EventLog> findEventLogs(@PathVariable String id) {

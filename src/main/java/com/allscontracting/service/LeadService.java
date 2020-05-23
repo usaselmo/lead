@@ -16,17 +16,17 @@ import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
-import com.allscontracting.repo.EventoLogJpaRepository;
-import com.allscontracting.repo.LeadJpaRepository;
+import com.allscontracting.repo.EventoLogRepository;
+import com.allscontracting.repo.LeadRepository;
 
 @Service
 public class LeadService {
 
 	private static final int LEADS_PER_PAGE = 5;
-	@Autowired	private LeadJpaRepository leadRepo;
+	@Autowired	private LeadRepository leadRepo;
 	@Autowired private EventTypeDispatcher eventDispatcher;
 	@Autowired private EventManager eventManager;
-	@Autowired private EventoLogJpaRepository eventLogRepo;
+	@Autowired private EventoLogRepository eventLogRepo;
 
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)

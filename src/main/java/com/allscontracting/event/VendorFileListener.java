@@ -11,8 +11,8 @@ import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
-import com.allscontracting.repo.ClientJpaRepository;
-import com.allscontracting.repo.LeadJpaRepository;
+import com.allscontracting.repo.ClientRepository;
+import com.allscontracting.repo.LeadRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 public class VendorFileListener implements DomainListener {
 
 	@Autowired
-	LeadJpaRepository leadRepo;
+	LeadRepository leadRepo;
 	@Autowired
-	ClientJpaRepository clientRepo;
+	ClientRepository clientRepo;
 	final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	@Override
