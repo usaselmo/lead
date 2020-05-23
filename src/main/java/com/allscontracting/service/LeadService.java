@@ -16,8 +16,8 @@ import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
-import com.allscontracting.repo.jpaimpl.EventoLogJpaRepository;
-import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
+import com.allscontracting.repo.EventoLogJpaRepository;
+import com.allscontracting.repo.LeadJpaRepository;
 
 @Service
 public class LeadService {

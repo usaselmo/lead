@@ -1,4 +1,4 @@
-package com.allscontracting.repo.jpaimpl;
+package com.allscontracting.repo;
 
 import java.util.List;
 

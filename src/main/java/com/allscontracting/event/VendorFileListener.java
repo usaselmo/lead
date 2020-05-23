@@ -11,8 +11,8 @@ import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
-import com.allscontracting.repo.jpaimpl.ClientJpaRepository;
-import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
+import com.allscontracting.repo.ClientJpaRepository;
+import com.allscontracting.repo.LeadJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
 

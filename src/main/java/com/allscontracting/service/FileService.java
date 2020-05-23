@@ -19,8 +19,8 @@ import com.allscontracting.event.VendorFileLoadedEvent;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
+import com.allscontracting.repo.LeadJpaRepository;
 import com.allscontracting.model.Proposal;
-import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
 import com.allscontracting.tradutor.Translater;
 import com.allscontracting.tradutor.TranslaterDispatcher;
 

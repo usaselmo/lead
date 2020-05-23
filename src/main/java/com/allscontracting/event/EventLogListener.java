@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.annotation.Rollback;
 
 import com.allscontracting.model.EventLog;
-import com.allscontracting.repo.jpaimpl.EventoLogJpaRepository;
+import com.allscontracting.repo.EventoLogJpaRepository;
 
 import lombok.extern.slf4j.Slf4j;
 

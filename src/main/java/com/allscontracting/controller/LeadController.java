@@ -17,7 +17,7 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
-import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
+import com.allscontracting.repo.LeadJpaRepository;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
 
