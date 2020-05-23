@@ -18,6 +18,7 @@ import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
+import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
 
 @RestController
@@ -26,6 +27,7 @@ public class LeadController {
 
 	@Autowired
 	LeadService leadService;
+	@Autowired FileService fileService;
 	
 	@Autowired LeadJpaRepository leadRepo;
 
@@ -47,6 +49,7 @@ public class LeadController {
 			this.leadService.scheduleAVisit(id, new Date());
 			break;
 		default:
+			this.leadService.fireEvent(event, id);
 			break;
 		}
 	}
@@ -65,7 +68,7 @@ public class LeadController {
 	@GetMapping(value = "{id}/proposals")
 	public List<Proposal> findProposals(@PathVariable String id) {
 		try {
-			List<Proposal> res = this.leadService.findLeadProposals(id);
+			List<Proposal> res = this.fileService.findLeadProposals(id);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();

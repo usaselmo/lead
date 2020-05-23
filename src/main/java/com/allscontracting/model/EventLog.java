@@ -11,6 +11,7 @@ import javax.persistence.IdClass;
 import com.allscontracting.event.EventType;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @IdClass(EventLogId.class)
 @Entity
+@Builder
 public class EventLog {
 	@Id	private String objectName;
 	@Id	private String objectId;

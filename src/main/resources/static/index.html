@@ -113,9 +113,8 @@
                       <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">
                         
                         
-                        next Leads: {{lead.eventLogs}}
                         <ul ng-repeat="eventLog in lead.eventLogs">
-                          <li>{{eventLog}}</li>
+                          <li>{{eventLog.eventType}} - {{eventLog.eventTime | date:'MM/dd/yy hh:mm'}}</li>
                         </ul>
                         
                         

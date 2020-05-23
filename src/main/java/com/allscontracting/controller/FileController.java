@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.model.Lead.Vendor;
-import com.allscontracting.service.LeadService;
+import com.allscontracting.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,13 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "file")
 public class FileController {
 
-	@Autowired
-	LeadService leadService;
+	@Autowired FileService fileService;
 
 	@PostMapping(value = "upload")
 	public String upload(@RequestParam("file") MultipartFile file, @RequestParam String vendor) {
 		try {
-			this.leadService.loadLeadFile(file, Vendor.valueOf(vendor));
+			this.fileService.loadLeadFile(file, Vendor.valueOf(vendor));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
