@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 
 import com.allscontracting.service.MailService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Component
 public class EmailListener implements DomainListener {
 
@@ -13,7 +16,7 @@ public class EmailListener implements DomainListener {
 
 	@Override
 	public void update(DomainEvent domainEvent) {
-
+		log.info("EmailListenerfired....{}", domainEvent);
 		switch (domainEvent.getEventType()) {
 		case SCHEDULE_VISIT:
 			this.handleEstimateScheduled((VisitScheduledEvent) domainEvent);
@@ -21,10 +24,6 @@ public class EmailListener implements DomainListener {
 		default:
 			break;
 		}
-
-		System.out.println("Email listener agindo....., Autowired Mail Service: " + this.mailService);
-		System.out.println("Tipo de evento: " + domainEvent.getEventType());
-		System.out.println(((VisitScheduledEvent) domainEvent).getVisitSchedule());
 	}
 
 	private void handleEstimateScheduled(VisitScheduledEvent domainEvent) {

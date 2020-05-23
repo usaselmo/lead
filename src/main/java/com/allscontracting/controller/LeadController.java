@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
+import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
@@ -27,6 +28,17 @@ public class LeadController {
 	LeadService leadService;
 	
 	@Autowired LeadJpaRepository leadRepo;
+
+	@GetMapping(value = "{id}/eventlogs")
+	public List<EventLog> findEventLogs(@PathVariable String id) {
+		try {
+			List<EventLog> res = this.leadService.findEventLogs(id);
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
 
 	@PostMapping(value = "{id}/fireevent")
 	public void fireEvent(@PathVariable String id, @RequestBody String event) {

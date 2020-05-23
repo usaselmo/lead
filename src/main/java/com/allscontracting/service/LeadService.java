@@ -2,7 +2,6 @@ package com.allscontracting.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +22,12 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VendorFileLoadedEvent;
 import com.allscontracting.event.VisitScheduledEvent;
+import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.fsimpl.LeadRepository;
+import com.allscontracting.repo.jpaimpl.EventoLogJpaRepository;
 import com.allscontracting.repo.jpaimpl.LeadJpaRepository;
 import com.allscontracting.tradutor.Translater;
 import com.allscontracting.tradutor.TranslaterDispatcher;
@@ -39,6 +40,7 @@ public class LeadService {
 	@Autowired	TranslaterDispatcher tradutorFinder;
 	@Autowired EventTypeDispatcher eventDispatcher;
 	@Autowired EventManager eventManager;
+	@Autowired EventoLogJpaRepository eventLogRepo;
 
 	public List<Lead> listLeads(int pageRange) throws Exception {
 		if(pageRange<0)
@@ -61,8 +63,10 @@ public class LeadService {
 			throw new Exception("Found no Leads in this file. Make sure ';' is the file delimiter. "); 
 		//save all
 		leads.stream().forEach(lead->{
-			this.leadRepo.save(lead);
-			this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor));
+			if(!this.leadRepo.exists(lead.getId())) {
+				this.leadRepo.save(lead);
+				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor));
+			}
 		});
 	}
 
@@ -102,7 +106,12 @@ public class LeadService {
 		lead.setVisit(visit);
 		lead.setEvent(EventType.SCHEDULE_VISIT);
 		this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), LocalDateTime.now()));
+		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), new Date()));
+	}
+
+	public List<EventLog> findEventLogs(String leadId) {
+		System.out.println(leadId);
+		return this.eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId);
 	}
 
 }

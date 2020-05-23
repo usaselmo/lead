@@ -58,6 +58,15 @@ angular.module('leads', [])
 		$scope.lead = lead
 		findLeadProposals(lead)
 		findNextEvents(lead)
+		findNextEventLogs(lead)
+	}
+	
+	var findNextEventLogs = function(lead){
+    $http.get(local_server_url + "/leads/"+lead.id+"/eventlogs").then(function(response){
+    	lead.eventLogs = response.data
+    }, function(response){
+    	console.log(response)
+    });
 	}
 	
 	var findLeadProposals = function(lead){

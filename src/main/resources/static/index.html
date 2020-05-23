@@ -110,7 +110,16 @@
                           </p>
                         </span>
                       </div>
-                      <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">Lista de eventos.....</div>
+                      <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">
+                        
+                        
+                        next Leads: {{lead.eventLogs}}
+                        <ul ng-repeat="eventLog in lead.eventLogs">
+                          <li>{{eventLog}}</li>
+                        </ul>
+                        
+                        
+                      </div>
                     </div>
                   </span>
         </div>

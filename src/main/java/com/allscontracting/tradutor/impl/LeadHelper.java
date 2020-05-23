@@ -23,7 +23,6 @@ public class LeadHelper {
 			String obj = new ObjectMapper().writeValueAsString(entity);
 			return obj+System.lineSeparator();
 		} catch (JsonProcessingException e) {
-			System.out.println("Erro ao converter Lead pra string : " + entity + " - Erro: " + e.getMessage() );
 			return "{}";
 		}
 	}

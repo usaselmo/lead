@@ -1,6 +1,5 @@
 package com.allscontracting.event;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.allscontracting.model.Client;
@@ -15,7 +14,7 @@ public class VisitScheduledEvent implements DomainEvent {
 
 	private Lead lead;
 	private Client client;
-	private LocalDateTime visitSchedule;
+	private Date visitSchedule;
 	private final EventType eventType = EventType.SCHEDULE_VISIT;
 	private final Date eventTime = new Date();
 	private final String objectName = Lead.class.getSimpleName();

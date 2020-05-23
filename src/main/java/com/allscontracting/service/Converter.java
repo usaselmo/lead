@@ -34,10 +34,6 @@ public class Converter {
 		return new SimpleDateFormat(pattern).parse(dateToConvert); 
 	}
 
-	public static void main(String[] args) throws ParseException{
-		System.out.println(Converter.stringToDate("2020-05-17", Converter.yyyy_MM_dd));
-	}
-	
 	public static Date convertToDate(String date) throws LeadsException{
 		try {
 			return Converter.stringToDate(date, MM_dd_yyyy);
