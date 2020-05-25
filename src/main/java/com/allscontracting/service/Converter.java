@@ -15,6 +15,7 @@ public class Converter {
 
 	public static final String dd_MM_yyyy = "dd/MM/yyyy";
 	public static final String MM_dd_yy = "MM/dd/yy";
+	public static final String MM_dd_yy_hh_mm = "MM/dd/yy hh:mm";
 	public static final String MM_dd_yyyy = "MM/dd/yyyy";
 	public static final String yyyy_MM_dd = "yyyy-MM-dd";
 
@@ -33,7 +34,7 @@ public class Converter {
 	public static Date stringToDate(String dateToConvert, String pattern) throws ParseException {
 		return new SimpleDateFormat(pattern).parse(dateToConvert); 
 	}
-
+	
 	public static Date convertToDate(String date) throws LeadsException{
 		try {
 			return Converter.stringToDate(date, MM_dd_yyyy);
