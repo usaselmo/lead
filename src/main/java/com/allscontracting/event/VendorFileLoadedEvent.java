@@ -7,9 +7,11 @@ import com.allscontracting.model.Lead.Vendor;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @Getter
+@ToString
 public class VendorFileLoadedEvent implements DomainEvent {
 
 	private Lead leadLoaded;
