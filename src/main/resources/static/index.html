@@ -8,157 +8,35 @@
 
 <!-- BOOSTSTRAP -->
 <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
-<script src="bootstrap/jquery-3.5.1.slim.min.js" ></script>
-<script src="bootstrap/popper.min.js" ></script>
-<script src="bootstrap/bootstrap.min.js" ></script>
+<script src="bootstrap/jquery-3.5.1.slim.min.js"></script>
+<script src="bootstrap/popper.min.js"></script>
+<script src="bootstrap/bootstrap.min.js"></script>
 
 <!-- ANGULARJS -->
-<script src="js/angularjs/1.4.3/angular.min.js" ></script>
-<script src="js/leads.js" ></script>
+<script src="js/angularjs/1.4.3/angular.min.js"></script>
+<script src="js/leads.js"></script>
 
 </head>
 <body ng-app="leads">
-  <div class="container" style="width: 80%" ng-controller="MainController">
+  <div class="container -fluid" ng-controller="MainController">
     <div class="row">
-    <div class="col">
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-      <li  ng-click="exibitLeads()" class="nav-item"><a class="nav-link active" id="leads-tab" data-toggle="tab" href="#leads" role="tab" aria-controls="leads" aria-selected="true">Leads</a></li>
-      <li class="nav-item"><a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Upload File</a>      </li>
-      <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Send Email</a>      </li>
-    </ul>
-    <div class="tab-content" id="myTabContent">
+      <div class="col">
       
-            
-      
-            
-      <div class="tab-pane show active col" style="margin-top: 12px;" id="leads" role="tabpanel" aria-labelledby="leads-tab">
-        <!-- ****************** -->
-        <!-- ****LEADS LIST****-->
-        <!-- ****************** -->
-        <div class="row" id="leads-list" ng-if="showLeads">
-          <div class="col-sm-3">
-            <h2>
-              Leads <small>({{totalLeads}})</small>
-            </h2>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item"><a class="nav-link active" id="skd8KjsiLLJ9k-tab" data-toggle="tab" href="#skd8KjsiLLJ9k" role="tab" aria-controls="skd8KjsiLLJ9k" aria-selected="true">Leads</a></li>
+          <li class="nav-item"><a class="nav-link" id="sioiI78YUhyiishj-tab" data-toggle="tab" href="#sioiI78YUhyiishj" role="tab" aria-controls="sioiI78YUhyiishj" aria-selected="false">Upload File</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" id="wowj9948skoIHPP987HJo4-tab" data-toggle="tab" href="#wowj9948skoIHPP987HJo4" role="tab" aria-controls="wowj9948skoIHPP987HJo4" aria-selected="false">Proposal</a></li> -->
+        </ul>
+        <div class="tab-content" id="myTabContent" style="padding-top: 12px;">
+          <div class="tab-pane show active col" id="skd8KjsiLLJ9k" role="tabpanel" aria-labelledby="skd8KjsiLLJ9k-tab">
+            <div class="row" id="leads-list" ng-if="showLeads" ng-include="'lead/list.html'"></div>
+            <div class="row" id="lead-details" ng-if="!showLeads" ng-include="'lead/details.html'"></div>
           </div>
-          <div class="col-sm-9">
-            <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
-            &nbsp;&nbsp;&nbsp;
-            <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
-          </div>
-          <table class="table table-sm table-striped">
-            <thead>
-              <tr>
-                <th scope="col" colspan="1"></th>
-                <th scope="col" colspan="1">Lead</th>
-                <th scope="col" colspan="3">Client</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="lead in leads">
-                <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
-                <td><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small> <br> <b>${{lead.fee | currency:""}}</b> <small>{{lead.date |
-                    date:'MMMM dd, yyyy'}} <i><b>{{lead.event}}</b></i></small></td>
-
-                <td><em>{{lead.client.name}}</em> <small>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
-                    {{lead.client.email}}</small></td>
-                <td><small>{{lead.client.address}}<br>{{lead.description}}
-                </small></td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <!-- <a type="button" class="btn btn-danger" ng-click="drop()" >Erase all Leads</a> -->
+          <div class="tab-pane show col" id="sioiI78YUhyiishj" role="tabpanel" aria-labelledby="sioiI78YUhyiishj-tab" ng-include="'upload-file.html'"></div>
+          <!-- <div class="tab-pane show col" id="wowj9948skoIHPP987HJo4" role="tabpanel" aria-labelledby="wowj9948skoIHPP987HJo4-tab" > sdksn sdk</div> -->
         </div>
-        <!--******************-->
-        <!--***LEADS DETAILS**-->
-        <!--******************-->
-        <div class="row" id="lead-details" ng-if="!showLeads">
-          <a href="#" class="btn btn-light" ng-click="exibitLeads()">Voltar</a><div class="card" style="width: 100%">
-            <div class="card-header"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small></div>
-            <div class="card-body">
-
-                  <div class="row">
-                    <div class="col-8">
-                      <h5 class="card-title">{{lead.client.name}}</h5>
-                      <p class="card-text">
-                        {{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}} {{lead.client.email}}<small></small>
-                      </p>
-                      <p class="card-text">
-                        <small>{{lead.client.address}}<br>{{lead.description}}
-                        </small> {{lead.visit}}
-                      </p>
-                    </div>
-                    <div class="col-4">
-                    <div class="list-group" ng-repeat="event in lead.nextEvents" >
-                      <a href="#" class="list-group-item list-group-item-action" ng-click="fireEvent(lead, event)">{{event}}</a>
-                    </div>
-                    </div>
-                  </div>
-                </div>
-          </div><span style="margin-top: 6px;">
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                      <li class="nav-item"><a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal" aria-selected="true">Proposal</a></li>
-                      <li class="nav-item"><a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Events</a></li>
-                    </ul>
-                    <div class="tab-content" id="myTabContent">
-                      <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab">
-                        <span ng-repeat="proposal in lead.proposals">
-                          <p>
-                            {{proposal.fileName}}
-                            <button type="button" class="btn btn-primary btn-small" ng-click="sendProposalByMail(proposal, lead)">Send by Email</button>
-                          </p>
-                        </span>
-                      </div>
-                      <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">
-                        
-                        
-                        <ul ng-repeat="eventLog in lead.eventLogs">
-                          <li>{{eventLog.eventType}} - {{eventLog.eventTime | date:'MM/dd/yy hh:mm'}}</li>
-                        </ul>
-                        
-                        
-                      </div>
-                    </div>
-                  </span>
-        </div>
-      </div>
-        <!-- ****************** -->
-        <!-- ***UPLOAD FILE****-->
-        <!-- ****************** -->
-      <div class="tab-pane " id="profile" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
-          <div class="card-body">
-            <h5 class="card-title">Upload Lead File</h5>
-            <p></p>
-            <form action="file/upload" method="post" enctype="multipart/form-data">
-              Select file:
-              <p>
-                <input type="file" name="file" id="file" class="btn btn-secondary ">
-              </p>
-              <p>Select Lead Source<br>
-                <input type="radio" id="homeadvisor" name="vendor" ng-model="radio_vendor" value="HOME_ADVISOR"> 
-                <label for="homeadvisor">Home Advisor</label><br> 
-                <input type="radio" ng-model="radio_vendor" id="networx" name="vendor" value="NETWORX"> 
-                <label for="networx">Networx</label>
-                </p>
-              <p>
-                <input type="submit" value="Upload" name="submit" class="btn btn-primary " ng-if="radio_vendor">
-              </p>
-            </form>
-            <p></p>
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane " id="contact" role="tabpanel" aria-labelledby="contact-tab">
-        <div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
-          <div class="card-body">
-            <h5 class="card-title">Send Email</h5>
-          </div>
-        </div>
+        
       </div>
     </div>
-    </div>
-    </div>  
   </div>
 </html>
