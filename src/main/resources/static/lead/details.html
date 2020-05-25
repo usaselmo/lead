@@ -1,0 +1,47 @@
+<a href="#" class="btn btn-outline-info" ng-click="exibitLeads()">Show Leads</a>
+<div class="card" style="width: 100%;">
+
+  <div class="card-header">
+    <i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;
+  </div>
+
+  <div class="card-body" style="padding: 12px;">
+    <div class="row">
+
+      <!-- LEAD DETAILS -->
+      <div class="col-sm-8">
+        <address>
+          <strong>{{lead.client.name}}</strong> <br>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}} <br>{{lead.client.email}}
+          <br>{{lead.client.address}}
+        </address>
+        <small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
+        <p ng-if="lead.visit">
+          Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
+        </p>
+      </div>
+
+      <!-- MENU -->
+      <div class="col-sm-4">
+        <div class="list-group" ng-repeat="event in lead.nextEvents">
+          <span ng-switch="event"> <a ng-switch-when="SCHEDULE_VISIT" href="#" class="list-group-item list-group-item-action" data-toggle="modal"
+            data-target="#exampleModal">SCHEDULE_VISIT</a> <a ng-switch-when="CREATE_PROPOSAL" href="#" class="list-group-item list-group-item-action">CREATE PROPOSAL</a>
+            <a ng-switch-default href="#" class="list-group-item list-group-item-action" ng-click="fireEvent(lead, event)">{{event}}</a>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <span style="margin-top: 6px;" ng-include="'lead/tabs/lead-details-nav-tabs.html'"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV TABS -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  ng-include="'lead/schedule-modal.html'"></div>
+
+
+
+
