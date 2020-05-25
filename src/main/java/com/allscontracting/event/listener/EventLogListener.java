@@ -1,11 +1,11 @@
-package com.allscontracting.event;
+package com.allscontracting.event.listener;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.test.annotation.Rollback;
 
+import com.allscontracting.event.DomainEvent;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.repo.EventoLogRepository;
 

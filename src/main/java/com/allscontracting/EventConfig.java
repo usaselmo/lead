@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.allscontracting.event.EmailListener;
-import com.allscontracting.event.EventLogListener;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
-import com.allscontracting.event.VendorFileListener;
+import com.allscontracting.event.listener.EmailListener;
+import com.allscontracting.event.listener.EventLogListener;
+import com.allscontracting.event.listener.VendorFileListener;
 
 @Configuration
 public class EventConfig {
