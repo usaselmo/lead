@@ -1,0 +1,22 @@
+<div class="card col-sm-6" style="margin-left: auto; margin-right: auto; position: relative; top: 16px;">
+          <div class="card-body">
+            <h5 class="card-title">Upload Lead File</h5>
+            <p></p>
+            <form action="file/upload" method="post" enctype="multipart/form-data">
+              Select file:
+              <p>
+                <input type="file" name="file" id="file" class="btn btn-secondary ">
+              </p>
+              <p>Select Lead Source<br>
+                <input type="radio" id="homeadvisor" name="vendor" ng-model="radio_vendor" value="HOME_ADVISOR"> 
+                <label for="homeadvisor">Home Advisor</label><br> 
+                <input type="radio" ng-model="radio_vendor" id="networx" name="vendor" value="NETWORX"> 
+                <label for="networx">Networx</label>
+                </p>
+              <p>
+                <input type="submit" value="Upload" name="submit" class="btn btn-primary " ng-if="radio_vendor">
+              </p>
+            </form>
+            <p></p>
+          </div>
+        </div>

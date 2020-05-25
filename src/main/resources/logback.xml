@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <withJansi>false</withJansi>
+    <encoder>
+      <pattern>%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{64} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <File>/Modulo Assinatura Digital/log/assinatura-client.log</File>
+    <Append>false</Append>
+    <encoder>
+      <pattern>%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{64} -
+        %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- ALLS CONTRACTING -->
+  <logger name="com.allscontracting" level="INFO">
+    <appender-ref ref="CONSOLE" />
+    <!-- <appender-ref ref="FILE" /> -->
+  </logger>
+
+  <!-- COM -->
+  <logger name="com" level="ERROR">
+    <appender-ref ref="CONSOLE" />
+    <!-- <appender-ref ref="FILE" /> -->
+  </logger>
+
+  <!-- ORG -->
+  <logger name="org.demoiselle" level="ERROR">
+    <appender-ref ref="CONSOLE" />
+    <!-- <appender-ref ref="FILE" /> -->
+  </logger>
+  
+  <logger name="org" level="ERROR">
+    <appender-ref ref="CONSOLE" />
+    <!-- <appender-ref ref="FILE" /> -->
+  </logger>
+
+  <!-- TODO RESTO -->
+  <logger name="*" level="ERROR">
+    <appender-ref ref="CONSOLE" />
+    <!-- <appender-ref ref="FILE" /> -->
+  </logger>
+
+</configuration>
