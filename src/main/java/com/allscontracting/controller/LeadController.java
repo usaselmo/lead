@@ -1,10 +1,13 @@
 package com.allscontracting.controller;
 
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +21,13 @@ import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("leads")
 public class LeadController {
@@ -39,6 +46,18 @@ public class LeadController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Collections.emptyList();
+		}
+	}
+
+	@PostMapping(value = "{id}/schedulevisit")
+	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
+		try {
+			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
+			this.leadService.scheduleAVisit(id, visitDateTime); 
+			return ResponseEntity.ok().build();
+		} catch (ParseException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
@@ -77,9 +96,9 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public List<Lead> list(@RequestParam int pageRange) {
+	public List<Lead> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
 		try {
-			List<Lead> res = this.leadService.listLeads(pageRange);
+			List<Lead> res = this.leadService.listLeads(pageRange, lines, eventType);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,9 +116,10 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "/total")
-	public Long findTotal() {
+	public Long findTotal(@RequestParam EventType eventType) {
 		try {
-			return leadService.getLeadsTotal();
+			long res = leadService.getLeadsTotal(eventType);
+			return res;
 		} catch (Exception e) { 
 			e.printStackTrace();
 		}
