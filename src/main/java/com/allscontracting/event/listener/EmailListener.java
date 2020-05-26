@@ -18,7 +18,7 @@ public class EmailListener implements DomainListener {
 
 	@Override
 	public void update(DomainEvent domainEvent) {
-		log.info("EmailListener fired....{}", domainEvent);
+		log.info("EmailListener fired....");
 		switch (domainEvent.getEventType()) {
 		case SCHEDULE_VISIT:
 			this.handleEstimateScheduled((VisitScheduledEvent) domainEvent);

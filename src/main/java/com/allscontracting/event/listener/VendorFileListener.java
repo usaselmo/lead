@@ -28,7 +28,7 @@ public class VendorFileListener implements DomainListener {
 
 	@Override
 	public void update(DomainEvent domainEvent) {
-		log.info("Vendor File Listener fired....{}", domainEvent);
+		log.info("Vendor File Listener fired....");
 		try {
 			if (domainEvent.getEventType().equals(EventType.LOAD_VENDOR_FILE)) {
 				VendorFileLoadedEvent event = (VendorFileLoadedEvent) domainEvent;

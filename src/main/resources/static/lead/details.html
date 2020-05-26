@@ -22,8 +22,8 @@
       <!-- MENU -->
       <div class="col-sm-4">
         <div class="list-group" ng-repeat="event in lead.nextEvents">
-          <span ng-switch="event"> <a ng-switch-when="SCHEDULE_VISIT" href="#" class="list-group-item list-group-item-action" data-toggle="modal"
-            data-target="#exampleModal">SCHEDULE_VISIT</a> <a ng-switch-when="CREATE_PROPOSAL" href="#" class="list-group-item list-group-item-action">CREATE PROPOSAL</a>
+          <span ng-switch="event"> 
+            <a ng-switch-when="SCHEDULE_VISIT" href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#exampleModal">SCHEDULE_VISIT</a> 
             <a ng-switch-default href="#" class="list-group-item list-group-item-action" ng-click="fireEvent(lead, event)">{{event}}</a>
           </span>
         </div>
