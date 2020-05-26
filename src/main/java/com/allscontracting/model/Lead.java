@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@javax.persistence.Entity(name = "lead")
+@javax.persistence.Entity
+@Table(name="lead")
 public class Lead implements Entity<String> {
 
 	private static final long serialVersionUID = 2718925984228018742L;
@@ -49,7 +51,7 @@ public class Lead implements Entity<String> {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
 
-	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "lead", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Proposal> proposals;
 
 	@NotNull

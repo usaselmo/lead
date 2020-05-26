@@ -4,12 +4,6 @@
 
 angular.module('leads', [])
 
-	/*PROPOSAL CONTROLLER*/
-	.controller('ProposalController', function($scope, $http, $timeout){
-		$scope.filterLeads('CREATE_PROPOSAL')
-	})
-
-	
 	/*MAIN CONTROLLER*/
 	.controller('MainController', function($scope, $http, $timeout) {
 
@@ -19,9 +13,44 @@ angular.module('leads', [])
 	$scope.lead={}
 	$scope.eventTypes=['BEGIN','SCHEDULE_VISIT','MARK_AS_VISITED','CREATE_PROPOSAL','SEND_PROPOSAL','BEGIN_WORK','FINISH_WORK','SEND_INVOICE','RECEIVE_PAYMENT','END_LEAD']
 	$scope.totalLeads=0
+	$scope.currentProposal = {'lines':{}}
 	var pageRange = 0
 	$scope.filter = ''
 	var lines = 100
+
+	
+   $scope.saveProposal = function(lead, proposal) {
+			//console.log(proposal.lead)
+			var its = [];
+			proposal.items.forEach(item=>{
+					var lns = [];
+					item.lines.split('\n').forEach(line=>{ 
+							lns.push({'description': line});
+					})
+					its.push({'title': item.title, 'lines': lns});
+			})
+			proposal.items=its
+			proposal.lines=null
+			
+	    $http.post(local_server_url + "/proposals?leadId="+lead.id, proposal).then(function(response){
+	    	$scope.lead.proposals.push(response.data)
+	    	//proposal = {}
+	    	$scope.currentProposal = {'items':[{}]}
+	    	//$scope.showLeadDetails(lead)
+	    }, function(response){
+	    	console.log(response)
+	    });
+	    
+    }
+
+    $scope.currentProposal = {
+      callMissUtility : true,
+      items : [ {} ]
+    };
+
+    $scope.encreaseItem = function() {
+	    $scope.currentProposal.items.push({})
+    }
 	
 	$scope.scheduleVisit = function(lead, time){
     $http.post(local_server_url + "/leads/" + lead.id + "/schedulevisit", time).then(function(response){

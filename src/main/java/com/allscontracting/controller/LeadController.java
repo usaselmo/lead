@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
-import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.LeadRepository;
@@ -37,17 +36,6 @@ public class LeadController {
 	@Autowired FileService fileService;
 	
 	@Autowired LeadRepository leadRepo;
-
-	@GetMapping(value = "{id}/eventlogs")
-	public List<EventLog> findEventLogs(@PathVariable String id) {
-		try {
-			List<EventLog> res = this.leadService.findEventLogs(id);
-			return res;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Collections.emptyList();
-		}
-	}
 
 	@PostMapping(value = "{id}/schedulevisit")
 	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
@@ -84,24 +72,14 @@ public class LeadController {
 		}
 	}
 
-	@GetMapping(value = "{id}/proposals")
-	public List<Proposal> findProposals(@PathVariable String id) {
-		try {
-			List<Proposal> res = this.fileService.findLeadProposals(id);
-			return res;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Collections.emptyList();
-		}
-	}
-
 	@GetMapping(value = "")
 	public List<Lead> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
 		try {
 			List<Lead> res = this.leadService.listLeads(pageRange, lines, eventType);
 			return res;
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			log.error(e.getMessage());
 			return Collections.emptyList();
 		}
 	}

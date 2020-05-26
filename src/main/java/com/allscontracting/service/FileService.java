@@ -78,7 +78,7 @@ public class FileService {
 
 	private static final Path PROPOSALS_FOLDER = Paths.get("C:\\Users\\Anselmo.asr\\Google Drive\\All's Contracting\\proposals");
 
-	public List<Proposal> findLeadProposals(String id) throws IOException {
+/*	public List<Proposal> findLeadProposals(String id) throws IOException {
 
 		//Lead lead = this.leadRepo.findOne(id).orElse(Lead.builder().build());
 		Lead lead = this.leadRepo.findOne(id);
@@ -90,6 +90,6 @@ public class FileService {
 			.collect(Collectors.toList());
 
 		//return Arrays.asList(Proposal.builder().total(BigDecimal.valueOf(120.36)).build());
-	}
+	}*/
 	
 }

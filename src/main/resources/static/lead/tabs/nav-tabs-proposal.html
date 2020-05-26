@@ -1,26 +1,81 @@
 
-<div class="row">
+<div class="row" >
   <!-- LEAD DETAILS -->
   <div class="col-sm-12">
-
     <div class="card">
+
       <div class="card-body">
-
-
-
-
         <table class="table table-striped" ng-if="lead.proposals">
           <tbody>
-            <tr ng-repeat="proposal in lead.proposals">
-              <th scope="row">1</th>
-              <td>{{proposal}}</td>
-              <td></td>
-              <td></td>
+            <tr ng-repeat="prop in lead.proposals">
+              <th scope="row">{{prop.number}}</th>
+              <td>{{prop.total}}</td>
+              <td>{{prop.emailed}}</td>
+              <td>{{prop.isFinished}}</td>
             </tr>
-          </tbody>
+          </tbody> 
         </table>
 
-        <button type="button" class="btn btn-primary">Criar Proposal</button>
+
+
+
+            <form action="#">
+              <div ng-repeat="item in currentProposal.items ">
+                <div class="form-group row" ng-model="currentProposal.items[$index].title">
+                  <label class="col-sm-2 col-form-label">Item {{$index + 1}}</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" value="" placeholder="Title" ng-model="currentProposal.items[$index].title"/>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 col-form-label"></label>
+                  <div class="col-sm-10">
+                    <textarea rows="8" class="form-control" ng-model="currentProposal.items[$index].lines"></textarea>
+                  </div>
+                </div>
+                
+              </div>
+                <div class="form-group row">
+                  <div class="col-sm-2">
+                    <button class="form-control btn btn-secondary" ng-click="encreaseItem()" >New Item</button>
+                  </div>
+                </div>
+
+              <hr>
+              
+              <div class="form-group row">
+                <label for="total" class="col-sm-2 col-form-label">Total</label>
+                <div class="col-sm-2">
+                  <input type="number" class="form-control" id="total" value=""  ng-model="currentProposal.total">
+                </div>
+                <label for="callMissUtility" class="col-sm-2 col-form-label">Call Miss Utiliy</label>
+                <div class="col-sm-1">
+                  <input type="checkbox" checked class="form-control" id="callMissUtility"  ng-model="currentProposal.callMissUtility" > 
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="scopeOfWork" class="col-sm-2 col-form-label">Scope of Work</label>
+                <div class="col-sm-10">
+                  <textarea rows="1" class="form-control" id="scopeOfWork"  ng-model="currentProposal.scopeOfWork"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="paymentSchedule" class="col-sm-2 col-form-label">PaymentSchedule</label>
+                <div class="col-sm-10">
+                  <textarea rows="1" class="form-control" id="paymentSchedule"  ng-model="currentProposal.paymentSchedule"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="warranty" class="col-sm-2 col-form-label">Warranty</label>
+                <div class="col-sm-10">
+                  <textarea rows="1" class="form-control" id="warranty"  ng-model="currentProposal.workWarranty"></textarea>
+                </div>
+              </div>
+            </form>
+            <button type="button" class="btn btn-primary" ng-click="saveProposal(lead, currentProposal)">Save Proposal</button>
+
+   
+
 
       </div>
     </div>

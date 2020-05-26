@@ -1,12 +1,12 @@
 <ul class="nav nav-tabs" id="myTab" role="tablist">
-  <li class="nav-item"><a class="nav-link active" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal" aria-selected="true">Proposal</a></li>
-  <li class="nav-item"><a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Events</a></li>
+  <li class="nav-item"><a class="nav-link" id="proposal-tab" data-toggle="tab" href="#proposal" role="tab" aria-controls="proposal" aria-selected="true"  >Proposal</a></li>
+  <li class="nav-item"><a class="nav-link active" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="true">Events</a></li>
 </ul>
 <div class="tab-content" id="myTabContent">
   <!-- PROPOSALS -->
-  <div class="tab-pane fade show active" id="proposal" role="tabpanel" aria-labelledby="proposal-tab" ng-include="'lead/tabs/lead-datails-nav-tabs-proposal.html'"></div>
+  <div class="tab-pane fade show" id="proposal" role="tabpanel" aria-labelledby="proposal-tab" ng-include="'lead/tabs/nav-tabs-proposal.html'"></div>
   <!-- EVENTS -->
-  <div class="tab-pane fade show" id="event" role="tabpanel" aria-labelledby="event-tab">
+  <div class="tab-pane fade show active" id="event" role="tabpanel" aria-labelledby="event-tab">
     <ul ng-repeat="eventLog in lead.eventLogs">
       <li>{{eventLog.eventType}} - {{eventLog.eventTime | date:'MM/dd/yy hh:mm'}}</li>
     </ul>

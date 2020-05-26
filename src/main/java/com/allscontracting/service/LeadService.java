@@ -17,6 +17,7 @@ import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
 
@@ -76,6 +77,10 @@ public class LeadService {
 
 	public List<EventLog> findEventLogs(String leadId) {
 		return this.eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId);
+	}
+
+	public List<Proposal> findProposals(String leadId) {
+		return this.leadRepo.findProposals(leadId);
 	}
 
 }
