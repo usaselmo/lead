@@ -53,7 +53,7 @@ public class LeadController {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 			this.leadService.scheduleAVisit(id, visitDateTime); 
-			return ResponseEntity.ok().build();
+			return ResponseEntity.ok().body(visitDateTime);
 		} catch (ParseException e) {
 			log.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

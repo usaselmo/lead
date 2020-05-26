@@ -54,6 +54,7 @@ angular.module('leads', [])
 	
 	$scope.scheduleVisit = function(lead, time){
     $http.post(local_server_url + "/leads/" + lead.id + "/schedulevisit", time).then(function(response){
+    	lead.visit = response.data
     	$scope.showLeadDetails(lead)
     }, function(response){
     	console.log(response)
