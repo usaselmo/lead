@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 import com.allscontracting.event.EventType;
 
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @IdClass(EventLogId.class)
 @Entity
 @Builder
+@Table(name="event_log")
 public class EventLog {
 	@Id	private String objectName;
 	@Id	private String objectId;

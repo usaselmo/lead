@@ -2,6 +2,7 @@ package com.allscontracting.model;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 
@@ -14,7 +15,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@javax.persistence.Entity(name="client")
+@javax.persistence.Entity
+@Table(name="client")
 public class Client {
 
 	@Id @GeneratedValue
