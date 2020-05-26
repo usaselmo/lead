@@ -93,7 +93,6 @@ angular.module('leads', [])
 	$scope.showLeadDetails = function (lead){
 		$scope.showLeads=false
 		$scope.lead = lead
-		findLeadProposals(lead)
 		findNextEvents(lead)
 		findNextEventLogs(lead)
 	}
@@ -101,14 +100,6 @@ angular.module('leads', [])
 	var findNextEventLogs = function(lead){
     $http.get(local_server_url + "/leads/"+lead.id+"/eventlogs").then(function(response){
     	lead.eventLogs = response.data
-    }, function(response){
-    	console.log(response)
-    });
-	}
-	
-	var findLeadProposals = function(lead){
-    $http.get(local_server_url + "/leads/"+lead.id+"/proposals").then(function(response){
-    	$scope.lead.proposals = response.data
     }, function(response){
     	console.log(response)
     });

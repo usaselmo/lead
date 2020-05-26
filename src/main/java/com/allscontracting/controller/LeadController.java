@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
+import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.service.Converter;
@@ -35,6 +36,17 @@ public class LeadController {
 	@Autowired FileService fileService;
 	
 	@Autowired LeadRepository leadRepo;
+
+	@GetMapping(value = "{id}/eventlogs")
+	public List<EventLog> findEventLogs(@PathVariable String id) {
+		try {
+			List<EventLog> res = this.leadService.findEventLogs(id);
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
+	}
 
 	@PostMapping(value = "{id}/schedulevisit")
 	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
