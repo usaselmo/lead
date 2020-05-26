@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
