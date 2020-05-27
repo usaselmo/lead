@@ -69,7 +69,7 @@ public class ProposalService {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
 		Client client = proposal.getLead().getClient();
 		
-		String pdfFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();//.replaceAll(" ", "_");
+		String pdfFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
 
 		InputStream fis = Files.newInputStream(Paths.get(jasperFileSource), StandardOpenOption.READ);
 		response.setContentType("application/pdf");
