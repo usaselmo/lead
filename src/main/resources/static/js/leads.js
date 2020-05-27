@@ -17,31 +17,75 @@ angular.module('leads', [])
 	var pageRange = 0
 	$scope.filter = ''
 	var lines = 100
-
+	$scope.originalLines = []
+	var errorMessage = 'An error occured.'
 	
-   $scope.saveProposal = function(lead, proposal) {
-			//console.log(proposal.lead)
-			var its = [];
-			proposal.items.forEach(item=>{
-					var lns = [];
-					item.lines.split('\n').forEach(line=>{ 
-							lns.push({'description': line});
-					})
-					its.push({'title': item.title, 'lines': lns});
-			})
-			proposal.items=its
-			proposal.lines=null
-			
-	    $http.post(local_server_url + "/proposals?leadId="+lead.id, proposal).then(function(response){
-	    	$scope.lead.proposals.push(response.data)
-	    	//proposal = {}
-	    	$scope.currentProposal = {'items':[{}]}
-	    	//$scope.showLeadDetails(lead)
-	    }, function(response){
-	    	console.log(response)
-	    });
+	
+	
+	$scope.downloadPdf = function(proposal){
+    $http.get(local_server_url + "/proposals/"+proposal.id+"/pdf").then(function(response){
+    }, function(response){
+      console.log(response)
+      alert(errorMessage)
+    });
+	}
+	
+	$scope.reDoProposal = function(lead, proposal){
+    $http.delete(local_server_url + "/proposals?leadId="+lead.id+'&proposalId='+proposal.id).then(function(response){
+    	lead.proposals = lead.proposals.filter(function(value, index, arr){ return value != proposal;})
+    	$scope.currentProposal = convertToClientFormat(proposal);
+    }, function(response){
+      console.log(response)
+      alert(response.data)
+    });
+    
+  }
+  
+  var convertToClientFormat = function(proposal){
+    prop = copy(proposal)
+    items = []
+    prop.items.forEach(item => {
+      item.lines = item.lines.map(line => { 
+        $scope.originalLines[item.id + line.description] = line.id;
+        return line.description;
+      }).join("\n")
+      items.push(item)
+    })
+    prop.items = items;
+    return prop;
+  }
+
+  var copy = function(obj){
+    return JSON.parse(JSON.stringify(obj))
+  }
+
+  var convertToServerFormat = function(proposal){
+    prop = copy(proposal)
+    var its = [];
+    let ols = $scope.originalLines
+    prop.items.forEach(item=>{
+         var lns = [];
+         item.lines.split('\n').forEach(line=>{
+           lns.push({'description': line, 'id':ols[item.id+line] });
+         })
+         its.push({'title': item.title, 'lines': lns});
+     })
+     prop.items=its
+     prop.lines=null
+     return prop
+  }
+	
+  $scope.saveProposal = function(lead, proposal) {
+    var prop = convertToServerFormat(proposal)
+    $http.post(local_server_url + "/proposals?leadId="+lead.id, prop).then(function(response){
+      $scope.lead.proposals.push(response.data)
+      $scope.currentProposal = {'items':[{}]}
+      angular.element(document.querySelector('#oiwk4397849jj9')).click()
+    }, function(response){
+      console.log(response)
+    });
 	    
-    }
+  }
 
     $scope.currentProposal = {
       callMissUtility : true,
@@ -50,6 +94,10 @@ angular.module('leads', [])
 
     $scope.encreaseItem = function() {
 	    $scope.currentProposal.items.push({})
+    }
+
+    $scope.removeItem = function() {
+	    $scope.currentProposal.items.pop()
     }
 	
 	$scope.scheduleVisit = function(lead, time){
@@ -117,7 +165,7 @@ angular.module('leads', [])
         });
   }
 
-	var findLeads = function(pageRange, lines,     filter    ){
+	var findLeads = function(pageRange, lines, filter){
 	    $http.get(local_server_url + "/leads?pageRange="+pageRange+"&lines="+lines+"&eventType="+filter).then(function(response){
 	    	$scope.leads = response.data
 	    	findTotalLeads(filter)

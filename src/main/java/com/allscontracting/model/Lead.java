@@ -1,6 +1,7 @@
 package com.allscontracting.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,4 +66,23 @@ public class Lead implements Entity<String> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visit;
 
+	public void addProposal (Proposal proposal) {
+		if(this.proposals == null)
+			this.proposals = new ArrayList<Proposal>();
+		if(!this.proposals.contains(proposal)) {
+			this.proposals.add(proposal);
+			if(!proposal.getLead().equals(this))
+				proposal.setLead(this);
+		}
+	}
+	
+	public void removeProposal(Proposal proposal) {
+		if(this.proposals != null) {
+			if(this.proposals.contains(proposal))
+				this.proposals.remove(proposal);
+			if(proposal.getLead().equals(this))
+				proposal.setLead(null);
+		}
+	}
+	
 }

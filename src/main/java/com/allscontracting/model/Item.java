@@ -1,13 +1,17 @@
 package com.allscontracting.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +33,20 @@ public class Item implements Entity<Long>{
 	
 	private String title;
 
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Proposal proposal;
 	
-  @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Line> lines;
+  
+  public void addLine(Line line) {
+  	if(this.lines==null)
+  		this.lines = new ArrayList<Line>();
+  	if(!this.lines.contains(line)) {
+  		this.lines.add(line);
+  	}
+  	line.setItem(this);
+  }
 	
 }

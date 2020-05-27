@@ -86,8 +86,8 @@ public class LeadController {
 	@GetMapping(value = "")
 	public List<Lead> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
 		try {
-			List<Lead> res = this.leadService.listLeads(pageRange, lines, eventType);
-			return res;
+			List<Lead> leads = this.leadService.listLeads(pageRange, lines, eventType);
+			return leads;
 		} catch (Exception e) {
 			//e.printStackTrace();
 			log.error(e.getMessage());

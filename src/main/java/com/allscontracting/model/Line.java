@@ -1,9 +1,12 @@
 package com.allscontracting.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,10 +29,8 @@ public class Line implements Entity<Long> {
 
 	private String description;
 
-	@ManyToOne
-	private Proposal proposal;
-
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Item item;
 
 }

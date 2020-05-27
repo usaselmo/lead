@@ -2,8 +2,10 @@ package com.allscontracting.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -32,6 +34,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	@Id
 	@GeneratedValue
 	private Long id;
+	
 	private Long number;
 	private BigDecimal total;
 	private String fileName;
@@ -43,23 +46,29 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private boolean emailed;
 
 	@JsonIgnore
-  @ManyToOne
-  @JoinColumn(name = "lead_id", insertable = false, updatable = false, nullable = false)
+  @ManyToOne 
+  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)
 	private Lead lead;
-
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Line> lines;
 	
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "proposal", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private List<Item> items;
   
-  boolean isFinished() {
-  	return this.pdf != null;
+  boolean isFinished() { 
+  	return this.pdf != null; 
   }
 
 	@Override
 	public int compareTo(Proposal o) {
     return this.id.compareTo(o.id);
 	}
-  	
+
+	public void addItem(Item item) {
+		if (this.items == null)
+			this.items = new ArrayList<Item>();
+		if (!this.items.contains(item)) {
+			this.items.add(item);
+		}
+		item.setProposal(this);
+	}
+
 }
