@@ -1,8 +1,14 @@
 package com.allscontracting.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
-import javax.websocket.server.PathParam;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.ProposalService;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperRunManager;
 
 @RestController
 @RequestMapping("proposals")
@@ -50,13 +59,13 @@ public class ProposalController {
 		}
 	}
 
-	@GetMapping(value = "{proposalId}/pdf")
-	public ResponseEntity<Object> getProposalpdf(@PathParam("proposalId") String proposalId){
-		try {
-			return ResponseEntity.ok().build();
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
 
+	@GetMapping(value = "{proposalId}/pdf")
+	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId)
+			throws JRException, IOException {
+
+		this.proposalService.getProposalAsPdfStream(response, proposalId);
+		
+		}
+	
 }

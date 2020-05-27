@@ -20,16 +20,7 @@ angular.module('leads', [])
 	$scope.originalLines = []
 	var errorMessage = 'An error occured.'
 	
-	
-	
-	$scope.downloadPdf = function(proposal){
-    $http.get(local_server_url + "/proposals/"+proposal.id+"/pdf").then(function(response){
-    }, function(response){
-      console.log(response)
-      alert(errorMessage)
-    });
-	}
-	
+		
 	$scope.reDoProposal = function(lead, proposal){
     $http.delete(local_server_url + "/proposals?leadId="+lead.id+'&proposalId='+proposal.id).then(function(response){
     	lead.proposals = lead.proposals.filter(function(value, index, arr){ return value != proposal;})

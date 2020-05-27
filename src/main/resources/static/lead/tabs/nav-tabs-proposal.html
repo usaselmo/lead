@@ -19,7 +19,7 @@
           <td>{{prop.total | currency}}</td>
           <td>{{prop.emailed}}</td>
           <td>{{prop.pdf != null}}</td>
-          <td><a href="#" ng-click="downloadPdf(prop)">Download PDF</a></td>
+          <td><a href="proposals/{{prop.id}}/pdf" >Download PDF</a></td>
           <td><a href="#" class="btn btn-primary btn-sml">Email Proposal</a></td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="reDoProposal(lead, prop)">Redo</a>&nbsp;</td>
         </tr>
