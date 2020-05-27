@@ -1,10 +1,11 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,9 @@ public class DemoApplicationTests {
 	
 	@Test
 	@Rollback
+	@Ignore
 	public void testEvent() throws Exception {
 		this.eventManager.notifyAllListeners(new VisitScheduledEvent(Lead.builder().id("sdfsd").build(), Client.builder().id(125L).build(), new Date()));
 	}
-
+	
 }
