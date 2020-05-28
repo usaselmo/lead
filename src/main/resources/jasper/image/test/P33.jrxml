@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="P33" pageWidth="595" pageHeight="842" sectionType="Part" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="d2716064-8ae4-40cf-a575-33afba400e3a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<property name="com.jaspersoft.studio.book.group.cover.header" value="Cover and Table of Contents"/>
+	<property name="com.jaspersoft.studio.book.group.cover.footer" value="Backcover"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString language="SQL">
+		<![CDATA[SELECT P.total,
+	P.scope_of_work,
+	P.call_miss_utility,
+	P.payment_schedule,
+	P.work_warranty,
+	P.number,
+	P.emailed,
+	I.title,
+	L.description
+FROM leads.proposal P
+	INNER JOIN leads.item I ON 
+	 I.proposal_id = P.id 
+	INNER JOIN leads.line L ON 
+	 L.item_id = I.id 
+WHERE 
+	 P.id > 0]]>
+	</queryString>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="scope_of_work" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="scope_of_work"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="call_miss_utility" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="call_miss_utility"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="payment_schedule" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="payment_schedule"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="work_warranty" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="work_warranty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="emailed" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="emailed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="line"/>
+	</field>
+	<group name="cover">
+		<groupHeader>
+			<part uuid="7aed05b9-1301-4a53-b47e-34289560bc0c">
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportExpression><![CDATA["P33_cover.jasper"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+			<part uuid="ff6fef02-63e4-4811-956f-d4cecca5ba5e">
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportParameter name="REPORT_CONNECTION">
+						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportExpression><![CDATA["P33_toc.jasper"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+		</groupHeader>
+		<groupFooter>
+			<part uuid="88decbbe-63ad-45cc-9e03-5dadc50004d5">
+				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportExpression><![CDATA["P33_backcover.jasper"]]></subreportExpression>
+				</p:subreportPart>
+			</part>
+		</groupFooter>
+	</group>
+</jasperReport>

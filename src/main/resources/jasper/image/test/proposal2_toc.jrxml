@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TocReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="515" leftMargin="40" rightMargin="40" topMargin="40" bottomMargin="40" uuid="6e74177b-d551-4a75-ae51-6cdde3f284ce">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="425"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="561"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT P.total,
+	P.scope_of_work,
+	P.call_miss_utility,
+	P.payment_schedule,
+	P.work_warranty,
+	P.number,
+	P.emailed,
+	I.title,
+	L.description
+FROM leads.proposal P
+	INNER JOIN leads.item I ON 
+	 I.proposal_id = P.id 
+	INNER JOIN leads.line L ON 
+	 L.item_id = I.id 
+WHERE 
+	 P.id > 0]]>
+	</queryString>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="scope_of_work" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="scope_of_work"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="call_miss_utility" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="call_miss_utility"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="payment_schedule" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="payment_schedule"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="work_warranty" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="work_warranty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="emailed" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="emailed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="line"/>
+	</field>
+	<group name="NUMBER">
+		<groupExpression><![CDATA[$F{number}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement x="0" y="0" width="100" height="20" uuid="38853a1b-7e3c-4acb-b784-ae985e9c3386">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07af98f2-da7f-4f3d-81ef-49e69b8458f9"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{number}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="360" height="20" uuid="7d9e7d40-2a4a-42ca-90ec-59f1fd1e7dde">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f993049-0b4e-4cf5-ba07-3396e174f9a7"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{scope_of_work}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="TITLE">
+		<groupExpression><![CDATA[$F{title}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement x="0" y="20" width="380" height="20" uuid="abd7f6f0-c373-4a43-8ee3-97c1ee139aab">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ae5aeb32-f43b-47ff-bf02-a9691e6c49f1"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="DESCRIPTION">
+		<groupExpression><![CDATA[$F{description}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField>
+					<reportElement x="60" y="0" width="455" height="20" uuid="f5277784-2367-4128-b6a0-5a4215cb5e8b"/>
+					<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[]]></printWhenExpression>
+		</band>
+	</detail>
+</jasperReport>
