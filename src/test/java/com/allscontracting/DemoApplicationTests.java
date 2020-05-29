@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.sql.DataSource;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,22 +68,25 @@ public class DemoApplicationTests {
 	private static final String JASPER_SUFFIX = ".jasper";
 
 	@Autowired ProposalRepository proposalRepo;
-	
+	@Autowired DataSource dataSource;
+
 	@Test
 	public void testReport() throws Exception {
 		
 		Proposal proposal = this.proposalRepo.findAll().get(0);
 		Client client = proposal.getLead().getClient();
+		
+		
 
-		String fileName = JASPER_FOLDER + "proposal" + JASPER_SUFFIX;
+		String fileName = JASPER_FOLDER + "proposal2" + JASPER_SUFFIX;
 		String sourceFile = ReportTest.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
 		String destFile = "D:/temp/proposal.pdf";
 		
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
-		map.put("PROPOSAL", proposal);
+		map.put("PROPOSAL_ID", String.valueOf(proposal.getId()));
 		
-		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map);
+		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 	
 }

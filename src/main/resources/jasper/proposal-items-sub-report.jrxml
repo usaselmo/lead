@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Mains-sub-01" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2494e52b-f53d-4c65-a7be-3594d20aa2ea">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Mains-sub-01" pageWidth="612" pageHeight="792" columnWidth="471" leftMargin="85" rightMargin="56" topMargin="56" bottomMargin="56" uuid="2494e52b-f53d-4c65-a7be-3594d20aa2ea">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
@@ -29,7 +24,7 @@ FROM leads.proposal P
 	INNER JOIN leads.line L ON 
 	 L.item_id = I.id 
 WHERE 
-	 P.id = 11]]>
+	 P.id = 12]]>
 	</queryString>
 	<field name="total" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
@@ -70,9 +65,12 @@ WHERE
 	<group name="title">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
-			<band height="18">
+			<band height="29">
 				<textField>
-					<reportElement x="0" y="0" width="180" height="18" uuid="4576f4dd-3dd4-4339-be0f-a744c4197a94"/>
+					<reportElement x="0" y="7" width="515" height="19" uuid="4576f4dd-3dd4-4339-be0f-a744c4197a94"/>
+					<textElement verticalAlignment="Bottom">
+						<font isBold="true" isUnderline="true"/>
+					</textElement>
 					<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 				</textField>
 			</band>
@@ -93,7 +91,7 @@ WHERE
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement x="80" y="0" width="475" height="18" uuid="b0dcb693-8a54-4b65-a8ce-9d920f41198a">
+				<reportElement x="20" y="0" width="495" height="18" uuid="b0dcb693-8a54-4b65-a8ce-9d920f41198a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a65a37d-63c9-458f-b889-f4d117c20af6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>

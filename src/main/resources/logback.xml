@@ -25,24 +25,24 @@
   </logger>
 
   <!-- COM -->
-  <logger name="com" level="ERROR">
+  <logger name="com" level="INFO">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
   <!-- ORG -->
-  <logger name="net.sf.jasperreports" level="ERROR">
+  <logger name="net.sf.jasperreports" level="INFO">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
   
-  <logger name="org" level="ERROR">
+  <logger name="org" level="INFO">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
   <!-- TODO RESTO -->
-  <logger name="*" level="ERROR">
+  <logger name="*" level="INFO">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
