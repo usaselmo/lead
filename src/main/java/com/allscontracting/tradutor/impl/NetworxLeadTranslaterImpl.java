@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.stream.IntStream;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.allscontracting.event.EventType;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@Qualifier("networxLeadTranslaterImpl")
 public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 		
 	public static final String LINE_ITEM_SEPARATOR = ";";
@@ -66,7 +68,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 		try {
 			return Lead.builder()
 					.id(defineId(splitedLine))
-					.vendor(Vendor.NETWORX)
+					.vendor(getVendor())
 					.date(Converter.convertToDate(splitedLine[NX_Date]))
 					.description(splitedLine[NX_Additional_Information])
 					.fee(LeadHelper.defineCost(splitedLine[NX_Cost]))
@@ -84,6 +86,10 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 			log.error("Line to Lead error {} {}", e.getMessage(), Arrays.asList(splitedLine));
 			return Lead.builder().build();
 		}
+	}
+
+	public Vendor getVendor() {
+		return Vendor.NETWORX;
 	}
 
 	private String defineId(String[] splitedLine) {

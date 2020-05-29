@@ -10,8 +10,15 @@
               <p>Select Lead Source<br>
                 <input type="radio" id="homeadvisor" name="vendor" ng-model="radio_vendor" value="HOME_ADVISOR"> 
                 <label for="homeadvisor">Home Advisor</label><br> 
+                
                 <input type="radio" ng-model="radio_vendor" id="networx" name="vendor" value="NETWORX"> 
-                <label for="networx">Networx</label>
+                <label for="networx">Networx</label><br>
+                
+                <input type="radio" ng-model="radio_vendor" id="phonecall" name="vendor" value="PHONE_CALL"> 
+                <label for="phonecall">Phone Call</label><br>
+                
+                <input type="radio" ng-model="radio_vendor" id="email" name="vendor" value="EMAIL"> 
+                <label for="email">Email (Form Processor)</label>
                 </p>
               <p>
                 <input type="submit" value="Upload" name="submit" class="btn btn-primary " ng-if="radio_vendor">
