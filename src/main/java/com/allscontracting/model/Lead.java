@@ -37,7 +37,7 @@ public class Lead implements Entity<String> {
 	@Id
 	private String id;
 
-	static String VALUE = "";
+	//static String VALUE = "";
 
 	@Enumerated(EnumType.STRING)
 	private Vendor vendor;
@@ -60,7 +60,7 @@ public class Lead implements Entity<String> {
 	private EventType event;
 
 	public enum Vendor {
-		HOME_ADVISOR, NETWORX
+		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

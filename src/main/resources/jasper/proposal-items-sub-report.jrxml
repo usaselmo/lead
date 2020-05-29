@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="P33" pageWidth="595" pageHeight="842" sectionType="Part" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="30" uuid="d2716064-8ae4-40cf-a575-33afba400e3a">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
-	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
-	<property name="com.jaspersoft.studio.book.group.cover.header" value="Cover and Table of Contents"/>
-	<property name="com.jaspersoft.studio.book.group.cover.footer" value="Backcover"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Mains-sub-01" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2494e52b-f53d-4c65-a7be-3594d20aa2ea">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
 	P.scope_of_work,
@@ -22,7 +29,7 @@ FROM leads.proposal P
 	INNER JOIN leads.line L ON 
 	 L.item_id = I.id 
 WHERE 
-	 P.id > 0]]>
+	 P.id = 11]]>
 	</queryString>
 	<field name="total" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>
@@ -60,28 +67,46 @@ WHERE
 		<property name="com.jaspersoft.studio.field.label" value="description"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="line"/>
 	</field>
-	<group name="cover">
+	<group name="title">
+		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
-			<part uuid="7aed05b9-1301-4a53-b47e-34289560bc0c">
-				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
-					<subreportExpression><![CDATA["P33_cover.jasper"]]></subreportExpression>
-				</p:subreportPart>
-			</part>
-			<part uuid="ff6fef02-63e4-4811-956f-d4cecca5ba5e">
-				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
-					<subreportParameter name="REPORT_CONNECTION">
-						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
-					</subreportParameter>
-					<subreportExpression><![CDATA["P33_toc.jasper"]]></subreportExpression>
-				</p:subreportPart>
-			</part>
+			<band height="18">
+				<textField>
+					<reportElement x="0" y="0" width="180" height="18" uuid="4576f4dd-3dd4-4339-be0f-a744c4197a94"/>
+					<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+				</textField>
+			</band>
 		</groupHeader>
-		<groupFooter>
-			<part uuid="88decbbe-63ad-45cc-9e03-5dadc50004d5">
-				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
-					<subreportExpression><![CDATA["P33_backcover.jasper"]]></subreportExpression>
-				</p:subreportPart>
-			</part>
-		</groupFooter>
 	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="0" width="475" height="18" uuid="b0dcb693-8a54-4b65-a8ce-9d920f41198a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a65a37d-63c9-458f-b889-f4d117c20af6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
 </jasperReport>

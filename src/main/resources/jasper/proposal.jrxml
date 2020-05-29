@@ -6,7 +6,7 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.unit." value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
@@ -20,11 +20,59 @@
 	<property name="com.jaspersoft.studio.report.description" value=""/>
 	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
-	<queryString>
-		<![CDATA[]]>
+	<queryString language="SQL">
+		<![CDATA[SELECT P.total,
+	P.scope_of_work,
+	P.call_miss_utility,
+	P.payment_schedule,
+	P.work_warranty,
+	P.number,
+	P.emailed,
+	I.title,
+	L.description
+FROM leads.proposal P
+	INNER JOIN leads.item I ON 
+	 I.proposal_id = P.id 
+	INNER JOIN leads.line L ON 
+	 L.item_id = I.id 
+WHERE 
+	 P.id = 11]]>
 	</queryString>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="scope_of_work" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="scope_of_work"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="call_miss_utility" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="call_miss_utility"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="payment_schedule" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="payment_schedule"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="work_warranty" class="java.lang.Object">
+		<property name="com.jaspersoft.studio.field.label" value="work_warranty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="emailed" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="emailed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
 	<field name="title" class="java.lang.String">
-		<fieldDescription><![CDATA[title]]></fieldDescription>
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="item"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="line"/>
 	</field>
 	<title>
 		<band height="425">
@@ -238,17 +286,13 @@
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="260" height="80" uuid="1b333d61-d0d8-4bcf-b592-4f3465b5012b"/>
-				<imageExpression><![CDATA["/src/main/resources/jasper/image/aclogo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["D:\\java\\github\\lead\\src\\main\\resources\\jasper\\image\\aclogo.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="30">
+		<band>
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
-			<staticText>
-				<reportElement x="0" y="0" width="552" height="30" uuid="b747ebf6-56db-40bd-9da5-bb481fa82276"/>
-				<text><![CDATA[Page Header]]></text>
-			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -260,18 +304,8 @@
 		<band height="39">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 		</band>
-		<band height="50"/>
-		<band height="50"/>
 	</detail>
 	<columnFooter>
-		<band height="22">
-			<staticText>
-				<reportElement x="0" y="0" width="552" height="22" uuid="b5e8d081-d03b-4f4d-bf96-860134841314"/>
-				<textElement>
-					<font size="16"/>
-				</textElement>
-				<text><![CDATA[Column Footer]]></text>
-			</staticText>
-		</band>
+		<band/>
 	</columnFooter>
 </jasperReport>
