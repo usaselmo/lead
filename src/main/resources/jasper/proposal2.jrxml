@@ -21,6 +21,9 @@
 					<subreportParameter name="PROPOSAL">
 						<subreportParameterExpression><![CDATA[$P{PROPOSAL}]]></subreportParameterExpression>
 					</subreportParameter>
+					<subreportParameter name="CLIENT">
+						<subreportParameterExpression><![CDATA[$P{CLIENT}]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportExpression><![CDATA["proposal_cover.jasper"]]></subreportExpression>
 				</p:subreportPart>
 			</part>

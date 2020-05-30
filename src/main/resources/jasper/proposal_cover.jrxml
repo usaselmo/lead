@@ -8,6 +8,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
+	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
@@ -149,6 +150,7 @@
 				<textElement verticalAlignment="Top">
 					<font isBold="false"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$P{PROPOSAL}.getScopeOfWork()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="150" width="330" height="20" uuid="16d3fb76-b8a2-45f0-a928-c737c6e6e1f4"/>
@@ -162,6 +164,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
+				<textFieldExpression><![CDATA["Name: " + $P{CLIENT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="210" width="330" height="20" uuid="69656a9b-d86e-4570-ad83-a65dc9ae2595"/>
@@ -175,6 +178,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
+				<textFieldExpression><![CDATA["E-mail: " + $P{CLIENT}.getEmail()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="170" width="330" height="20" uuid="687f2df6-860e-4f0e-a901-c6fe1f8c9f10"/>
@@ -188,6 +192,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
+				<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="190" width="330" height="20" uuid="06a2266c-463b-4393-98a2-774356869e87"/>
@@ -201,6 +206,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
+				<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getCellPhone()+" "+$P{CLIENT}.getPhone()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="340" y="150" width="131" height="20" uuid="c64adfa9-b1f3-4839-8d45-661f52664f6e"/>
