@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Wave Cover" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="471" leftMargin="85" rightMargin="56" topMargin="56" bottomMargin="56" uuid="c50b24eb-eb33-413f-8e75-e7e20a5341fd">
-	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Wave Cover" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="471" leftMargin="85" rightMargin="56" topMargin="34" bottomMargin="34" uuid="c50b24eb-eb33-413f-8e75-e7e20a5341fd">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
 	<queryString language="SQL">
@@ -57,20 +58,20 @@
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="340" y="130" width="131" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="6a4f8641-1f9a-4365-a093-a2dfe541ac11"/>
-				<box>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[ESTIMATE]]></text>
+				<text><![CDATA[PROPOSAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="130" width="330" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="0cad9787-c6ed-45cc-bd47-88356f5ec086"/>
-				<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3">
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CLIENT INFORMATION]]></text>
@@ -96,7 +97,7 @@
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="340" y="190" width="131" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="39bbefc7-d546-47b4-adfe-2e1a137b4d85"/>
-				<box>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -108,7 +109,7 @@
 				<reportElement x="340" y="210" width="131" height="20" uuid="5b3488dc-1bc3-44b6-afe9-c5f91819dba4">
 					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
 				</reportElement>
-				<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3">
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -125,10 +126,10 @@
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="260" width="471" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="d29fdcd7-5296-45a6-a254-3bb367fd4e5b"/>
-				<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3">
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SCOPE OF WORK]]></text>
@@ -140,7 +141,7 @@
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
-				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -154,7 +155,7 @@
 			</textField>
 			<textField>
 				<reportElement x="0" y="150" width="330" height="20" uuid="16d3fb76-b8a2-45f0-a928-c737c6e6e1f4"/>
-				<box>
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -168,7 +169,7 @@
 			</textField>
 			<textField>
 				<reportElement x="0" y="210" width="330" height="20" uuid="69656a9b-d86e-4570-ad83-a65dc9ae2595"/>
-				<box>
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -182,7 +183,7 @@
 			</textField>
 			<textField>
 				<reportElement x="0" y="170" width="330" height="20" uuid="687f2df6-860e-4f0e-a901-c6fe1f8c9f10"/>
-				<box>
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -196,7 +197,7 @@
 			</textField>
 			<textField>
 				<reportElement x="0" y="190" width="330" height="20" uuid="06a2266c-463b-4393-98a2-774356869e87"/>
-				<box>
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -210,7 +211,7 @@
 			</textField>
 			<textField>
 				<reportElement x="340" y="150" width="131" height="20" uuid="c64adfa9-b1f3-4839-8d45-661f52664f6e"/>
-				<box>
+				<box padding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
