@@ -1,27 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Wave Backcover" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c50b24eb-eb33-413f-8e75-e7e20a5341fd">
-	<property name="com.jaspersoft.studio.unit." value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
-	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Wave Backcover" pageWidth="612" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="471" leftMargin="85" rightMargin="56" topMargin="56" bottomMargin="56" uuid="c50b24eb-eb33-413f-8e75-e7e20a5341fd">
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<title>
-		<band height="841" splitType="Stretch">
-			<rectangle>
-				<reportElement x="0" y="280" width="595" height="561" backcolor="#A0D042" uuid="a0eeb945-c461-469c-9539-05d63cee5db1"/>
-				<graphicElement>
-					<pen lineWidth="0.0"/>
-				</graphicElement>
-			</rectangle>
+		<band height="450" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="220" height="19" uuid="a3aa54b2-3a42-40e7-b8a6-f9407fda8005"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Payment Schedule:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="20" width="430" height="70" uuid="a351dc20-c34d-44e7-9079-be8c56e22028"/>
+				<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="151" width="220" height="19" uuid="c00ab258-bde0-4213-b23f-5ef6382249e5"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Work Warranty:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="170" width="431" height="70" uuid="486d628b-9e1e-473d-86e4-cc87438c179a"/>
+				<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="310" width="471" height="50" uuid="639d83a9-fa50-44e5-8a4e-9e22b5467ad2"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[ACCEPTANCE OF PROPOSAL: The above prices, specifications, and conditions are satisfactory and are hereby accepted.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="420" width="471" height="30" uuid="3cd7c682-39f9-4a69-84e9-65aa1cb5edac"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<text><![CDATA[Customer Signature: ____________________ Amount Accepted: ___________ Date: ________]]></text>
+			</staticText>
 		</band>
 	</title>
 </jasperReport>

@@ -34,8 +34,8 @@
 					<subreportParameter name="REPORT_CONNECTION">
 						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
 					</subreportParameter>
-					<subreportParameter name="PROPOSAL_ID">
-						<subreportParameterExpression><![CDATA[$P{PROPOSAL}.getId()]]></subreportParameterExpression>
+					<subreportParameter name="PROPOSAL">
+						<subreportParameterExpression><![CDATA[$P{PROPOSAL}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportExpression><![CDATA["proposal_backcover.jasper"]]></subreportExpression>
 				</p:subreportPart>

@@ -19,6 +19,17 @@ angular.module('leads', [])
 	var lines = 100
 	$scope.originalLines = []
 	var errorMessage = 'An error occured.'
+		
+		
+	$scope.createNewProposal = function(){
+		return {
+			'items':[{}], 
+			'callMissUtility': true,
+			'scopeOfWork': 'Concrete work as per visit',
+			'paymentSchedule':'1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.', 
+			'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.'
+		}
+	}
 	
 		
 	$scope.reDoProposal = function(lead, proposal){
@@ -70,7 +81,7 @@ angular.module('leads', [])
     var prop = convertToServerFormat(proposal)
     $http.post(local_server_url + "/proposals?leadId="+lead.id, prop).then(function(response){
       $scope.lead.proposals.push(response.data)
-      $scope.currentProposal = {'items':[{}]}
+      $scope.currentProposal = $scope.createNewProposal()
       angular.element(document.querySelector('#oiwk4397849jj9')).click()
     }, function(response){
       console.log(response)
