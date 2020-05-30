@@ -1,10 +1,8 @@
 package com.allscontracting.service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -16,8 +14,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.allscontracting.ReportTest;
-import com.allscontracting.controller.ProposalController;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -32,6 +28,7 @@ import net.sf.jasperreports.engine.JasperRunManager;
 @Service
 public class ProposalService {
 
+	private static final String TMP_PDF = "tmp.pdf";
 	@Autowired ProposalRepository proposalRepository;
 	@Autowired LeadRepository leadRepository;
 	@Autowired ItemRepository itemRepository;
@@ -68,21 +65,26 @@ public class ProposalService {
 	private static final String JASPER_SUFFIX = ".jasper";
 	@Autowired DataSource dataSource;
 	
-	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException {
-		String fileName = JASPER_FOLDER + "proposal2" + JASPER_SUFFIX;
-		String sourceFile = ProposalService.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
+	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
-		String destFile = "D:/temp/proposal.pdf";		 
-		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
-		byte[] byteArray = Files.readAllBytes(Paths.get(destFile));
-		String pdfFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
+		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
+		String jasperReportName = "proposal2";
+		getReportAsStream(response, map, streamFileName, jasperReportName); 		
+	}
+
+	private void getReportAsStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
+			String jasperReportName) throws JRException, SQLException, IOException, Exception {
+		String fileName = JASPER_FOLDER + jasperReportName + JASPER_SUFFIX;
+		String sourceFile = ProposalService.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
+		JasperRunManager.runReportToPdfFile(sourceFile, TMP_PDF, map, dataSource.getConnection());
+		byte[] byteArray = Files.readAllBytes(Paths.get(TMP_PDF));
 		response.setContentType("application/pdf");
-		response.setHeader("content-disposition", "attachment; filename=\""+pdfFileName+"\"");
+		response.setHeader("content-disposition", "attachment; filename=\""+streamFileName+"\"");
 		ServletOutputStream os = response.getOutputStream();
 		try {
 		   os.write(byteArray , 0, byteArray.length);
@@ -90,7 +92,7 @@ public class ProposalService {
 		   throw excp;
 		} finally {
 		    os.close();
-		} 		
+		}
 	}
 
 }

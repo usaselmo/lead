@@ -1,11 +1,9 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,8 +29,6 @@ import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
 import com.allscontracting.service.ProposalService;
 
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperRunManager;
 
 @RunWith(SpringRunner.class)
