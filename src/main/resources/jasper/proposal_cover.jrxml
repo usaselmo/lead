@@ -227,11 +227,11 @@
 				<imageExpression><![CDATA["D:\\java\\github\\lead\\src\\main\\resources\\jasper\\image\\aclogo.jpg"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="0" y="450" width="221" height="97" uuid="ea9c40eb-ca8b-4167-89b5-91995237e488"/>
+				<reportElement x="0" y="450" width="200" height="70" uuid="ea9c40eb-ca8b-4167-89b5-91995237e488"/>
 				<imageExpression><![CDATA["/src/main/resources/jasper/image/accredited-business.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="260" y="450" width="210" height="90" uuid="9dc43dcf-241c-4b2f-922b-d663e5f3f928"/>
+				<reportElement x="280" y="450" width="190" height="70" uuid="9dc43dcf-241c-4b2f-922b-d663e5f3f928"/>
 				<imageExpression><![CDATA["/src/main/resources/jasper/image/sbsd.png"]]></imageExpression>
 			</image>
 			<image>

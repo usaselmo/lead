@@ -39,8 +39,10 @@ public class ProposalService {
 		Lead lead = this.leadRepository.findOne(leadId);
 		proposal.setLead(lead);
 
-		long number = lead.getProposals().size();
-		proposal.setNumber(number+1);
+		if(proposal.getNumber()==null) {
+			long number = lead.getProposals().size();
+			proposal.setNumber(number+1);
+		}
 		
 		proposal.getItems().forEach(item-> {
 			proposal.addItem(item);
