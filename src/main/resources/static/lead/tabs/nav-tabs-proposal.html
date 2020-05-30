@@ -39,6 +39,7 @@
              
             
                 <form action="#">
+                  <input type="hidden" ng-model="currentProposal.number" >
                   <div ng-repeat="item in currentProposal.items ">
                     <div class="form-group row" ng-model="currentProposal.items[$index].title">
                       <label class="col-sm-2 col-form-label">Item {{$index + 1}}</label>
