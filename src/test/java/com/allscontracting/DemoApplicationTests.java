@@ -1,11 +1,7 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -84,7 +80,7 @@ public class DemoApplicationTests {
 		
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
-		map.put("PROPOSAL_ID", String.valueOf(proposal.getId()));
+		map.put("PROPOSAL", proposal);
 		
 		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}

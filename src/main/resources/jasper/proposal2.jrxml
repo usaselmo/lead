@@ -6,6 +6,8 @@
 	<property name="com.jaspersoft.studio.book.group.cover.header" value="Cover and Table of Contents"/>
 	<property name="com.jaspersoft.studio.book.group.cover.footer" value="Backcover"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
+	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT 1 = 1]]>
 	</queryString>
@@ -13,6 +15,12 @@
 		<groupHeader>
 			<part uuid="7aed05b9-1301-4a53-b47e-34289560bc0c">
 				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportParameter name="REPORT_CONNECTION">
+						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PROPOSAL">
+						<subreportParameterExpression><![CDATA[$P{PROPOSAL}]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportExpression><![CDATA["proposal_cover.jasper"]]></subreportExpression>
 				</p:subreportPart>
 			</part>
@@ -20,6 +28,12 @@
 		<groupFooter>
 			<part uuid="88decbbe-63ad-45cc-9e03-5dadc50004d5">
 				<p:subreportPart xmlns:p="http://jasperreports.sourceforge.net/jasperreports/parts" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/parts http://jasperreports.sourceforge.net/xsd/parts.xsd">
+					<subreportParameter name="REPORT_CONNECTION">
+						<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="PROPOSAL_ID">
+						<subreportParameterExpression><![CDATA[$P{PROPOSAL}.getId()]]></subreportParameterExpression>
+					</subreportParameter>
 					<subreportExpression><![CDATA["proposal_backcover.jasper"]]></subreportExpression>
 				</p:subreportPart>
 			</part>
@@ -32,7 +46,7 @@
 					<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="PROPOSAL_ID">
-					<subreportParameterExpression><![CDATA[11]]></subreportParameterExpression>
+					<subreportParameterExpression><![CDATA[$P{PROPOSAL}.getId()]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA["proposal-items-sub-report.jasper"]]></subreportExpression>
 			</p:subreportPart>

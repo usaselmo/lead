@@ -23,8 +23,8 @@ FROM leads.proposal P
 	 I.proposal_id = P.id 
 	INNER JOIN leads.line L ON 
 	 L.item_id = I.id 
-WHERE 
-	 P.id = 12]]>
+WHERE  
+	 P.id = $P{PROPOSAL_ID}]]>
 	</queryString>
 	<field name="total" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.label" value="total"/>

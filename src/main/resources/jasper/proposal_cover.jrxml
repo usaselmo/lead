@@ -7,54 +7,10 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (2)"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
+	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT * FROM LEADS.PROPOSAL P WHERE P.id =  $P{PROPOSAL_ID}]]>
+		<![CDATA[]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="total" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.label" value="total"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="file_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="file_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="lead_id" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="lead_id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="scope_of_work" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="scope_of_work"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="call_miss_utility" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="call_miss_utility"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="payment_schedule" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="payment_schedule"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="work_warranty" class="java.lang.Object">
-		<property name="com.jaspersoft.studio.field.label" value="work_warranty"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="number" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="number"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="pdf" class="java.lang.Object">
-		<property name="com.jaspersoft.studio.field.label" value="pdf"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
-	<field name="emailed" class="java.lang.Integer">
-		<property name="com.jaspersoft.studio.field.label" value="emailed"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
-	</field>
 	<title>
 		<band height="680">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -258,7 +214,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["#" + $F{number}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="250" height="80" uuid="1b333d61-d0d8-4bcf-b592-4f3465b5012b"/>
