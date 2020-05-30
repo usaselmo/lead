@@ -73,13 +73,12 @@ public class ProposalService {
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
 		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
-		String jasperReportName = "proposal2";
-		getReportAsStream(response, map, streamFileName, jasperReportName); 		
+		getReportAsPdfStream(response, map, streamFileName, "proposal2"); 		
 	}
 
-	private void getReportAsStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-			String jasperReportName) throws JRException, SQLException, IOException, Exception {
-		String fileName = JASPER_FOLDER + jasperReportName + JASPER_SUFFIX;
+	private void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
+			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
+		String fileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
 		String sourceFile = ProposalService.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
 		JasperRunManager.runReportToPdfFile(sourceFile, TMP_PDF, map, dataSource.getConnection());
 		byte[] byteArray = Files.readAllBytes(Paths.get(TMP_PDF));
