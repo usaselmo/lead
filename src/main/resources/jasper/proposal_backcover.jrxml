@@ -11,7 +11,23 @@
 		<![CDATA[]]>
 	</queryString>
 	<title>
-		<band height="450" splitType="Stretch">
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="90">
+			<image>
+				<reportElement x="0" y="0" width="250" height="80" uuid="a0c21664-bece-4e41-981a-c8ae9157bdd2"/>
+				<imageExpression><![CDATA["D:\\java\\github\\lead\\src\\main\\resources\\jasper\\image\\aclogo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="270" y="0" width="201" height="20" uuid="afcd3a08-4179-4b5a-84f0-914166980cba"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format(new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="548">
 			<staticText>
 				<reportElement x="0" y="0" width="220" height="19" uuid="a3aa54b2-3a42-40e7-b8a6-f9407fda8005"/>
 				<textElement>
@@ -35,19 +51,19 @@
 				<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-1" y="310" width="471" height="50" uuid="639d83a9-fa50-44e5-8a4e-9e22b5467ad2"/>
+				<reportElement x="0" y="310" width="471" height="50" uuid="639d83a9-fa50-44e5-8a4e-9e22b5467ad2"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[ACCEPTANCE OF PROPOSAL: The above prices, specifications, and conditions are satisfactory and are hereby accepted.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="420" width="471" height="30" uuid="3cd7c682-39f9-4a69-84e9-65aa1cb5edac"/>
+				<reportElement x="0" y="450" width="471" height="30" uuid="3cd7c682-39f9-4a69-84e9-65aa1cb5edac"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<text><![CDATA[Customer Signature: ____________________ Amount Accepted: ___________ Date: ________]]></text>
 			</staticText>
 		</band>
-	</title>
+	</columnHeader>
 </jasperReport>

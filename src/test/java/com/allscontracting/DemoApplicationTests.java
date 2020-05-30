@@ -2,6 +2,7 @@ package com.allscontracting;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,6 +84,9 @@ public class DemoApplicationTests {
 		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 
+	public static void main(String[] args) {
+		System.out.println(new SimpleDateFormat("MM/dd/yyyy").format(new Date()));
+	}
 	private String getSourceFile() {
 		String fileName = JASPER_FOLDER + "proposal2" + JASPER_SUFFIX;
 		String sourceFile = ReportTest.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
@@ -91,7 +95,7 @@ public class DemoApplicationTests {
 
 	private HashMap<String, Object> getParams(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("CLIENT", client);
+		map.put("CLIENT", client); 
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
