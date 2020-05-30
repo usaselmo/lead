@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.sql.SQLException;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +63,7 @@ public class ProposalController {
 
 	@GetMapping(value = "{proposalId}/pdf")
 	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId)
-			throws JRException, IOException {
+			throws JRException, IOException, SQLException {
 
 		this.proposalService.getProposalAsPdfStream(response, proposalId);
 		
