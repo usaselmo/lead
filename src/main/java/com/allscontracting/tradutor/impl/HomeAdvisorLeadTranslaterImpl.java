@@ -41,17 +41,23 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 	private static final int HA_EMAIL = 13;
 
 	@Override
-	public String entityToLocalFSFileLine(Lead entity) {
-		return LeadHelper.entityToLocalFSFileLine(entity);
+	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException {
+			List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
+			List<Lead> leads = lines.stream()
+				.map(line->line.replaceAll("", ""))
+				.map(line -> importedFileLineToEntity(line, Lead.class))
+				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
+				.collect(Collectors.toList());
+			return leads;
 	}
-	
+
 	@Override
-	public Lead localFSFileLineToEntity(String line, Class<Lead> clazz) {
-		return LeadHelper.localFSFileLineToEntity(line, clazz);
+	public boolean isFileFromRightVendor(String originalFileName, Vendor vendor) {
+		return originalFileName.toLowerCase().contains("home") && originalFileName.toLowerCase().contains("advisor")
+				&& vendor.equals(Vendor.HOME_ADVISOR);
 	}
-	
-	@Override
-	public Lead importedFileLineToEntity(String line, Class<Lead> clazz) {
+
+	private Lead importedFileLineToEntity(String line, Class<Lead> clazz) {
 		try {
 			if(line.contains("Lead #,") && line.contains("Lead Date"))
 				return Lead.builder().build();
@@ -76,23 +82,6 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 			log.error("Line to Lead error: {} - {}", line, e.getMessage());
 			return Lead.builder().build();
 		}
-	}
-
-	@Override
-	public boolean isFileFromRightVendor(String originalFileName, Vendor vendor) {
-		return originalFileName.toLowerCase().contains("home") && originalFileName.toLowerCase().contains("advisor")
-				&& vendor.equals(Vendor.HOME_ADVISOR);
-	}
-
-	@Override
-	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException {
-			List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
-			List<Lead> leads = lines.stream()
-				.map(line->line.replaceAll("", ""))
-				.map(line -> importedFileLineToEntity(line, Lead.class))
-				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
-				.collect(Collectors.toList());
-			return leads;
 	}
 
 	

@@ -3,7 +3,6 @@ package com.allscontracting.tradutor.impl;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -44,31 +43,14 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 	private static final int NX_Cost = 11;
 	
 	@Override
-	public List<Lead> vendorFileToLeads(MultipartFile file)  {
-		try {
-			String originalStr = new String(file.getBytes());
-			originalStr = replaceSpecialChars(originalStr);
-			List<String> lines = Arrays.asList(originalStr.split(LINE_SEPARATOR));
-			List<Lead> leads = lines.stream()
-					.map(line -> this.replaceSpecialChars(line))
-					.map(line -> importedFileLineToEntity(line, Lead.class))
-					.filter(lead -> !StringUtils.isEmpty(lead.getId()))
-					.collect(Collectors.toList());
-			return leads;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return Collections.emptyList();
-		}
-	}
-
-	@Override
-	public String entityToLocalFSFileLine(Lead entity) {
-		return LeadHelper.entityToLocalFSFileLine(entity);
-	}
-	
-	@Override
-	public Lead localFSFileLineToEntity(String line, Class<Lead> clazz) {
-		return LeadHelper.localFSFileLineToEntity(line, clazz);
+	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException {
+		final String originalStr = replaceSpecialChars(new String(file.getBytes()));
+		final List<String> lines = Arrays.asList(originalStr.split(LINE_SEPARATOR));
+		List<Lead> leads = lines.stream().map(line -> this.replaceSpecialChars(line))
+				.map(line -> importedFileLineToEntity(line, Lead.class))
+				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
+				.collect(Collectors.toList());
+		return leads;
 	}
 
 	@Override
@@ -76,8 +58,11 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 		return originalFileName.toLowerCase().contains("networx") && vendor.equals(Vendor.NETWORX);
 	}
 
-	@Override
-	public Lead importedFileLineToEntity(String line, Class<Lead> clazz) {
+	private Vendor getVendor() {
+		return Vendor.NETWORX;
+	}
+
+	private Lead importedFileLineToEntity(String line, Class<Lead> clazz) {
 		if(line.contains("Subscription;Date;Name"))
 			return Lead.builder().build();
 		String[] splitedLine = line.split(ITEM_SEPARATOR);
@@ -86,10 +71,6 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 				splitedLine[index] = splitedLine[index].replace("\"=\"\"", "").replace("\"\"\"", "");
 			});
 		return buildLead(splitedLine); 
-	}
-
-	public Vendor getVendor() {
-		return Vendor.NETWORX;
 	}
 
 	private String replaceSpecialChars(String line) {
