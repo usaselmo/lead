@@ -14,7 +14,6 @@ public class EmailLeadTranslatorImpl extends NetworxLeadTranslaterImpl{
 		return originalFileName.toLowerCase().contains("email") && vendor.equals(Vendor.EMAIL);
 	}
 
-	@Override
 	public Vendor getVendor() {
 		return Vendor.EMAIL;
 	}

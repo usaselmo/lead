@@ -1,15 +1,22 @@
 package com.allscontracting.tradutor.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.EventType;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -41,14 +48,48 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 	private static final int HA_EMAIL = 13;
 
 	@Override
-	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException {
-			List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
-			List<Lead> leads = lines.stream()
-				.map(line->line.replaceAll("", ""))
-				.map(line -> importedFileLineToEntity(line, Lead.class))
-				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
-				.collect(Collectors.toList());
-			return leads;
+	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException, LeadsException {
+			return parseFromHtmlFile(file);
+			//return parseFromCsvFile(file);
+	}
+
+	private List<Lead> parseFromHtmlFile(MultipartFile file) throws IOException, LeadsException {
+		ArrayList<Lead> leads = new ArrayList<>();
+		Document doc = Jsoup.parse(new String(file.getBytes()));
+		for (Element tbody : doc.select("tbody")) {
+			for (Element tr : tbody.select("tr")) {
+				Elements tds = tr.select("td");
+				for (Iterator<Element> iterator = tds.iterator(); iterator.hasNext();) {
+				  leads.add(Lead.builder()
+						.id(iterator.next().html())
+						.vendor(Vendor.HOME_ADVISOR)
+						.date(Converter.convertToDate(iterator.next().html()))
+						.description(iterator.next().html())
+						.fee(LeadHelper.defineCost(iterator.next().html()))
+						.type(iterator.next().html())
+						.event(EventType.BEGIN)
+						.client(Client.builder()
+								.name(iterator.next().html() + " " + iterator.next().html())
+								.address(iterator.next().html() + ", " + iterator.next().html() + ", " + iterator.next().html() + " " + iterator.next().html())
+								.cellPhone(iterator.next().html().replaceAll("\\(|\\)|\\-| ", ""))
+								.phone(iterator.next().html().replaceAll("\\(|\\)|\\-| ", ""))
+								.email(iterator.next().html())
+								.build())
+						.build());
+				}
+			}
+		}
+		return leads;
+	}
+
+	private List<Lead> parseFromCsvFile(MultipartFile file) throws IOException {
+		List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
+		List<Lead> leads = lines.stream()
+			.map(line->line.replaceAll("", ""))
+			.map(line -> importedFileLineToEntity(line, Lead.class))
+			.filter(lead -> !StringUtils.isEmpty(lead.getId()))
+			.collect(Collectors.toList());
+		return leads;
 	}
 
 	@Override

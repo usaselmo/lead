@@ -15,7 +15,6 @@ public class PhoneCallTranslatorImpl extends NetworxLeadTranslaterImpl {
 				&& vendor.equals(Vendor.PHONE_CALL);
 	}
 
-	@Override
 	public Vendor getVendor() {
 		return Vendor.PHONE_CALL;
 	}

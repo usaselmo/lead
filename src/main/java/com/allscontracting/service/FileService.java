@@ -47,7 +47,7 @@ public class FileService {
 		Translater<Lead> translater = (Translater<Lead>) tradutorFinder.dispatch(vendor);
 		List<Lead> leads = translater.vendorFileToLeads(file);
 		if(leads.isEmpty())
-			throw new LeadsException("Found no Leads in this file. Make sure ';' is the file delimiter. "); 
+			throw new LeadsException("Found no Leads in this file."); 
 		saveAllLeads(vendor, leads);
 	}
 
