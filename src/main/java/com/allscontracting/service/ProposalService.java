@@ -1,14 +1,11 @@
 package com.allscontracting.service;
 
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +20,17 @@ import com.allscontracting.repo.LineRepository;
 import com.allscontracting.repo.ProposalRepository;
 
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
 
 @Service
 public class ProposalService {
-
-	private static final String TMP_PDF = "tmp.pdf";
+	
+	private static final String PROPOSAL_FILE_NAME = "proposal2";
 	@Autowired ProposalRepository proposalRepository;
 	@Autowired LeadRepository leadRepository;
 	@Autowired ItemRepository itemRepository;
 	@Autowired LineRepository lineRepository;
+	@Autowired ReportService reportService;
+	@Autowired MailService mailService;
 	
 	@Transactional
 	public Proposal save(Proposal proposal, String leadId) {
@@ -63,37 +61,34 @@ public class ProposalService {
 		this.proposalRepository.delete(proposal);// TODO Auto-generated method stub
 	}
 
-	private static final String JASPER_FOLDER = "jasper/";
-	private static final String JASPER_SUFFIX = ".jasper";
-	@Autowired DataSource dataSource;
-	
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
 		Client client = proposal.getLead().getClient();
+		HashMap<String, Object> map = getProposalParameters(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client);
+		this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME); 		
+	}
+
+	private String getProposalFileName(Proposal proposal, Client client) {
+		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
+		return streamFileName;
+	}
+
+	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
-		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
-		getReportAsPdfStream(response, map, streamFileName, "proposal2"); 		
+		return map;
 	}
 
-	private void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
-		String fileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
-		String sourceFile = ProposalService.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
-		JasperRunManager.runReportToPdfFile(sourceFile, TMP_PDF, map, dataSource.getConnection());
-		byte[] byteArray = Files.readAllBytes(Paths.get(TMP_PDF));
-		response.setContentType("application/pdf");
-		response.setHeader("content-disposition", "attachment; filename=\""+streamFileName+"\"");
-		ServletOutputStream os = response.getOutputStream();
-		try {
-		   os.write(byteArray , 0, byteArray.length);
-		} catch (Exception excp) {
-		   throw excp;
-		} finally {
-		    os.close();
-		}
+	public void sendByEmail(long proposalId) throws JRException, SQLException, IOException {
+		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+		Client client = proposal.getLead().getClient();
+		HashMap<String, Object> map = getProposalParameters(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client);
+		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
+		this.mailService.sendProposalByEmail(proposal, client, res);
 	}
 
 }

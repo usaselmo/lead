@@ -19,6 +19,15 @@ angular.module('leads', [])
 	$scope.originalLines = []
 	var errorMessage = 'An error occured.'
   
+  $scope.emailProposal = function(proposal){
+    $http.get(local_server_url + '/proposals/'+proposal.id+'/email').then(function(response){
+      proposal.emailed = true;
+    }, function(response){
+      console.log(response)
+      alert(response.data)
+    });
+  }
+
   
 	$scope.createNewProposal = function(){
     console.log('creating new blank proposal')

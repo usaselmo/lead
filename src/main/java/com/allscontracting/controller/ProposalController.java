@@ -1,6 +1,7 @@
 package com.allscontracting.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,20 +18,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.model.Proposal;
-import com.allscontracting.service.FileService;
 import com.allscontracting.service.ProposalService;
+
+import net.sf.jasperreports.engine.JRException;
 
 @RestController
 @RequestMapping("proposals")
 public class ProposalController {
 	
-	@Autowired private FileService fileService;
 	@Autowired private ProposalService proposalService;
 
-	@PostMapping(value = "{proposalId}/lead/{leadId}")
-	public void sendByEmail(@RequestBody Proposal proposal, @PathVariable long proposalId, @PathVariable String leadId)
-			throws IOException {
-		this.fileService.sendByEmail(proposal, leadId);
+	@GetMapping(value = "{proposalId}/email")
+	public void sendByEmail(@PathVariable long proposalId)
+			throws IOException, JRException, SQLException {
+		this.proposalService.sendByEmail(proposalId);
 	}
 
 	@PostMapping(value = "")
