@@ -101,10 +101,10 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 					.event(EventType.BEGIN)
 					.client(Client.builder()
 							.address(splitedLine[NX_Address] + ", " + splitedLine[NX_City] + ", " + splitedLine[NX_State] + " " + splitedLine[NX_Zip_Code])
-							.cellPhone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))
+							.phone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))
+							.cellPhone("")
 							.email(splitedLine[NX_Email])
 							.name(splitedLine[NX_Name]+"")
-							.phone("")
 							.build())
 					.build();
 			log.info("Lead converted successfully, {}", lead);
