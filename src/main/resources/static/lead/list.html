@@ -18,23 +18,24 @@
 <table class="table table-sm table-striped">
   <thead>
     <tr>
-      <th scope="col" colspan="1"></th>
+      <th scope="col" colspan="1">&nbsp;</th>
       <th scope="col" colspan="1">Lead</th>
-      <th scope="col" colspan="3">Client</th>
+      <th scope="col" colspan="2">Client</th>
     </tr>
   </thead>
   <tbody>
     <tr ng-repeat="lead in leads">
       <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
-      <td><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<small>{{lead.type}}</small> <br> <b>${{lead.fee | currency:""}}</b> 
-      <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><b>{{lead.event}}</b></i>
+      <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b>  
+          <br><small>{{lead.type}}</small>
+          <br><small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i>
       </small></td>
 
-      <td><em>{{lead.client.name}}</em> <small>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}}
-          {{lead.client.email}}</small></td>
-      <td><small>{{lead.client.address}}<br>{{lead.description}}
-      </small></td>
-      <td></td>
+      <td><b>{{lead.client.name}}</b> 
+          <br><small>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}}
+          <br>{{lead.client.email}}</small>
+      </td>
+      <td><small>{{lead.client.address}}<br>{{lead.description}}</small></td>
     </tr>
   </tbody>
 </table>

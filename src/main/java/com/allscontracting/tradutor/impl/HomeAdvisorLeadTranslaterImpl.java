@@ -10,6 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.EventType;
@@ -52,7 +53,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 			.type(removeSymbol(iterator.next().html()))
 			.event(EventType.BEGIN)
 			.client(Client.builder()
-					.name(removeSymbol(iterator.next().html()) + " " + removeSymbol(iterator.next().html()))
+					.name(StringUtils.capitalize(removeSymbol(iterator.next().html())) + " " + StringUtils.capitalize(removeSymbol(iterator.next().html())))
 					.address(removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + " " + removeSymbol(iterator.next().html()))
 					.cellPhone(iterator.next().html().replaceAll("\\(|\\)|\\-| ", ""))
 					.phone(removeSymbol(iterator.next().html()).replaceAll("\\(|\\)|\\-| ", ""))

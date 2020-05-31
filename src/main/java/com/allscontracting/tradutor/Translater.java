@@ -16,8 +16,10 @@ public interface Translater<E extends Serializable> {
 	default String removeSymbol(String str) {
 		if(str.startsWith("\""))
 			str = str.replaceFirst("\"", "");
+		if(str.startsWith(","))
+			str = str.replaceFirst(",", "");
 		if(str.endsWith("\""))
-			str = str.substring(0, str.length()-2);
+			str = str.substring(0, str.length()-1);
 		return str.trim();
 	}
 

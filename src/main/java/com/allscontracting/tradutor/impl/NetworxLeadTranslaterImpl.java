@@ -104,7 +104,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 							.phone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))
 							.cellPhone("")
 							.email(removeSymbol(splitedLine[NX_Email]))
-							.name(removeSymbol(splitedLine[NX_Name])+"")
+							.name(StringUtils.capitalize(removeSymbol(splitedLine[NX_Name]))+"")
 							.build())
 					.build();
 			log.info("Lead converted successfully, {}", lead);
