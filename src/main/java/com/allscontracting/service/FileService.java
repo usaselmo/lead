@@ -4,15 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.EventManager;
@@ -43,10 +40,12 @@ public class FileService {
 		this.mailService.sendProposalByEmail(proposal, client, proposalPdfFile);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
 		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new LeadsException("File and Vendor do not match.");
-		List<Lead> leads = extractLeadsFromFile(file, vendor);
+		Translater<Lead> translater = (Translater<Lead>) tradutorFinder.dispatch(vendor);
+		List<Lead> leads = translater.vendorFileToLeads(file);
 		if(leads.isEmpty())
 			throw new LeadsException("Found no Leads in this file. Make sure ';' is the file delimiter. "); 
 		saveAllLeads(vendor, leads);
@@ -61,18 +60,6 @@ public class FileService {
 				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN, lead.getId()) );
 			}
 		});
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<Lead> extractLeadsFromFile(MultipartFile file, Vendor vendor) throws IOException {
-		List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
-		Translater<Lead> translater = (Translater<Lead>) tradutorFinder.dispatch(vendor);
-		List<Lead> leads = lines.stream() 
-				.map(line->line.replaceAll("\\r|\\n", ""))
-				.map(line -> translater.importedFileLineToEntity(line, Lead.class))
-				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
-				.collect(Collectors.toList());
-		return leads;
 	}
 
 	private static final Path PROPOSALS_FOLDER = Paths.get("C:\\Users\\Anselmo.asr\\Google Drive\\All's Contracting\\proposals");

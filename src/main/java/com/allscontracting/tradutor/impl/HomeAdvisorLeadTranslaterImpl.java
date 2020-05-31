@@ -1,6 +1,13 @@
 package com.allscontracting.tradutor.impl;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.EventType;
 import com.allscontracting.model.Client;
@@ -77,4 +84,16 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 				&& vendor.equals(Vendor.HOME_ADVISOR);
 	}
 
+	@Override
+	public List<Lead> vendorFileToLeads(MultipartFile file) throws IOException {
+			List<String> lines = Arrays.asList(new String(file.getBytes()).split(System.lineSeparator()));
+			List<Lead> leads = lines.stream()
+				.map(line->line.replaceAll("", ""))
+				.map(line -> importedFileLineToEntity(line, Lead.class))
+				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
+				.collect(Collectors.toList());
+			return leads;
+	}
+
+	
 }
