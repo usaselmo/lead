@@ -31,7 +31,6 @@ angular.module('leads', [])
 
 
     $scope.createNewProposal = function () {
-      console.log('creating new blank proposal')
       var prop = {
         'items': [{}],
         'callMissUtility': true,
@@ -116,7 +115,6 @@ angular.module('leads', [])
     }
 
     $scope.encreaseItem = function () {
-      console.log($scope.currentProposal.items)
       $scope.currentProposal.items = $scope.currentProposal.items.concat([{ 'id': '' }])
       console.log($scope.currentProposal.items)
     }
