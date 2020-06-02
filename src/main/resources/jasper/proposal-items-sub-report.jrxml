@@ -8,10 +8,12 @@
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="org.springframework.util.StringUtils"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
 	P.scope_of_work,
+	P.note,
 	P.call_miss_utility,
 	P.payment_schedule, 
 	P.work_warranty,
@@ -34,6 +36,10 @@ WHERE
 	</field>
 	<field name="scope_of_work" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="scope_of_work"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
+	</field>
+	<field name="note" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="note"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="proposal"/>
 	</field>
 	<field name="call_miss_utility" class="java.lang.Integer">
@@ -130,7 +136,21 @@ WHERE
 		</band>
 	</detail>
 	<columnFooter>
-		<band splitType="Stretch"/>
+		<band height="572" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
+			<textField>
+				<reportElement stretchType="ContainerHeight" x="20" y="20" width="451" height="30" uuid="b43f3d04-d09a-4512-9d43-2520467f853c"/>
+				<textFieldExpression><![CDATA[$F{note}.toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="72638b38-bbc7-40a6-8085-cb610f685d2d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Note: ]]></text>
+			</staticText>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="26">

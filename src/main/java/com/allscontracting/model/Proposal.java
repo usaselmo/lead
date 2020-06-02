@@ -44,6 +44,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private String workWarranty;
 	private byte[] pdf;
 	private boolean emailed;
+	private String note;
 
 	@JsonIgnore
   @ManyToOne 

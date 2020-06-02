@@ -110,6 +110,7 @@ angular.module('leads', [])
       })
       prop.items = its
       prop.lines = null
+      prop.note = proposal.note
       $scope.originalLines=[]
       return prop
     }
