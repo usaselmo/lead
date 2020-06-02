@@ -4,7 +4,7 @@
     <table class="table table-striped" style="margin-top: 12px;" >
       <thead>
         <tr>
-          <th>Number</th>
+          <th> # </th>
           <th>Price ($)</th>
           <th>E-mailed</th>
           <th>Finished</th>
@@ -18,8 +18,8 @@
         <tr ng-repeat="prop in lead.proposals">
           <th scope="row">{{prop.number}}</th>
           <td>{{prop.total | currency}}</td>
-          <td>{{prop.emailed}}</td>
-          <td>{{prop.emailed}}</td>
+          <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="form-control"/> </td>
+          <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="form-control"/> </td>
           <td><a href="proposals/{{prop.id}}/pdf" >Download PDF</a></td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="reDoProposal(lead, prop)">Re-do</a>&nbsp;</td>
