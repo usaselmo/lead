@@ -33,7 +33,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Long id; 
 	
 	private Long number;
 	private BigDecimal total;

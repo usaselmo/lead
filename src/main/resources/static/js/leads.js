@@ -106,7 +106,7 @@ angular.module('leads', [])
         item.lines.split('\n').forEach(line => {
           lns.push({ 'description': line, 'id': ols[item.id + line] });
         })
-        its.push({ 'title': item.title, 'lines': lns });
+        its.push({ 'title': item.title, 'lines': lns, 'price': item.price });
       })
       prop.items = its
       prop.lines = null

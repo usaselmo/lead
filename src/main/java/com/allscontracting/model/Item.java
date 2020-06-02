@@ -1,5 +1,6 @@
 package com.allscontracting.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class Item implements Entity<Long>{
 	private Long id;
 	
 	private String title;
+	private BigDecimal price;
 
 	@JsonIgnore
 	@ManyToOne(cascade=CascadeType.ALL)
