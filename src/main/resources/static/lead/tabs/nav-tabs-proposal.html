@@ -22,8 +22,8 @@
           <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="form-control"/> </td>
           <td><a href="proposals/{{prop.id}}/pdf" >Download PDF</a></td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a>&nbsp;</td>
-          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="reDoProposal(lead, prop)">Re-do</a>&nbsp;</td>
-          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" >Delete</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" >Edit</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
         </tr>
       </tbody>
     </table>
@@ -62,7 +62,7 @@
                       <button class="form-control btn btn-secondary" ng-click="encreaseItem()">New Item</button>
                     </div>
                     <div class="col-sm-3">
-                      <button class="form-control btn btn-light" ng-click="removeItem()">Remove Item</button>
+                      <button class="form-control btn btn-light" ng-click="removeItem(currentProposal)">Remove Item</button>
                     </div>
                   </div>
                   <hr>

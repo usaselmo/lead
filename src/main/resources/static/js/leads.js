@@ -45,15 +45,39 @@ angular.module('leads', [])
 
     $scope.currentProposal = $scope.createNewProposal();
 
-    $scope.reDoProposal = function (lead, proposal) {
+    $scope.deleteProposal = function (lead, proposal, saveProp) {
       $http.delete(local_server_url + "/proposals?leadId=" + lead.id + '&proposalId=' + proposal.id).then(function (response) {
         lead.proposals = lead.proposals.filter(function (value, index, arr) { return value != proposal; })
-        $scope.currentProposal = convertToClientFormat(proposal);
+        if(saveProp)
+        	saveProp(lead, proposal)
       }, function (response) {
         console.log(response)
         alert(response.data)
       });
+    }
 
+    $scope.editProposal = function (proposal) {
+    	$scope.currentProposal = convertToClientFormat(proposal);
+      angular.element(document.querySelector('#oiwk4397849jj9')).click()
+    }
+
+    $scope.saveProposal = function (lead, proposal) {
+    	var save = function(lead, proposal){
+    		lead.proposals = lead.proposals.filter(function (value, index, arr) { return value.id != proposal.id; })
+    		var prop = convertToServerFormat(proposal)
+    		$http.post(local_server_url + "/proposals?leadId=" + lead.id, prop).then(function (response) {
+    			lead.proposals = lead.proposals.filter(function (value, index, arr) { return value != prop; })
+    			$scope.lead.proposals.push(response.data)
+    			$scope.currentProposal = $scope.createNewProposal()
+    			angular.element(document.querySelector('#oiwk4397849jj9')).click()
+    		}, function (response) {
+    			console.log(response)
+    		});
+    	}
+    	if(proposal.id)
+    		$scope.deleteProposal(lead, proposal, save);
+    	else
+    		save(lead, proposal)
     }
 
     var convertToClientFormat = function (proposal) {
@@ -87,19 +111,8 @@ angular.module('leads', [])
       })
       prop.items = its
       prop.lines = null
+      $scope.originalLines=[]
       return prop
-    }
-
-    $scope.saveProposal = function (lead, proposal) {
-      var prop = convertToServerFormat(proposal)
-      $http.post(local_server_url + "/proposals?leadId=" + lead.id, prop).then(function (response) {
-        $scope.lead.proposals.push(response.data)
-        $scope.currentProposal = $scope.createNewProposal()
-        angular.element(document.querySelector('#oiwk4397849jj9')).click()
-      }, function (response) {
-        console.log(response)
-      });
-
     }
 
     $scope.encreaseItem = function () {
@@ -108,7 +121,7 @@ angular.module('leads', [])
       console.log($scope.currentProposal.items)
     }
 
-    $scope.removeItem = function () {
+    $scope.removeItem = function (proposal) {
       $scope.currentProposal.items.pop()
     }
 
