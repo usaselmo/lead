@@ -16,10 +16,10 @@ public class LeadStatusChangeEvent implements DomainEvent {
 	private String oid;
 	private EventType evTp;
 
-	public LeadStatusChangeEvent(EventType evTp, String oid) {
+	public LeadStatusChangeEvent(EventType eventType, String leadId) {
 		super();
-		this.oid = oid;
-		this.evTp = evTp;
+		this.oid = leadId;
+		this.evTp = eventType;
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class LeadController {
 	@GetMapping(value = "{id}/eventlogs")
 	public List<EventLog> findEventLogs(@PathVariable String id) {
 		try {
-			List<EventLog> res = this.leadService.findEventLogs(id);
+			List<EventLog> res = this.leadService.findLeadEventLogs(id);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class LeadController {
 			this.leadService.scheduleAVisit(id, new Date());
 			break;
 		default:
-			this.leadService.fireEvent(event, id);
+			this.leadService.fireEventToLead(event, id);
 			break;
 		}
 	}

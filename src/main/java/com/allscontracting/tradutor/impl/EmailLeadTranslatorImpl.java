@@ -1,5 +1,7 @@
 package com.allscontracting.tradutor.impl;
 
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -17,4 +19,10 @@ public class EmailLeadTranslatorImpl extends NetworxLeadTranslaterImpl{
 	public Vendor getVendor() {
 		return Vendor.EMAIL;
 	}
+
+	public static String defineId(String email, String phoneNumber) {
+		return 
+		Base64.getEncoder().encodeToString((email+phoneNumber).getBytes());
+	}
+	
 }

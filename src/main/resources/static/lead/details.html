@@ -4,23 +4,25 @@
   <div class="card-header">
     <i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;
   </div>
-  <div class="card-body" style="padding: 12px;">
+  <div class="card-body" style="padding: 12px;"> 
     <div class="row">
 
       <!-- LEAD DETAILS -->
-      <div class="col-sm-8">
+      <div class="col-sm-5">
         <address>
-          <strong>{{lead.client.name}}</strong> <br>{{lead.client.cellPhone.slice(0,3)}}-{{lead.client.cellPhone.slice(3,6)}}-{{lead.client.cellPhone.slice(6)}} <br>{{lead.client.email}}
+          <strong>{{lead.client.name}}</strong> <br>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}} <br>{{lead.client.email}}
           <br>{{lead.client.address}}
         </address>
-        <small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
         <p ng-if="lead.visit">
           Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
         </p>
       </div>
+      <div class="col-sm-4">
+          <small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
+      </div>
 
       <!-- MENU -->
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="list-group" ng-repeat="event in lead.nextEvents">
           <span ng-switch="event"> 
             <a ng-switch-when="SCHEDULE_VISIT" href="#" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#exampleModal">SCHEDULE_VISIT</a> 

@@ -89,6 +89,8 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, client);
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, client, res);
+		proposal.setEmailed(true);
+		this.proposalRepository.save(proposal);
 	}
 
 }

@@ -24,11 +24,11 @@ import com.allscontracting.repo.LeadRepository;
 @Service
 public class LeadService {
 
-	@Autowired	private LeadRepository leadRepo;
+	@Autowired private LeadRepository leadRepo;
 	@Autowired private EventTypeDispatcher eventDispatcher;
 	@Autowired private EventManager eventManager;
 	@Autowired private EventoLogRepository eventLogRepo;
-
+	
 	public List<Lead> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)
 			pageRange=0;
@@ -68,14 +68,14 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void fireEvent(String event, String leadId) {
+	public void fireEventToLead(String event, String leadId) {
 		Lead lead = this.leadRepo.findOne(leadId);
 		lead.setEvent(EventType.valueOf(event));
 		this.leadRepo.save(lead);
 		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(EventType.valueOf(event)).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
-	public List<EventLog> findEventLogs(String leadId) {
+	public List<EventLog> findLeadEventLogs(String leadId) {
 		return this.eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId);
 	}
 

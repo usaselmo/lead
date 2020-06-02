@@ -1,15 +1,16 @@
 <div class="row">
-  <!-- LEAD DETAILS -->
+  <!-- LEAD DETAILS --> 
   <div class="col-sm-12">
-    <table class="table table-striped" ng-if="lead.proposals" style="margin-top: 12px;">
+    <table class="table table-striped" style="margin-top: 12px;" >
       <thead>
         <tr>
           <th>Number</th>
           <th>Price ($)</th>
-          <th>Emailed</th>
+          <th>E-mailed</th>
           <th>Finished</th>
           <th>PDF</th>
           <th>Email Proposal</th>
+          <th>&nbsp;</th>
           <th>&nbsp;</th>
         </tr>
       </thead>
@@ -18,20 +19,21 @@
           <th scope="row">{{prop.number}}</th>
           <td>{{prop.total | currency}}</td>
           <td>{{prop.emailed}}</td>
-          <td>{{prop.pdf != null}}</td>
+          <td>{{prop.emailed}}</td>
           <td><a href="proposals/{{prop.id}}/pdf" >Download PDF</a></td>
-          <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a></td>
-          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="reDoProposal(lead, prop)">Redo</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="reDoProposal(lead, prop)">Re-do</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" >Delete</a>&nbsp;</td>
         </tr>
       </tbody>
     </table>
     <div id="accordion">
       <div class="card">
         <div class="card-header" id="headingTwo">
-          <h5 class="mb-0">
+          <p class="mb-0">
             <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" id="oiwk4397849jj9"
             aria-expanded="false" aria-controls="collapseTwo">Create/Edit Proposal</button>
-          </h5>
+          </p>
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
           <div class="card-body">
