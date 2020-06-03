@@ -74,6 +74,32 @@ WHERE
 		<property name="com.jaspersoft.studio.field.label" value="description"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="line"/>
 	</field>
+	<group name="Number Group">
+		<groupExpression><![CDATA[$F{number}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="150">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
+				<staticText>
+					<reportElement x="0" y="0" width="140" height="20" uuid="72638b38-bbc7-40a6-8085-cb610f685d2d"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Note: ]]></text>
+				</staticText>
+				<textField>
+					<reportElement stretchType="ElementGroupHeight" x="20" y="20" width="451" height="130" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b43f3d04-d09a-4512-9d43-2520467f853c">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{note}.toString()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
 	<group name="title">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
@@ -136,20 +162,9 @@ WHERE
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="572" splitType="Immediate">
+		<band height="72" splitType="Immediate">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
-			<textField>
-				<reportElement stretchType="ContainerHeight" x="20" y="20" width="451" height="30" uuid="b43f3d04-d09a-4512-9d43-2520467f853c"/>
-				<textFieldExpression><![CDATA[$F{note}.toString()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="0" width="100" height="20" uuid="72638b38-bbc7-40a6-8085-cb610f685d2d"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Note: ]]></text>
-			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>

@@ -2,10 +2,12 @@ package com.allscontracting;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -26,6 +28,7 @@ import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
 
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 
 @RunWith(SpringRunner.class)
@@ -72,15 +75,11 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testReport() throws Exception {
-		
-		Proposal proposal = this.proposalRepo.findAll().get(0);
+		Proposal proposal = this.proposalRepo.findAll().get(2);
 		Client client = proposal.getLead().getClient();
-		
 		String sourceFile = getSourceFile();
-		String destFile = "D:/temp/proposal.pdf";
-		
+		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".pdf";
 		HashMap<String, Object> map = getParams(proposal, client);
-		
 		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 
