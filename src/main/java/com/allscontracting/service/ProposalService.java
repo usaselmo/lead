@@ -2,6 +2,7 @@ package com.allscontracting.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -41,7 +42,7 @@ public class ProposalService {
 			long number = lead.getProposals().size();
 			proposal.setNumber(number+1);
 		}
-		
+		proposal.setTotal(proposal.getItems().stream().map(line->line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		proposal.getItems().forEach(item-> {
 			proposal.addItem(item);
 			item.getLines().forEach(line->item.addLine(line)); 
