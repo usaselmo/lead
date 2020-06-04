@@ -89,6 +89,16 @@ public class LeadController {
 		}
 	}
 
+	@GetMapping(value = "/search")
+	public List<Lead> search(@RequestParam String text) {
+		try {
+			return this.leadService.search(text);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return Collections.emptyList();
+		}
+	}
+
 	@GetMapping(value = "")
 	public List<Lead> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
 		try {

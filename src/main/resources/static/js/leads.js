@@ -19,9 +19,24 @@ angular.module('leads', [])
     $scope.originalLines = []
     var errorMessage = 'An error occured.'
     	
+    $scope.search = function(text){
+    	if(!text){
+    		findLeads(pageRange, lines, $scope.filter);
+    	}
+    	else if(text.length > 2 ){
+        $http.get(local_server_url + "/leads/search?text=" + text).then(function (response) {
+          $scope.leads = response.data
+          $scope.totalLeads = response.data.length
+          $scope.filter = ''
+        }, function (response) {
+          console.log(response)
+        });
+    	}
+    }
+    	
     $scope.saveNote = function(lead, note){
       $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
-      	$scope.lead = response.data
+      	$scope.lead.notes = response.data.notes
       }, function (response) {
         console.log(response)
         alert(response.data)
@@ -199,6 +214,7 @@ angular.module('leads', [])
     }
 
     var findLeads = function (pageRange, lines, filter) {
+    	console.log('pageRange:'+pageRange+' lines:'+lines+' filter:'+filter)
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
         $scope.leads = response.data
         findTotalLeads(filter)

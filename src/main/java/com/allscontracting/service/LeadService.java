@@ -89,4 +89,9 @@ public class LeadService {
 		return this.leadRepo.save(lead);
 	}
 
+	public List<Lead> search(String text) {
+		//limited to 100 results
+		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date")));
+	}
+
 }

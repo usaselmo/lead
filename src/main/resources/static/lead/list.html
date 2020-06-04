@@ -3,12 +3,15 @@
     Leads <small>({{totalLeads}})</small>
   </h2>
 </div>
-<div class="col-sm-5">
+<div class="col-sm-3">
   <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
-  &nbsp;&nbsp;&nbsp;
+  &nbsp;
   <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
 </div>
-<div class="col-sm-4">
+<div class="col-sm-3">
+  <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
+</div>
+<div class="col-sm-3">
   <div class="input-group mb-3">
     <select class="custom-select" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
       <option value="">All</option>
@@ -26,17 +29,16 @@
   <tbody>
     <tr ng-repeat="lead in leads">
       <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
-      <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b>  
-          <br><small>{{lead.type}}</small>
-          <br><small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i>
-      </small></td>
+      <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br>
+      <small>{{lead.type}}</small> <br>
+      <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small></td>
 
-      <td><b>{{lead.client.name}}</b> 
-          <br><small>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}}
-          <br>{{lead.client.email}}</small>
-      </td>
-      <td><small>{{lead.client.address}}<br>{{lead.description}}</small></td>
+      <td><b>{{lead.client.name}}</b> <br>
+      <small>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}} <br>{{lead.client.email}}
+      </small></td>
+      <td><small>{{lead.client.address}}<br>{{lead.description}}
+      </small></td>
     </tr>
   </tbody>
 </table>
-<a type="button" class="btn btn-danger" ng-click="drop()" >Erase all Leads</a>
+<a type="button" class="btn btn-danger" ng-click="drop()">Erase all Leads</a>
