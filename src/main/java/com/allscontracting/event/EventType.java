@@ -2,6 +2,7 @@ package com.allscontracting.event;
 
 public enum EventType {
 	BEGIN("Started"), 
+	CONTACT_QUALIFY("Contact and Qualify"), 
 	SCHEDULE_VISIT("Visit scheduled"), 
 	MARK_AS_VISITED("Marked as visited"),
 	CREATE_PROPOSAL("Proposal created"),

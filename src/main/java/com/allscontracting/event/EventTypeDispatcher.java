@@ -23,7 +23,8 @@ public class EventTypeDispatcher {
 	public List<EventType> findNextEvents(EventType event) {
 
 		EventType[] VENDOR_FILE_LOADED = { BEGIN };
-		EventType[] BEGIN_ = { SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] BEGIN_ = {EventType.CONTACT_QUALIFY, SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] CONTACT_QUALIFY = {  SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
 		EventType[] ESTIMATE_SCHEDULED = { MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
 		EventType[] MARK_AS_VISITED = { CREATE_PROPOSAL, END_LEAD };
 		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
@@ -39,6 +40,8 @@ public class EventTypeDispatcher {
 			return Arrays.asList(VENDOR_FILE_LOADED);
 		case BEGIN:
 			return Arrays.asList(BEGIN_);
+		case CONTACT_QUALIFY:
+			return Arrays.asList(CONTACT_QUALIFY);
 		case SCHEDULE_VISIT:
 			return Arrays.asList(ESTIMATE_SCHEDULED);
 		case MARK_AS_VISITED:

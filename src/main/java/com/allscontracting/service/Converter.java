@@ -35,6 +35,10 @@ public class Converter {
 		return new SimpleDateFormat(pattern).parse(dateToConvert); 
 	}
 	
+	public static String dateToString(Date date) {
+		return new SimpleDateFormat(MM_dd_yy_hh_mm).format(date);
+	}
+	
 	public static Date convertToDate(String date) throws LeadsException{
 		try {
 			return Converter.stringToDate(date, MM_dd_yyyy);

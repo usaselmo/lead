@@ -18,6 +18,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import com.allscontracting.event.EventType;
+import com.allscontracting.service.Converter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,6 +49,7 @@ public class Lead implements Entity<String> {
 	private String description;
 	private BigDecimal fee;
 	private String type;
+	private String note;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
@@ -83,6 +85,14 @@ public class Lead implements Entity<String> {
 			if(proposal.getLead().equals(this))
 				proposal.setLead(null);
 		}
+	}
+
+	public void setNote(String note) throws Exception {
+		throw new Exception();
+	}
+	
+	public void addNote(String note) {
+		this.note = new StringBuilder(getNote()).append(System.lineSeparator()).append(Converter.dateToString(new Date())).append(" - ").append(note).toString();
 	}
 	
 }
