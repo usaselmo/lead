@@ -37,6 +37,12 @@ public class LeadController {
 	
 	@Autowired LeadRepository leadRepo;
 
+	@PostMapping(value = "{id}/addNote")
+	public Lead addNewNote(@PathVariable String id, @RequestBody String note) {
+			Lead lead = this.leadService.addNewNote(id, note);
+			return lead;
+	}
+
 	@GetMapping(value = "{id}/eventlogs")
 	public List<EventLog> findEventLogs(@PathVariable String id) {
 		try {

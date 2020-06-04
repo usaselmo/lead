@@ -83,4 +83,10 @@ public class LeadService {
 		return this.leadRepo.findProposals(leadId);
 	}
 
+	public Lead addNewNote(String leadId, String note) {
+		Lead lead = this.leadRepo.findOne(leadId);
+		lead.addNote(note);
+		return this.leadRepo.save(lead);
+	}
+
 }

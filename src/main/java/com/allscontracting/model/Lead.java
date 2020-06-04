@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.util.StringUtils;
+
 import com.allscontracting.event.EventType;
 import com.allscontracting.service.Converter;
 
@@ -49,7 +51,7 @@ public class Lead implements Entity<String> {
 	private String description;
 	private BigDecimal fee;
 	private String type;
-	private String note;
+	private String notes;
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
@@ -92,7 +94,15 @@ public class Lead implements Entity<String> {
 	}
 	
 	public void addNote(String note) {
-		this.note = new StringBuilder(getNote()).append(System.lineSeparator()).append(Converter.dateToString(new Date())).append(" - ").append(note).toString();
+		this.notes = 
+				note = new StringBuilder()
+					.append(Converter.dateToString(new Date()))
+					.append(System.lineSeparator())
+					.append(note)
+					.append(System.lineSeparator())
+					.append(System.lineSeparator()) 
+					.append((!StringUtils.isEmpty(this.notes)? this.notes:"")  ) 
+					.toString();
 	}
 	
 }

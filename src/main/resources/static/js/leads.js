@@ -18,6 +18,15 @@ angular.module('leads', [])
     var lines = 100
     $scope.originalLines = []
     var errorMessage = 'An error occured.'
+    	
+    $scope.saveNote = function(lead, note){
+      $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
+      	$scope.lead = response.data
+      }, function (response) {
+        console.log(response)
+        alert(response.data)
+      });
+    }
 
     $scope.emailProposal = function (proposal) {
       $http.get(local_server_url + '/proposals/' + proposal.id + '/email').then(function (response) {
