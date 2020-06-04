@@ -18,8 +18,10 @@ angular.module('leads', [])
     var lines = 100
     $scope.originalLines = []
     var errorMessage = 'An error occured.'
+    $scope.searchable_text = ''
     	
     $scope.search = function(text){
+    	$scope.searchable_text = text
     	if(!text){
     		findLeads(pageRange, lines, $scope.filter);
     	}
