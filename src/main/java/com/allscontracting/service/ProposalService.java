@@ -12,6 +12,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.event.EventManager;
+import com.allscontracting.event.EventType;
+import com.allscontracting.event.LeadStatusChangeEvent;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -32,6 +35,7 @@ public class ProposalService {
 	@Autowired LineRepository lineRepository;
 	@Autowired ReportService reportService;
 	@Autowired MailService mailService;
+	@Autowired EventManager eventManager;
 	
 	@Transactional
 	public Proposal save(Proposal proposal, String leadId) {
@@ -90,8 +94,10 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, client);
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, client, res);
+		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL, proposal.getLead().getId()));
 	}
 
 }
