@@ -1,9 +1,5 @@
 package com.allscontracting.service;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -17,10 +13,8 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.event.LeadStatusChangeEvent;
 import com.allscontracting.event.VendorFileLoadedEvent;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
-import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.tradutor.Translater;
 import com.allscontracting.tradutor.TranslaterDispatcher;
@@ -30,17 +24,15 @@ public class FileService {
 	@Autowired private LeadRepository leadRepo;
 	@Autowired private TranslaterDispatcher tradutorFinder;
 	@Autowired private EventManager eventManager;
-	@Autowired private MailService mailService;
-	@Autowired private LeadRepository leadRepository;
 	
-	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
+/*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);
 		File proposalPdfFile = new File(PROPOSALS_FOLDER + "\\" + proposal.getFileName());
 		Client client = lead.getClient();
 		this.mailService.sendProposalByEmail(proposal, client, proposalPdfFile);
-	}
+	}*/
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")  
 	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
 		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new LeadsException("File and Vendor do not match.");
@@ -62,20 +54,8 @@ public class FileService {
 		});
 	}
 
-	private static final Path PROPOSALS_FOLDER = Paths.get("C:\\Users\\Anselmo.asr\\Google Drive\\All's Contracting\\proposals");
+/*	private static final Path PROPOSALS_FOLDER = Paths.get("C:\\Users\\Anselmo.asr\\Google Drive\\All's Contracting\\proposals");
 
-/*	public List<Proposal> findLeadProposals(String id) throws IOException {
-
-		//Lead lead = this.leadRepo.findOne(id).orElse(Lead.builder().build());
-		Lead lead = this.leadRepo.findOne(id);
-		File folder = PROPOSALS_FOLDER.toFile();
-		
-		return Stream.of(folder.list())
-			.filter(file->file.toString().startsWith(lead.getClient().getName()) && file.toString().endsWith(".pdf"))
-			.map(file->Proposal.builder().id(38974893L).fileName(file.toString()).build())
-			.collect(Collectors.toList());
-
-		//return Arrays.asList(Proposal.builder().total(BigDecimal.valueOf(120.36)).build());
-	}*/
+*/
 	
 }

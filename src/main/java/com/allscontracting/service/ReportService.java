@@ -22,7 +22,7 @@ public class ReportService {
 
 	@Autowired
 	DataSource dataSource;
-	private static final String TMP_PDF = "tmp.pdf";
+	//private static final String TMP_PDF = "tmp.pdf";
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";
 
@@ -30,8 +30,9 @@ public class ReportService {
 			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
 		String fileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
 		String sourceFile = ProposalService.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
-		JasperRunManager.runReportToPdfFile(sourceFile, TMP_PDF, map, dataSource.getConnection());
-		byte[] byteArray = Files.readAllBytes(Paths.get(TMP_PDF));
+		final String tmp = Files.createTempFile("", "").toFile().getAbsolutePath();
+		JasperRunManager.runReportToPdfFile(sourceFile, tmp, map, dataSource.getConnection());
+		byte[] byteArray = Files.readAllBytes(Paths.get(tmp));
 		response.setContentType("application/pdf");
 		response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
 		ServletOutputStream os = response.getOutputStream();
@@ -44,11 +45,12 @@ public class ReportService {
 		}
 	}
 
-	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException {
+	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
 		String jasperfileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
 		String sourceFile = ProposalService.class.getClassLoader().getResource(jasperfileName).getPath().replaceFirst("/", "");
-		JasperRunManager.runReportToPdfFile(sourceFile, fileName, map, dataSource.getConnection());
-		return new File(fileName);
+		File tmpFile = Files.createTempFile("", fileName).toFile();
+		JasperRunManager.runReportToPdfFile(sourceFile, tmpFile.getAbsolutePath(), map, dataSource.getConnection());
+		return tmpFile;
 	}
 
 }
