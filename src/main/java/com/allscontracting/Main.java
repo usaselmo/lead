@@ -34,22 +34,25 @@ public class Main implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+		//registerLead();
+	}
+
+	private void registerLead() {
 		Lead lead = Lead.builder()
 			.client(Client.builder()
-					.id(5529L)
-					.address("9847 Lake Shore Dr, Montgomery Village, Mr, 20886")
-					.email("anselmo.sr@gmail.com")
-					.name("George Silva")
-					.phone("2406140461")
+					.address("5603 Meridian Hill Place, Burke, VA")
+					.email("")
+					.name("Jason Johnson")
+					.phone("5712751435")
 					.build())
 			.date(new Date())
-			.description("I need a concrete slab")
-			.event(EventType.BEGIN)
-			.fee(BigDecimal.TEN) 
-			.type("Install Driveway, Patio and Walkway from Email") 
+			.description("New driveway and repairs or replace sidewalk and front stoop") 
+			.event(EventType.BEGIN) 
+			.fee(BigDecimal.ZERO) 
+			.type("Install Driveway, Patio and Walkway from Email (Form Processor)") 
 			.vendor(Vendor.EMAIL)
 			.build();
-		if(clientRepo.exists(lead.getClient().getId()))
+		if(lead.getClient().getId() !=null && clientRepo.exists(lead.getClient().getId()))
 			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
 		else
 			lead.setClient(clientRepo.save(lead.getClient()));  
@@ -58,7 +61,6 @@ public class Main implements CommandLineRunner {
 			leadRepo.save(lead);
 			this.EventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN, lead.getId()));
 		}
-
 	}
 
 }
