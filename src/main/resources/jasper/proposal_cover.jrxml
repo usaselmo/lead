@@ -57,7 +57,7 @@
 				<text><![CDATA[allscontractingdc@gmail.com]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="340" y="130" width="131" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="6a4f8641-1f9a-4365-a093-a2dfe541ac11"/>
+				<reportElement mode="Opaque" x="340" y="130" width="131" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="6a4f8641-1f9a-4365-a093-a2dfe541ac11"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
@@ -67,7 +67,7 @@
 				<text><![CDATA[PROPOSAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="130" width="330" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="0cad9787-c6ed-45cc-bd47-88356f5ec086"/>
+				<reportElement mode="Opaque" x="0" y="130" width="330" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="0cad9787-c6ed-45cc-bd47-88356f5ec086"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
@@ -96,7 +96,7 @@
 				<textFieldExpression><![CDATA["Address: "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="340" y="190" width="131" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="39bbefc7-d546-47b4-adfe-2e1a137b4d85"/>
+				<reportElement mode="Opaque" x="340" y="190" width="131" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="39bbefc7-d546-47b4-adfe-2e1a137b4d85"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
@@ -125,7 +125,7 @@
 				<text><![CDATA["Your Licened and Minority Class A Contractor in Virginia"]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="260" width="471" height="20" forecolor="#FFFFFF" backcolor="#512EFF" uuid="d29fdcd7-5296-45a6-a254-3bb367fd4e5b"/>
+				<reportElement mode="Opaque" x="0" y="260" width="471" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d29fdcd7-5296-45a6-a254-3bb367fd4e5b"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 					<pen lineWidth="0.5" lineColor="#000000"/>
 				</box>
