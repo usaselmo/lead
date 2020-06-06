@@ -23,23 +23,29 @@
 
       <!-- MENU -->
       <div class="col-sm-3">
-        <div class="list-group" ng-repeat="event in lead.nextEvents">
-          <span ng-switch="event"> <a ng-switch-when="SCHEDULE_VISIT" href="#" class="list-group-item list-group-item-action" data-toggle="modal"
-            data-target="#exampleModal">SCHEDULE_VISIT</a> <a ng-switch-default href="#" class="list-group-item list-group-item-action" ng-click="fireEvent(lead, event)">{{event}}</a>
-          </span>
+
+
+        <div class="list-group" >
+          <span ng-repeat="event in lead.nextEvents">
+          <span ng-switch="event">
+            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#exampleModal" href="#" class="list-group-item">{{event}}</a>
+            <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
+          </span></span>
         </div>
+
+        
       </div>
+
+
+      <!-- BOTTOM NAV TABS -->
       <div class="col-sm-12">
-        <!-- BOTTOM NAV TABS -->
         <span style="margin-top: 6px;" ng-include="'lead/details/nav-tabs.html'"></span>
       </div>
+
     </div>
   </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" ng-include="'lead/list/schedule-modal.html'"></div>
-
-
-
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+  ng-include="'lead/details/schedule-modal.html'"></div>
