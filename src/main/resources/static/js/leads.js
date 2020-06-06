@@ -21,7 +21,16 @@ angular.module('leads', [])
     $scope.searchable_text = ''
    	$scope.menu = 'menu.html';
     $scope.body = 'leads-list.html';
-    	
+
+    $scope.updateClient = function(client){
+      $http.put(local_server_url + '/clients', client).then(function (response) {
+      	$scope.lead.client = response.data
+      }, function (response) {
+        console.log(response)
+        alert(response.data)
+      });
+    }
+    
     $scope.changeBody = function(bodyName){
     	$scope.body = bodyName;
     }

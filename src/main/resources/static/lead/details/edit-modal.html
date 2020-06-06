@@ -1,0 +1,48 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">Edit {{lead.client.name}}</h5>
+    </div>
+    <div class="modal-body">
+
+      <form class="form-horizontal">
+
+        <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="text" placeholder="Name" ng-model="lead.client.name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="address" class="col-sm-2 control-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="address" placeholder="Address" ng-model="lead.client.address">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="lead.client.email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone" class="col-sm-2 control-label">Phone</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="phone" placeholder="Phone" ng-model="lead.client.phone">
+          </div>
+        </div>
+
+
+      </form>
+
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateClient(lead.client)">Save</button>
+    </div>
+  </div>
+</div>

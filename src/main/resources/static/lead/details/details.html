@@ -3,7 +3,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">
-        <strong>{{lead.client.name}} <a href="#" class="btn btn-sm btn-outline-info">Edit</a></strong>
+        <strong>{{lead.client.name}} <a title="Edit" data-toggle="modal" data-target="#editModal" href="#" class="btn btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit"></span> Edit</a></strong>
       </h3>
     </div>
     <div class="panel-body">
@@ -23,17 +23,14 @@
 
       <!-- MENU -->
       <div class="col-sm-3">
-
-
+        <strong>Mark an Event</strong>
         <div class="list-group" >
           <span ng-repeat="event in lead.nextEvents">
           <span ng-switch="event">
-            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#exampleModal" href="#" class="list-group-item">{{event}}</a>
+            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event}}</a>
             <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
           </span></span>
         </div>
-
-        
       </div>
 
 
@@ -47,5 +44,9 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"
+<div class="modal fade" id="scheduleModal" tabindex="-10" role="dialog" aria-labelledby="scheduleModalLabel" aria-hidden="true"
   ng-include="'lead/details/schedule-modal.html'"></div>
+
+<div class="modal fade" id="editModal" tabindex="-20" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true"
+  ng-include="'lead/details/edit-modal.html'"></div>
+  
