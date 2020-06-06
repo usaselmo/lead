@@ -1,7 +1,8 @@
+<div class="">
 <div class="col-sm-3" ng-if="!hideHeader">
-  <h2>
+  <h3 style="margin-top: 0px;">
     Leads <small>({{totalLeads}})</small>
-  </h2>
+  </h3>
 </div>
 <div class="col-sm-3">
   <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
@@ -12,12 +13,14 @@
   <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
 </div>
 <div class="col-sm-3">
-  <div class="input-group mb-3">
-    <select class="custom-select" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
+  <div class="form-group">
+    <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
       <option value="">All</option>
     </select>
   </div>
 </div>
+
+
 <table class="table table-sm table-striped">
   <thead>
     <tr>
@@ -28,7 +31,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="lead in leads">
-      <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">View</button></td>
+      <td><button type="button" class="btn" ng-click="showLeadDetails(lead)">View</button></td>
       <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br>
       <small>{{lead.type}}</small> <br>
       <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small></td>
@@ -42,3 +45,5 @@
   </tbody>
 </table>
 <a type="button" class="btn btn-danger" ng-click="drop()">Erase all Leads</a>
+
+</div>
