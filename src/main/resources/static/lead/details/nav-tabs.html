@@ -1,22 +1,16 @@
 <div>
-
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#proposals" aria-controls="proposals" role="tab" data-toggle="tab">Proposals</a></li>
     <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a></li>
     <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
   </ul>
-
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="proposals" ng-include="'lead/details/nav-tabs-proposal.html'">...</div>
-    <div role="tabpanel" class="tab-pane" id="events">
-    <ul ng-repeat="eventLog in lead.eventLogs">
-      <li>{{eventLog.eventType}} - {{eventLog.eventTime | date:'MM/dd/yy hh:mm'}}</li>
-    </ul></div>
-    <div role="tabpanel" class="tab-pane" id="notes" ng-include="'lead/details/nav-tabs-notes.html'">...</div>
+    <div role="tabpanel" class="tab-pane active" id="proposals" ng-include="'lead/details/nav-tabs-proposal.html'"></div>
+    <div role="tabpanel" class="tab-pane" id="events"  ng-include="'lead/details/nav-tabs-events.html'"></div>
+    <div role="tabpanel" class="tab-pane" id="notes" ng-include="'lead/details/nav-tabs-notes.html'"></div>
   </div>
-
 </div>
 
 
