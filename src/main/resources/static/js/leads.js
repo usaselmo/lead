@@ -283,5 +283,10 @@ angular.module('leads', [])
 
     findLeads(pageRange, lines, $scope.filter);
 
+    $scope.reload = function(){
+    	findLeads(pageRange, lines, $scope.filter);
+      $scope.searchable_text = ''
+    }
+    
   });
 
