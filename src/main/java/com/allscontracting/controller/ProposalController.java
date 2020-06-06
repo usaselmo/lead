@@ -31,7 +31,7 @@ public class ProposalController {
 	@GetMapping(value = "{proposalId}/email")
 	public void sendByEmail(@PathVariable long proposalId)
 			throws IOException, JRException, SQLException {
-		this.proposalService.sendByEmail(proposalId);
+		this.proposalService.sendPdfByEmail(proposalId);
 	}
 
 	@PostMapping(value = "")
@@ -51,13 +51,14 @@ public class ProposalController {
 		}
 	}
 
-
 	@GetMapping(value = "{proposalId}/pdf")
-	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId)
-			throws Exception {
-
+	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
 		this.proposalService.getProposalAsPdfStream(response, proposalId);
-		
-		}
-	
+	}
+
+	@GetMapping(value = "{proposalId}/rtf")
+	public void getProposalRtf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
+		this.proposalService.getProposalAsRtfStream(response, proposalId);
+	}
+
 }

@@ -70,12 +70,20 @@ public class ProposalService {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME); 		
 	}
 
-	private String getProposalFileName(Proposal proposal, Client client) {
-		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append(".pdf").toString();
+	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException {
+		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+		Client client = proposal.getLead().getClient();
+		HashMap<String, Object> map = getProposalParameters(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client, "rtf");
+		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME); 		
+	}
+
+	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
+		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("."+suffix).toString();
 		return streamFileName;
 	}
 
@@ -87,11 +95,11 @@ public class ProposalService {
 		return map;
 	}
 
-	public void sendByEmail(long proposalId) throws JRException, SQLException, IOException {
+	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, client, res);
 		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);

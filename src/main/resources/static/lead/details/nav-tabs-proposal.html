@@ -7,8 +7,8 @@
           <th> # </th>
           <th>Price ($)</th>
           <th>E-mailed</th>
-          <th>Finished</th>
           <th>PDF</th>
+          <th>RTF</th>
           <th>Email Proposal</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
@@ -18,9 +18,9 @@
         <tr ng-repeat="prop in lead.proposals">
           <th scope="row">{{prop.number}}</th>
           <td>{{prop.total | currency}}</td>
-          <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="form-control"/> </td>
-          <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="form-control"/> </td>
-          <td><a href="proposals/{{prop.id}}/pdf" >Download PDF</a></td>
+          <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class=""/> </td>
+          <td><a href="proposals/{{prop.id}}/pdf" ><span class="glyphicon glyphicon-download" title="Download PDF" aria-hidden="true"></span></a></td>
+          <td><a href="proposals/{{prop.id}}/rtf" ><span class="glyphicon glyphicon-download" title="Download RTF" aria-hidden="true"></span></a></td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" >Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
