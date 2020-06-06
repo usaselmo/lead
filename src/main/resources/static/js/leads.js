@@ -19,7 +19,13 @@ angular.module('leads', [])
     $scope.originalLines = []
     var errorMessage = 'An error occured.'
     $scope.searchable_text = ''
+   	$scope.menu = 'menu.html';
+    $scope.body = 'leads-list.html';
     	
+    $scope.changeBody = function(bodyName){
+    	$scope.body = bodyName;
+    }
+    
     $scope.search = function(text){
     	$scope.searchable_text = text
     	if(!text){

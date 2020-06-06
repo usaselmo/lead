@@ -28,7 +28,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="lead in leads">
-      <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">Edit</button></td>
+      <td><button type="button" class="btn btn-outline-success" ng-click="showLeadDetails(lead)">View</button></td>
       <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br>
       <small>{{lead.type}}</small> <br>
       <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small></td>

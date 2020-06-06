@@ -2,7 +2,7 @@
 <div class="card" style="width: 100%;">
 
   <div class="card-header">
-    <i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;
+    <strong>{{lead.client.name}} <a href="#" class="btn btn-sm btn-outline-info">Edit</a></strong>
   </div>
   <div class="card-body" style="padding: 12px;"> 
     <div class="row">
@@ -10,8 +10,10 @@
       <!-- LEAD DETAILS -->
       <div class="col-sm-5">
         <address>
-          <strong>{{lead.client.name}}</strong> <br>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}} <br>{{lead.client.email}}
-          <br>{{lead.client.address}}
+          Source: <i>{{lead.vendor}}</i><br>
+          {{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}}<br>
+          {{lead.client.email}}<br>
+          {{lead.client.address}}
         </address>
         <p ng-if="lead.visit">
           Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>

@@ -27,7 +27,7 @@ public class Main implements CommandLineRunner {
 		SpringApplication.run(Main.class, arguments);
 	}
 
-	@Autowired private LeadRepository leadRepo;
+	@Autowired private LeadRepository leadRepo; 
 	@Autowired private ClientRepository clientRepo;
 	@Autowired private EventManager EventManager;
 	
