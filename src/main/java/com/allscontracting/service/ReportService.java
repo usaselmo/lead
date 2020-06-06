@@ -34,7 +34,6 @@ public class ReportService {
 	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
 		String jasperReportFileName) throws IOException, JRException, SQLException {
 
-    //final InputStream jrFile = Files.newInputStream(Paths.get(getSourceFileName(jasperReportFileName)), StandardOpenOption.READ); 
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
     final JasperPrint jasperPrint = JasperFillManager.fillReport(getSourceFileName(jasperReportFileName), map, dataSource.getConnection());
     final JRRtfExporter saida = new JRRtfExporter();
@@ -55,15 +54,15 @@ public class ReportService {
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
 		String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
 		
-		response.setContentType("application/pdf");
-		response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
-		
 		String sourceFileName = getSourceFileName(jasperReportFileName);
 		String tempFileName = Files.createTempFile("", "").toFile().getAbsolutePath();
 
 		JasperRunManager.runReportToPdfFile(sourceFileName, tempFileName, map, dataSource.getConnection());
 		byte[] byteArray = Files.readAllBytes(Paths.get(tempFileName));
 		
+		response.setContentType("application/pdf");
+		response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
+		response.setContentLength(byteArray.length);
 		ServletOutputStream os = response.getOutputStream();
 		try {
 			os.write(byteArray, 0, byteArray.length);
