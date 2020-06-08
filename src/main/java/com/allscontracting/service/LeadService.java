@@ -75,7 +75,7 @@ public class LeadService {
 	@Transactional
 	public void fireEventToLead(String event, String leadId) {
 		Lead lead = this.leadRepo.findOne(leadId);
-		EventType eventType = Stream.of(EventType.values()).filter(type->type.getDescription().equalsIgnoreCase(event)).findFirst().get();
+		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
 		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());

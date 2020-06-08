@@ -53,9 +53,5 @@ public class FileService {
 			}
 		});
 	}
-
-/*	private static final Path PROPOSALS_FOLDER = Paths.get("C:\\Users\\Anselmo.asr\\Google Drive\\All's Contracting\\proposals");
-
-*/
 	
 }

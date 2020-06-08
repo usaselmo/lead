@@ -1,5 +1,7 @@
 package com.allscontracting.event;
 
+import java.util.stream.Stream;
+
 public enum EventType {
 	BEGIN("Started"), 
 	CONTACT_QUALIFY("Contact and Qualify"), 
@@ -10,7 +12,7 @@ public enum EventType {
 	BEGIN_WORK("Work started"), 
 	FINISH_WORK("Work finished"), 
 	SEND_INVOICE("Invoide sent"),
-	RECEIVE_PAYMENT("Payment Received") , 
+	RECEIVE_PAYMENT("Payment Received") ,  
 	END_LEAD("Done"), 
 	LOAD_VENDOR_FILE("Vendor file loaded");
 	
@@ -22,6 +24,10 @@ public enum EventType {
 	
 	public String getDescription() {
 		return this.description;
+	}
+	
+	public static EventType reverse(String description) {
+		return Stream.of(EventType.values()).filter(type->type.toString().equalsIgnoreCase(description)).findFirst().get();
 	}
 	
 }

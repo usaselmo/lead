@@ -78,7 +78,7 @@ public class LeadController {
 
 	@PostMapping(value = "{id}/fireevent")
 	public void fireEvent(@PathVariable String id, @RequestBody String event) {
-		switch (EventType.valueOf(event)) {
+		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date());
 			break;
