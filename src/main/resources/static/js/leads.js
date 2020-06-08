@@ -275,7 +275,6 @@ angular.module('leads', [])
     }
 
     var findLeads = function (pageRange, lines, filter) {
-    	console.log('pageRange:'+pageRange+' lines:'+lines+' filter:'+filter)
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
         $scope.leads = response.data
         findTotalLeads(filter)
