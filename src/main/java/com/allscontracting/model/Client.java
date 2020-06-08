@@ -22,6 +22,9 @@ public class Client {
 	@Id @GeneratedValue
 	private Long id;
 	
+	@Email
+	private String email;
+	
 	private String name;
 	private String address;
 	private String cellPhone;
@@ -29,9 +32,6 @@ public class Client {
 	
 	/*@OneToMany(mappedBy="client", fetch=FetchType.LAZY) 
 	private List<Lead> leads;*/
-	
-	@Email
-	private String email;
 
 	public String getPhone() {
 		return phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);
@@ -40,7 +40,5 @@ public class Client {
 	public void setPhone(String phone) {
 		this.phone = phone.replaceAll("\\(|\\)|\\-| ", "");
 	}
-
-	
 	
 }
