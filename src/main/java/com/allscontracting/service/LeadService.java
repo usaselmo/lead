@@ -100,6 +100,7 @@ public class LeadService {
 		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date")));
 	}
 
+	@Transactional
 	public Lead saveNewLead(Lead lead) {
 		if(lead.getClient().getId() != null && this.clientRepo.exists(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
@@ -111,7 +112,7 @@ public class LeadService {
 		lead.setEvent(EventType.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		this.fireEventToLead(EventType.BEGIN.getDescription(), lead.getId());
+		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId()); 
 		return lead;
 	}
 
