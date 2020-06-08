@@ -31,11 +31,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("leads")
 public class LeadController {
 
-	@Autowired
-	LeadService leadService;
+	@Autowired LeadService leadService;
 	@Autowired FileService fileService;
-	
 	@Autowired LeadRepository leadRepo;
+	
+	@GetMapping("/types")
+	public List<String> getLeadTypes() {
+		List<String> types= this.leadService.getLeadTypes();
+		return types;
+	}
+	
+	@PostMapping
+	public Lead saveNewLead(@RequestBody Lead lead) {
+		lead = this.leadService.saveNewLead(lead);
+		return lead;
+	}
 
 	@PostMapping(value = "{id}/addNote")
 	public Lead addNewNote(@PathVariable String id, @RequestBody String note) {

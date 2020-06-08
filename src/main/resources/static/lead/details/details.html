@@ -10,7 +10,7 @@
       <!-- LEAD DETAILS -->
       <div class="col-sm-5">
         <address>
-          Source: <i>{{lead.vendor}}</i><br> {{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}}<br>
+          Source: <i>{{lead.vendor}}</i><br> {{lead.client.phone}}<br>
           {{lead.client.email}}<br> {{lead.client.address}}
         </address>
         <p ng-if="lead.visit">

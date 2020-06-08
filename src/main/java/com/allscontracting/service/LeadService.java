@@ -1,7 +1,9 @@
 package com.allscontracting.service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -18,8 +20,10 @@ import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
+import com.allscontracting.repo.ClientRepository;
 import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.tradutor.impl.NetworxLeadTranslaterImpl;
 
 @Service
 public class LeadService {
@@ -28,6 +32,7 @@ public class LeadService {
 	@Autowired private EventTypeDispatcher eventDispatcher;
 	@Autowired private EventManager eventManager;
 	@Autowired private EventoLogRepository eventLogRepo;
+	@Autowired private ClientRepository clientRepo;
 	
 	public List<Lead> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)
@@ -70,9 +75,10 @@ public class LeadService {
 	@Transactional
 	public void fireEventToLead(String event, String leadId) {
 		Lead lead = this.leadRepo.findOne(leadId);
-		lead.setEvent(EventType.valueOf(event));
-		this.leadRepo.save(lead);
-		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(EventType.valueOf(event)).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
+		EventType eventType = Stream.of(EventType.values()).filter(type->type.getDescription().equalsIgnoreCase(event)).findFirst().get();
+		lead.setEvent(eventType); 
+		this.leadRepo.save(lead); 
+		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
 	public List<EventLog> findLeadEventLogs(String leadId) {
@@ -92,6 +98,25 @@ public class LeadService {
 	public List<Lead> search(String text) {
 		//limited to 100 results
 		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date")));
+	}
+
+	public Lead saveNewLead(Lead lead) {
+		if(lead.getClient().getId() != null && this.clientRepo.exists(lead.getClient().getId())) {
+			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
+		}else {
+			lead.setClient(this.clientRepo.save(lead.getClient()));
+		}
+		lead.setId(NetworxLeadTranslaterImpl.defineId(lead.getClient().getEmail(), lead.getClient().getPhone()));
+		lead.setDate(new Date());
+		lead.setEvent(EventType.BEGIN); 
+		lead.setFee(BigDecimal.ZERO);
+		lead = this.leadRepo.save(lead);
+		this.fireEventToLead(EventType.BEGIN.getDescription(), lead.getId());
+		return lead;
+	}
+
+	public List<String> getLeadTypes() {
+		return this.leadRepo.findByType(); 
 	}
 
 }

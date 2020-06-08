@@ -1,0 +1,65 @@
+<div class="modal fade" id="lead-new-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">New Lead</h4>
+      </div>
+      <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="form-group">
+          <label for="name" class="col-sm-2 control-label">Client Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="text" placeholder="Name" ng-model="newLead.client.name" ng-change="searchClient(newLead.client.name)">
+            <select class="form-control" multiple="multiple" ng-if="newLead.clients.length > 0"><option ng-repeat="c in newLead.clients" ng-click="chooseClient(c)" value="{{c.name}}">{{c.name}}</option> </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="address" class="col-sm-2 control-label">Address</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="address" placeholder="Address" ng-model="newLead.client.address">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+          <div class="col-sm-10">
+            <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="newLead.client.email">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="phone" class="col-sm-2 control-label">Phone</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="phone" placeholder="Phone" ng-model="newLead.client.phone">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="jobtype" class="col-sm-2 control-label">Job Type</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="newLead.type">
+              <option ng-repeat="t in newLead.types" value="{{t}}">{{t}}</option>  
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="vendor" class="col-sm-2 control-label">Vendor</label>
+          <div class="col-sm-10">
+            <select class="form-control" ng-model="newLead.vendor">
+              <option  value="EMAIL">Email</option>  
+              <option  value="PHONE_CALL">Phone Call</option>  
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="jobdescription" class="col-sm-2 control-label">Job Description</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" id="jobdescription" ng-model="newLead.description"></textarea>
+          </div>
+        </div>
+      </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="newLeadCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="newLeadSave(newLead)">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

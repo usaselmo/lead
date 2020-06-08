@@ -21,6 +21,50 @@ angular.module('leads', [])
     $scope.searchable_text = ''
    	$scope.menu = 'menu.html';
     $scope.body = 'leads-list.html';
+    $scope.newLead = {'client':{}}
+    
+    var getLeadTypes = function(){
+  		$http.get(local_server_url + '/leads/types').then(function (response) {
+  			$scope.newLead.types = response.data
+  		}, function (response) {
+  			console.log(response)
+  			alert(response.data)
+  		});
+    }
+    
+    $scope.newLeadSave = function(newLead){
+  		$http.post(local_server_url + '/leads', newLead).then(function (response) {
+  			$scope.leads.unshift(response.data)
+  			$scope.totalLeads++
+  			$("button[data-dismiss=\"modal\"]"). click()
+  		}, function (response) {
+  			console.log(response)
+  			alert(response.data)
+  		});
+    }
+    
+    $scope.newLeadCancel = function(){
+    	$scope.newLead.clients = {}
+      $scope.newLead = {'client':{}}
+    }
+    
+    $scope.chooseClient= function(client){
+    	$scope.newLead.client = client;
+    	$scope.newLead.clients = {}
+    }
+    
+    $scope.searchClient = function(clientName){
+    	if( clientName.length > 2){
+    		$http.get(local_server_url + '/clients?name=' + clientName).then(function (response) {
+    			$scope.newLead.clients = response.data
+    		}, function (response) {
+    			console.log(response)
+    			alert(response.data)
+    		});
+    	}else{
+    		$scope.newLead.clients = {}
+    	}
+    }
 
     $scope.updateClient = function(client){
       $http.put(local_server_url + '/clients', client).then(function (response) {
@@ -281,12 +325,13 @@ angular.module('leads', [])
       $scope.EOL = $scope.totalLeads / lines - pageRange < 1
     }
 
-    findLeads(pageRange, lines, $scope.filter);
-
     $scope.reload = function(){
     	findLeads(pageRange, lines, $scope.filter);
       $scope.searchable_text = ''
+      getLeadTypes();
     }
+    
+    $scope.reload();
     
   });
 

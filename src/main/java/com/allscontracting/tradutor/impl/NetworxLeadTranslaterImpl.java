@@ -115,6 +115,11 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 		}
 	}
 
+	public static String defineId(String email, String phone) {
+		return 
+		Base64.getEncoder().encodeToString((email+phone).getBytes());
+	}
+
 	private String defineId(String[] splitedLine) {
 		return 
 		Base64.getEncoder().encodeToString((splitedLine[NX_Email]+splitedLine[NX_Phone_Number]).getBytes());

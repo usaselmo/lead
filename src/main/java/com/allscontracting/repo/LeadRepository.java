@@ -25,4 +25,7 @@ public interface LeadRepository extends JpaRepository<Lead, String> {
 	@Query("SELECT l FROM Lead l WHERE l.client.name LIKE %?1%  OR l.client.phone LIKE %?1% OR l.client.address LIKE %?1% OR l.client.email LIKE %?1% ")
 	List<Lead> search(String text, Pageable pageable);
 
+	@Query("SELECT DISTINCT l.type FROM Lead l ORDER BY l.type")
+	List<String> findByType();
+
 }

@@ -54,6 +54,7 @@ public class Main implements CommandLineRunner {
 			.type("Install Driveway, Patio and Walkway from Email") 
 			.vendor(Vendor.EMAIL)
 			.build();
+		
 		if(clientRepo.exists(lead.getClient().getId()))
 			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
 		else

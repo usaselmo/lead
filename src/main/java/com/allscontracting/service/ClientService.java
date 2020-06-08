@@ -1,5 +1,7 @@
 package com.allscontracting.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,10 @@ public class ClientService {
 		localClient.setName(client.getName());
 		localClient.setPhone(client.getPhone());
 		return this.clientRepo.save(localClient);
+	}
+
+	public List<Client> findByName(String name) {
+		return this.clientRepo.findLikeName(name);
 	}
 
 	

@@ -1,49 +1,50 @@
 <div class="">
-<div class="col-sm-3" ng-if="!hideHeader">
-  <h3 style="margin-top: 0px;">
-    {{totalLeads}} Leads <a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a>
-  </h3>
-</div>
-<div class="col-sm-3">
-  <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
-  &nbsp;
-  <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
-</div>
-<div class="col-sm-3">
-  <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
-</div>
-<div class="col-sm-3">
-  <div class="form-group">
-    <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
-      <option value="">All</option>
-    </select>
+  <div class="col-sm-3" ng-if="!hideHeader">
+    <h3 style="margin-top: 0px;">
+      {{totalLeads}} Leads 
+      <a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a> 
+      <a  data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm" ><span class="glyphicon glyphicon-plus" aria-hidden="true" title="Create new Lead"></span></a>
+    </h3>
   </div>
+  <div class="col-sm-3">
+    <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
+    &nbsp;
+    <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
+  </div>
+  <div class="col-sm-3">
+    <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
+  </div>
+  <div class="col-sm-3">
+    <div class="form-group">
+      <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
+        <option value="">All</option>
+      </select>
+    </div>
+  </div>
+  <table class="table table-sm table-striped">
+    <thead>
+      <tr>
+        <th scope="col" colspan="1">&nbsp;</th>
+        <th scope="col" colspan="1">Lead</th>
+        <th scope="col" colspan="2">Client</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="lead in leads">
+        <td><button type="button" class="btn" ng-click="showLeadDetails(lead)">View</button></td>
+        <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br> <small>{{lead.type}}</small> <br> <small><i>{{lead.date
+              | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small></td>
+        <td><b>{{lead.client.name}}</b> <br> <small>{{lead.client.phone}} <br>{{lead.client.email}}
+        </small></td>
+        <td><small>{{lead.client.address}}<br>{{lead.description}}
+        </small></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
+<!-- Modal -->
+<div  ng-include="'lead/list/lead-new-modal.html'"></div>
 
-<table class="table table-sm table-striped">
-  <thead>
-    <tr>
-      <th scope="col" colspan="1">&nbsp;</th>
-      <th scope="col" colspan="1">Lead</th>
-      <th scope="col" colspan="2">Client</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="lead in leads">
-      <td><button type="button" class="btn" ng-click="showLeadDetails(lead)">View</button></td>
-      <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br>
-      <small>{{lead.type}}</small> <br>
-      <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small></td>
 
-      <td><b>{{lead.client.name}}</b> <br>
-      <small>{{lead.client.phone.slice(0,3)}}-{{lead.client.phone.slice(3,6)}}-{{lead.client.phone.slice(6)}} <br>{{lead.client.email}}
-      </small></td>
-      <td><small>{{lead.client.address}}<br>{{lead.description}}
-      </small></td>
-    </tr>
-  </tbody>
-</table>
-<a type="button" class="btn btn-danger" ng-click="drop()">Erase all Leads</a>
-
-</div>
+  
