@@ -91,7 +91,17 @@ public class DemoApplicationTests {
 	ProposalRepository proposalRepository;
 
 	@Test
-	public void testReport() throws Exception {
+	public void test_runToHtmlFile() throws Exception {
+		Proposal proposal = this.proposalRepo.findAll().get(2);
+		Client client = proposal.getLead().getClient();
+		String sourceFile = getSourceFile();
+		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
+		HashMap<String, Object> map = getParams(proposal, client);
+		JasperRunManager.runReportToHtmlFile(sourceFile, destFile, map, dataSource.getConnection());
+	}
+
+	@Test
+	public void test_runToPdfFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
 		Client client = proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
