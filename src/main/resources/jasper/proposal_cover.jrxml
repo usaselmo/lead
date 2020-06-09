@@ -207,7 +207,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getCellPhone()+" "+$P{CLIENT}.getPhone()]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="340" y="150" width="131" height="20" uuid="c64adfa9-b1f3-4839-8d45-661f52664f6e"/>

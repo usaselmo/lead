@@ -147,6 +147,8 @@ angular.module('leads', [])
 
     $scope.saveProposal = function (lead, proposal) {
     	var save = function(lead, proposal){
+    		if(!lead.proposals)
+    			lead.proposals=[]
     		lead.proposals = lead.proposals.filter(function (value, index, arr) { return value.id != proposal.id; })
     		var prop = convertToServerFormat(proposal)
     		$http.post(local_server_url + "/proposals?leadId=" + lead.id, prop).then(function (response) {

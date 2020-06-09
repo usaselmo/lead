@@ -100,7 +100,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <finalName>lead</finalName>
+          <finalName>leadsdc</finalName>
         </configuration>
       </plugin>
     </plugins>
