@@ -95,15 +95,16 @@ public class ProposalService {
 		return map;
 	}
 
+	@Transactional
 	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, client, res);
-		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
-		proposal.setEmailed(true);
+		//this.mailService.sendProposalByEmail(proposal, client, res);
+		//proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
+		//proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
 		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL, proposal.getLead().getId()));
 	}

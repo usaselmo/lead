@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -47,12 +49,11 @@ public class ReportService {
 		response.getOutputStream().write(bytes, 0, bytes.length);
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
-
 	}
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-		String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER+jasperReportFileName+ JASPER_SUFFIX);
+			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX);
 		response.setContentType("application/pdf");
 		response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
 		JasperRunManager.runReportToPdfStream(is, response.getOutputStream(), map, dataSource.getConnection());
@@ -65,11 +66,13 @@ public class ReportService {
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
-		String jasperfileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
-		String sourceFile = ResourceUtils.getFile(jasperfileName).getAbsolutePath(); //new ClassPathResource(jasperfileName).getPath();
-		File tmpFile = Files.createTempFile("", fileName).toFile();
-		JasperRunManager.runReportToPdfFile(sourceFile, tmpFile.getAbsolutePath(), map, dataSource.getConnection());
-		return tmpFile;
+		//String sourceFileName = this.getClass().getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX).getFile(); 
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX);
+		Path destFileName = Files.createTempFile("", fileName);
+		byte[] bytes = JasperRunManager.runReportToPdf(is, map, dataSource.getConnection());
+		Files.write(destFileName, bytes, StandardOpenOption.WRITE);
+		//JasperRunManager.runReportToPdfFile(sourceFileName, destFileName.getAbsolutePath(), map, dataSource.getConnection());
+		return destFileName.toFile();
 	}
 
 }
