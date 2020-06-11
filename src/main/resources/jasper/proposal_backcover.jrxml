@@ -18,7 +18,7 @@
 		<band height="90">
 			<image hAlign="Center">
 				<reportElement x="0" y="0" width="471" height="80" uuid="a0c21664-bece-4e41-981a-c8ae9157bdd2"/>
-				<imageExpression><![CDATA["D:\\java\\github\\lead\\src\\main\\resources\\jasper\\image\\aclogo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["aclogo.jpg"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="0" y="0" width="120" height="20" uuid="afcd3a08-4179-4b5a-84f0-914166980cba"/>
