@@ -11,19 +11,19 @@ import com.allscontracting.event.listener.DomainListener;
 
 public class EventManager {
 
-	private Map<EventType, List<DomainListener>> listeners = new HashMap<>();
+	private Map<String, List<DomainListener>> listeners = new HashMap<>();
 	private ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	public void notifyAllListeners(DomainEvent event) {
 		executor.execute(() -> {
-			this.listeners.get(event.getEventType()).forEach(listener -> listener.update(event));
+			this.listeners.get(event.getEventType().toString()).forEach(listener -> listener.update(event));
 		});
 	}
 
-	public void subscribe(EventType event, DomainListener emailListener) {
-		if (this.listeners.get(event) == null)
-			this.listeners.put(event, new ArrayList<DomainListener>());
-		this.listeners.get(event).add(emailListener);
+	public void subscribe(String key, DomainListener emailListener) {
+		if (this.listeners.get(key) == null)
+			this.listeners.put(key, new ArrayList<DomainListener>());
+		this.listeners.get(key).add(emailListener);
 	}
 
 }

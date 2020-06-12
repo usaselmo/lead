@@ -8,29 +8,11 @@ import lombok.ToString;
 @Getter
 @ToString
 public class AuditEvent implements DomainEvent{
-
-	@Override
-	public String getObjectName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getObjectId() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public EventType getEventType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
+	public static final String key = "AUDIT_EVENT";
+	private String objectName ;
+	private String objectId ;
+	private EventType eventType;
+	private String message;
+	
 }

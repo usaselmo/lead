@@ -24,11 +24,11 @@ public class EventConfig {
 		/**
 		 * Register here all the event listeners
 		 */
-		em.subscribe(EventType.SCHEDULE_VISIT, this.emailListener);
-		em.subscribe(EventType.SEND_PROPOSAL, this.emailListener);
-		em.subscribe(EventType.SEND_INVOICE, this.emailListener);
-		em.subscribe(EventType.LOAD_VENDOR_FILE, vendorFileListener);
-		Stream.of(EventType.values()).forEach(et->em.subscribe(et, eventLogListener));
+		em.subscribe(EventType.SCHEDULE_VISIT.toString(), this.emailListener);
+		em.subscribe(EventType.SEND_PROPOSAL.toString(), this.emailListener);
+		em.subscribe(EventType.SEND_INVOICE.toString(), this.emailListener);
+		em.subscribe(EventType.LOAD_VENDOR_FILE.toString(), vendorFileListener);
+		Stream.of(EventType.values()).forEach(et->em.subscribe(et.toString(), eventLogListener));
 		
 		return em;
 		
