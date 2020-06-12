@@ -32,4 +32,9 @@ public class LeadStatusChangeEvent implements DomainEvent {
 		return this.oid;
 	}
 
+	@Override
+	public String getMessage() {
+		return null;
+	}
+
 }

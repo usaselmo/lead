@@ -3,7 +3,6 @@ package com.allscontracting.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -78,7 +77,7 @@ public class LeadService {
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
+		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
 	public List<EventLog> findLeadEventLogs(String leadId) {

@@ -7,4 +7,5 @@ public interface DomainEvent {
 	String getObjectId();
 	EventType getEventType();
 	Date getEventTime();
+	String getMessage();
 }

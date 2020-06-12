@@ -26,4 +26,9 @@ public class VisitScheduledEvent implements DomainEvent {
 		return this.lead.getId();
 	}
 
+	@Override
+	public String getMessage() {
+		return null;
+	}
+
 }

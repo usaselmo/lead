@@ -25,4 +25,9 @@ public class VendorFileLoadedEvent implements DomainEvent {
 		return leadLoaded.getId();
 	}
 
+	@Override
+	public String getMessage() {
+		return null;
+	}
+
 }

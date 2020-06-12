@@ -16,14 +16,14 @@ public enum EventType {
 	END_LEAD("Done"), 
 	LOAD_VENDOR_FILE("Vendor file loaded");
 	
-	private String description;
+	private String status;
 	
-	EventType(String description) {
-		this.description = description;
+	EventType(String status) {
+		this.status = status;
 	}
 	
-	public String getDescription() {
-		return this.description;
+	public String getStatus() {
+		return this.status;
 	}
 	
 	public static EventType reverse(String description) {
