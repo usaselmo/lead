@@ -6,6 +6,8 @@ public interface DomainEvent {
 	String getObjectName();
 	String getObjectId();
 	EventType getEventType();
-	Date getEventTime();
 	String getMessage();
+	default Date getEventTime() {
+		return new Date();
+	}
 }
