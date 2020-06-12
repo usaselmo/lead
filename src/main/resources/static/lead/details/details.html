@@ -31,6 +31,10 @@
             <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
           </span></span>
         </div>
+
+        <span ng-repeat="event in lead.nextEvents"> 
+          <a ng-if="event=='SCHEDULE_VISIT'" style="padding: 6px;" href="#" class="btn btn-primary btn-block btn-sm" ng-click="sendCantReachEmail(lead.client)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Send Can't Reach E-mail</a>
+        </span>
       </div>
 
 

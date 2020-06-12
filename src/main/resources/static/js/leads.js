@@ -22,6 +22,14 @@ angular.module('leads', [])
    	$scope.menu = 'menu.html';
     $scope.body = 'leads-list.html';
     $scope.newLead = {'client':{}}
+
+    $scope.sendCantReachEmail = function(client){
+  		$http.get(local_server_url + '/clients/'+client.id+'/cantreach').then(function (response) {
+  		}, function (response) {
+  			console.log(response)
+  			alert(response.data)
+  		});
+    }
     
     var getLeadTypes = function(){
   		$http.get(local_server_url + '/leads/types').then(function (response) {

@@ -1,8 +1,10 @@
 package com.allscontracting.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +21,12 @@ import com.allscontracting.service.ClientService;
 public class ClientController {
 
 	@Autowired ClientService clientService;
+	
+	@GetMapping("{id}/cantreach")
+	public ResponseEntity<String> sendCantReachEmail(@PathVariable String id) throws IOException {
+		clientService.sendCantReachEmail(id);
+		return ResponseEntity.ok("");
+	}
 	
 	@GetMapping("")
 	public List<Client> searchClient(@RequestParam String name) {
