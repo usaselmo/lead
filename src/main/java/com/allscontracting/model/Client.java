@@ -30,9 +30,6 @@ public class Client {
 	private String cellPhone;
 	private String phone;
 	
-	/*@OneToMany(mappedBy="client", fetch=FetchType.LAZY) 
-	private List<Lead> leads;*/
-
 	public String getPhone() {
 		return phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);
 	}
