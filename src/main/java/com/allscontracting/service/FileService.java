@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.LeadStatusChangeEvent;
@@ -32,15 +33,17 @@ public class FileService {
 		this.mailService.sendProposalByEmail(proposal, client, proposalPdfFile);
 	}*/
 
-	@SuppressWarnings("unchecked")  
+	@SuppressWarnings("unchecked")
 	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
-		if(!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
+		if (!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new LeadsException("File and Vendor do not match.");
 		Translater<Lead> translater = (Translater<Lead>) tradutorFinder.dispatch(vendor);
 		List<Lead> leads = translater.vendorFileToLeads(file);
-		if(leads.isEmpty())
-			throw new LeadsException("Found no Leads in this file."); 
+		if (leads.isEmpty())
+			throw new LeadsException("Found no Leads in this file.");
 		saveAllLeads(vendor, leads);
+		this.eventManager.notifyAllListeners(new AuditEvent("Vendor Lead File", null, AuditEvent.KEY,
+				vendor.name() + " Lead File loaded. " + leads.size() + " leads found"));
 	}
 
 	@Transactional

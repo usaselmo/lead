@@ -38,7 +38,7 @@ public class ClientService {
 	public void sendCantReachEmail(String id) throws IOException {
 		Client client = this.clientRepo.findOne(Long.valueOf(id));
 		this.mailService.sendCantReachEmail(client);
-		//this.eventManager.notifyAllListeners(new ); TODO
+		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()), AuditEvent.KEY, "Can't Reach E-mail sent to " + client.toString()));
 	}
 
 	
