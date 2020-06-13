@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.listener.EmailListener;
@@ -29,6 +30,7 @@ public class EventConfig {
 		em.subscribe(EventType.SEND_INVOICE.toString(), this.emailListener);
 		em.subscribe(EventType.LOAD_VENDOR_FILE.toString(), vendorFileListener);
 		Stream.of(EventType.values()).forEach(et->em.subscribe(et.toString(), eventLogListener));
+		em.subscribe(AuditEvent.KEY, eventLogListener);
 		
 		return em;
 		
