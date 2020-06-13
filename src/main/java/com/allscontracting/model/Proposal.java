@@ -73,7 +73,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	}
 
 	@Override
-	public String toString() {
+	public String toString() { 
 		return "Proposal [id=" + id + ", number=" + number + ", total=" + total + ", scopeOfWork=" + scopeOfWork + ", callMissUtility=" + callMissUtility + ", paymentSchedule="
 				+ paymentSchedule + ", workWarranty=" + workWarranty + ", emailed=" + emailed
 				+ "]";
