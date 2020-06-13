@@ -14,16 +14,16 @@ public class LeadStatusChangeEvent implements DomainEvent {
 	private final String objectName = Lead.class.getSimpleName();
 	private final Date eventTime = new Date();
 	private String oid;
-	private EventType evTp;
+	private String evTp;
 
-	public LeadStatusChangeEvent(EventType eventType, String leadId) {
+	public LeadStatusChangeEvent(String eventType, String leadId) {
 		super();
 		this.oid = leadId;
 		this.evTp = eventType;
 	}
 
 	@Override
-	public EventType getEventType() {
+	public String getEventType() {
 		return this.evTp;
 	}
 

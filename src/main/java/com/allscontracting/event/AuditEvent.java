@@ -12,7 +12,7 @@ public class AuditEvent implements DomainEvent{
 	public static final String KEY = "AUDIT_EVENT";
 	private String objectName ;
 	private String objectId ;
-	private EventType eventType;
+	private String eventType;
 	private String message;
 	
 }

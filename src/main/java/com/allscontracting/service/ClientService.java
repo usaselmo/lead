@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.model.Client;
 import com.allscontracting.repo.ClientRepository;
@@ -26,6 +27,7 @@ public class ClientService {
 		localClient.setEmail(client.getEmail());
 		localClient.setName(client.getName());
 		localClient.setPhone(client.getPhone());
+		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), AuditEvent.KEY, localClient.toString()));
 		return this.clientRepo.save(localClient);
 	}
 

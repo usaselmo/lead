@@ -62,7 +62,7 @@ public class Main implements CommandLineRunner {
 		lead.setId(EmailLeadTranslatorImpl.defineId(lead.getClient().getEmail(), lead.getClient().getPhone()));
 		if(!leadRepo.exists(lead.getId())) {
 			leadRepo.save(lead);
-			this.EventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN, lead.getId()));
+			this.EventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), lead.getId()));
 		}
 	}
 

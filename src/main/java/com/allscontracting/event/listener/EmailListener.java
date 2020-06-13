@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.allscontracting.event.DomainEvent;
+import com.allscontracting.event.EventType;
 import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.service.MailService;
 
@@ -19,13 +20,8 @@ public class EmailListener implements DomainListener {
 	@Override
 	public void update(DomainEvent domainEvent) {
 		log.info("EmailListener fired....");
-		switch (domainEvent.getEventType()) {
-		case SCHEDULE_VISIT:
+		if(domainEvent.getEventType().equals(EventType.SCHEDULE_VISIT.toString()))
 			this.handleEstimateScheduled((VisitScheduledEvent) domainEvent);
-			break;
-		default:
-			break;
-		}
 	}
 
 	private void handleEstimateScheduled(VisitScheduledEvent domainEvent) {

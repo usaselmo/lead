@@ -16,7 +16,7 @@ public class VendorFileLoadedEvent implements DomainEvent {
 
 	private Lead leadLoaded;
 	private Vendor vendor;
-	private final EventType eventType = EventType.LOAD_VENDOR_FILE;
+	private final String eventType = EventType.LOAD_VENDOR_FILE.toString();
 	private final Date eventTime = new Date();
 	private final String objectName = Lead.class.getSimpleName();
 

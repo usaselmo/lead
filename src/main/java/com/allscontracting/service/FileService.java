@@ -49,7 +49,7 @@ public class FileService {
 			if(!this.leadRepo.exists(lead.getId())) {
 				lead = leadRepo.save(lead);
 				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor));
-				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN, lead.getId()) );
+				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), lead.getId()) );
 			}
 		});
 	}

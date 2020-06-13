@@ -5,7 +5,7 @@ import java.util.Date;
 public interface DomainEvent {
 	String getObjectName();
 	String getObjectId();
-	EventType getEventType();
+	String getEventType();
 	String getMessage();
 	default Date getEventTime() {
 		return new Date();

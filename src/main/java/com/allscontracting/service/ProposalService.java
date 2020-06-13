@@ -106,7 +106,7 @@ public class ProposalService {
 		//proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
 		//proposal.setEmailed(true);
 		//this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL, proposal.getLead().getId()));
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId()));
 	}
 
 }
