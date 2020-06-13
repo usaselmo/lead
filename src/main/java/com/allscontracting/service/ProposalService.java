@@ -12,6 +12,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.LeadStatusChangeEvent;
@@ -53,7 +54,8 @@ public class ProposalService {
 		});
 
 		Proposal res = this.proposalRepository.save(proposal);
-		
+		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(),
+				String.valueOf(proposal.getId()), "Proposal created: " + proposal.toString()));
 		return res;
 	}
 
@@ -64,6 +66,7 @@ public class ProposalService {
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);// TODO Auto-generated method stub
+		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(), String.valueOf(proposal.getId()), "Proposal deleteda: " + proposal.toString()));
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
@@ -103,9 +106,9 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, client, res);
-		//proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
-		//proposal.setEmailed(true);
-		//this.proposalRepository.save(proposal);
+		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
+		proposal.setEmailed(true);
+		this.proposalRepository.save(proposal);
 		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId()));
 	}
 

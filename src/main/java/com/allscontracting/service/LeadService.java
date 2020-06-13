@@ -46,7 +46,7 @@ public class LeadService {
 
 	public void drop() throws Exception {
 		leadRepo.deleteAll();
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), null, AuditEvent.KEY, "All leads deleted"));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), null, "All leads deleted"));
 	}
 
 	public long getLeadsTotal(EventType eventType) throws Exception {
@@ -94,7 +94,7 @@ public class LeadService {
 		Lead lead = this.leadRepo.findOne(leadId);
 		lead.addNote(note);
 		lead = this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), AuditEvent.KEY, "Note added to lead #" + lead.getId() ));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "Note added to lead #" + lead.getId() ));
 		return lead;
 	}
 
@@ -116,7 +116,7 @@ public class LeadService {
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
 		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId());
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), AuditEvent.KEY, "New Lead created: " + lead.toString()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.toString()));
 		return lead;
 	}
 
