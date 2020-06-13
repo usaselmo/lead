@@ -3,16 +3,11 @@ package com.allscontracting;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
@@ -33,7 +28,6 @@ import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
 
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperRunManager;

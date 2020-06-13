@@ -9,9 +9,10 @@ import lombok.ToString;
 @ToString
 public class AuditEvent implements DomainEvent{
 	
+	public static final String KEY = "AUDIT_EVENT";
 	private String objectName ;
 	private String objectId ;
-	private final String eventType = "AUDIT_EVENT";
+	private final String eventType = KEY;
 	private String message;
 	
 }

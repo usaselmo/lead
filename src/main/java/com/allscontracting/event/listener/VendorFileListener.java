@@ -30,7 +30,7 @@ public class VendorFileListener implements DomainListener {
 	public void update(DomainEvent domainEvent) {
 		log.info("Vendor File Listener fired....");
 		try {
-			if (domainEvent.getEventType().equals(EventType.LOAD_VENDOR_FILE)) {
+			if (domainEvent.getEventType().equals(EventType.LOAD_VENDOR_FILE.toString())) {
 				VendorFileLoadedEvent event = (VendorFileLoadedEvent) domainEvent;
 				Lead lead = event.getLeadLoaded();
 				verifyPhoneNumber(lead.getClient());
