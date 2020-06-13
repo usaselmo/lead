@@ -55,7 +55,7 @@ public class ProposalService {
 
 		Proposal res = this.proposalRepository.save(proposal);
 		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(),
-				String.valueOf(proposal.getId()), "Proposal created: " + String.valueOf(proposal.getId())));
+				String.valueOf(proposal.getId()), "Proposal created: " + proposal.getId()));
 		return res;
 	}
 
@@ -65,8 +65,8 @@ public class ProposalService {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
-		this.proposalRepository.delete(proposal);// TODO Auto-generated method stub
-		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(), String.valueOf(proposal.getId()), "Proposal deleteda: " + proposal.getId()));
+		this.proposalRepository.delete(proposal);
+		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(), String.valueOf(proposal.getId()), "Proposal deleted: " + proposal.getId()));
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {

@@ -72,4 +72,12 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 		item.setProposal(this);
 	}
 
+	@Override
+	public String toString() {
+		return "Proposal [id=" + id + ", number=" + number + ", total=" + total + ", scopeOfWork=" + scopeOfWork + ", callMissUtility=" + callMissUtility + ", paymentSchedule="
+				+ paymentSchedule + ", workWarranty=" + workWarranty + ", emailed=" + emailed
+				+ "]";
+	}
+
+	
 }
