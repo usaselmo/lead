@@ -116,7 +116,7 @@ public class LeadService {
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
 		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId());
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.toString()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.getId()));
 		return lead;
 	}
 

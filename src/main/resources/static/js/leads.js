@@ -7,7 +7,8 @@ angular.module('leads', [])
   /*MAIN CONTROLLER*/
   .controller('MainController', function ($scope, $http, $timeout) {
 
-    var local_server_url = "http://localhost:8080";
+    //var local_server_url = "http://localhost:8080";
+    var local_server_url = "";
     $scope.showLeads = true
     $scope.leads = []
     $scope.lead = {}

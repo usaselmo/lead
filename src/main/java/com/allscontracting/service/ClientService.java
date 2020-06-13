@@ -28,7 +28,7 @@ public class ClientService {
 		localClient.setName(client.getName());
 		localClient.setPhone(client.getPhone());
 		this.eventManager.notifyAllListeners(
-				new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), localClient.toString()));
+				new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), String.valueOf(localClient.getId())));
 		return this.clientRepo.save(localClient);
 	}
 
@@ -40,7 +40,7 @@ public class ClientService {
 		Client client = this.clientRepo.findOne(Long.valueOf(id));
 		this.mailService.sendCantReachEmail(client);
 		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()),
-				"Can't Reach E-mail sent to " + client.toString()));
+				"Can't Reach E-mail sent to " + client.getId()));
 	}
 	
 }
