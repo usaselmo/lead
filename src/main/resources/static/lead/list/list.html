@@ -1,26 +1,28 @@
-<div class="">
-  <div class="col-sm-3" ng-if="!hideHeader">
-    <h3 style="margin-top: 0px;">
-      {{totalLeads}} Leads 
-      <a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a> 
-      <a  data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm" ><span class="glyphicon glyphicon-plus" aria-hidden="true" title="Create new Lead"></span></a>
-    </h3>
+
+<div class="col-sm-3" ng-if="!hideHeader">
+  <h3 style="margin-top: 0px;">
+    {{totalLeads}} Leads <a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a>
+    <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"
+      title="Create new Lead"></span></a>
+  </h3>
+</div>
+<div class="col-sm-3">
+  <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
+  &nbsp;
+  <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
+</div>
+<div class="col-sm-3">
+  <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
+</div>
+<div class="col-sm-3">
+  <div class="form-group">
+    <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
+      <option value="">All</option>
+    </select>
   </div>
-  <div class="col-sm-3">
-    <button ng-disabled="BOL" class="btn btn-success btn-sm" ng-click="leadsGetPrevious()">&lt;&lt;</button>
-    &nbsp;
-    <button ng-disabled="EOL" class="btn btn-success btn-sm" ng-click="leadsGetNext()">&gt;&gt;</button>
-  </div>
-  <div class="col-sm-3">
-    <input type="text" class="form-control" placeholder="Search" ng-model="searchable_text" ng-change="search(searchable_text)">
-  </div>
-  <div class="col-sm-3">
-    <div class="form-group">
-      <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
-        <option value="">All</option>
-      </select>
-    </div>
-  </div>
+</div>
+
+<div class="col-sm-12">
   <table class="table table-sm table-striped">
     <thead>
       <tr>
@@ -32,13 +34,10 @@
     <tbody>
       <tr ng-repeat="lead in leads">
         <td><button type="button" class="btn" ng-click="showLeadDetails(lead)">View</button></td>
-        <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br> <small>{{lead.type}}</small> <br> <small><i>{{lead.date
-              | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small>
-              
+        <td nowrap="nowrap"><i>{{lead.vendor}}</i>&nbsp;&nbsp;&nbsp;<b>${{lead.fee | currency:""}}</b> <br> <small>{{lead.type}}</small> <br> <small><i>{{lead.date | date:'MMMM dd, yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small>
           <p ng-if="lead.visit">
             Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
-          </p>
-        </td>
+          </p></td>
         <td><b>{{lead.client.name}}</b> <br> <small>{{lead.client.phone}} <br>{{lead.client.email}}
         </small></td>
         <td><small>{{lead.client.address}}<br>{{lead.description}}
@@ -49,7 +48,6 @@
 </div>
 
 <!-- Modal -->
-<div  ng-include="'lead/list/lead-new-modal.html'"></div>
+<div ng-include="'lead/list/lead-new-modal.html'"></div>
 
 
-  

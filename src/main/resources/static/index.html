@@ -28,7 +28,13 @@
     <div class="row" style="">
       <div id="menu" ng-include="menu"></div>
     </div>
-    <div class="">
+    <div class="row">
+      <!-- ERROR -->
+      <div class="">
+        <p class="text-danger" ng-repeat="errorMessage in errorMessages">
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{errorMessage}}
+        </p>
+      </div>
       <div id="body" ng-include="body"></div>
     </div>
     <div class="row">

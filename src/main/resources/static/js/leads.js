@@ -23,6 +23,8 @@ angular.module('leads', [])
    	$scope.menu = 'menu.html';
     $scope.body = 'leads-list.html';
     $scope.newLead = {'client':{}}
+    $scope.errorMessages = ['teste de erro', 'outro erro']
+    $scope.successMessages = []
 
     $scope.sendCantReachEmail = function(client){
   		$http.get(local_server_url + '/clients/'+client.id+'/cantreach').then(function (response) {
