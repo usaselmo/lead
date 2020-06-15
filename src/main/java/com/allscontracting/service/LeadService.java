@@ -94,7 +94,6 @@ public class LeadService {
 		Lead lead = this.leadRepo.findOne(leadId);
 		lead.addNote(note);
 		lead = this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "Note added to lead #" + lead.getId() ));
 		return lead;
 	}
 

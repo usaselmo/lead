@@ -19,30 +19,30 @@
   </appender>
 
   <!-- ALLS CONTRACTING -->
-  <logger name="com.allscontracting" level="ERROR">
+  <logger name="com.allscontracting" level="INFO">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
   <!-- COM -->
-  <logger name="com" level="INFO">
+  <logger name="com" level="ERROR">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
   <!-- ORG -->
-  <logger name="net.sf.jasperreports" level="INFO">
+  <logger name="net.sf.jasperreports" level="ERROR">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
   
-  <logger name="org" level="INFO">
+  <logger name="org" level="ERROR">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
   <!-- TODO RESTO -->
-  <logger name="*" level="INFO">
+  <logger name="*" level="ERROR">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>

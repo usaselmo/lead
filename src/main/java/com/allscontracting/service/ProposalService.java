@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,10 @@ import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.LineRepository;
 import com.allscontracting.repo.ProposalRepository;
 
+import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
 
+@Slf4j
 @Service
 public class ProposalService {
 	
@@ -85,6 +88,22 @@ public class ProposalService {
 		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME); 		
 	}
 
+	@Transactional
+	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException {
+		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
+		Client client = proposal.getLead().getClient();
+		HashMap<String, Object> map = getProposalParameters(proposal, client);
+		String streamFileName = getProposalFileName(proposal, client, "pdf");
+		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
+		this.mailService.sendProposalByEmail(proposal, client, res).onError((error) -> log.error("Error sending mail")).send();
+		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
+		proposal.setEmailed(true);
+		this.proposalRepository.save(proposal);
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), proposal.getLead().getId(), "Proposal E-mailed to " + client.getName() + ". Proposal # "
+						+ proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")"));
+	}
+
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
 		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("."+suffix).toString();
 		return streamFileName;
@@ -96,20 +115,6 @@ public class ProposalService {
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
-	}
-
-	@Transactional
-	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
-		Client client = proposal.getLead().getClient();
-		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client, "pdf");
-		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, client, res);
-		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
-		proposal.setEmailed(true);
-		this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId()));
 	}
 
 }
