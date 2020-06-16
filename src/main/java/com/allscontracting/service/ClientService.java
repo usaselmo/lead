@@ -12,7 +12,6 @@ import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.model.Client;
 import com.allscontracting.repo.ClientRepository;
-import com.mysql.jdbc.log.Log;
 
 import lombok.extern.slf4j.Slf4j;
 
