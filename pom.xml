@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.allscontracting.lead</groupId>
   <artifactId>lead</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -118,9 +118,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <finalName>leadsdc</finalName>
-        </configuration>
       </plugin>
     </plugins>
   </build>

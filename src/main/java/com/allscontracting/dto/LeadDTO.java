@@ -18,7 +18,7 @@ public class LeadDTO {
 	private String date;
 	private String description;
 	private String fee;
-	private String type;
+	private String type; 
 	private String notes;
 	private ClientDTO client;
 	private List<ProposalDTO> proposals;
