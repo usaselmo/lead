@@ -22,9 +22,9 @@ public class ClientController {
 
 	@Autowired ClientService clientService;
 
-	@GetMapping("{id}/hiringdecision")
-	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String id) throws IOException {
-		clientService.sendHiringDecisionEmail(id);
+	@GetMapping("{clientId}/leads/{leadId}/hiringdecision")
+	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException {
+		clientService.sendHiringDecisionEmail(clientId, leadId);
 		return ResponseEntity.ok("");
 	}
 

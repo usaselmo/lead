@@ -26,9 +26,10 @@ angular.module('leads', [])
     $scope.errorMessages = []
     $scope.successMessages = []
 
-    $scope.sendHiringDecisionEmail = function(client){
+    $scope.sendHiringDecisionEmail = function(lead, client){
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
-    		$http.get(local_server_url + '/clients/'+client.id+'/hiringdecision').then(function (response) {
+    		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
+    			findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
     			alert(response.data)
@@ -230,7 +231,6 @@ angular.module('leads', [])
 
     $scope.encreaseItem = function () {
       $scope.currentProposal.items = $scope.currentProposal.items.concat([{ 'id': '' }])
-      console.log($scope.currentProposal.items)
     }
 
     $scope.removeItem = function (proposal) {
