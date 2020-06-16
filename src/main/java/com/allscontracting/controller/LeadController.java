@@ -115,7 +115,6 @@ public class LeadController {
 			List<Lead> leads = this.leadService.listLeads(pageRange, lines, eventType);
 			return leads;
 		} catch (Exception e) {
-			//e.printStackTrace();
 			log.error(e.getMessage());
 			return Collections.emptyList();
 		}

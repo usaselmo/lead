@@ -268,6 +268,7 @@ angular.module('leads', [])
     var findNextEvents = function (lead) {
       $http.get(local_server_url + "/leads/" + lead.id + "/nextevents").then(function (response) {
         lead.nextEvents = response.data
+        return response.data
       }, function (response) {
         console.log(response)
       });
@@ -310,6 +311,7 @@ angular.module('leads', [])
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
         $scope.leads = response.data
         findTotalLeads(filter)
+        $scope.leads.forEach(function(l, index){ findNextEvents(l)})
       }, function (response) {
         console.log(response)
       });
