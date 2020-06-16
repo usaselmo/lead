@@ -57,8 +57,7 @@ public class ProposalService {
 		});
 
 		Proposal res = this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(),
-				String.valueOf(proposal.getId()), "Proposal created: " + proposal.getId()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #" + proposal.getNumber() + " created"));
 		return res;
 	}
 

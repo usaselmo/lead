@@ -42,8 +42,6 @@ public class FileService {
 		if (leads.isEmpty())
 			throw new LeadsException("Found no Leads in this file.");
 		saveAllLeads(vendor, leads);
-		this.eventManager.notifyAllListeners(new AuditEvent("Vendor Lead File", null,
-				vendor.name() + " Lead File loaded. " + leads.size() + " leads found"));
 	}
 
 	@Transactional
