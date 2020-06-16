@@ -30,6 +30,7 @@ angular.module('leads', [])
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
     			findNextEventLogs(lead)
+    			$scope.successMessages=['E-mail has been sent to '+ client.name]
     		}, function (response) {
     			console.log(response)
     			alert(response.data)
@@ -41,6 +42,7 @@ angular.module('leads', [])
     	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
     			findNextEventLogs(lead)
+    			$scope.successMessages=['E-mail has been sent to '+ client.name]
     		}, function (response) {
     			console.log(response)
     			alert(response.data)
@@ -62,6 +64,7 @@ angular.module('leads', [])
   			$scope.leads.unshift(response.data)
   			$scope.totalLeads++
   			$("button[data-dismiss=\"modal\"]"). click()
+  			$scope.successMessages=['New lead saved']
   		}, function (response) {
   			console.log(response)
   			alert(response.data)
@@ -94,6 +97,7 @@ angular.module('leads', [])
     $scope.updateClient = function(client){
       $http.put(local_server_url + '/clients', client).then(function (response) {
       	$scope.lead.client = response.data
+  			$scope.successMessages=[client.name+'\'s information has been updated']
       }, function (response) {
         console.log(response)
         alert(response.data)
