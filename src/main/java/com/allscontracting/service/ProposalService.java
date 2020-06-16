@@ -68,7 +68,7 @@ public class ProposalService {
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
-		this.eventManager.notifyAllListeners(new AuditEvent(Proposal.class.getSimpleName(), String.valueOf(proposal.getId()), "Proposal deleted: " + proposal.getId()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #"+proposal.getNumber()+" deleted"));
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
