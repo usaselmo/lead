@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.model.Client;
+import com.allscontracting.model.Lead;
 import com.allscontracting.repo.ClientRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,11 +40,10 @@ public class ClientService {
 		return this.clientRepo.findLikeName(name);
 	}
 
-	public void sendCantReachEmail(String id) throws IOException {
+	public void sendCantReachEmail(String id, String leadId) throws IOException {
 		Client client = this.clientRepo.findOne(Long.valueOf(id));
 		this.mailService.sendCantReachEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()),
-				"Can't Reach E-mail sent to " + client.getName()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Can't Reach E-mail sent to " + client.getName()));
 	}
 
 	public void sendHiringDecisionEmail(String id) throws IOException {

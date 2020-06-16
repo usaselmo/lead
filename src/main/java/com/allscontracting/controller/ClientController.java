@@ -28,9 +28,9 @@ public class ClientController {
 		return ResponseEntity.ok("");
 	}
 
-	@GetMapping("{id}/cantreach")
-	public ResponseEntity<String> sendCantReachEmail(@PathVariable String id) throws IOException {
-		clientService.sendCantReachEmail(id);
+	@GetMapping("{clientId}/leads/{leadId}/cantreach")
+	public ResponseEntity<String> sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException {
+		clientService.sendCantReachEmail(clientId, leadId);
 		return ResponseEntity.ok("");
 	}
 	

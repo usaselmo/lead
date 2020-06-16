@@ -36,9 +36,10 @@ angular.module('leads', [])
     	}
     }
     
-    $scope.sendCantReachEmail = function(client){
+    $scope.sendCantReachEmail = function(lead, client){
     	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
-    		$http.get(local_server_url + '/clients/'+client.id+'/cantreach').then(function (response) {
+    		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
+    			findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
     			alert(response.data)
