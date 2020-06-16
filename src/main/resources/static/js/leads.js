@@ -26,12 +26,24 @@ angular.module('leads', [])
     $scope.errorMessages = []
     $scope.successMessages = []
 
+    $scope.sendHiringDecisionEmail = function(client){
+    	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
+    		$http.get(local_server_url + '/clients/'+client.id+'/hiringdecision').then(function (response) {
+    		}, function (response) {
+    			console.log(response)
+    			alert(response.data)
+    		});
+    	}
+    }
+    
     $scope.sendCantReachEmail = function(client){
-  		$http.get(local_server_url + '/clients/'+client.id+'/cantreach').then(function (response) {
-  		}, function (response) {
-  			console.log(response)
-  			alert(response.data)
-  		});
+    	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
+    		$http.get(local_server_url + '/clients/'+client.id+'/cantreach').then(function (response) {
+    		}, function (response) {
+    			console.log(response)
+    			alert(response.data)
+    		});
+    	}
     }
     
     var getLeadTypes = function(){
@@ -115,14 +127,16 @@ angular.module('leads', [])
       });
     }
 
-    $scope.emailProposal = function (proposal) {
-      $http.get(local_server_url + '/proposals/' + proposal.id + '/email').then(function (response) {
-        proposal.emailed = true;
-        proposal.finished = true;
-      }, function (response) {
-        console.log(response)
-        alert(response.data)
-      });
+    $scope.emailProposal = function (client, proposal) {
+    	if (confirm('Send Proposal #'+proposal.number+' to '+client.name+' via E-mail ? ')) {
+    		$http.get(local_server_url + '/proposals/' + proposal.id + '/email').then(function (response) {
+    			proposal.emailed = true;
+    			proposal.finished = true;
+    		}, function (response) {
+    			console.log(response)
+    			alert(response.data)
+    		});
+    	}
     }
 
 

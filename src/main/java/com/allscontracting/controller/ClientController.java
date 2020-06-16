@@ -21,7 +21,13 @@ import com.allscontracting.service.ClientService;
 public class ClientController {
 
 	@Autowired ClientService clientService;
-	
+
+	@GetMapping("{id}/hiringdecision")
+	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String id) throws IOException {
+		clientService.sendHiringDecisionEmail(id);
+		return ResponseEntity.ok("");
+	}
+
 	@GetMapping("{id}/cantreach")
 	public ResponseEntity<String> sendCantReachEmail(@PathVariable String id) throws IOException {
 		clientService.sendCantReachEmail(id);

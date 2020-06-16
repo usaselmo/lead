@@ -46,5 +46,12 @@ public class ClientService {
 		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()),
 				"Can't Reach E-mail sent to " + client.getName()));
 	}
+
+	public void sendHiringDecisionEmail(String id) throws IOException {
+		Client client = this.clientRepo.findOne(Long.valueOf(id));
+		this.mailService.sendHiringDecisionEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
+		this.eventManager.notifyAllListeners(new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()),
+				"Hiring Decision Question E-mailed to " + client.getName()));
+	}
 	
 }

@@ -21,7 +21,7 @@
           <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class=""/> </td>
           <td><a href="proposals/{{prop.id}}/pdf" ><span class="glyphicon glyphicon-download-alt" title="Download PDF" aria-hidden="true"></span></a></td>
           <td><a href="proposals/{{prop.id}}/rtf" ><span class="glyphicon glyphicon-download-alt" title="Download RTF" aria-hidden="true"></span></a></td>
-          <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal</a>&nbsp;</td>
+          <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(lead.client, prop)">Email Proposal</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" >Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
         </tr>
