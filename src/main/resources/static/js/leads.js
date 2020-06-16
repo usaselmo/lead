@@ -26,6 +26,19 @@ angular.module('leads', [])
     $scope.errorMessages = []
     $scope.successMessages = []
 
+    var resetMessages = function(){
+      $scope.errorMessages = []
+      $scope.successMessages = []
+    }
+
+    var errorMessage = function(msg){
+      $scope.errorMessages = [msg]
+    }
+
+    var successMessage = function(msg){
+      $scope.successMessages = [msg]
+    }
+
     $scope.sendHiringDecisionEmail = function(lead, client){
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
@@ -33,7 +46,7 @@ angular.module('leads', [])
     			$scope.successMessages=['E-mail has been sent to '+ client.name]
     		}, function (response) {
     			console.log(response)
-    			alert(response.data)
+    			errorMessage(response.data)
     		});
     	}
     }
@@ -45,7 +58,7 @@ angular.module('leads', [])
     			$scope.successMessages=['E-mail has been sent to '+ client.name]
     		}, function (response) {
     			console.log(response)
-    			alert(response.data)
+    			errorMessage(response.data)
     		});
     	}
     }
@@ -55,7 +68,7 @@ angular.module('leads', [])
   			$scope.newLead.types = response.data
   		}, function (response) {
   			console.log(response)
-  			alert(response.data)
+        errorMessage(response.data)
   		});
     }
     
@@ -67,7 +80,7 @@ angular.module('leads', [])
   			$scope.successMessages=['New lead saved']
   		}, function (response) {
   			console.log(response)
-  			alert(response.data)
+        errorMessage(response.data)
   		});
     }
     
@@ -87,7 +100,7 @@ angular.module('leads', [])
     			$scope.newLead.clients = response.data
     		}, function (response) {
     			console.log(response)
-    			alert(response.data)
+    			errorMessage(response.data)
     		});
     	}else{
     		$scope.newLead.clients = {}
@@ -100,7 +113,7 @@ angular.module('leads', [])
   			$scope.successMessages=[client.name+'\'s information has been updated']
       }, function (response) {
         console.log(response)
-        alert(response.data)
+        errorMessage(response.data)
       });
     }
     
@@ -120,6 +133,7 @@ angular.module('leads', [])
           $scope.filter = ''
         }, function (response) {
           console.log(response)
+    			errorMessage(response.data)
         });
     	}
     }
@@ -129,7 +143,7 @@ angular.module('leads', [])
       	$scope.lead.notes = response.data.notes
       }, function (response) {
         console.log(response)
-        alert(response.data)
+        errorMessage(response.data)
       });
     }
 
@@ -140,7 +154,7 @@ angular.module('leads', [])
     			proposal.finished = true;
     		}, function (response) {
     			console.log(response)
-    			alert(response.data)
+    			errorMessage(response.data)
     		});
     	}
     }
@@ -167,7 +181,7 @@ angular.module('leads', [])
         	saveProp(lead, proposal)
       }, function (response) {
         console.log(response)
-        alert(response.data)
+        errorMessage(response.data)
       });
     }
 
@@ -189,6 +203,7 @@ angular.module('leads', [])
     			angular.element(document.querySelector('#oiwk4397849jj9')).click()
     		}, function (response) {
     			console.log(response)
+    			errorMessage(response.data)
     		});
     	}
     	if(proposal.id)
@@ -262,6 +277,7 @@ angular.module('leads', [])
         $scope.showLeadDetails(lead)
       }, function (response) {
         console.log(response)
+        errorMessage(response.data)
       });
     }
 
@@ -271,6 +287,7 @@ angular.module('leads', [])
         return response.data
       }, function (response) {
         console.log(response)
+        errorMessage(response.data)
       });
     }
 
@@ -278,6 +295,7 @@ angular.module('leads', [])
       $http.post(local_server_url + "/proposals/" + proposal.id + "/lead/" + lead.id, proposal).then(function (response) {
       }, function (response) {
         console.log(response)
+        errorMessage(response.data)
       });
     }
 
@@ -304,6 +322,7 @@ angular.module('leads', [])
           defineBolEol()
         }, function (response) {
           console.log(response)
+    			errorMessage(response.data)
         });
     }
 
@@ -314,6 +333,7 @@ angular.module('leads', [])
         $scope.leads.forEach(function(l, index){ findNextEvents(l)})
       }, function (response) {
         console.log(response)
+        errorMessage(response.data)
       });
     }
 
@@ -330,6 +350,7 @@ angular.module('leads', [])
         findLeads(-1, lines, $scope.filter);
       }, function (response) {
         console.log(response)
+        errorMessage(response.data)
       });
     }
 
