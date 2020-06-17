@@ -37,7 +37,7 @@
 				<text><![CDATA[Payment Schedule:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="20" width="430" height="70" uuid="a351dc20-c34d-44e7-9079-be8c56e22028"/>
+				<reportElement x="0" y="23" width="471" height="70" uuid="a351dc20-c34d-44e7-9079-be8c56e22028"/>
 				<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
 			</textField>
 			<staticText>
@@ -48,7 +48,7 @@
 				<text><![CDATA[Work Warranty:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="40" y="170" width="431" height="70" uuid="486d628b-9e1e-473d-86e4-cc87438c179a"/>
+				<reportElement x="0" y="173" width="471" height="70" uuid="486d628b-9e1e-473d-86e4-cc87438c179a"/>
 				<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
 			</textField>
 			<staticText>

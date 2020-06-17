@@ -81,7 +81,7 @@ WHERE
 			<band/>
 		</groupHeader>
 		<groupFooter>
-			<band height="200">
+			<band height="92">
 				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note}) || $F{call_miss_utility} > 0]]></printWhenExpression>
@@ -94,14 +94,14 @@ WHERE
 					</textElement>
 					<text><![CDATA[Notes: ]]></text>
 				</staticText>
-				<textField>
-					<reportElement stretchType="ElementGroupHeight" x="20" y="70" width="451" height="130" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b43f3d04-d09a-4512-9d43-2520467f853c">
+				<textField textAdjust="StretchHeight">
+					<reportElement stretchType="ElementGroupHeight" x="0" y="65" width="471" height="25" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b43f3d04-d09a-4512-9d43-2520467f853c">
 						<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="20" y="20" width="451" height="50" isRemoveLineWhenBlank="true" uuid="556564ba-d7fc-4ed0-80cd-d8ce17ac2f84">
+					<reportElement x="0" y="20" width="471" height="40" isRemoveLineWhenBlank="true" uuid="556564ba-d7fc-4ed0-80cd-d8ce17ac2f84">
 						<printWhenExpression><![CDATA[$F{call_miss_utility} > 0]]></printWhenExpression>
 					</reportElement>
 					<text><![CDATA[We will call Miss Utility for this job. Contact Miss Utility before any excavation/concrete removal and determine if any utility cable/conduits or
@@ -113,10 +113,10 @@ pipes need to be relocated after Miss Utility reports.]]></text>
 	<group name="title">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
-			<band height="24">
+			<band height="20">
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField>
-					<reportElement x="0" y="7" width="515" height="14" uuid="4576f4dd-3dd4-4339-be0f-a744c4197a94">
+					<reportElement x="0" y="0" width="471" height="17" uuid="4576f4dd-3dd4-4339-be0f-a744c4197a94">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					</reportElement>
 					<textElement verticalAlignment="Bottom">
@@ -127,10 +127,12 @@ pipes need to be relocated after Miss Utility reports.]]></text>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="36">
+			<band height="27">
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField>
-					<reportElement x="20" y="0" width="380" height="20" uuid="7b04653f-85c1-4228-84b1-c215e76d1c07"/>
+					<reportElement x="0" y="0" width="471" height="20" uuid="7b04653f-85c1-4228-84b1-c215e76d1c07">
+						<printWhenExpression><![CDATA[$F{price}.longValue() > 0]]></printWhenExpression>
+					</reportElement>
 					<textElement verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
@@ -164,7 +166,7 @@ pipes need to be relocated after Miss Utility reports.]]></text>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement x="20" y="0" width="495" height="18" uuid="b0dcb693-8a54-4b65-a8ce-9d920f41198a">
+				<reportElement x="0" y="0" width="471" height="18" uuid="b0dcb693-8a54-4b65-a8ce-9d920f41198a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a65a37d-63c9-458f-b889-f4d117c20af6"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$V{title_COUNT} + " -  " + $F{description}]]></textFieldExpression>
@@ -172,7 +174,7 @@ pipes need to be relocated after Miss Utility reports.]]></text>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="72" splitType="Immediate">
+		<band splitType="Immediate">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
 		</band>

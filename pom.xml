@@ -111,6 +111,9 @@
           <exclude>**/*.jrxml</exclude>
         </excludes>
       </resource>
+      <resource>
+        <directory>src/main/resources/templates</directory>
+      </resource>
     </resources>
 
 
