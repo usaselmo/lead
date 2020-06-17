@@ -27,6 +27,7 @@ import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
+import com.allscontracting.service.Mail;
 
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -92,6 +93,21 @@ public class DemoApplicationTests {
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
 		HashMap<String, Object> map = getParams(proposal, client);
 		JasperRunManager.runReportToHtmlFile(sourceFile, destFile, map, dataSource.getConnection());
+	}
+	
+	@Test
+	public void testHtmlProposal()  {
+		try {
+			Proposal proposal = this.proposalRepo.findAll().get(2);
+			Client client = proposal.getLead().getClient();
+			String sourceFile = getSourceFile();
+			String htmlContent = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
+			HashMap<String, Object> map = getParams(proposal, client);
+			JasperRunManager.runReportToHtmlFile(sourceFile, htmlContent, map, dataSource.getConnection());
+			new Mail("anselmo.sr@gmail.com", "HTML test", new String(Files.readAllBytes(Paths.get(htmlContent)))).onError( System.out::println ).send();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
