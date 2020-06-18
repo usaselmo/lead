@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.service.ClientService;
 
@@ -23,13 +24,13 @@ public class ClientController {
 	@Autowired ClientService clientService;
 
 	@GetMapping("{clientId}/leads/{leadId}/hiringdecision")
-	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException {
+	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException, NumberFormatException, LeadsException {
 		clientService.sendHiringDecisionEmail(clientId, leadId);
 		return ResponseEntity.ok("");
 	}
 
 	@GetMapping("{clientId}/leads/{leadId}/cantreach")
-	public ResponseEntity<String> sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException {
+	public ResponseEntity<String> sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException, NumberFormatException, LeadsException {
 		clientService.sendCantReachEmail(clientId, leadId);
 		return ResponseEntity.ok("");
 	}
@@ -41,7 +42,7 @@ public class ClientController {
 	}
 	
 	@PutMapping("")
-	public Client updateClient(@RequestBody Client client) {
+	public Client updateClient(@RequestBody Client client) throws LeadsException {
 		return this.clientService.updateClient(client);
 	}
 	

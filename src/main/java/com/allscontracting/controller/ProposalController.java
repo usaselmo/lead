@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.ResponseEntity;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.ProposalService;
 
@@ -29,13 +30,13 @@ public class ProposalController {
 
 	@GetMapping(value = "{proposalId}/email")
 	public void sendByEmail(@PathVariable long proposalId)
-			throws IOException, JRException, SQLException {
+			throws IOException, JRException, SQLException, LeadsException {
 		this.proposalService.sendPdfByEmail(proposalId);
 	}
 
 	@PostMapping(value = "")
 	public Proposal saveProposal(@RequestBody Proposal proposal, @RequestParam String leadId)
-			throws IOException {
+			throws IOException, LeadsException {
 		proposal =  proposalService.save(proposal, leadId);
 		return proposal;
 	}

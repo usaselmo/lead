@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
@@ -42,13 +43,13 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead) {
+	public Lead saveNewLead(@RequestBody Lead lead) throws LeadsException {
 		lead = this.leadService.saveNewLead(lead);
 		return lead;
 	}
 
 	@PostMapping(value = "{id}/addNote")
-	public Lead addNewNote(@PathVariable String id, @RequestBody String note) {
+	public Lead addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
 			Lead lead = this.leadService.addNewNote(id, note);
 			return lead;
 	}
@@ -65,7 +66,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
-	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
+	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) throws LeadsException {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 			this.leadService.scheduleAVisit(id, visitDateTime); 
@@ -77,7 +78,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event) {
+	public void fireEvent(@PathVariable String id, @RequestBody String event) throws LeadsException {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date());

@@ -17,6 +17,7 @@ import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.LeadStatusChangeEvent;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -42,10 +43,9 @@ public class ProposalService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public Proposal save(Proposal proposal, String leadId) {
-		Lead lead = this.leadRepository.findOne(leadId);
+	public Proposal save(Proposal proposal, String leadId) throws LeadsException {
+		Lead lead = this.leadRepository.findById(leadId).orElseThrow(()->new LeadsException("Lead not Found"));
 		proposal.setLead(lead);
-
 		if(proposal.getNumber()==null) {
 			long number = lead.getProposals().size();
 			proposal.setNumber(number+1);
@@ -55,16 +55,15 @@ public class ProposalService {
 			proposal.addItem(item);
 			item.getLines().forEach(line->item.addLine(line)); 
 		});
-
 		Proposal res = this.proposalRepository.save(proposal);
 		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #" + proposal.getNumber() + " created"));
 		return res;
 	}
 
 	@Transactional
-	public void delete(String leadId, String proposalId) {
-		Lead lead = this.leadRepository.findOne(leadId);
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
+	public void delete(String leadId, String proposalId) throws NumberFormatException, LeadsException {
+		Lead lead = this.leadRepository.findById(leadId).orElseThrow( ()->new LeadsException("Lead not Found") );
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow( ()->new LeadsException("Proposal not Found") );
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
@@ -72,15 +71,15 @@ public class ProposalService {
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId )).orElseThrow( ()->new LeadsException("Proposal not Found") );
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME); 		
 	}
 
-	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId )).orElseThrow( ()->new LeadsException("Proposal not Found") );
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "rtf");
@@ -88,8 +87,8 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
+	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException, LeadsException {
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow( ()->new LeadsException("Proposal not Found") );
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");

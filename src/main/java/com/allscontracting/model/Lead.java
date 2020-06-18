@@ -15,8 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
+import org.springframework.lang.NonNull;
 import org.springframework.util.StringUtils;
 
 import com.allscontracting.event.EventType;
@@ -57,7 +57,7 @@ public class Lead implements Entity<String> {
   @OneToMany(mappedBy = "lead", fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Proposal> proposals;
 
-	@NotNull
+	@NonNull
 	@Enumerated(EnumType.STRING)
 	private EventType event;
 

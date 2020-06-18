@@ -4,8 +4,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Email;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +19,7 @@ public class Client {
 
 	@Id @GeneratedValue
 	private Long id;
-	
-	@Email
 	private String email;
-	
 	private String name;
 	private String address;
 	private String cellPhone;
