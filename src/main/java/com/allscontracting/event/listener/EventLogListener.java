@@ -1,5 +1,7 @@
 package com.allscontracting.event.listener;
 
+import java.util.Date;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,8 @@ public class EventLogListener implements DomainListener {
 	@Transactional
 	public void update(DomainEvent de) {
 		log.info("EventLogListener fired....");
-		EventLog event = new EventLog(de.getObjectName(), de.getObjectId(), de.getEventType().toString(), de.getEventTime(), Long.valueOf("0"), de.getMessage());
+		EventLog event = new EventLog(de.getObjectName(), de.getObjectId(), de.getEventType(), new Date(), 0L, de.getMessage()); //TODO 0L
+		//EventLog event = new EventLog(de.getObjectName(), de.getObjectId(), de.getEventType().toString(), de.getEventTime(), Long.valueOf("0"), de.getMessage());
 		this.eventLogRepo.save(event);
 	}
 

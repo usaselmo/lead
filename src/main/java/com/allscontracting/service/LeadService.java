@@ -79,7 +79,8 @@ public class LeadService {
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
+		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), lead.getId(), eventType.toString(), new Date(), 0L, "New Lead created"));//TODO 0L
+//		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
 	public List<EventLog> findLeadEventLogs(String leadId) {
