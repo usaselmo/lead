@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -44,10 +45,16 @@ public class DemoApplicationTests {
 	LeadService leadService;
 	@Autowired
 	EventManager eventManager;
+	@Autowired PasswordEncoder encoder;
 
 	@Test
 	@Ignore
 	public void contextLoads() {
+	}
+	
+	@Test
+	public void testPassword() throws Exception {
+		System.out.println(this.encoder.encode("123"));
 	}
 
 	@Test

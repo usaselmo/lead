@@ -1,6 +1,5 @@
 package com.allscontracting.controller;
 
-import java.security.Principal;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
@@ -18,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.event.EventType;
-import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.User;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
@@ -45,13 +42,13 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Principal user) throws LeadsException {
-		lead = this.leadService.saveNewLead(lead, ((User)user).getId());
+	public Lead saveNewLead(@RequestBody Lead lead) {
+		lead = this.leadService.saveNewLead(lead);
 		return lead;
 	}
 
 	@PostMapping(value = "{id}/addNote")
-	public Lead addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
+	public Lead addNewNote(@PathVariable String id, @RequestBody String note) {
 			Lead lead = this.leadService.addNewNote(id, note);
 			return lead;
 	}
@@ -68,7 +65,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
-	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) throws LeadsException {
+	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 			this.leadService.scheduleAVisit(id, visitDateTime); 
@@ -80,13 +77,13 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Principal user) throws LeadsException {
+	public void fireEvent(@PathVariable String id, @RequestBody String event) {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date());
 			break;
 		default:
-			this.leadService.fireEventToLead(event, id, ((User)user).getId() );
+			this.leadService.fireEventToLead(event, id);
 			break;
 		}
 	}

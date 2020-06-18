@@ -44,7 +44,8 @@ public class VendorFileListener implements DomainListener {
 	private void verifyPhoneNumber(Client clientFromEvent) {
 		try {
 			if (clientFromEvent.getId() != null) {
-				clientRepo.findById(clientFromEvent.getId()).ifPresent(client->{
+				Client client = clientRepo.findOne(clientFromEvent.getId());
+				if(client != null){
 					final String p1 = clientFromEvent.getPhone();
 					final String p2 = clientFromEvent.getCellPhone();
 					if (StringUtils.isEmpty(p1) && !StringUtils.isEmpty(p2)) {
@@ -56,7 +57,7 @@ public class VendorFileListener implements DomainListener {
 					}
 					this.clientRepo.save(client);
 					log.info("Vendor File Listener fixed client's phone number positions.");
-				});
+				}
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage());
