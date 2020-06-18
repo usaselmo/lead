@@ -1,5 +1,6 @@
 package com.allscontracting.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
@@ -20,6 +21,7 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.User;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
@@ -43,8 +45,8 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead) throws LeadsException {
-		lead = this.leadService.saveNewLead(lead);
+	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Principal user) throws LeadsException {
+		lead = this.leadService.saveNewLead(lead, ((User)user).getId());
 		return lead;
 	}
 
@@ -78,13 +80,13 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event) throws LeadsException {
+	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Principal user) throws LeadsException {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date());
 			break;
 		default:
-			this.leadService.fireEventToLead(event, id);
+			this.leadService.fireEventToLead(event, id, ((User)user).getId() );
 			break;
 		}
 	}

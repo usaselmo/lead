@@ -75,12 +75,12 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void fireEventToLead(String event, String leadId) throws LeadsException {
+	public void fireEventToLead(String event, String leadId, Long userId) throws LeadsException {
 		Lead lead = this.leadRepo.findById(leadId).orElseThrow(()->new LeadsException("Lead not Found") );
 		EventType eventType = EventType.reverse(event);
-		lead.setEvent(eventType); 
+		lead.setEvent(eventType);
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
+		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(userId).build());
 	}
 
 	public List<EventLog> findLeadEventLogs(String leadId) {
@@ -104,7 +104,7 @@ public class LeadService {
 	}
 
 	@Transactional
-	public Lead saveNewLead(Lead lead) throws LeadsException {
+	public Lead saveNewLead(Lead lead, Long userId) throws LeadsException {
 		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).get());
 		}else {
@@ -115,7 +115,7 @@ public class LeadService {
 		lead.setEvent(EventType.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId());
+		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId(), userId);
 		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.getId()));
 		return lead;
 	}
