@@ -58,18 +58,18 @@ public class ReportService {
 		JasperRunManager.runReportToPdfStream(is, response.getOutputStream(), map, dataSource.getConnection());
 	}
 
-	private String getSourceFileName(String jasperReportFileName) throws IOException {
-		String fileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
-		String sourceFile = this.getClass().getClassLoader().getResource(fileName).getFile(); 
-		return sourceFile;  
-	}
-
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX);
 		Path destFile = Files.createTempFile("", fileName);
 		byte[] bytes = JasperRunManager.runReportToPdf(is, map, dataSource.getConnection());
 		Files.write(destFile, bytes, StandardOpenOption.WRITE);
 		return destFile.toFile();
+	}
+
+	private String getSourceFileName(String jasperReportFileName) throws IOException {
+		String fileName = JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX;
+		String sourceFile = this.getClass().getClassLoader().getResource(fileName).getFile(); 
+		return sourceFile;  
 	}
 
 }
