@@ -44,9 +44,9 @@ public class LeadService {
 			return leadRepo.findAllByEvent(pageable, eventType).getContent();
 	}
 
-	public void drop() throws Exception {
+	public void drop(Long userId) throws Exception {
 		leadRepo.deleteAll();
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), null, "All leads deleted"));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), null, "All leads deleted", userId));
 	}
 
 	public long getLeadsTotal(EventType eventType) throws Exception {
@@ -65,21 +65,21 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void scheduleAVisit(String leadId, Date visitDateTime) {
+	public void scheduleAVisit(String leadId, Date visitDateTime, Long userId) {
 		Lead lead = this.leadRepo.findOne(leadId);
 		lead.setVisit(visitDateTime);
 		lead.setEvent(EventType.SCHEDULE_VISIT);
 		this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime));
+		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, userId));
 	}
 
 	@Transactional
-	public void fireEventToLead(String event, String leadId) {
+	public void fireEventToLead(String event, String leadId, Long userId) {
 		Lead lead = this.leadRepo.findOne(leadId);
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), lead.getId(), eventType.toString(), new Date(), 0L, "New Lead created"));//TODO 0L
+		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), lead.getId(), eventType.toString(), new Date(), userId, ""));//TODO 0L
 //		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
@@ -104,7 +104,7 @@ public class LeadService {
 	}
 
 	@Transactional
-	public Lead saveNewLead(Lead lead) {
+	public Lead saveNewLead(Lead lead, Long userId) {
 		if(lead.getClient().getId() != null && this.clientRepo.exists(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
 		}else {
@@ -115,8 +115,8 @@ public class LeadService {
 		lead.setEvent(EventType.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId());
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.getId()));
+		this.fireEventToLead(EventType.BEGIN.toString(), lead.getId(), userId);
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), lead.getId(), "New Lead created: " + lead.getId(), userId));
 		return lead;
 	}
 

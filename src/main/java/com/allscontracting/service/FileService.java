@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.LeadStatusChangeEvent;
@@ -34,23 +33,23 @@ public class FileService {
 	}*/
 
 	@SuppressWarnings("unchecked")
-	public void loadLeadFile(MultipartFile file, Vendor vendor) throws Exception {
+	public void loadLeadFile(MultipartFile file, Vendor vendor, Long userId) throws Exception {
 		if (!tradutorFinder.dispatch(vendor).isFileFromRightVendor(file.getOriginalFilename(), vendor))
 			throw new LeadsException("File and Vendor do not match.");
 		Translater<Lead> translater = (Translater<Lead>) tradutorFinder.dispatch(vendor);
 		List<Lead> leads = translater.vendorFileToLeads(file);
 		if (leads.isEmpty())
 			throw new LeadsException("Found no Leads in this file.");
-		saveAllLeads(vendor, leads);
+		saveAllLeads(vendor, leads, userId);
 	}
 
 	@Transactional
-	private void saveAllLeads(Vendor vendor, List<Lead> leads) {
+	private void saveAllLeads(Vendor vendor, List<Lead> leads, Long userId) {
 		leads.stream().forEach(lead->{
 			if(!this.leadRepo.exists(lead.getId())) {
 				lead = leadRepo.save(lead);
-				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor));
-				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), lead.getId()) );
+				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor, userId));
+				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), lead.getId(), userId) );
 			}
 		});
 	}

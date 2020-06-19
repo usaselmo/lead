@@ -4,9 +4,11 @@ import java.util.Date;
 
 import com.allscontracting.model.Lead;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+@AllArgsConstructor
 @Getter
 @ToString
 public class LeadStatusChangeEvent implements DomainEvent {
@@ -15,12 +17,7 @@ public class LeadStatusChangeEvent implements DomainEvent {
 	private final Date eventTime = new Date();
 	private String oid;
 	private String evTp;
-
-	public LeadStatusChangeEvent(String eventType, String leadId) {
-		super();
-		this.oid = leadId;
-		this.evTp = eventType;
-	}
+	private Long userId;
 
 	@Override
 	public String getEventType() {

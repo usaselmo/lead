@@ -14,5 +14,6 @@ public class AuditEvent implements DomainEvent{
 	private String objectId ;
 	private final String eventType = KEY;
 	private String message;
+	private Long userId;
 	
 }

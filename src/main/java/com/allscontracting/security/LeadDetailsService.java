@@ -18,9 +18,9 @@ public class LeadDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = this.userRepository.findUserByEmail(username);
 		if (user == null) {
-      throw new UsernameNotFoundException(username);
-  }
-  return new LeadUserDetails(user); 
+			throw new UsernameNotFoundException(username);
+		}
+		return new LeadUserDetails(user);
 	}
 
 }

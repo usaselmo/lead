@@ -43,7 +43,7 @@ public class ProposalService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public Proposal save(Proposal proposal, String leadId) throws LeadsException {
+	public Proposal save(Proposal proposal, String leadId, Long userId) throws LeadsException {
 		Lead lead = this.leadRepository.findOne(leadId);
 		proposal.setLead(lead);
 		if(proposal.getNumber()==null) {
@@ -56,18 +56,18 @@ public class ProposalService {
 			item.getLines().forEach(line->item.addLine(line)); 
 		});
 		Proposal res = this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #" + proposal.getNumber() + " created"));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #" + proposal.getNumber() + " created", userId));
 		return res;
 	}
 
 	@Transactional
-	public void delete(String leadId, String proposalId) throws NumberFormatException, LeadsException {
+	public void delete(String leadId, String proposalId, Long userId) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepository.findOne(leadId);
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #"+proposal.getNumber()+" deleted"));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #"+proposal.getNumber()+" deleted", userId));
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
@@ -87,7 +87,7 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public void sendPdfByEmail(long proposalId) throws JRException, SQLException, IOException, LeadsException {
+	public void sendPdfByEmail(long proposalId, Long userId) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
@@ -97,9 +97,9 @@ public class ProposalService {
 		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId()));
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId(), userId));
 		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), proposal.getLead().getId(), "Proposal E-mailed to " + client.getName() + ". Proposal # "
-						+ proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")"));
+						+ proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {

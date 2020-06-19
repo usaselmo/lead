@@ -25,14 +25,15 @@ public class ClientService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public Client updateClient(Client client) {
+	public Client updateClient(Client client, Long userId) {
 		Client localClient = this.clientRepo.findOne(client.getId());
 		localClient.setAddress(client.getAddress());
 		localClient.setEmail(client.getEmail());
 		localClient.setName(client.getName());
 		localClient.setPhone(client.getPhone());
 		this.eventManager.notifyAllListeners(
-				new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), "Client updated: " + localClient.toString()));
+				new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), "Client updated: " + localClient.toString(), userId)
+				);
 		return this.clientRepo.save(localClient);
 	}
 
@@ -40,16 +41,16 @@ public class ClientService {
 		return this.clientRepo.findLikeName(name);
 	}
 
-	public void sendCantReachEmail(String id, String leadId) throws IOException {
+	public void sendCantReachEmail(String id, String leadId, Long userId) throws IOException {
 		Client client = this.clientRepo.findOne(Long.valueOf(id));
 		this.mailService.sendCantReachEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Can't Reach E-mail sent to " + client.getName()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Can't Reach E-mail sent to " + client.getName(), userId));
 	}
 
-	public void sendHiringDecisionEmail(String id, String leadId) throws IOException {
+	public void sendHiringDecisionEmail(String id, String leadId, Long userId) throws IOException {
 		Client client = this.clientRepo.findOne(Long.valueOf(id));
 		this.mailService.sendHiringDecisionEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Hiring Decision Question E-mailed to " + client.getName()));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Hiring Decision Question E-mailed to " + client.getName(), userId));
 	}
 	
 }

@@ -17,6 +17,7 @@ public class VisitScheduledEvent implements DomainEvent {
 	private Lead lead;
 	private Client client;
 	private Date visitSchedule;
+	private Long userId;
 	private final String eventType = EventType.SCHEDULE_VISIT.toString();
 	private final Date eventTime = new Date();
 	private final String objectName = Lead.class.getSimpleName();

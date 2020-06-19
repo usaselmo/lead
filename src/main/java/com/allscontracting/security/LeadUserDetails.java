@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.allscontracting.model.User;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class LeadUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = -1890744816765055526L;

@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +21,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.allscontracting.event.EventManager;
-import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -69,15 +67,14 @@ public class DemoApplicationTests {
 		LocalDateTime dateTime;
 		Lead lead;
 		Client client;
-		this.leadService.scheduleAVisit("", new Date());
+		//this.leadService.scheduleAVisit("", new Date());
 	}
 
 	@Test
 	@Rollback
 	@Ignore
 	public void testEvent() throws Exception {
-		this.eventManager.notifyAllListeners(
-				new VisitScheduledEvent(Lead.builder().id("sdfsd").build(), Client.builder().id(125L).build(), new Date()));
+		//this.eventManager.notifyAllListeners(new VisitScheduledEvent(Lead.builder().id("sdfsd").build(), Client.builder().id(125L).build(), new Date()));
 	}
 
 	private static final String JASPER_FOLDER = "jasper/";

@@ -7,6 +7,7 @@ public interface DomainEvent {
 	String getObjectId();
 	String getEventType();
 	String getMessage();
+	Long getUserId();
 	default Date getEventTime() {
 		return new Date();
 	}

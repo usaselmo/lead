@@ -16,6 +16,4 @@ public class Main implements CommandLineRunner {
 		//System.out.println(this.passwordEncoder().encode("123"));
 	}
 
-  
-  
 }

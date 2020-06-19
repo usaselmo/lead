@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
+import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ClientService;
 
 @RestController
@@ -24,14 +26,14 @@ public class ClientController {
 	@Autowired ClientService clientService;
 
 	@GetMapping("{clientId}/leads/{leadId}/hiringdecision")
-	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException, NumberFormatException, LeadsException {
-		clientService.sendHiringDecisionEmail(clientId, leadId);
+	public ResponseEntity<String> sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
+		clientService.sendHiringDecisionEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 		return ResponseEntity.ok("");
 	}
 
 	@GetMapping("{clientId}/leads/{leadId}/cantreach")
-	public ResponseEntity<String> sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId) throws IOException, NumberFormatException, LeadsException {
-		clientService.sendCantReachEmail(clientId, leadId);
+	public ResponseEntity<String> sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
+		clientService.sendCantReachEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 		return ResponseEntity.ok("");
 	}
 	
@@ -42,8 +44,8 @@ public class ClientController {
 	}
 	
 	@PutMapping("")
-	public Client updateClient(@RequestBody Client client) throws LeadsException {
-		return this.clientService.updateClient(client);
+	public Client updateClient(@RequestBody Client client, @Autowired Authentication authentication) throws LeadsException {
+		return this.clientService.updateClient(client, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 	}
 	
 }

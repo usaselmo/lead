@@ -9,11 +9,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name="event_log")
 public class EventLog {
+	
 	@Id @GeneratedValue private Long id;
 	@NotNull private String objectName;
 	@NotNull private String objectId;

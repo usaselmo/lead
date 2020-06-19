@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
@@ -42,8 +44,8 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead) {
-		lead = this.leadService.saveNewLead(lead);
+	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) {
+		lead = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 		return lead;
 	}
 
@@ -65,10 +67,10 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
-	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time) {
+	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
-			this.leadService.scheduleAVisit(id, visitDateTime); 
+			this.leadService.scheduleAVisit(id, visitDateTime, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId()); 
 			return ResponseEntity.ok().body(visitDateTime);
 		} catch (ParseException e) {
 			log.error(e.getMessage());
@@ -77,13 +79,13 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event) {
+	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Authentication authentication) {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
-			this.leadService.scheduleAVisit(id, new Date());
+			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 			break;
 		default:
-			this.leadService.fireEventToLead(event, id);
+			this.leadService.fireEventToLead(event, id, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 			break;
 		}
 	}
@@ -121,9 +123,9 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "/drop")
-	public void drop() {
+	public void drop(@Autowired Authentication authentication) {
 		try {
-			leadService.drop();
+			leadService.drop( ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 		} catch (Exception e) { 
 			e.printStackTrace();
 		}

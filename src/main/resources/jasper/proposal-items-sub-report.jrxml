@@ -81,7 +81,7 @@ WHERE
 			<band/>
 		</groupHeader>
 		<groupFooter>
-			<band height="92">
+			<band height="150" splitType="Stretch">
 				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note}) || $F{call_miss_utility} > 0]]></printWhenExpression>
@@ -95,7 +95,8 @@ WHERE
 					<text><![CDATA[Notes: ]]></text>
 				</staticText>
 				<textField textAdjust="StretchHeight">
-					<reportElement stretchType="ElementGroupHeight" x="0" y="65" width="471" height="25" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b43f3d04-d09a-4512-9d43-2520467f853c">
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="60" width="471" height="90" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" uuid="b43f3d04-d09a-4512-9d43-2520467f853c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[!StringUtils.isEmpty($F{note})]]></printWhenExpression>
 					</reportElement>
 					<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
