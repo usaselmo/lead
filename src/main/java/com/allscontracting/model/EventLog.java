@@ -35,5 +35,4 @@ public class EventLog {
 		this.message = message;
 	}
 
-
 }

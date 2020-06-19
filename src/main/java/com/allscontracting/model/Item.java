@@ -29,9 +29,7 @@ public class Item implements Entity<Long>{
 
 	private static final long serialVersionUID = -7942592928182519301L;
 
-	@Id @GeneratedValue
-	private Long id;
-	
+	@Id @GeneratedValue	private Long id;
 	private String title;
 	private BigDecimal price;
 

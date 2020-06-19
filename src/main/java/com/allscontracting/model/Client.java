@@ -17,8 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name="client")
 public class Client {
 
-	@Id @GeneratedValue
-	private Long id;
+	@Id @GeneratedValue	private Long id;
 	private String email;
 	private String name;
 	private String address;
