@@ -15,7 +15,9 @@ import lombok.Data;
 @Entity
 @Table(name="profile")
 public class Profile implements Serializable{
+	
 	private static final long serialVersionUID = 301333194976675168L;
+	
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
 	@Max(value=128) private String description;
 	

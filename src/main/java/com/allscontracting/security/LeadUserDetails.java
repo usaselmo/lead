@@ -1,10 +1,11 @@
 package com.allscontracting.security;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.allscontracting.model.User;
@@ -22,8 +23,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return Collections.emptyList();
+		return this.user.getProfiles().stream().map(pf->new SimpleGrantedAuthority("ROLE_" + pf.getProfile().getDescription().toUpperCase())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -52,8 +52,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
+		return StringUtils.isNotBlank(this.user.getPassword());
 	}
 
 	@Override
