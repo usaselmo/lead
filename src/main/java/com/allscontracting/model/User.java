@@ -1,6 +1,7 @@
 package com.allscontracting.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -33,9 +35,12 @@ public class User implements Serializable {
 	private String email; 
 	
 	private String password;
-	private String name;
+	private String name; 
 	private boolean enabled;
 	
 	@ManyToOne(fetch=FetchType.LAZY) private Company company;
+
+  @OneToMany(mappedBy="user", fetch=FetchType.EAGER, orphanRemoval=true)
+  private List<UserProfile> profiles;
 
 }
