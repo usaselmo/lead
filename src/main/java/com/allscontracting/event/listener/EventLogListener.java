@@ -23,7 +23,7 @@ public class EventLogListener implements DomainListener {
 	@Transactional
 	public void update(DomainEvent de) {
 		log.info("EventLogListener fired....");
-		EventLog event = new EventLog(de.getObjectName(), de.getObjectId(), de.getEventType(), new Date(), de.getUserId(), de.getMessage()); //TODO 0L
+		EventLog event = new EventLog(de.getObjectName(), de.getObjectId(), de.getEventType(), new Date(), de.getUserId(), de.getMessage());
 		this.eventLogRepo.save(event);
 	}
 

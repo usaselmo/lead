@@ -1,7 +1,5 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 
 import javax.sql.DataSource;

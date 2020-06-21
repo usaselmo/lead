@@ -79,7 +79,7 @@ public class LeadService {
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), lead.getId(), eventType.toString(), new Date(), userId, ""));//TODO 0L
+		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), lead.getId(), eventType.toString(), new Date(), userId, ""));
 //		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
