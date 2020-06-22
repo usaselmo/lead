@@ -55,9 +55,7 @@ public class ProposalService {
 			proposal.addItem(item);
 			item.getLines().forEach(line->item.addLine(line)); 
 		});
-		Proposal res = this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Proposal #" + proposal.getNumber() + " created", userId));
-		return res;
+		return this.proposalRepository.save(proposal);
 	}
 
 	@Transactional
