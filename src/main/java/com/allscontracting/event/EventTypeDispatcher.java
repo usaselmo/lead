@@ -10,6 +10,7 @@ import static com.allscontracting.event.EventType.RECEIVE_PAYMENT;
 import static com.allscontracting.event.EventType.SCHEDULE_VISIT;
 import static com.allscontracting.event.EventType.SEND_PROPOSAL;
 import static com.allscontracting.event.EventType.SEND_INVOICE;
+import static com.allscontracting.event.EventType.ASSIGN_TO_ESTIMATOR;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,8 +24,9 @@ public class EventTypeDispatcher {
 	public List<EventType> findNextEvents(EventType event) {
 
 		EventType[] VENDOR_FILE_LOADED = { BEGIN };
-		EventType[] BEGIN_ = {EventType.CONTACT_QUALIFY, SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
-		EventType[] CONTACT_QUALIFY = {  SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] BEGIN_ = {EventType.CONTACT_QUALIFY, ASSIGN_TO_ESTIMATOR, SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] CONTACT_QUALIFY = { ASSIGN_TO_ESTIMATOR, SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
+		EventType[] ASSIGN_TO_ESTIMATOR = {SCHEDULE_VISIT, MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
 		EventType[] ESTIMATE_SCHEDULED = { MARK_AS_VISITED, CREATE_PROPOSAL, END_LEAD };
 		EventType[] MARK_AS_VISITED = { CREATE_PROPOSAL, END_LEAD };
 		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
@@ -42,6 +44,8 @@ public class EventTypeDispatcher {
 			return Arrays.asList(BEGIN_);
 		case CONTACT_QUALIFY:
 			return Arrays.asList(CONTACT_QUALIFY);
+		case ASSIGN_TO_ESTIMATOR:
+			return Arrays.asList(ASSIGN_TO_ESTIMATOR);
 		case SCHEDULE_VISIT:
 			return Arrays.asList(ESTIMATE_SCHEDULED);
 		case MARK_AS_VISITED:

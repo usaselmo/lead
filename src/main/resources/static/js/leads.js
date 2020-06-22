@@ -12,7 +12,7 @@ angular.module('leads', [])
     $scope.showLeads = true
     $scope.leads = []
     $scope.lead = {}
-    $scope.eventTypes = ['BEGIN', 'CONTACT_QUALIFY', 'SCHEDULE_VISIT', 'MARK_AS_VISITED', 'CREATE_PROPOSAL', 'SEND_PROPOSAL', 'BEGIN_WORK', 'FINISH_WORK', 'SEND_INVOICE', 'RECEIVE_PAYMENT', 'END_LEAD']
+    $scope.eventTypes = ['BEGIN', 'CONTACT_QUALIFY', 'ASSIGN_TO_ESTIMATOR', 'SCHEDULE_VISIT', 'MARK_AS_VISITED', 'CREATE_PROPOSAL', 'SEND_PROPOSAL', 'BEGIN_WORK', 'FINISH_WORK', 'SEND_INVOICE', 'RECEIVE_PAYMENT', 'END_LEAD']
     $scope.totalLeads = 0
     var pageRange = 0
     $scope.filter = ''
