@@ -42,9 +42,8 @@ angular.module('leads', [])
     $scope.sendHiringDecisionEmail = function(lead, client){
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
+    			successMessage('"Ask for Hiring Decision E-mail" sent to '+ client.name)
           findNextEventLogs(lead)
-          successMessage('"Ask for Hiring Decision E-mail" sent to '+ client.name)
-    			findLeads(pageRange, lines, $scope.filter);
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
@@ -55,9 +54,8 @@ angular.module('leads', [])
     $scope.sendCantReachEmail = function(lead, client){
     	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
-    			findNextEventLogs(lead)
     			successMessage('"Can\'t Reach E-mail" sent to '+ client.name)
-    			findLeads(pageRange, lines, $scope.filter);
+    			findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
@@ -156,7 +154,6 @@ angular.module('leads', [])
     			proposal.finished = true;
     			successMessage('Proposal #' + proposal.number + ' sent to ' + client.name)
     			findNextEventLogs(lead)
-    			findLeads(pageRange, lines, $scope.filter);
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
@@ -392,6 +389,15 @@ angular.module('leads', [])
     }
     
     $scope.reload();
+    setInterval(function(){
+  		$http.head(local_server_url).then(function (response) {
+  			if(response.status != 200){
+  				location.reload()
+  			}
+  		}, function (response) {
+  			location.reload()
+  		});
+    }, 2000);
     
   });
 
