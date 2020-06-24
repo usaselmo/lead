@@ -95,8 +95,7 @@ public class ProposalService {
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
 		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId(), userId));
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), proposal.getLead().getId(), "Proposal E-mailed to " + client.getName() + ". Proposal # "
-						+ proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), proposal.getLead().getId(), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {

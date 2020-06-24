@@ -43,7 +43,8 @@ angular.module('leads', [])
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
           findNextEventLogs(lead)
-          successMessage('E-mail has been sent to '+ client.name)
+          successMessage('"Ask for Hiring Decision E-mail" sent to '+ client.name)
+    			findLeads(pageRange, lines, $scope.filter);
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
@@ -55,7 +56,8 @@ angular.module('leads', [])
     	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
     			findNextEventLogs(lead)
-    			successMessage('E-mail has been sent to '+ client.name)
+    			successMessage('"Can\'t Reach E-mail" sent to '+ client.name)
+    			findLeads(pageRange, lines, $scope.filter);
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
@@ -147,11 +149,14 @@ angular.module('leads', [])
       });
     }
 
-    $scope.emailProposal = function (client, proposal) {
+    $scope.emailProposal = function (client, proposal, lead) {
     	if (confirm('Send Proposal #'+proposal.number+' to '+client.name+' via E-mail ? ')) {
     		$http.get(local_server_url + '/proposals/' + proposal.id + '/email').then(function (response) {
     			proposal.emailed = true;
     			proposal.finished = true;
+    			successMessage('Proposal #' + proposal.number + ' sent to ' + client.name)
+    			findNextEventLogs(lead)
+    			findLeads(pageRange, lines, $scope.filter);
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
