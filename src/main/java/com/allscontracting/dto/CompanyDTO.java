@@ -2,11 +2,15 @@ package com.allscontracting.dto;
 
 import com.allscontracting.model.Company;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CompanyDTO {
 	private Long id;
 	private String name;

@@ -5,11 +5,15 @@ import java.util.stream.Collectors;
 
 import com.allscontracting.model.User;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
 	private Long id;
 	private String email; 
@@ -19,15 +23,15 @@ public class UserDTO {
 	private CompanyDTO company;
   private List<String> profiles;
   
-	public static final UserDTO userToDTO(User u ) {
+	public static final UserDTO userToDTO(User user ) {
 		return UserDTO.builder()
-				.company(CompanyDTO.companyToDTO(u.getCompany()))
-				.email(u.getEmail())
-				.enabled(u.isEnabled())
-				.id(u.getId())
-				.name(u.getName())
+				.company(CompanyDTO.companyToDTO(user.getCompany()))
+				.email(user.getEmail())
+				.enabled(user.isEnabled())
+				.id(user.getId())
+				.name(user.getName())
 				.password("")
-				.profiles(u.getProfiles().stream().map(p->p.getProfile().getDescription()).collect(Collectors.toList()))
+				.profiles(user.getProfiles().stream().map(p->p.getProfile().getDescription()).collect(Collectors.toList()))
 				.build();
 	}
 }

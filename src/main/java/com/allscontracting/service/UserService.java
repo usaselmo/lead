@@ -21,13 +21,13 @@ public class UserService {
 		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.userToDTO(u)).collect(Collectors.toList());
 	}
 
-	public UserDTO update(User user) {
-		User dbUser = userRepo.findOne(user.getId());
-		dbUser.setEmail(user.getEmail());
-		dbUser.setEnabled(user.isEnabled());
-		dbUser.setName(user.getName());
-		dbUser.setCompany(companyRepo.findOne(user.getCompany().getId()));
-		return UserDTO.userToDTO(userRepo.save(dbUser));
+	public UserDTO update(UserDTO userDTO) {
+		User user = userRepo.findOne(userDTO.getId());
+		user.setEmail(userDTO.getEmail());
+		user.setEnabled(userDTO.isEnabled());
+		user.setName(userDTO.getName());
+		user.setCompany(companyRepo.findOne(userDTO.getCompany().getId()));
+		return UserDTO.userToDTO(userRepo.save(user));
 	}
 	
 }

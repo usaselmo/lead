@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.UserDTO;
-import com.allscontracting.model.User;
 import com.allscontracting.service.UserService;
 
 @RequestMapping("users")
@@ -26,7 +25,7 @@ public class UserController {
 	}
 	
 	@PutMapping("")
-	public UserDTO updateUser(@RequestBody User user) {
+	public UserDTO updateUser(@RequestBody UserDTO user) {
 		return this.userService.update(user);
 	}
 }
