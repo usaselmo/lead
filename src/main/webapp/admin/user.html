@@ -12,7 +12,7 @@
           </select>
         </div>
         <div class="col-sm-2">
-          <button type="button" class="btn btn-default btn-success btn-sm" style="margin-left: 32px;" ng-click="resetCurrentUser(currentUser)">New User</button>
+          <button type="button" class="btn btn-default btn-success btn-sm" style="margin-left: 32px;" ng-click="newCurrentUser(currentUser)">New User</button>
         </div>
       </div>
     </form>
@@ -20,7 +20,7 @@
 
     <hr>
 
-    <form class="form-horizontal" id="soj2948948rjfk">
+    <form class="form-horizontal" id="soj2948948rjfk" ng-if="currentUser.id">
       <div class="form-group">
         <label for="name" class="col-sm-2 control-label">Name</label>
         <div class="col-sm-10">
@@ -64,7 +64,7 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="button" class="btn btn-default btn-primary" ng-click="saveUser(currentUser)">Save</button>
-          <button type="button" class="btn btn-default">Cancel</button>
+          <button type="button" class="btn btn-default"  ng-click="resetCurrentUser(currentUser)">Cancel</button>
         </div>
       </div>
     </form>

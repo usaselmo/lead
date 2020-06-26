@@ -30,14 +30,17 @@ angular.module('leads', [])
     $scope.users = []
     $scope.companies = [];
     
+
     
+    $scope.newCurrentCompany = function(currentUser){
+    	$scope.currentCompany = {'id':-1};
+    }
     
     $scope.resetCurrentCompany = function(currentUser){
     	$scope.currentCompany = {};
     }
     
     $scope.saveCompany = function(company){
-    	console.log(company)
   		$http.put(local_server_url + '/companies', company ).then(function (response) {
   			$scope.currentCompany = response.data
   			successMessage(company.name + ' updated.')
@@ -47,7 +50,6 @@ angular.module('leads', [])
     }
     
     $scope.searchCompany = function(companyName){
-    	console.log('search company name...')
     	if(companyName.length > 2){
     		$http.get(local_server_url + '/companies/byName?companyName=' + companyName ).then(function (response) {
     			$scope.companies = response.data
@@ -75,12 +77,15 @@ angular.module('leads', [])
     	}
     }
     
+    $scope.newCurrentUser = function(currentUser){
+    	$scope.currentUser = {'id':-1};
+    }
+    
     $scope.resetCurrentUser = function(currentUser){
     	$scope.currentUser = {};
     }
     
     $scope.saveUser = function(user){
-    	console.log(user)
   		$http.put(local_server_url + '/users', user ).then(function (response) {
   			$scope.currentUser = response.data
   			successMessage(user.name + ' updated.')
