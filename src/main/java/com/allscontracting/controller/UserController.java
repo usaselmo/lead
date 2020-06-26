@@ -26,6 +26,7 @@ public class UserController {
 	
 	@PutMapping("")
 	public UserDTO updateUser(@RequestBody UserDTO user) {
-		return this.userService.update(user);
+		return this.userService.persist(user);
 	}
+	
 }
