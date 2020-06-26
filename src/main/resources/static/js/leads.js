@@ -27,6 +27,17 @@ angular.module('leads', [])
     $scope.successMessages = []
     $scope.currentUser = {}
     $scope.users = []
+    $scope.companies = [];
+    
+    $scope.searchCompanies = function(){
+    	if(!$scope.companies || $scope.companies.length <= 0){
+	  		$http.get(local_server_url + '/companies' ).then(function (response) {
+	  			$scope.companies = response.data
+	  		}, function (response) {
+	  			errorMessage(response.data)
+	  		});
+    	}
+    }
     
     $scope.resetCurrentUser = function(currentUser){
     	$scope.currentUser = {};
@@ -34,9 +45,18 @@ angular.module('leads', [])
     
     $scope.saveUser = function(user){
     	console.log(user)
+  		$http.put(local_server_url + '/users', user ).then(function (response) {
+  			$scope.currentUser = response.data
+  			successMessage(user.name + ' updated.')
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
     }
     
     $scope.searchUser = function(userName){
+    	if(!$scope.companies || $scope.companies.length <= 0){
+    		$scope.searchCompanies();
+    	}
     	if(userName.length > 2){
     		$http.get(local_server_url + '/users?userName=' + userName ).then(function (response) {
     			$scope.users = response.data
@@ -47,7 +67,6 @@ angular.module('leads', [])
     }
 
     $scope.chooseUser = function(user){
-    	console.log(user)
     	$scope.currentUser = user;
     	$scope.users = [];
     }
@@ -425,6 +444,8 @@ angular.module('leads', [])
   			location.reload()
   		});
     }, 2000);
+    
+    $scope.searchCompanies();
     
   });
 
