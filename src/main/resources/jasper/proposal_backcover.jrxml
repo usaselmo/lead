@@ -7,6 +7,7 @@
 	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="org.springframework.util.StringUtils"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.model.Proposal"/>
 	<queryString>
 		<![CDATA[]]>
@@ -36,18 +37,20 @@
 				</textElement>
 				<text><![CDATA[Payment Schedule:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="23" width="471" height="70" uuid="a351dc20-c34d-44e7-9079-be8c56e22028"/>
 				<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="151" width="220" height="19" uuid="c00ab258-bde0-4213-b23f-5ef6382249e5"/>
+				<reportElement x="0" y="151" width="220" height="19" uuid="c00ab258-bde0-4213-b23f-5ef6382249e5">
+					<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Work Warranty:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="173" width="471" height="70" uuid="486d628b-9e1e-473d-86e4-cc87438c179a"/>
 				<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
 			</textField>

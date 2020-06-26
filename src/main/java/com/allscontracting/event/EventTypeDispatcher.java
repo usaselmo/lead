@@ -32,9 +32,9 @@ public class EventTypeDispatcher {
 		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
 		EventType[] SEND_ESTIMATE = { BEGIN_WORK, END_LEAD };
 		EventType[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
-		EventType[] FINISH_WORK = { SEND_INVOICE, END_LEAD };
-		EventType[] SEND_INVOICE = { RECEIVE_PAYMENT, END_LEAD };
-		EventType[] RECEIVE_PAYMENT = { END_LEAD };
+		EventType[] FINISH_WORK = { SEND_INVOICE};
+		EventType[] SEND_INVOICE = { RECEIVE_PAYMENT};
+		EventType[] RECEIVE_PAYMENT = {};
 		EventType[] END_LEAD = {BEGIN};
 
 		switch (event) {

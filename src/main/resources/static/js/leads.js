@@ -25,6 +25,32 @@ angular.module('leads', [])
     $scope.newLead = {'client':{}}
     $scope.errorMessages = []
     $scope.successMessages = []
+    $scope.currentUser = {}
+    $scope.users = []
+    
+    $scope.resetCurrentUser = function(currentUser){
+    	$scope.currentUser = {};
+    }
+    
+    $scope.saveUser = function(user){
+    	console.log(user)
+    }
+    
+    $scope.searchUser = function(userName){
+    	if(userName.length > 2){
+    		$http.get(local_server_url + '/users?userName=' + userName ).then(function (response) {
+    			$scope.users = response.data
+    		}, function (response) {
+    			errorMessage(response.data)
+    		});
+    	}
+    }
+
+    $scope.chooseUser = function(user){
+    	console.log(user)
+    	$scope.currentUser = user;
+    	$scope.users = [];
+    }
 
     var resetMessages = function(){
       $scope.errorMessages = []
@@ -141,6 +167,7 @@ angular.module('leads', [])
     $scope.saveNote = function(lead, note){
       $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
       	$scope.lead.notes = response.data.notes
+      	note = ''
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
