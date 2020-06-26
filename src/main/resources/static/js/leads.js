@@ -26,8 +26,44 @@ angular.module('leads', [])
     $scope.errorMessages = []
     $scope.successMessages = []
     $scope.currentUser = {}
+    $scope.currentCompany = {}
     $scope.users = []
     $scope.companies = [];
+    
+    
+    
+    $scope.resetCurrentCompany = function(currentUser){
+    	$scope.currentCompany = {};
+    }
+    
+    $scope.saveCompany = function(company){
+    	console.log(company)
+  		$http.put(local_server_url + '/companies', company ).then(function (response) {
+  			$scope.currentCompany = response.data
+  			successMessage(company.name + ' updated.')
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
+    }
+    
+    $scope.searchCompany = function(companyName){
+    	console.log('search company name...')
+    	if(companyName.length > 2){
+    		$http.get(local_server_url + '/companies/byName?companyName=' + companyName ).then(function (response) {
+    			$scope.companies = response.data
+    		}, function (response) {
+    			errorMessage(response.data)
+    		});
+    	}
+    }
+
+    $scope.chooseCompany = function(company){
+    	$scope.currentCompany = company;
+    	$scope.companies = [];
+    }
+
+
+    
     
     $scope.searchCompanies = function(){
     	if(!$scope.companies || $scope.companies.length <= 0){

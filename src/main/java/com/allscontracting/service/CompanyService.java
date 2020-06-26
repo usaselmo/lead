@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.dto.CompanyDTO;
+import com.allscontracting.model.Company;
 import com.allscontracting.repo.CompanyRepository;
 
 @Service
@@ -16,6 +17,19 @@ public class CompanyService {
 	
 	public List<CompanyDTO> getCompanies(){
 		return this.companyRepo.findAll().stream().map(c->CompanyDTO.companyToDTO(c)).collect(Collectors.toList());
+	}
+
+	public List<CompanyDTO> findLikeName(String companyName) {
+		return this.companyRepo.findLikeName(companyName).stream().map(c->CompanyDTO.companyToDTO(c)).collect(Collectors.toList());
+	}
+
+	public CompanyDTO update(CompanyDTO companyDTO) {
+		Company company = this.companyRepo.findOne(companyDTO.getId());
+		company.setAddress(companyDTO.getAddress());
+		company.setEmail(companyDTO.getEmail());
+		company.setName(companyDTO.getName());
+		company.setWebsite(companyDTO.getWebsite());
+		return CompanyDTO.companyToDTO(this.companyRepo.save(company));
 	}
 	
 }

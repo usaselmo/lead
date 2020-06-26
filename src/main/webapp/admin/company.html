@@ -1,1 +1,56 @@
-Companies
+<div class="panel panel-default">
+  <div class="panel-heading">Companies</div>
+  <div class="panel-body">
+
+
+    <form class="form-horizontal" autocomplete="off">
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+          <input autofocus="autofocus" autocomplete="off" type="text" class="form-control" id="search" placeholder="Search existing Company" ng-model="currentCompanyText" ng-change="searchCompany(currentCompanyText)"> 
+          <select class="form-control" multiple="multiple" ng-if="companies.length > 0">
+            <option ng-repeat="c in companies" ng-click="chooseCompany(c)" value="{{c.id}}">{{c.name}}</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-default btn-success btn-sm" style="margin-left: 32px;" ng-click="resetCurrentCompany(currentCompany)">New Company</button>
+        </div>
+      </div>
+    </form>
+
+
+    <hr>
+
+    <form class="form-horizontal" id="soj2948948rjfk">
+      <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="name" placeholder="Name" ng-model="currentCompany.name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="currentCompany.email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputPassword3" placeholder="Address" ng-model="currentCompany.address">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword4" class="col-sm-2 control-label">Web Site</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputPassword4" placeholder="Web Site" ng-model="currentCompany.website">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="button" class="btn btn-default btn-primary" ng-click="saveCompany(currentCompany)">Save</button>
+          <button type="button" class="btn btn-default">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
