@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.EventType;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
@@ -102,7 +103,7 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "/search")
-	public List<Lead> search(@RequestParam String text) {
+	public List<LeadDTO> search(@RequestParam String text) {
 		try {
 			return this.leadService.search(text);
 		} catch (Exception e) {
@@ -112,9 +113,9 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public List<Lead> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
+	public List<LeadDTO> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
 		try {
-			List<Lead> leads = this.leadService.listLeads(pageRange, lines, eventType);
+			List<LeadDTO> leads = this.leadService.listLeads(pageRange, lines, eventType);
 			return leads;
 		} catch (Exception e) {
 			log.error(e.getMessage());

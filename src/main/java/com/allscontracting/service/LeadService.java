@@ -3,6 +3,7 @@ package com.allscontracting.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
@@ -34,14 +36,14 @@ public class LeadService {
 	@Autowired private EventoLogRepository eventLogRepo;
 	@Autowired private ClientRepository clientRepo;
 	
-	public List<Lead> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
+	public List<LeadDTO> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)
 			pageRange=0;
 		PageRequest pageable = new PageRequest(pageRange, lines, new Sort(Sort.Direction.DESC, "date") );
 		if(eventType==null)
-			return leadRepo.findAll(pageable).getContent();
+			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 		else
-			return leadRepo.findAllByEvent(pageable, eventType).getContent();
+			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 	}
 
 	public void drop(Long userId) throws Exception {
@@ -98,9 +100,9 @@ public class LeadService {
 		return lead;
 	}
 
-	public List<Lead> search(String text) {
+	public List<LeadDTO> search(String text) {
 		//limited to 100 results
-		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date")));
+		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 	}
 
 	@Transactional

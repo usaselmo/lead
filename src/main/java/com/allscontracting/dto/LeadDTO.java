@@ -27,6 +27,7 @@ public class LeadDTO {
 	
 	public static final LeadDTO leadToDTO(Lead lead) {
 		return LeadDTO.builder()
+				.id(lead.getId())
 				.vendor(lead.getVendor().toString())
 				.date(Converter.dateToString(lead.getDate()))
 				.description(lead.getDescription())
@@ -36,7 +37,7 @@ public class LeadDTO {
 				.client(ClientDTO.clientToDTO(lead.getClient()))
 				.proposals(lead.getProposals().stream().map(p->ProposalDTO.proposalToDTO(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().toString())
-				.visit(Converter.dateToString(lead.getVisit()))
+				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.build();
 	}
 }

@@ -41,8 +41,8 @@ public class ClientController {
 	}
 	
 	@PutMapping("")
-	public ClientDTO updateClient(@RequestBody ClientDTO client, @Autowired Authentication authentication) throws LeadsException {
-		return this.clientService.updateClient(client, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+	public ClientDTO updateClient(@RequestBody ClientDTO clientDTO, @Autowired Authentication authentication) throws LeadsException {
+		return this.clientService.updateClient(clientDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 	}
 	
 }
