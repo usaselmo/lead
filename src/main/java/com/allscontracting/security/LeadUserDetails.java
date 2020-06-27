@@ -23,7 +23,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.user.getProfiles().stream().map(pf->new SimpleGrantedAuthority("ROLE_" + pf.getProfile().getDescription().toUpperCase())).collect(Collectors.toList());
+		return this.user.getProfiles().stream().map(pf->new SimpleGrantedAuthority("ROLE_" + pf.getProfile().name().toUpperCase())).collect(Collectors.toList());
 	}
 
 	@Override

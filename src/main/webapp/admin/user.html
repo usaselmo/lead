@@ -56,9 +56,28 @@
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <div class="checkbox">
-            <label> <input type="checkbox" ng-model="currentUser.enabled"> Enabled
+            <label for="949j4mf9sr"> <input id="949j4mf9sr" name="949j4mf9sr" type="checkbox" ng-model="currentUser.enabled"> Enabled
             </label>
           </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+
+
+
+          <div class="panel panel-default">
+            <div class="panel-heading">Profiles</div>
+            <div class="panel-body">
+              <div class="checkbox" ng-repeat="profile in profiles">
+                {{currentUser.profiles[$index]}} - {{currentUser.profiles[profile]}} - {{profile}} <label for="{{profile}}"> <input id="{{profile}}"
+                  title="{{profile}}" value="{{profile}}" type="checkbox" ng-model="currentUser.profiles[profile]"> {{profile}}
+                </label>
+              </div>
+            </div>
+          </div>
+
+
         </div>
       </div>
       <div class="form-group">

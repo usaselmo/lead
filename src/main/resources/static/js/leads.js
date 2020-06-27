@@ -29,6 +29,15 @@ angular.module('leads', [])
     $scope.currentCompany = {}
     $scope.users = []
     $scope.companies = [];
+    $scope.profiles = [];
+    
+    var getProfiles = function(){
+  		$http.get(local_server_url + '/users/profiles').then(function (response) {
+  			$scope.profiles = response.data
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
+    }
     
 
     
@@ -86,12 +95,14 @@ angular.module('leads', [])
     }
     
     $scope.saveUser = function(user){
-  		$http.put(local_server_url + '/users', user ).then(function (response) {
+    	user.profiles.forEach(function(p, i){ console.log(p); console.log(profiles[i]);  });
+    	console.log(user)
+  		/*$http.put(local_server_url + '/users', user ).then(function (response) {
   			$scope.currentUser = response.data
   			successMessage(user.name + ' updated.')
   		}, function (response) {
   			errorMessage(response.data)
-  		});
+  		});*/
     }
     
     $scope.searchUser = function(userName){
@@ -475,7 +486,6 @@ angular.module('leads', [])
       getLeadTypes();
     }
     
-    $scope.reload();
     setInterval(function(){
   		$http.head(local_server_url).then(function (response) {
   			if(response.status != 200){
@@ -486,7 +496,9 @@ angular.module('leads', [])
   		});
     }, 2000);
     
+    $scope.reload();
     $scope.searchCompanies();
+    getProfiles();
     
   });
 

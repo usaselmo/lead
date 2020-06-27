@@ -31,7 +31,7 @@ public class UserDTO {
 				.id(user.getId())
 				.name(user.getName())
 				.password("")
-				.profiles(user.getProfiles().stream().map(p->p.getProfile().getDescription()).collect(Collectors.toList()))
+				.profiles(user.getProfiles().stream().map(p->p.getProfile().name()).collect(Collectors.toList()))
 				.build();
 	}
 }

@@ -1,6 +1,8 @@
 package com.allscontracting.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.UserDTO;
+import com.allscontracting.model.UserProfile;
 import com.allscontracting.service.UserService;
 
 @RequestMapping("users")
@@ -28,5 +31,9 @@ public class UserController {
 	public UserDTO updateUser(@RequestBody UserDTO user) {
 		return this.userService.persist(user);
 	}
-	
+
+	@GetMapping("profiles")
+	public List<String> getProfiles(){
+		return Stream.of(UserProfile.Description.values()).map(p->p.name()).collect(Collectors.toList());
+	}
 }

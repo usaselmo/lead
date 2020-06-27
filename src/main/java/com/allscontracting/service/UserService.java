@@ -39,11 +39,7 @@ public class UserService {
 		user.setName(userDTO.getName());
 		user.setPassword(passencoder.encode(userDTO.getPassword()));
 		user.setProfiles(Collections.emptyList());
-		user = this.userRepo.save(user);
-		
-		
-		
-		return null;
+		return UserDTO.userToDTO(this.userRepo.save(user));
 	}
 
 	private UserDTO update(UserDTO userDTO) {
