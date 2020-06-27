@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.dto.ClientDTO;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Client;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ClientService;
 
@@ -35,13 +35,13 @@ public class ClientController {
 	}
 	
 	@GetMapping("")
-	public List<Client> searchClient(@RequestParam String name) {
-		List<Client> res = this.clientService.findByName(name);
+	public List<ClientDTO> searchClient(@RequestParam String name) {
+		List<ClientDTO> res = this.clientService.findByName(name);
 		return res;
 	}
 	
 	@PutMapping("")
-	public Client updateClient(@RequestBody Client client, @Autowired Authentication authentication) throws LeadsException {
+	public ClientDTO updateClient(@RequestBody ClientDTO client, @Autowired Authentication authentication) throws LeadsException {
 		return this.clientService.updateClient(client, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 	}
 	

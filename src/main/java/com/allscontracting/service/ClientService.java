@@ -2,12 +2,14 @@ package com.allscontracting.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.dto.ClientDTO;
 import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.model.Client;
@@ -25,20 +27,20 @@ public class ClientService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public Client updateClient(Client client, Long userId) {
-		Client localClient = this.clientRepo.findOne(client.getId());
-		localClient.setAddress(client.getAddress());
-		localClient.setEmail(client.getEmail());
-		localClient.setName(client.getName());
-		localClient.setPhone(client.getPhone());
+	public ClientDTO updateClient(ClientDTO clientDTO, Long userId) {
+		Client client = this.clientRepo.findOne(Long.valueOf(clientDTO.getId()));
+		client.setAddress(clientDTO.getAddress());
+		client.setEmail(clientDTO.getEmail());
+		client.setName(clientDTO.getName());
+		client.setPhone(clientDTO.getPhone());
 		this.eventManager.notifyAllListeners(
-				new AuditEvent(Client.class.getSimpleName(), String.valueOf(localClient.getId()), "Client updated: " + localClient.toString(), userId)
+				new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()), "Client updated: " + client.toString(), userId)
 				);
-		return this.clientRepo.save(localClient);
+		return ClientDTO.clientToDTO(clientRepo.save(client));
 	}
 
-	public List<Client> findByName(String name) {
-		return this.clientRepo.findLikeName(name);
+	public List<ClientDTO> findByName(String name) {
+		return this.clientRepo.findLikeName(name).stream().map(c->ClientDTO.clientToDTO(c)).collect(Collectors.toList());
 	}
 
 	public void sendCantReachEmail(String id, String leadId, Long userId) throws IOException {
