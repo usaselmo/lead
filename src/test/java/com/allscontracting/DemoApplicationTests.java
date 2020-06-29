@@ -150,9 +150,10 @@ public class DemoApplicationTests {
 	
 	
 	private String getSourceFile() {
-		String fileName = JASPER_FOLDER + "proposal2" + JASPER_SUFFIX;
-		String sourceFile = ReportTest.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
-		return sourceFile;
+		//String fileName = JASPER_FOLDER + "proposal2" + JASPER_SUFFIX;
+		//String sourceFile = ReportTest.class.getClassLoader().getResource(fileName).getPath().replaceFirst("/", "");
+		//return sourceFile;
+		return "";
 	}
 
 	private HashMap<String, Object> getParams(Proposal proposal, Client client) {

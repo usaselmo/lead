@@ -322,6 +322,7 @@ angular.module('leads', [])
         }).join("\n")
         items.push(item)
       })
+      console.log($scope.originalLines)
       prop.items = items;
       return prop;
     }
@@ -334,13 +335,15 @@ angular.module('leads', [])
       prop = copy(proposal)
       var its = [];
       let ols = $scope.originalLines
+      console.log(ols)
       prop.items.forEach(item => {
         var lns = [];
         item.lines.split('\n').forEach(line => {
           lns.push({ 'description': line, 'id': ols[item.id + line] });
         })
-        its.push({ 'title': item.title, 'lines': lns, 'price': item.price });
+        its.push({'id':item.id, 'title': item.title, 'lines': lns, 'price': item.price });
       })
+      prop.items=[]
       prop.items = its
       prop.lines = null
       prop.note = proposal.note

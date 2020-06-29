@@ -35,7 +35,7 @@ public class LeadDTO {
 				.type(lead.getType())
 				.notes(lead.getNotes())
 				.client(ClientDTO.clientToDTO(lead.getClient()))
-				.proposals(lead.getProposals().stream().map(p->ProposalDTO.proposalToDTO(p)).collect(Collectors.toList()))
+				.proposals(lead.getProposals().stream().map(p->ProposalDTO.toDTO(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().toString())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.build();
