@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.dto.ResponseEntity;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Proposal;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ProposalService;
 
@@ -37,10 +37,10 @@ public class ProposalController {
 	}
 
 	@PostMapping(value = "")
-	public Proposal saveProposal(@RequestBody Proposal proposal, @RequestParam String leadId, @Autowired Authentication authentication)
+	public ProposalDTO saveProposal(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication)
 			throws IOException, LeadsException {
-		proposal =  proposalService.save(proposal, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
-		return proposal;
+		proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+		return proposalDTO;
 	}
 
 	@DeleteMapping(value = "")

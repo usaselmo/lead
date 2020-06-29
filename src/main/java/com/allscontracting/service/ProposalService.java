@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
@@ -43,7 +44,8 @@ public class ProposalService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public Proposal save(Proposal proposal, String leadId, Long userId) throws LeadsException {
+	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
+		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
 		Lead lead = this.leadRepository.findOne(leadId);
 		proposal.setLead(lead);
 		if(proposal.getNumber()==null) {
@@ -55,7 +57,8 @@ public class ProposalService {
 			proposal.addItem(item);
 			item.getLines().forEach(line->item.addLine(line)); 
 		});
-		return this.proposalRepository.save(proposal);
+		Proposal res = proposalRepository.save(proposal);
+		return ProposalDTO.toDTO(res);
 	}
 
 	@Transactional

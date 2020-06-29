@@ -1,14 +1,23 @@
 package com.allscontracting.dto;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.allscontracting.model.Proposal;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProposalDTO {
 	private String id;
 	private String number;
@@ -19,8 +28,9 @@ public class ProposalDTO {
 	private String workWarranty;
 	private boolean emailed;
 	private String note;
+	private List<ItemDTO> items;
 	
-	public static final ProposalDTO proposalToDTO(Proposal proposal) {
+	public static final ProposalDTO toDTO(Proposal proposal) {
 		return ProposalDTO.builder()
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
@@ -30,6 +40,24 @@ public class ProposalDTO {
 				.workWarranty(proposal.getWorkWarranty())
 				.emailed(proposal.isEmailed())
 				.note(proposal.getNote())
+				.items(proposal.getItems().stream().map(i->ItemDTO.toDTO(i)).collect(Collectors.toList()))
 				.build();
 	}
+	
+	public static final Proposal toProposal(ProposalDTO proposalDTO) {
+		Proposal proposal = new Proposal();
+		proposal.setId(StringUtils.isBlank(proposalDTO.getId())?null:Long.valueOf(proposalDTO.getId()));
+		proposal.setCallMissUtility(proposalDTO.isCallMissUtility());
+		proposal.setEmailed(proposalDTO.isEmailed());
+		proposal.setNote(proposalDTO.getNote()); 
+		proposal.setNumber(proposal.getNumber()==null?null:Long.valueOf(proposal.getNumber()));
+		proposal.setPaymentSchedule(proposalDTO.getPaymentSchedule());
+		proposal.setScopeOfWork(proposalDTO.getScopeOfWork());
+		proposal.setTotal(proposalDTO.getTotal()==null?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "")));
+		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
+		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
+		return proposal;
+	}
+	
+	
 }
