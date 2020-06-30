@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.CompanyDTO;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.service.CompanyService;
 
 @RestController
@@ -31,7 +32,7 @@ public class CompanyController {
 	}
 	
 	@PutMapping
-	public CompanyDTO updateCompany(@RequestBody CompanyDTO companyDTO) {
+	public CompanyDTO updateCompany(@RequestBody CompanyDTO companyDTO) throws LeadsException {
 		return companyService.update(companyDTO);
 	}
 

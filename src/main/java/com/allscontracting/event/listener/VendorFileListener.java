@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import com.allscontracting.event.DomainEvent;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.VendorFileLoadedEvent;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.ClientRepository;
@@ -44,7 +45,7 @@ public class VendorFileListener implements DomainListener {
 	private void verifyPhoneNumber(Client clientFromEvent) {
 		try {
 			if (clientFromEvent.getId() != null) {
-				Client client = clientRepo.findOne(clientFromEvent.getId());
+				Client client = clientRepo.findById(clientFromEvent.getId()).orElseThrow(()->new LeadsException("Client not found"));
 				if(client != null){
 					final String p1 = clientFromEvent.getPhone();
 					final String p2 = clientFromEvent.getCellPhone();

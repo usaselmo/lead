@@ -4,6 +4,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +27,7 @@ public class Client {
 	private String phone;
 	
 	public String getPhone() {
-		return phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);
+		return StringUtils.isBlank(phone)?"":phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);
 	}
 
 	public void setPhone(String phone) {

@@ -46,7 +46,7 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
 		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
-		Lead lead = this.leadRepository.findOne(leadId);
+		Lead lead = this.leadRepository.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		if(proposal.getNumber()==null) {
 			long number = lead.getProposals().size();
@@ -63,15 +63,15 @@ public class ProposalService {
 
 	@Transactional
 	public void delete(String leadId, String proposalId, Long userId) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepository.findOne(leadId);
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
+		Lead lead = this.leadRepository.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(()->new LeadsException("Proposal not found"));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId )).orElseThrow(()->new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
@@ -79,7 +79,7 @@ public class ProposalService {
 	}
 
 	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId ));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId )).orElseThrow(()->new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "rtf");
@@ -88,7 +88,7 @@ public class ProposalService {
 
 	@Transactional
 	public void sendPdfByEmail(long proposalId, Long userId) throws JRException, SQLException, IOException, LeadsException {
-		Proposal proposal = this.proposalRepository.findOne(Long.valueOf(proposalId));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(()->new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");

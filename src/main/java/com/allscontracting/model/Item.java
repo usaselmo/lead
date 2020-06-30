@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -29,7 +30,7 @@ public class Item implements Entity<Long>{
 
 	private static final long serialVersionUID = -7942592928182519301L;
 
-	@Id @GeneratedValue	private Long id;
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
 	private String title;
 	private BigDecimal price;
 

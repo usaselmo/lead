@@ -2,6 +2,7 @@ package com.allscontracting.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -23,8 +24,7 @@ public class Line implements Entity<Long> {
 
 	private static final long serialVersionUID = -8805126155137619614L;
 
-	@Id
-	@GeneratedValue
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 
 	private String description;

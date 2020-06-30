@@ -19,6 +19,7 @@ import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.EventTypeDispatcher;
 import com.allscontracting.event.VisitScheduledEvent;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -58,8 +59,8 @@ public class LeadService {
 			return this.leadRepo.countByEvent(eventType);
 	}
 
-	public List<EventType> findNextEvents(String leadId) {
-		Lead lead = this.leadRepo.findOne(leadId);
+	public List<EventType> findNextEvents(String leadId) throws LeadsException {
+		Lead lead = this.leadRepo.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
 		EventType currentEvent = lead.getEvent();
 		if(null == currentEvent)
 			currentEvent = EventType.BEGIN;
@@ -67,8 +68,8 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void scheduleAVisit(String leadId, Date visitDateTime, Long userId) {
-		Lead lead = this.leadRepo.findOne(leadId);
+	public void scheduleAVisit(String leadId, Date visitDateTime, Long userId) throws LeadsException {
+		Lead lead = this.leadRepo.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
 		lead.setEvent(EventType.SCHEDULE_VISIT);
 		this.leadRepo.save(lead);
@@ -76,8 +77,8 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void fireEventToLead(String event, String leadId, Long userId) {
-		Lead lead = this.leadRepo.findOne(leadId);
+	public void fireEventToLead(String event, String leadId, Long userId) throws LeadsException {
+		Lead lead = this.leadRepo.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
@@ -93,8 +94,8 @@ public class LeadService {
 		return this.leadRepo.findProposals(leadId);
 	}
 
-	public Lead addNewNote(String leadId, String note) {
-		Lead lead = this.leadRepo.findOne(leadId);
+	public Lead addNewNote(String leadId, String note) throws LeadsException {
+		Lead lead = this.leadRepo.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.addNote(note);
 		lead = this.leadRepo.save(lead);
 		return lead;
@@ -106,9 +107,9 @@ public class LeadService {
 	}
 
 	@Transactional
-	public Lead saveNewLead(Lead lead, Long userId) {
-		if(lead.getClient().getId() != null && this.clientRepo.exists(lead.getClient().getId())) {
-			lead.setClient(this.clientRepo.findOne(lead.getClient().getId()));
+	public Lead saveNewLead(Lead lead, Long userId) throws LeadsException {
+		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
+			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Client not found")));
 		}else {
 			lead.setClient(this.clientRepo.save(lead.getClient()));
 		}

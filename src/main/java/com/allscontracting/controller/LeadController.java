@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.EventType;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
@@ -45,13 +46,13 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) {
+	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) throws LeadsException {
 		lead = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
 		return lead;
 	}
 
 	@PostMapping(value = "{id}/addNote")
-	public Lead addNewNote(@PathVariable String id, @RequestBody String note) {
+	public Lead addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
 			Lead lead = this.leadService.addNewNote(id, note);
 			return lead;
 	}
@@ -68,7 +69,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
-	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) {
+	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 			this.leadService.scheduleAVisit(id, visitDateTime, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId()); 
@@ -80,7 +81,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Authentication authentication) {
+	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Authentication authentication) throws LeadsException {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
