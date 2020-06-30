@@ -35,7 +35,7 @@ public class ItemDTO {
 	
 	public static final Item toItem(ItemDTO itemDTO) {
 		Item item = new Item();
-		item.setId(itemDTO.getId()==null?null:Long.valueOf(itemDTO.getId()));
+		item.setId(StringUtils.isBlank(itemDTO.getId())?null:Long.valueOf(itemDTO.getId()));
 		item.setLines(itemDTO.getLines().stream().map(l->LineDTO.toLine(l)).collect(Collectors.toList()));
 		item.setPrice(StringUtils.isBlank(itemDTO.getPrice())?BigDecimal.ZERO:new BigDecimal(itemDTO.getPrice().replace("$", "")));
 		item.setTitle(itemDTO.getTitle());

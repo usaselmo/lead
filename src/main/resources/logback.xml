@@ -24,12 +24,12 @@
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
   
-<!--   <logger name="org.springframework" level="INFO">
+   <logger name="org.springframework" level="DEBUG">
     <appender-ref ref="CONSOLE" />
-    <appender-ref ref="FILE" />
+    <!-- <appender-ref ref="FILE" /> -->
   </logger>
 
-  COM
+<!--  COM
   <logger name="com" level="ERROR">
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="FILE" />

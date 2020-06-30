@@ -489,15 +489,18 @@ angular.module('leads', [])
       getLeadTypes();
     }
     
-    setInterval(function(){
-  		$http.head(local_server_url).then(function (response) {
-  			if(response.status != 200){
-  				location.reload()
-  			}
-  		}, function (response) {
-  			location.reload()
-  		});
-    }, 2000);
+    
+    var checkAlive = function(){
+    	setInterval(function(){
+    		$http.head(local_server_url).then(function (response) {
+    			if(response.status != 200){
+    				location.reload()
+    			}
+    		}, function (response) {
+    			location.reload()
+    		});
+    	}, 2000);
+    }
     
     $scope.reload();
     $scope.searchCompanies();
