@@ -7,11 +7,15 @@ import java.util.stream.Collectors;
 import com.allscontracting.model.Lead;
 import com.allscontracting.service.Converter;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LeadDTO {
 	private String id;
 	private String vendor;

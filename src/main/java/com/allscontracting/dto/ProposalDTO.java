@@ -59,5 +59,4 @@ public class ProposalDTO {
 		return proposal;
 	}
 	
-	
 }
