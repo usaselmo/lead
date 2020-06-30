@@ -53,7 +53,7 @@ public class ProposalDTO {
 		proposal.setNumber(proposal.getNumber()==null?null:Long.valueOf(proposal.getNumber()));
 		proposal.setPaymentSchedule(proposalDTO.getPaymentSchedule());
 		proposal.setScopeOfWork(proposalDTO.getScopeOfWork());
-		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "")));
+		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
 		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
 		return proposal;
