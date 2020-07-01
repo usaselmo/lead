@@ -96,7 +96,7 @@ angular.module('leads', [])
     
     $scope.saveUser = function(user){
     	user.profiles.forEach(function(p, i){ console.log(p); console.log(profiles[i]);  });
-    	console.log(user)
+    	/*console.log(user)*/
   		/*$http.put(local_server_url + '/users', user ).then(function (response) {
   			$scope.currentUser = response.data
   			successMessage(user.name + ' updated.')
@@ -322,7 +322,6 @@ angular.module('leads', [])
         }).join("\n")
         items.push(item)
       })
-      console.log($scope.originalLines)
       prop.items = items;
       return prop;
     }
@@ -335,7 +334,6 @@ angular.module('leads', [])
       prop = copy(proposal)
       var its = [];
       let ols = $scope.originalLines
-      console.log(ols)
       prop.items.forEach(item => {
         var lns = [];
         item.lines.split('\n').forEach(line => {

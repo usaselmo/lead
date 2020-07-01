@@ -50,7 +50,7 @@ public class ProposalDTO {
 		proposal.setCallMissUtility(proposalDTO.isCallMissUtility());
 		proposal.setEmailed(proposalDTO.isEmailed());
 		proposal.setNote(proposalDTO.getNote()); 
-		proposal.setNumber(proposal.getNumber()==null?null:Long.valueOf(proposal.getNumber()));
+		proposal.setNumber(StringUtils.isBlank(proposalDTO.getNumber())?null:Long.valueOf(proposalDTO.getNumber()));
 		proposal.setPaymentSchedule(proposalDTO.getPaymentSchedule());
 		proposal.setScopeOfWork(proposalDTO.getScopeOfWork());
 		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
