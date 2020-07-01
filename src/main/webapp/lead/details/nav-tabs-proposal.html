@@ -22,24 +22,32 @@
           <td><a href="proposals/{{prop.id}}/pdf" ><span class="glyphicon glyphicon-download-alt" title="Download PDF" aria-hidden="true"></span></a></td>
           <td><a href="proposals/{{prop.id}}/rtf" ><span class="glyphicon glyphicon-download-alt" title="Download RTF" aria-hidden="true"></span></a></td>
           <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(lead.client, prop, lead)">Email Proposal</a>&nbsp;</td>
-          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" >Edit</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" data-toggle="modal" data-target="#myModal">Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
         </tr>
       </tbody>
     </table>
-    <div id="accordion">
-      <div class="card">
-        <div class="card-header" id="headingTwo">
-          <p class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" id="oiwk4397849jj9"
-            aria-expanded="false" aria-controls="collapseTwo">Create/Edit Proposal</button>
-          </p>
-        </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-          <div class="card-body">
-            
-             
-            
+    
+    
+    
+    
+    
+    
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit/ Create Proposal</h4>
+      </div>
+      <div class="modal-body">
+
                 <form action="#">
                   <input type="hidden" ng-model="currentProposal.number" >
                   <div ng-repeat="item in currentProposal.items ">
@@ -103,9 +111,39 @@
                 </form>
                 <button type="button" class="btn btn-primary" ng-click="saveProposal(lead, currentProposal)">Save Proposal</button>
                 <button type="button" class="btn btn-outline-secondary" ng-click="currentProposal = createNewProposal() ">Cancel</button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    
+    
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <p class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" id="oiwk4397849jj9"
+            aria-expanded="false" aria-controls="collapseTwo">Create/Edit Proposal</button>
+          </p>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
           </div>
         </div>
       </div>
     </div>
+    
+    
+    
+    
   </div>
 </div>

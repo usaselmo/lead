@@ -9,21 +9,29 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @Entity
-@Table(name="event_log")
+@Table(name = "event_log")
 public class EventLog {
-	
-	@Id @GeneratedValue private Long id;
-	@NotNull private String objectName;
-	@NotNull private String objectId;
-	@NotNull private String eventType;
-	@NotNull private Date eventTime;
+
+	@Id
+	@GeneratedValue
+	private Long id;
+	@NotNull
+	private String objectName;
+	@NotNull
+	private String objectId;
+	@NotNull
+	private String eventType;
+	@NotNull
+	private Date eventTime;
 	private Long userId;
 	private String message;
+
+	public EventLog() {
+		super();
+	}
 
 	public EventLog(String objectName, String objectId, String eventType, Date eventTime, Long userId, String message) {
 		super();
