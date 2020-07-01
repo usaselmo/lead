@@ -29,14 +29,12 @@
       <div class="col-sm-3">
         <strong>Mark an Event</strong>
         <div class="list-group" >
-          <span ng-repeat="event in lead.nextEvents">
-          <span ng-switch="event">
-            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event}}</a>
-            <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
-          </span></span>
+          <span ng-repeat="event in lead.nextEvents" ng-switch="event">
+            <a style="padding: 4px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event}}</a>
+            <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
+          </span>
         </div>
       </div>
-
 
       <!-- BOTTOM NAV TABS -->
       <div class="col-sm-12">
