@@ -21,13 +21,13 @@
           <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /></td>
           <td><a href="proposals/{{prop.id}}/pdf"><span class="glyphicon glyphicon-download-alt" title="Download PDF" aria-hidden="true"></span></a></td>
           <td><a href="proposals/{{prop.id}}/rtf"><span class="glyphicon glyphicon-download-alt" title="Download RTF" aria-hidden="true"></span></a></td>
-          <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(lead.client, prop, lead)">Email Proposal</a>&nbsp;</td>
+          <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(lead.client, prop, lead)">Email Proposal #{{prop.number}}</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" data-toggle="modal" data-target="#Ij3738hH33">Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
         </tr>
       </tbody>
     </table>
-    <a href="#" class="btn btn-sml btn-default" ng-click="createNewProposal()" data-toggle="modal" data-target="#Ij3738hH33">Create Proposal</a>
+    <a href="#" class="btn btn-sml btn-default" ng-click="createProposal()" data-toggle="modal" data-target="#Ij3738hH33">Create Proposal</a>
     <div ng-include="'lead/details/nav-tabs-proposal-modal-edit-create.html'"></div>
   </div>
 </div>

@@ -30,6 +30,7 @@ angular.module('leads', [])
     $scope.users = []
     $scope.companies = [];
     $scope.profiles = [];
+    $scope.currentProposal = {}
     
     var getProfiles = function(){
   		$http.get(local_server_url + '/users/profiles').then(function (response) {
@@ -260,7 +261,7 @@ angular.module('leads', [])
     }
 
 
-    $scope.createNewProposal = function () {
+    $scope.createProposal = function () {
       var prop = {
         'items': [{}],
         'callMissUtility': true,
@@ -272,7 +273,7 @@ angular.module('leads', [])
       return prop;
     }
 
-    $scope.currentProposal = $scope.createNewProposal();
+    $scope.currentProposal = $scope.createProposal();
 
     $scope.deleteProposal = function (lead, proposal, saveProp) {
       $http.delete(local_server_url + "/proposals?leadId=" + lead.id + '&proposalId=' + proposal.id).then(function (response) {
@@ -299,7 +300,7 @@ angular.module('leads', [])
     		$http.post(local_server_url + "/proposals?leadId=" + lead.id, prop).then(function (response) {
     			lead.proposals = lead.proposals.filter(function (value, index, arr) { return value != prop; })
     			$scope.lead.proposals.push(response.data)
-    			$scope.currentProposal = $scope.createNewProposal()
+    			$scope.currentProposal = $scope.createProposal()
     			angular.element(document.querySelector('#oiwk4397849jj9')).click()
     		}, function (response) {
     			console.log(response)
