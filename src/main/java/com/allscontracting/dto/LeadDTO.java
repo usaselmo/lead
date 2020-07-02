@@ -6,8 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.util.comparator.Comparators;
-
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.Converter;
