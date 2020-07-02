@@ -17,7 +17,7 @@
       <tbody>
         <tr ng-repeat="prop in lead.proposals">
           <th scope="row">{{prop.number}}</th>
-          <td>{{prop.total | currency}}</td>
+          <td>{{prop.total}}</td>
           <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /></td>
           <td><a href="proposals/{{prop.id}}/pdf"><span class="glyphicon glyphicon-download-alt" title="Download PDF" aria-hidden="true"></span></a></td>
           <td><a href="proposals/{{prop.id}}/rtf"><span class="glyphicon glyphicon-download-alt" title="Download RTF" aria-hidden="true"></span></a></td>

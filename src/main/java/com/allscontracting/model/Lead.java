@@ -54,7 +54,7 @@ public class Lead implements Entity<String> {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
 
-  @OneToMany(mappedBy = "lead", fetch = FetchType.EAGER, orphanRemoval = true)
+  @OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Proposal> proposals;
 
   @NotNull

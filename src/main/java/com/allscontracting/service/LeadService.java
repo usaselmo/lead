@@ -40,7 +40,7 @@ public class LeadService {
 	public List<LeadDTO> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)
 			pageRange=0;
-		PageRequest pageable = new PageRequest(pageRange, lines, new Sort(Sort.Direction.DESC, "date") );
+		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date") );
 		if(eventType==null)
 			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 		else
