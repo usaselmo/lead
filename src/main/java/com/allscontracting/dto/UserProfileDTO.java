@@ -13,11 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserProfileDTO {
 	private Long id;
+	private Long userId;
 	private String profile;
 	
 	public final static UserProfileDTO toDTO(UserProfile userProfile) {
 		return UserProfileDTO.builder()
 		.id(userProfile.getId())
+		.userId(userProfile.getUser().getId())
 		.profile(userProfile.getProfile().toString())
 		.build();
 	}

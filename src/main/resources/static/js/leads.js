@@ -113,13 +113,13 @@ angular.module('leads', [])
     $scope.saveUser = function(user){
     	console.log($scope.profiles)
     	console.log(user.profiles)
-    	var profs = [];
+    	/*var profs = [];
     	for (var i = 0; i < $scope.profiles.length; i++) {
     		var name = $scope.profiles[i]
     		if(user.profiles.name)
     			profs.push($scope.profiles[i])
     	}
-    	console.log(profs)
+    	console.log(profs)*/
     	//user.profiles.forEach(function(p, i){ console.log(p); console.log(profiles[i]);  });
     	/* console.log(user) */
   		/*$http.put(local_server_url + '/users', user ).then(function (response) {
@@ -529,7 +529,7 @@ angular.module('leads', [])
     $scope.searchCompanies();
     getProfiles();
     getEstimators();
-    checkAlive();
+    //checkAlive();
     
   });
 
