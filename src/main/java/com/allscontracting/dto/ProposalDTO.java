@@ -35,6 +35,7 @@ public class ProposalDTO {
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
 				.total(NumberFormat.getCurrencyInstance().format(proposal.getTotal()))
+				.scopeOfWork(proposal.getScopeOfWork())
 				.callMissUtility(proposal.isCallMissUtility())
 				.paymentSchedule(proposal.getPaymentSchedule())
 				.workWarranty(proposal.getWorkWarranty())
