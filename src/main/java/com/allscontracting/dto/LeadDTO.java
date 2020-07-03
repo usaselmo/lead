@@ -32,6 +32,7 @@ public class LeadDTO {
 	private String event;//EventType
 	private String visit;
 	private String lastProposalTotal;
+	private UserDTO estimator;
 	
 	public static final LeadDTO leadToDTO(Lead lead) {
 		return LeadDTO.builder()
@@ -47,6 +48,7 @@ public class LeadDTO {
 				.event(lead.getEvent().toString())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.lastProposalTotal(  getLastProposalTotal(lead)  )
+				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.toDTO(lead.getEstimator()))
 				.build();
 	}
 

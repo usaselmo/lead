@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-	private Long id;
+	private String id;
 	private String email; 
 	private String password;
 	private String name; 
@@ -28,7 +28,7 @@ public class UserDTO {
 				.company(CompanyDTO.companyToDTO(user.getCompany()))
 				.email(user.getEmail())
 				.enabled(user.isEnabled())
-				.id(user.getId())
+				.id(String.valueOf(user.getId()))
 				.name(user.getName())
 				.password("")
 				.profiles(user.getProfiles().stream().map(p->UserProfileDTO.toDTO(p)).collect(Collectors.toList()))

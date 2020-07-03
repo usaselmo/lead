@@ -60,6 +60,9 @@ public class Lead implements Entity<String> {
   @NotNull
 	@Enumerated(EnumType.STRING)
 	private EventType event;
+  
+	@ManyToOne(cascade = CascadeType.ALL)
+  private User estimator;
 
 	public enum Vendor {
 		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL

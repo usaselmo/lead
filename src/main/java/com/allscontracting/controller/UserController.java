@@ -37,4 +37,9 @@ public class UserController {
 	public List<String> getProfiles(){
 		return Stream.of(UserProfile.Description.values()).map(p->p.name()).collect(Collectors.toList());
 	}
+	
+	@GetMapping("estimators")
+	public List<UserDTO> getEstimators(){
+		return userService.findEstimators();
+	}
 }

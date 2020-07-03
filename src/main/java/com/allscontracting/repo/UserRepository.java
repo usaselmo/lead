@@ -13,5 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	@Query("SELECT u FROM User u WHERE u.name LIKE %?1% ORDER BY u.name")
 	List<User> findLikeName(String name);
+
+	@Query("SELECT u FROM User u WHERE u.id IN (SELECT up.user.id FROM UserProfile up WHERE up.profile = 'ESTIMATOR' ) ORDER BY u.name")
+	List<User> findEstimators();
 	
 }

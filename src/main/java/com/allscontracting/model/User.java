@@ -38,9 +38,9 @@ public class User implements Serializable {
 	private String name; 
 	private boolean enabled;
 	
-	@ManyToOne(fetch=FetchType.LAZY) private Company company;
+	@ManyToOne(fetch=FetchType.EAGER) private Company company;
 
   @OneToMany(mappedBy="user", fetch=FetchType.EAGER, orphanRemoval=true)
   private List<UserProfile> profiles;
-
+  
 }

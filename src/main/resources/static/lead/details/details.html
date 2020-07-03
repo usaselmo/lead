@@ -20,6 +20,9 @@
         <p ng-if="lead.visit">
           Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
         </p>
+        <p ng-if="lead.estimator.id">
+          Estimator: <strong>{{lead.estimator.name}}</strong>
+        </p>
       </div>
       <div class="col-sm-4">
         {{lead.date | date:'MMMM dd, yyyy'}}<br><small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
@@ -31,6 +34,7 @@
         <div class="list-group" >
           <span ng-repeat="event in lead.nextEvents" ng-switch="event">
             <a style="padding: 4px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event}}</a>
+            <a style="padding: 4px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" data-toggle="modal" data-target="#assignModal" href="#" class="list-group-item">{{event}}</a>
             <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
           </span>
         </div>
@@ -47,9 +51,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="scheduleModal" tabindex="-10" role="dialog" aria-labelledby="scheduleModalLabel" aria-hidden="true"
-  ng-include="'lead/details/schedule-modal.html'"></div>
-
-<div class="modal fade" id="editModal" tabindex="-20" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true"
-  ng-include="'lead/details/edit-modal.html'"></div>
+<div class="modal fade" id="scheduleModal" tabindex="-10" role="dialog" aria-labelledby="scheduleModalLabel" aria-hidden="true" ng-include="'lead/details/schedule-modal.html'"></div>
+<div class="modal fade" id="assignModal" tabindex="-15" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true" ng-include="'lead/details/assign-modal.html'"></div>
+<div class="modal fade" id="editModal" tabindex="-20" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" ng-include="'lead/details/edit-modal.html'"></div>
   

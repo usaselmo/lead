@@ -44,12 +44,16 @@ public class UserService {
 	}
 
 	private UserDTO update(UserDTO userDTO) throws LeadsException {
-		User user = userRepo.findById(userDTO.getId()).orElseThrow(()->new LeadsException("User not found"));
+		User user = userRepo.findById(Long.valueOf(userDTO.getId())).orElseThrow(()->new LeadsException("User not found"));
 		user.setEmail(userDTO.getEmail());
 		user.setEnabled(userDTO.isEnabled());
 		user.setName(userDTO.getName());
 		user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("User not found")));
 		return UserDTO.toDTO(userRepo.save(user));
+	}
+
+	public List<UserDTO> findEstimators() {
+		return userRepo.findEstimators().stream().map(e->UserDTO.toDTO(e)).collect(Collectors.toList());
 	}
 	
 }

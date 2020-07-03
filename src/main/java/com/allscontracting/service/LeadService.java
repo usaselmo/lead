@@ -3,6 +3,7 @@ package com.allscontracting.service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -23,9 +24,11 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
+import com.allscontracting.model.User;
 import com.allscontracting.repo.ClientRepository;
 import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.repo.UserRepository;
 import com.allscontracting.tradutor.impl.NetworxLeadTranslaterImpl;
 
 @Service
@@ -36,6 +39,7 @@ public class LeadService {
 	@Autowired private EventManager eventManager;
 	@Autowired private EventoLogRepository eventLogRepo;
 	@Autowired private ClientRepository clientRepo;
+	@Autowired private UserRepository userRepo;
 	
 	public List<LeadDTO> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)
@@ -125,6 +129,13 @@ public class LeadService {
 
 	public List<String> getLeadTypes() {
 		return this.leadRepo.findByType(); 
+	}
+
+	public LeadDTO assignEstimator(String leadId, String estimatorId) throws LeadsException {
+		Lead lead = leadRepo.findById(leadId).orElseThrow(() -> new LeadsException("Lead not found"));
+		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
+		lead.setEstimator(estimator);
+		return LeadDTO.leadToDTO(leadRepo.save(lead));
 	}
 
 }

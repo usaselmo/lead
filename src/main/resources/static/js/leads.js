@@ -31,6 +31,31 @@ angular.module('leads', [])
     $scope.companies = [];
     $scope.profiles = [];
     $scope.currentProposal = {}
+    $scope.estimators = []
+    
+    $scope.assignToEstimator = function(lead, estimatorId){
+    	console.log(lead.id)
+    	console.log(estimatorId)
+  		$http.put(local_server_url + '/leads/'+lead.id+'/estimator/' + estimatorId).then(function (response) {
+  			lead = response.data
+  			const elementsIndex = $scope.leads.findIndex(element => element.id == lead.id )
+  			let newArray = [...$scope.leads]
+  			newArray[elementsIndex] = {...newArray[elementsIndex], completed: !newArray[elementsIndex].completed}
+  			$scope.leads = newArray
+  			
+  			console.log(response.data)
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
+    }
+   
+    var getEstimators = function(){
+  		$http.get(local_server_url + '/users/estimators').then(function (response) {
+  			$scope.estimators = response.data
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
+    }
     
     var getProfiles = function(){
   		$http.get(local_server_url + '/users/profiles').then(function (response) {
@@ -39,8 +64,6 @@ angular.module('leads', [])
   			errorMessage(response.data)
   		});
     }
-    
-
     
     $scope.newCurrentCompany = function(currentUser){
     	$scope.currentCompany = {'id':-1};
@@ -513,6 +536,7 @@ angular.module('leads', [])
     $scope.reload();
     $scope.searchCompanies();
     getProfiles();
+    getEstimators();
     
   });
 
