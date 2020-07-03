@@ -34,16 +34,8 @@ angular.module('leads', [])
     $scope.estimators = []
     
     $scope.assignToEstimator = function(lead, estimatorId){
-    	console.log(lead.id)
-    	console.log(estimatorId)
   		$http.put(local_server_url + '/leads/'+lead.id+'/estimator/' + estimatorId).then(function (response) {
   			lead = response.data
-  			const elementsIndex = $scope.leads.findIndex(element => element.id == lead.id )
-  			let newArray = [...$scope.leads]
-  			newArray[elementsIndex] = {...newArray[elementsIndex], completed: !newArray[elementsIndex].completed}
-  			$scope.leads = newArray
-  			
-  			console.log(response.data)
   		}, function (response) {
   			errorMessage(response.data)
   		});
@@ -537,6 +529,7 @@ angular.module('leads', [])
     $scope.searchCompanies();
     getProfiles();
     getEstimators();
+    checkAlive();
     
   });
 
