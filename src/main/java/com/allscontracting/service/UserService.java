@@ -21,7 +21,7 @@ public class UserService {
 	@Autowired CompanyRepository companyRepo;
 	
 	public List<UserDTO> findLikeName(String name){
-		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.userToDTO(u)).collect(Collectors.toList());
+		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.toDTO(u)).collect(Collectors.toList());
 	}
 
 	public UserDTO persist(UserDTO userDTO) throws LeadsException {
@@ -40,7 +40,7 @@ public class UserService {
 		user.setName(userDTO.getName());
 		user.setPassword(passencoder.encode(userDTO.getPassword()));
 		user.setProfiles(Collections.emptyList());
-		return UserDTO.userToDTO(this.userRepo.save(user));
+		return UserDTO.toDTO(this.userRepo.save(user));
 	}
 
 	private UserDTO update(UserDTO userDTO) throws LeadsException {
@@ -49,7 +49,7 @@ public class UserService {
 		user.setEnabled(userDTO.isEnabled());
 		user.setName(userDTO.getName());
 		user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("User not found")));
-		return UserDTO.userToDTO(userRepo.save(user));
+		return UserDTO.toDTO(userRepo.save(user));
 	}
 	
 }

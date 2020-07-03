@@ -21,9 +21,9 @@ public class UserDTO {
 	private String name; 
 	private boolean enabled;
 	private CompanyDTO company;
-  private List<String> profiles;
+  private List<UserProfileDTO> profiles;
   
-	public static final UserDTO userToDTO(User user ) {
+	public static final UserDTO toDTO(User user ) {
 		return UserDTO.builder()
 				.company(CompanyDTO.companyToDTO(user.getCompany()))
 				.email(user.getEmail())
@@ -31,7 +31,7 @@ public class UserDTO {
 				.id(user.getId())
 				.name(user.getName())
 				.password("")
-				.profiles(user.getProfiles().stream().map(p->p.getProfile().name()).collect(Collectors.toList()))
+				.profiles(user.getProfiles().stream().map(p->UserProfileDTO.toDTO(p)).collect(Collectors.toList()))
 				.build();
 	}
 }
