@@ -40,7 +40,7 @@ public class LeadDTO {
 				.vendor(lead.getVendor().toString())
 				.date(Converter.dateToString(lead.getDate()))
 				.description(lead.getDescription())
-				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee()))
+				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee())) 
 				.type(lead.getType())
 				.notes(lead.getNotes())
 				.client(ClientDTO.clientToDTO(lead.getClient()))
