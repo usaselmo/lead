@@ -45,7 +45,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 
 	private void buildLead(ArrayList<Lead> leads, Iterator<Element> iterator) throws LeadsException {
 		leads.add(Lead.builder()
-			.id(iterator.next().html())
+			.oldid(iterator.next().html())
 			.vendor(Vendor.HOME_ADVISOR)
 			.date(Converter.convertToDate(iterator.next().html()))
 			.description(removeSymbol(iterator.next().html()))

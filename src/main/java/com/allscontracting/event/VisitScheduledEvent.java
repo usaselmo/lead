@@ -24,7 +24,7 @@ public class VisitScheduledEvent implements DomainEvent {
 	
 	@Override
 	public String getObjectId() {
-		return this.lead.getId();
+		return String.valueOf(lead.getId());
 	}
 
 	@Override

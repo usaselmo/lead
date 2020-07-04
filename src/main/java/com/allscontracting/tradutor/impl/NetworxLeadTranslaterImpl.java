@@ -92,7 +92,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 	private Lead buildLead(String[] splitedLine) {
 		try {
 			Lead lead = Lead.builder()
-					.id(defineId(splitedLine))
+					.oldid(defineId(splitedLine))
 					.vendor(getVendor())
 					.date(Converter.convertToDate(splitedLine[NX_Date]))
 					.description(removeSymbol(splitedLine[NX_Additional_Information]))

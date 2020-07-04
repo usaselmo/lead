@@ -23,7 +23,7 @@ public class VendorFileLoadedEvent implements DomainEvent {
 
 	@Override
 	public String getObjectId() {
-		return leadLoaded.getId();
+		return String.valueOf(leadLoaded.getId());
 	}
 
 	@Override

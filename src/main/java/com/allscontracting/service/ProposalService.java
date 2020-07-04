@@ -47,7 +47,7 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
 		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
-		Lead lead = this.leadRepository.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
+		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		if(proposal.getNumber()==null) {
 			long number = lead.getProposals().size();
@@ -65,7 +65,7 @@ public class ProposalService {
 
 	@Transactional
 	public void delete(String leadId, String proposalId, Long userId) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepository.findById(leadId).orElseThrow(()->new LeadsException("Lead not found"));
+		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(()->new LeadsException("Proposal not found"));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
@@ -99,8 +99,8 @@ public class ProposalService {
 		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), proposal.getLead().getId(), userId));
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), proposal.getLead().getId(), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), String.valueOf(proposal.getLead().getId()), userId));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(proposal.getLead().getId()), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {

@@ -24,7 +24,7 @@
     <!-- <appender-ref ref="FILE" /> -->
   </logger>
   
-   <logger name="org.springframework" level="ERROR">
+   <logger name="org.springframework" level="DEBUG">
     <appender-ref ref="CONSOLE" />
     <!-- <appender-ref ref="FILE" /> -->
   </logger>

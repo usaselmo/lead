@@ -1,7 +1,7 @@
 package com.allscontracting.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -32,14 +34,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="lead")
-public class Lead implements Entity<String> {
+@Table(name="lead2")
+public class Lead implements Serializable {
 
-	private static final long serialVersionUID = 2718925984228018742L;
+	private static final long serialVersionUID = -6183199069186068646L;
 
-	@Id
-	private String id;
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long id;
 
+	private String oldid; 
+	
 	@Enumerated(EnumType.STRING)
 	private Vendor vendor;
 
@@ -54,7 +58,7 @@ public class Lead implements Entity<String> {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Client client;
 
-  @OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)
 	private List<Proposal> proposals;
 
   @NotNull
@@ -71,7 +75,7 @@ public class Lead implements Entity<String> {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visit;
 
-	public void addProposal (Proposal proposal) {
+	/* TODO public void addProposal (Proposal proposal) {
 		if(this.proposals == null)
 			this.proposals = new ArrayList<Proposal>();
 		if(!this.proposals.contains(proposal)) {
@@ -79,7 +83,7 @@ public class Lead implements Entity<String> {
 			if(!proposal.getLead().equals(this))
 				proposal.setLead(this);
 		}
-	}
+	}*/
 	
 	public void removeProposal(Proposal proposal) {
 		if(this.proposals != null) {
