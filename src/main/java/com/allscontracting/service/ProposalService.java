@@ -52,7 +52,8 @@ public class ProposalService {
 			long number = lead.getProposals().size();
 			proposal.setNumber(number+1);
 		}
-		proposal.setTotal(proposal.getItems().stream().map(line->line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
+		if(proposalDTO.getTotal()==null || proposalDTO.getTotal().equals(BigDecimal.ZERO))
+			proposal.setTotal(proposal.getItems().stream().map(line->line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		proposal.getItems().forEach(item-> {
 			proposal.addItem(item);
 			item.getLines().forEach(line->item.addLine(line)); 

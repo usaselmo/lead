@@ -34,7 +34,7 @@ public class ProposalDTO {
 		return ProposalDTO.builder()
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
-				.total(NumberFormat.getCurrencyInstance().format(proposal.getTotal()))
+				.total(proposal.getTotal().toString().replaceAll("$",	""))
 				.scopeOfWork(proposal.getScopeOfWork())
 				.callMissUtility(proposal.isCallMissUtility())
 				.paymentSchedule(proposal.getPaymentSchedule())
@@ -52,6 +52,7 @@ public class ProposalDTO {
 		proposal.setEmailed(proposalDTO.isEmailed());
 		proposal.setNote(proposalDTO.getNote()); 
 		proposal.setNumber(StringUtils.isBlank(proposalDTO.getNumber())?null:Long.valueOf(proposalDTO.getNumber()));
+		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "")));
 		proposal.setPaymentSchedule(proposalDTO.getPaymentSchedule());
 		proposal.setScopeOfWork(proposalDTO.getScopeOfWork());
 		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
