@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -27,12 +25,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="proposal")
+@Table(name="proposal2")
 public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializable {
 
 	private static final long serialVersionUID = -8804397870000139075L;
 
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id	
 	private Long id; 
 	
 	private Long number;

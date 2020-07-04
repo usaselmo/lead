@@ -54,8 +54,9 @@ public class LeadDTO {
 
 	private static String getLastProposalTotal(Lead lead) {
 		BigDecimal total = lead.getProposals().stream().sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
-		if(total==null || total.equals(BigDecimal.ZERO))
+		if (total == null || total.equals(BigDecimal.ZERO))
 			return null;
 		return NumberFormat.getCurrencyInstance().format(total);
 	}
+	
 }

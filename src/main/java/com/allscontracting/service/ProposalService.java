@@ -50,8 +50,8 @@ public class ProposalService {
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		if(proposal.getNumber()==null) {
-			long number = lead.getProposals().size();
-			proposal.setNumber(number+1);
+		 long number = lead.getProposals().size();
+		 proposal.setNumber(number+1);
 		}
 		if(StringUtils.isBlank(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO))
 			proposal.setTotal(proposal.getItems().stream().map(line->line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));

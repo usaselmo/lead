@@ -2,6 +2,7 @@ package com.allscontracting.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class Lead implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date visit;
 
-	/* TODO public void addProposal (Proposal proposal) {
+	public void addProposal (Proposal proposal) {
 		if(this.proposals == null)
 			this.proposals = new ArrayList<Proposal>();
 		if(!this.proposals.contains(proposal)) {
@@ -83,7 +84,7 @@ public class Lead implements Serializable {
 			if(!proposal.getLead().equals(this))
 				proposal.setLead(this);
 		}
-	}*/
+	}
 	
 	public void removeProposal(Proposal proposal) {
 		if(this.proposals != null) {

@@ -6,4 +6,6 @@ import com.allscontracting.model.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long>{
 
+	
+	
 }

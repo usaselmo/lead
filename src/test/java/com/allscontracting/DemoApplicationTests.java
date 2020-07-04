@@ -117,18 +117,17 @@ public class DemoApplicationTests {
 	@Test
 	public void test_runToPdfFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Client client = proposal.getLead().getClient();
+		Client client =  proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".pdf";
 		HashMap<String, Object> map = getParams(proposal, client);
 		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 
-
 	@Test
 	public void testProposalRtf() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Client client = proposal.getLead().getClient();
+		Client client =  proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".rtf";
 		HashMap<String, Object> map = getParams(proposal, client);

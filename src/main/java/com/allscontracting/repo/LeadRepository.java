@@ -1,6 +1,7 @@
 package com.allscontracting.repo;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,5 +26,8 @@ public interface LeadRepository extends JpaRepository<Lead, Long>{
 
 	@Query("SELECT DISTINCT l.type FROM Lead l ORDER BY l.type")
 	List<String> findByType();
+	
+	@Query("SELECT l FROM Lead l WHERE l.oldid = ?1 ")
+	Optional<Lead> findByOldId(String oldId);
 	
 }
