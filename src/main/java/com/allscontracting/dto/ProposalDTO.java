@@ -22,6 +22,7 @@ public class ProposalDTO {
 	private String id;
 	private String number;
 	private String total;
+	private String formattedTotal;
 	private String scopeOfWork;
 	private boolean callMissUtility;
 	private String paymentSchedule;
@@ -35,6 +36,7 @@ public class ProposalDTO {
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
 				.total(proposal.getTotal().toString().replaceAll("$",	""))
+				.formattedTotal(NumberFormat.getCurrencyInstance().format(proposal.getTotal()))
 				.scopeOfWork(proposal.getScopeOfWork())
 				.callMissUtility(proposal.isCallMissUtility())
 				.paymentSchedule(proposal.getPaymentSchedule())
