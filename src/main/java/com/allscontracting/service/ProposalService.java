@@ -10,6 +10,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +53,7 @@ public class ProposalService {
 			long number = lead.getProposals().size();
 			proposal.setNumber(number+1);
 		}
-		if(proposalDTO.getTotal()==null || proposalDTO.getTotal().equals(BigDecimal.ZERO))
+		if(StringUtils.isBlank(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO))
 			proposal.setTotal(proposal.getItems().stream().map(line->line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		proposal.getItems().forEach(item-> {
 			proposal.addItem(item);
