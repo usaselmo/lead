@@ -529,7 +529,7 @@ angular.module('leads', [])
     $scope.searchCompanies();
     getProfiles();
     getEstimators();
-    //checkAlive();
+    checkAlive();
     
   });
 
