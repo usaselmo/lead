@@ -1,8 +1,17 @@
 package com.allscontracting;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.allscontracting.model.Lead;
+import com.allscontracting.repo.EventoLogRepository;
+import com.allscontracting.repo.LeadRepository;
 
 @SpringBootApplication
 public class Main implements CommandLineRunner {
@@ -15,7 +24,26 @@ public class Main implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		//populateProposal2Table();
+		//populateEventLobTable();
 	}
+	
+	
+	/*@Autowired EventoLogRepository eventLogRepo;
+	@Autowired LeadRepository leadRepo;
+	@Transactional
+	public void populateEventLobTable() {
+		eventLogRepo.findAll().stream().forEach(event->{
+			if(event.getObjectName().equals(Lead.class.getSimpleName())) {
+				Optional<Lead> lead = leadRepo.findByOldId(event.getObjectId());
+				if(lead.isPresent()) {
+					String oldObjectId = event.getObjectId();
+					event.setObjectId(String.valueOf(lead.get().getId()));
+					eventLogRepo.save(event);
+					System.out.println("From: "+oldObjectId+" to: "+event.getObjectId());
+				}
+			}
+		});
+	}*/
 	
 	
 	/*@Autowired ProposalRepository oldProposalRepo;
