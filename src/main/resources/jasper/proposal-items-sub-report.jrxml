@@ -23,7 +23,7 @@
 	I.title,
 	I.price, 
 	L.description
-FROM leads.proposal P
+FROM leads.proposal2 P
 	INNER JOIN leads.item I ON 
 	 I.proposal_id = P.id 
 	INNER JOIN leads.line L ON 

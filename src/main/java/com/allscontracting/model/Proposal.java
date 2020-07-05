@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,7 +32,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 
 	private static final long serialVersionUID = -8804397870000139075L;
 
-	@Id	
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id; 
 	
 	private Long number;
