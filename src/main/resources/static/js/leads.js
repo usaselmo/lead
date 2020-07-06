@@ -103,7 +103,7 @@ angular.module('leads', [])
     }
     
     $scope.newCurrentUser = function(currentUser){
-    	$scope.currentUser = {'id':-1};
+    	$scope.currentUser = {'id':-1, profiles:[]};
     }
     
     $scope.resetCurrentUser = function(currentUser){
@@ -111,23 +111,48 @@ angular.module('leads', [])
     }
     
     $scope.saveUser = function(user){
-    	console.log($scope.profiles)
-    	console.log(user.profiles)
-    	/*var profs = [];
-    	for (var i = 0; i < $scope.profiles.length; i++) {
-    		var name = $scope.profiles[i]
-    		if(user.profiles.name)
-    			profs.push($scope.profiles[i])
-    	}
-    	console.log(profs)*/
-    	//user.profiles.forEach(function(p, i){ console.log(p); console.log(profiles[i]);  });
-    	/* console.log(user) */
+    	var u = copy(user)
+    	u.profiles = transformProfilesToServerSide(user.profiles);
+    	console.log(u)
   		/*$http.put(local_server_url + '/users', user ).then(function (response) {
   			$scope.currentUser = response.data
   			successMessage(user.name + ' updated.')
   		}, function (response) {
   			errorMessage(response.data)
   		});*/
+    }
+
+    $scope.chooseUser = function(user){
+    	$scope.currentUser = user;
+    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+    	$scope.users = [];
+    }
+    
+    var transformProfilesToServerSide = function(profiles){
+    	var profs = []
+    	if(!profiles || profiles.length <= 0)
+    		return profs;
+    	profiles.forEach(function(p, index){
+				if(p)
+					profs.push($scope.profiles[index])
+    	})
+    	return profs;
+    }
+    
+    var transformProfilesToClientSide = function(profiles){
+    	var profs=[]
+    	$scope.profiles.forEach(function(p, index){
+    		for(let i = 0; i < profiles.length; ++i){
+    			cp = profiles[i]
+    			if(cp == p){
+    				profs[index] = true;
+    				break;
+    			}
+    		}
+    		if(profs[index]!==true && profs[index]!==false)
+    			profs[index] = false
+    	})
+    	return profs;
     }
     
     $scope.searchUser = function(userName){
@@ -141,11 +166,6 @@ angular.module('leads', [])
     			errorMessage(response.data)
     		});
     	}
-    }
-
-    $scope.chooseUser = function(user){
-    	$scope.currentUser = user;
-    	$scope.users = [];
     }
 
     var resetMessages = function(){

@@ -60,24 +60,18 @@
       </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-
-
-
-{{currentUser.profiles}}
           <div class="panel panel-default">
             <div class="panel-heading">Profiles</div>
             <div class="panel-body">
               <div class="checkbox" ng-repeat="profile in profiles">
                 <label for="id-{{profile}}"> 
-                  <input id="id-{{profile}}" title="{{profile}}" ng-value="LKSKJDHIEEHI" data-val="true" value="LKSKJDHIEEHI" type="checkbox" ng-model="currentUser.profiles[$index]"> {{profile}}
+                  <input id="id-{{profile}}" title="{{profile}}" ng-value="{{profile}}" value="{{profile}}" type="checkbox" ng-model="currentUser.profiles[$index]"> {{profile}}
                 </label>
               </div>
             </div>
           </div>
-
-
         </div>
-      </div>{{currentUser.profiles}}
+      </div>
       <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
           <button type="button" class="btn btn-default btn-primary" ng-click="saveUser(currentUser)">Save</button>
