@@ -113,13 +113,17 @@ angular.module('leads', [])
     $scope.saveUser = function(user){
     	var u = copy(user)
     	u.profiles = transformProfilesToServerSide(user.profiles);
-    	console.log(u)
-  		/*$http.put(local_server_url + '/users', user ).then(function (response) {
-  			$scope.currentUser = response.data
-  			successMessage(user.name + ' updated.')
-  		}, function (response) {
-  			errorMessage(response.data)
-  		});*/
+  		updateUser(u);
+    }
+    
+    var updateUser = function(user){
+  		$http.put(local_server_url + '/users', user ).then(function (response) {
+				$scope.currentUser = response.data
+	    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+				successMessage(user.name + ' updated.')
+			}, function (response) {
+				errorMessage(response.data)
+			});
     }
 
     $scope.chooseUser = function(user){

@@ -1,5 +1,6 @@
 package com.allscontracting.dto;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,17 @@ public class UserDTO {
 				.id(String.valueOf(user.getId()))
 				.name(user.getName())
 				.password("")
-				.profiles(user.getProfiles().stream().map(p->p.getProfile().toString()).collect(Collectors.toList()))
+				.profiles(
+							user.getProfiles()==null||user.getProfiles().isEmpty()?
+										Collections.emptyList():
+										user
+											.getProfiles()
+											.stream()
+											.map(p->
+												p
+													.getProfile()
+														.toString())
+											.collect(Collectors.toList()))
 				.build();
 	}
 }

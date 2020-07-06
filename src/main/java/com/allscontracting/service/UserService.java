@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.allscontracting.dto.UserDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.User;
+import com.allscontracting.model.UserProfile;
 import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.UserRepository;
 
@@ -24,15 +25,8 @@ public class UserService {
 		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.of(u)).collect(Collectors.toList());
 	}
 
-	public UserDTO persist(UserDTO userDTO) throws LeadsException {
-		if (userDTO.getId() != null)
-			return this.update(userDTO);
-		else
-			return this.create(userDTO);
-	}
-
 	@Autowired PasswordEncoder passencoder;
-	private UserDTO create(UserDTO userDTO) throws LeadsException {
+	public UserDTO create(UserDTO userDTO) throws LeadsException {
 		User user = new User();
 		user.setCompany(this.companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
 		user.setEmail(userDTO.getEmail());
@@ -43,13 +37,21 @@ public class UserService {
 		return UserDTO.of(this.userRepo.save(user));
 	}
 
-	private UserDTO update(UserDTO userDTO) throws LeadsException {
+	public UserDTO update(UserDTO userDTO) throws LeadsException {
 		User user = userRepo.findById(Long.valueOf(userDTO.getId())).orElseThrow(()->new LeadsException("User not found"));
 		user.setEmail(userDTO.getEmail());
 		user.setEnabled(userDTO.isEnabled());
 		user.setName(userDTO.getName());
-		user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("User not found")));
-		return UserDTO.of(userRepo.save(user));
+		user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
+		user.setProfiles(null);
+		//userRepo.save(user);
+		
+		List<UserProfile> newProfiles = userDTO.getProfiles().stream().map(userDtoProfile->UserProfile.builder().profile(UserProfile.Description.valueOf(userDtoProfile)).build()).collect(Collectors.toList());
+		newProfiles.stream().forEach(p->user.addUserProfile(p));
+		//user.setProfiles(newProfiles);
+
+		User u = userRepo.save(user);
+		return UserDTO.of(u);
 	}
 
 	public List<UserDTO> findEstimators() {

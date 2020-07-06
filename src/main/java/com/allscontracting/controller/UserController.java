@@ -29,8 +29,13 @@ public class UserController {
 	}
 	
 	@PutMapping("")
-	public UserDTO updateUser(@RequestBody UserDTO user) throws LeadsException {
-		return this.userService.persist(user);
+	public UserDTO updateUser(@RequestBody UserDTO userDTO) throws LeadsException  {
+		try {
+			return this.userService.update(userDTO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@GetMapping("profiles")

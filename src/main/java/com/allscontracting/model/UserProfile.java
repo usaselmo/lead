@@ -8,14 +8,19 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="user_profile")
 public class UserProfile implements Serializable{
@@ -24,7 +29,6 @@ public class UserProfile implements Serializable{
 	@Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
 
 	@ManyToOne
-  @JoinColumn(nullable=false, insertable=false, updatable=false)
   private User user;
 
   @NotNull

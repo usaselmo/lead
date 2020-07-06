@@ -1,6 +1,7 @@
 package com.allscontracting.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -40,7 +41,15 @@ public class User implements Serializable {
 	
 	@ManyToOne(fetch=FetchType.EAGER) private Company company;
 
-  @OneToMany(mappedBy="user", fetch=FetchType.EAGER, orphanRemoval=true)
+  @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
   private List<UserProfile> profiles;
+  
+  public void addUserProfile(UserProfile userProfile) {
+  	if(this.profiles==null)
+  		this.profiles = new ArrayList<>(0);
+  	if(!this.profiles.contains(userProfile)) 
+  		this.profiles.add(userProfile);
+  	userProfile.setUser(this);
+  }
   
 }
