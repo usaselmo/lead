@@ -105,7 +105,7 @@ public class LeadService {
 
 	public List<LeadDTO> search(String text) {
 		//limited to 100 results
-		return this.leadRepo.search(text, new PageRequest(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
+		return this.leadRepo.search(text, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -115,7 +115,6 @@ public class LeadService {
 		}else {
 			lead.setClient(this.clientRepo.save(lead.getClient()));
 		}
-		//lead.setId(NetworxLeadTranslaterImpl.defineId(lead.getClient().getEmail(), lead.getClient().getPhone()));
 		lead.setDate(new Date());
 		lead.setEvent(EventType.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
@@ -129,11 +128,14 @@ public class LeadService {
 		return this.leadRepo.findByType(); 
 	}
 
-	public LeadDTO assignEstimator(String leadId, String estimatorId) throws LeadsException {
+	public LeadDTO assignEstimator(String leadId, String estimatorId, Long userId) throws LeadsException {
 		Lead lead = leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
 		lead.setEstimator(estimator);
-		return LeadDTO.leadToDTO(leadRepo.save(lead));
+		lead.setEvent(EventType.ASSIGN_TO_ESTIMATOR);
+		LeadDTO leadDTO = LeadDTO.leadToDTO(leadRepo.save(lead));
+		this.fireEventToLead(EventType.ASSIGN_TO_ESTIMATOR.toString(), String.valueOf(lead.getId()), userId);
+		return leadDTO;
 	}
 
 }

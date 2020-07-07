@@ -43,8 +43,8 @@ public class LeadController {
 	// /leads/id/estimator/id put
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
-	public LeadDTO assignEstimator(@PathVariable String leadId, @PathVariable String estimatorId) throws LeadsException {
-		return leadService.assignEstimator(leadId, estimatorId); 
+	public LeadDTO assignEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
+		return leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId()); 
 	}
 	
 	@GetMapping("/types")
