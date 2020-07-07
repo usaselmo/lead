@@ -1,16 +1,14 @@
 package com.allscontracting.event;
 
+import static com.allscontracting.event.EventType.ASSIGN_TO_ESTIMATOR;
 import static com.allscontracting.event.EventType.BEGIN;
 import static com.allscontracting.event.EventType.BEGIN_WORK;
 import static com.allscontracting.event.EventType.CREATE_PROPOSAL;
 import static com.allscontracting.event.EventType.END_LEAD;
 import static com.allscontracting.event.EventType.FINISH_WORK;
 import static com.allscontracting.event.EventType.MARK_AS_VISITED;
-import static com.allscontracting.event.EventType.RECEIVE_PAYMENT;
 import static com.allscontracting.event.EventType.SCHEDULE_VISIT;
 import static com.allscontracting.event.EventType.SEND_PROPOSAL;
-import static com.allscontracting.event.EventType.SEND_INVOICE;
-import static com.allscontracting.event.EventType.ASSIGN_TO_ESTIMATOR;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,9 +30,7 @@ public class EventTypeDispatcher {
 		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
 		EventType[] SEND_ESTIMATE = { BEGIN_WORK, END_LEAD };
 		EventType[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
-		EventType[] FINISH_WORK = { SEND_INVOICE};
-		EventType[] SEND_INVOICE = { RECEIVE_PAYMENT};
-		EventType[] RECEIVE_PAYMENT = {};
+		EventType[] FINISH_WORK = {};
 		EventType[] END_LEAD = {BEGIN};
 
 		switch (event) {
@@ -58,10 +54,6 @@ public class EventTypeDispatcher {
 			return Arrays.asList(BEGIN_WORK);
 		case FINISH_WORK:
 			return Arrays.asList(FINISH_WORK);
-		case SEND_INVOICE:
-			return Arrays.asList(SEND_INVOICE);
-		case RECEIVE_PAYMENT:
-			return Arrays.asList(RECEIVE_PAYMENT);
 		case END_LEAD:
 			return Arrays.asList(END_LEAD);
 		default:

@@ -12,8 +12,6 @@ public enum EventType {
 	SEND_PROPOSAL("Proposal sent"), 
 	BEGIN_WORK("Work started"), 
 	FINISH_WORK("Work finished"), 
-	SEND_INVOICE("Invoide sent"),
-	RECEIVE_PAYMENT("Payment Received") ,  
 	END_LEAD("Done"), 
 	LOAD_VENDOR_FILE("Vendor file loaded");
 	
