@@ -46,12 +46,13 @@ public class FileService {
 	@Transactional
 	private void saveAllLeads(Vendor vendor, List<Lead> leads, Long userId) {
 		leads.stream().forEach(lead->{
-			if(!this.leadRepo.existsById(lead.getId())) {
+			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getClient().getName(), lead.getOldid());
+			if(fls == null || fls.size() <= 0) {
 				lead = leadRepo.save(lead);
 				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor, userId));
 				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), String.valueOf(lead.getId()), userId) );
 			}
 		});
 	}
-	
+
 }

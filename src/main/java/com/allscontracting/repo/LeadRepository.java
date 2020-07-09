@@ -1,5 +1,6 @@
 package com.allscontracting.repo;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.allscontracting.event.EventType;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
+import com.allscontracting.model.Lead.Vendor;
 
 public interface LeadRepository extends JpaRepository<Lead, Long>{
 
@@ -29,5 +31,12 @@ public interface LeadRepository extends JpaRepository<Lead, Long>{
 	
 	@Query("SELECT l FROM Lead l WHERE l.oldid = ?1 ")
 	Optional<Lead> findByOldId(String oldId);
+	
+	default boolean existsByOldId(String oldId) {
+		return findByOldId(oldId).isPresent();
+	}
+	
+	@Query("SELECT l FROM Lead l WHERE l.vendor = ?1 AND l.date = ?2 AND l.description = ?3 AND l.client.name = ?4 AND l.oldid = ?5")
+	List<Lead> findByVDD(Vendor vendor, Date date, String description, String clientName, String oldid);
 	
 }

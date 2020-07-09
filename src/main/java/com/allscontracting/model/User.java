@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +42,7 @@ public class User implements Serializable {
 	
 	@ManyToOne(fetch=FetchType.EAGER) private Company company;
 
-  @OneToMany(mappedBy="user", fetch=FetchType.EAGER)
+  @OneToMany(mappedBy="user", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
   private List<UserProfile> profiles;
   
   public void addUserProfile(UserProfile userProfile) {
@@ -51,5 +52,41 @@ public class User implements Serializable {
   		this.profiles.add(userProfile);
   	userProfile.setUser(this);
   }
+  
+  public void removeUserProfile(UserProfile userProfile) {
+  	if(this.profiles==null)
+  		this.profiles = new ArrayList<>(0);
+  	if(this.profiles.contains(userProfile)) 
+  		this.profiles.remove(userProfile);
+  	userProfile.setUser(null);
+  }
+  
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    User other = (User) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
+  }
+  
+
   
 }
