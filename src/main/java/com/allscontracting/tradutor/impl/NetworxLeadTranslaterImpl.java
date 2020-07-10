@@ -48,7 +48,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 		final List<String> lines = Arrays.asList(originalStr.split(LINE_SEPARATOR));
 		List<Lead> leads = lines.stream().map(line -> this.replaceSpecialChars(line))
 				.map(line -> importedFileLineToEntity(line, Lead.class))
-				.filter(lead -> !StringUtils.isEmpty(lead.getId()))
+				.filter(lead -> !StringUtils.isEmpty(lead.getOldid()))
 				.collect(Collectors.toList());
 		return leads;
 	}

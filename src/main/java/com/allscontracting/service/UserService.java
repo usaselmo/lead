@@ -24,12 +24,12 @@ public class UserService {
 	@Autowired UserRepository userRepo;
 	@Autowired CompanyRepository companyRepo;
 	@Autowired UserProfileRepository userProfileRepo;
+	@Autowired PasswordEncoder passencoder;
 	
 	public List<UserDTO> findLikeName(String name){
 		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.of(u)).collect(Collectors.toList());
 	}
 
-	@Autowired PasswordEncoder passencoder;
 	public UserDTO create(UserDTO userDTO) throws LeadsException {
 		User user = new User();
 		user.setCompany(this.companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
