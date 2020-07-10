@@ -43,32 +43,33 @@ public class UserService {
 
 	@Transactional
 	public UserDTO update(UserDTO userDTO) throws LeadsException {
-		User user = userRepo.findById(Long.valueOf(userDTO.getId())).orElseThrow(()->new LeadsException("User not found"));
-		user.setEmail(userDTO.getEmail());
-		user.setEnabled(userDTO.isEnabled());
-		user.setName(userDTO.getName());
-		user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
-		return UserDTO.of(userRepo.save(user));
+		try {
+			User user = userRepo.findById(Long.valueOf(userDTO.getId())).orElseThrow(()->new LeadsException("User not found"));
+			user.setEmail(userDTO.getEmail());
+			user.setEnabled(userDTO.isEnabled());
+			user.setName(userDTO.getName());
+			user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
+			removeProfiles(user);
+			addProfiles(userDTO, user);
+			userRepo.flush();
+			return UserDTO.of(userRepo.save(user));
+		} catch (Exception e) {
+			throw new LeadsException("Couldn't save User details.");
+		}
 	}
 
-	public UserDTO updateUserProfiles(UserDTO userDTO) throws NumberFormatException, LeadsException {
-		User user = userRepo.findById(Long.valueOf(userDTO.getId())).orElseThrow(()->new LeadsException("User not found"));
-		
-		
-		List<UserProfile> profiles = user.getProfiles();
-		for (UserProfile userProfile : profiles) {
-			userProfile.setUser(null);
+	private void removeProfiles(User user) {
+		for (int i = 0; i < user.getProfiles().size(); i++) {
+			if(user.getProfiles().get(i)!=null) { 
+				user.removeUserProfile(user.getProfiles().get(i));
+			}
 		}
-		user.setProfiles(null);
+	}
 
-		
+	private void addProfiles(UserDTO userDTO, final User user) {
 		userDTO.getProfiles().stream().forEach(p->{
-			UserProfile profile = new UserProfile(null, user, UserProfile.Description.USER);
-			user.addUserProfile(profile);
-			profile.setUser(user);
-			profile = userProfileRepo.save(profile);
+			user.addUserProfile(userProfileRepo.save(UserProfile.builder().user(user).profile(UserProfile.Description.valueOf(p)).build()));
 		});
-		return UserDTO.of(userRepo.save(user));
 	}
 
 	public List<UserDTO> findEstimators() {

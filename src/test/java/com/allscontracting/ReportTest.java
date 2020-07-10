@@ -2,13 +2,10 @@ package com.allscontracting;
 
 import static org.junit.Assert.assertThat;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.assertj.core.util.Arrays;
 import org.hamcrest.CoreMatchers;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,16 +31,31 @@ public class ReportTest {
 	@Autowired UserProfileRepository userProfileRepo;
 	
 	@Test
-	public void testUserProfile_01() throws Exception {
+	public void testUserProfile_include() throws Exception {
 		User user = userRepo.findById(1L).orElseThrow(()->new LeadsException("User not found"));
-		List<UserProfile> profiles = user.getProfiles();
-		for (UserProfile userProfile : profiles) {
-			userProfile.setUser(null);
-			//user.getProfiles().remove(userProfile);
-		}
-		user.setProfiles(null);
-		User u = userRepo.save(user);
-		System.out.println(u);
+		int previousSize = user.getProfiles().size();
+		user.addUserProfile(UserProfile.builder().user(user).profile(UserProfile.Description.ADMIN).build());
+		user = userRepo.save(user);
+		assertThat(user.getProfiles().size() >= previousSize, CoreMatchers.is(true));
+	}
+	
+	@Test
+	public void testUserProfile_remove() throws Exception {
+		User user = userRepo.findById(1L).orElseThrow(()->new LeadsException("User not found"));
+		int previousSize = user.getProfiles().size();
+		user.removeUserProfile(user.getProfiles().get(0));
+		user = userRepo.save(user);
+		assertThat(user.getProfiles().size()<previousSize, CoreMatchers.is(true));
+	}
+	
+	@Test
+	public void testUserProfile_addAndRemove() throws Exception {
+		User user = userRepo.findById(1L).orElseThrow(()->new LeadsException("User not found"));
+		int previousSize = user.getProfiles().size();
+		user.removeUserProfile(user.getProfiles().get(0));
+		user.addUserProfile(UserProfile.builder().user(user).profile(UserProfile.Description.ADMIN).build());
+		user = userRepo.save(user);
+		assertThat(user.getProfiles().size() <= previousSize, CoreMatchers.is(true));
 	}
 
 	@Test

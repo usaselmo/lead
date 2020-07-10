@@ -42,7 +42,7 @@ public class User implements Serializable {
 	
 	@ManyToOne(fetch=FetchType.EAGER) private Company company;
 
-  @OneToMany(mappedBy="user", fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
+  @OneToMany(mappedBy="user", fetch=FetchType.EAGER,  cascade=CascadeType.ALL, orphanRemoval=true)
   private List<UserProfile> profiles;
   
   public void addUserProfile(UserProfile userProfile) {
