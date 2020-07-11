@@ -13,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.allscontracting.dto.EventLogDTO;
+import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
@@ -44,9 +46,9 @@ public class LeadService {
 			pageRange=0;
 		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date") );
 		if(eventType==null)
-			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
+			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 		else
-			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
+			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	public long getLeadsTotal(EventType eventType) throws Exception {
@@ -56,12 +58,12 @@ public class LeadService {
 			return this.leadRepo.countByEvent(eventType);
 	}
 
-	public List<EventType> findNextEvents(String leadId) throws LeadsException {
+	public List<EventTypeDTO> findNextEvents(String leadId) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		EventType currentEvent = lead.getEvent();
 		if(null == currentEvent)
 			currentEvent = EventType.BEGIN;
-		return this.eventDispatcher.findNextEvents(currentEvent);
+		return eventDispatcher.findNextEvents(currentEvent).stream().map(et->EventTypeDTO.of(et)).collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -83,28 +85,28 @@ public class LeadService {
 //		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
-	public List<EventLog> findLeadEventLogs(String leadId) {
-		return this.eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId);
+	public List<EventLogDTO> findLeadEventLogs(String leadId) {
+		return eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId).stream().map(e->EventLogDTO.of(e)).collect(Collectors.toList());
 	}
 
 	public List<Proposal> findProposals(String leadId) {
 		return this.leadRepo.findProposals(Long.valueOf(leadId));
 	}
 
-	public Lead addNewNote(String leadId, String note) throws LeadsException {
+	public LeadDTO addNewNote(String leadId, String note) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.addNote(note);
 		lead = this.leadRepo.save(lead);
-		return lead;
+		return LeadDTO.of(lead);
 	}
 
 	public List<LeadDTO> search(String text) {
 		//limited to 100 results
-		return this.leadRepo.search(text, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
+		return this.leadRepo.search(text, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	@Transactional
-	public Lead saveNewLead(Lead lead, User user) throws LeadsException {
+	public LeadDTO saveNewLead(Lead lead, User user) throws LeadsException {
 		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Client not found")));
 		}else {
@@ -116,7 +118,7 @@ public class LeadService {
 		lead = this.leadRepo.save(lead);
 		this.fireEventToLead(EventType.BEGIN.toString(), String.valueOf(lead.getId()), user);
 		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(lead.getId()), "New Lead created: " + lead.getId(), user));
-		return lead;
+		return LeadDTO.of(lead);
 	}
 
 	public List<String> getLeadTypes() {
@@ -128,7 +130,7 @@ public class LeadService {
 		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
 		lead.setEstimator(estimator);
 		lead.setEvent(EventType.ASSIGN_TO_ESTIMATOR);
-		LeadDTO leadDTO = LeadDTO.leadToDTO(leadRepo.save(lead));
+		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
 		this.fireEventToLead(EventType.ASSIGN_TO_ESTIMATOR.toString(), String.valueOf(lead.getId()), user);
 		return leadDTO;
 	}

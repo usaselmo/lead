@@ -34,7 +34,9 @@ public class LeadDTO {
 	private String lastProposalTotal;
 	private UserDTO estimator;
 	
-	public static final LeadDTO leadToDTO(Lead lead) {
+	public static final LeadDTO of(Lead lead) {
+		if(lead==null)
+			return LeadDTO.builder().build();
 		return LeadDTO.builder()
 				.id(String.valueOf(lead.getId()))
 				.vendor(lead.getVendor().toString())
@@ -43,8 +45,8 @@ public class LeadDTO {
 				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee())) 
 				.type(lead.getType())
 				.notes(lead.getNotes())
-				.client(ClientDTO.clientToDTO(lead.getClient()))
-				.proposals(lead.getProposals().stream().map(p->ProposalDTO.toDTO(p)).collect(Collectors.toList()))
+				.client(ClientDTO.of(lead.getClient()))
+				.proposals(lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().toString())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.lastProposalTotal(  getLastProposalTotal(lead)  )

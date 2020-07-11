@@ -16,7 +16,9 @@ public class UserProfileDTO {
 	private Long userId;
 	private String profile;
 	
-	public final static UserProfileDTO toDTO(UserProfile userProfile) {
+	public final static UserProfileDTO of(UserProfile userProfile) {
+		if(userProfile==null)
+			return UserProfileDTO.builder().build();
 		return UserProfileDTO.builder()
 		.id(userProfile.getId())
 		.userId(userProfile.getUser().getId())

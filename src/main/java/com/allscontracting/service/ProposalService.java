@@ -61,7 +61,7 @@ public class ProposalService {
 			item.getLines().forEach(line->item.addLine(line)); 
 		});
 		Proposal res = proposalRepository.save(proposal);
-		return ProposalDTO.toDTO(res);
+		return ProposalDTO.of(res);
 	}
 
 	@Transactional

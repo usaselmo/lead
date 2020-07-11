@@ -18,7 +18,9 @@ public class CompanyDTO {
 	private String address;
 	private String website;
 
-	public static final CompanyDTO companyToDTO(Company company) {
+	public static final CompanyDTO of(Company company) {
+		if(company==null)
+			return CompanyDTO.builder().build();
 		return CompanyDTO.builder()
 			.id(company.getId())
 			.address(company.getAddress())

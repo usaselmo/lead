@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.dto.EventLogDTO;
+import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.EventType;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.security.LeadUserDetails;
@@ -54,21 +55,21 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) throws LeadsException {
-		lead = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser());
-		return lead;
+	public LeadDTO saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) throws LeadsException {
+		LeadDTO leadDTO = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		return leadDTO;
 	}
 
 	@PostMapping(value = "{id}/addNote")
-	public Lead addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-			Lead lead = this.leadService.addNewNote(id, note);
+	public LeadDTO addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
+			LeadDTO lead = this.leadService.addNewNote(id, note);
 			return lead;
 	}
 
 	@GetMapping(value = "{id}/eventlogs")
-	public List<EventLog> findEventLogs(@PathVariable String id) {
+	public List<EventLogDTO> findEventLogs(@PathVariable String id) {
 		try {
-			List<EventLog> res = this.leadService.findLeadEventLogs(id);
+			List<EventLogDTO> res = this.leadService.findLeadEventLogs(id);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,21 +90,21 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Authentication authentication) throws LeadsException {
-		switch (EventType.reverse(event)) {
+	public void fireEvent(@PathVariable String id, @RequestBody EventTypeDTO event, @Autowired Authentication authentication) throws LeadsException {
+		switch (EventType.valueOf(event.getName())) {
 		case SCHEDULE_VISIT:
 			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			break;
 		default:
-			this.leadService.fireEventToLead(event, id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			this.leadService.fireEventToLead(event.getName(), id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			break;
 		}
 	}
 
 	@GetMapping(value = "{id}/nextevents")
-	public List<EventType> findNextEvents(@PathVariable String id) {
+	public List<EventTypeDTO> findNextEvents(@PathVariable String id) {
 		try {
-			List<EventType> res = this.leadService.findNextEvents(id);
+			List<EventTypeDTO> res = this.leadService.findNextEvents(id);
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();

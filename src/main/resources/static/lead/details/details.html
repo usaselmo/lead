@@ -33,9 +33,9 @@
         <strong>Mark an Event</strong>
         <div class="list-group" >
           <span ng-repeat="event in lead.nextEvents" ng-switch="event">
-            <a style="padding: 4px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event}}</a>
-            <a style="padding: 4px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" data-toggle="modal" data-target="#assignModal" href="#" class="list-group-item">{{event}}</a>
-            <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event}}</a>
+            <a style="padding: 4px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event.action}}</a>
+            <a style="padding: 4px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" data-toggle="modal" data-target="#assignModal" href="#" class="list-group-item">{{event.action}}</a>
+            <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event.action}}</a>
           </span>
         </div>
       </div>

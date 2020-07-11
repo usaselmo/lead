@@ -23,10 +23,12 @@ public class ItemDTO {
 	private String price;
 	private List<LineDTO> lines;
 
-	public static final ItemDTO toDTO(Item item) {
+	public static final ItemDTO of(Item item) {
+		if(item==null)
+			return ItemDTO.builder().build();
 		ItemDTO reas = ItemDTO.builder()
 			.id(String.valueOf(item.getId()))
-			.lines(item.getLines().stream().map(l->LineDTO.toDTO(l)).collect(Collectors.toList()))
+			.lines(item.getLines().stream().map(l->LineDTO.of(l)).collect(Collectors.toList()))
 			.price(item.getPrice().toString().replaceAll("$",	""))
 			.title(item.getTitle())
 			.build();

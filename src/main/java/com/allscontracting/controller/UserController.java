@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.UserDTO;
-import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.UserProfile;
 import com.allscontracting.service.UserService;
 

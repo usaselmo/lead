@@ -33,12 +33,12 @@ public class ResponseEntity {
 	}
 	
 	public ResponseEntity addLead(Lead lead) {
-		this.leads.add(LeadDTO.leadToDTO(lead));
+		this.leads.add(LeadDTO.of(lead));
 		return this;
 	}
 	
 	public ResponseEntity addAllLeads(List<Lead> leads) {
-		this.leads.addAll(leads.stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList()));
+		this.leads.addAll(leads.stream().map(l->LeadDTO.of(l)).collect(Collectors.toList()));
 		return this;
 	}
 	

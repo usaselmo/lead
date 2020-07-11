@@ -17,11 +17,11 @@ public class CompanyService {
 	@Autowired CompanyRepository companyRepo;
 	
 	public List<CompanyDTO> getCompanies(){
-		return this.companyRepo.findAll().stream().map(c->CompanyDTO.companyToDTO(c)).collect(Collectors.toList());
+		return this.companyRepo.findAll().stream().map(c->CompanyDTO.of(c)).collect(Collectors.toList());
 	}
 
 	public List<CompanyDTO> findLikeName(String companyName) {
-		return this.companyRepo.findLikeName(companyName).stream().map(c->CompanyDTO.companyToDTO(c)).collect(Collectors.toList());
+		return this.companyRepo.findLikeName(companyName).stream().map(c->CompanyDTO.of(c)).collect(Collectors.toList());
 	}
 
 	public CompanyDTO update(CompanyDTO companyDTO) throws LeadsException {
@@ -30,7 +30,7 @@ public class CompanyService {
 		company.setEmail(companyDTO.getEmail());
 		company.setName(companyDTO.getName());
 		company.setWebsite(companyDTO.getWebsite());
-		return CompanyDTO.companyToDTO(this.companyRepo.save(company));
+		return CompanyDTO.of(this.companyRepo.save(company));
 	}
 	
 }

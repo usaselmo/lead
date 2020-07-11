@@ -38,11 +38,11 @@ public class ClientService {
 		this.eventManager.notifyAllListeners(
 				new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()), "Client updated: " + client.toString(), user)
 				);
-		return ClientDTO.clientToDTO(clientRepo.save(client));
+		return ClientDTO.of(clientRepo.save(client));
 	}
 
 	public List<ClientDTO> findByName(String name) {
-		return this.clientRepo.findLikeName(name).stream().map(c->ClientDTO.clientToDTO(c)).collect(Collectors.toList());
+		return this.clientRepo.findLikeName(name).stream().map(c->ClientDTO.of(c)).collect(Collectors.toList());
 	}
 
 	public void sendCantReachEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {

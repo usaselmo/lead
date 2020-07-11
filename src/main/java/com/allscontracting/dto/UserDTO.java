@@ -25,8 +25,10 @@ public class UserDTO {
   private List<String> profiles;
   
 	public static final UserDTO of(User user ) {
+		if(user==null)
+			return UserDTO.builder().build();
 		return UserDTO.builder()
-				.company(CompanyDTO.companyToDTO(user.getCompany()))
+				.company(CompanyDTO.of(user.getCompany()))
 				.email(user.getEmail())
 				.enabled(user.isEnabled())
 				.id(String.valueOf(user.getId()))

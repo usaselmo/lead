@@ -31,7 +31,9 @@ public class ProposalDTO {
 	private String note;
 	private List<ItemDTO> items;
 	
-	public static final ProposalDTO toDTO(Proposal proposal) {
+	public static final ProposalDTO of(Proposal proposal) {
+		if(proposal==null)
+			return ProposalDTO.builder().build();
 		return ProposalDTO.builder()
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
@@ -43,7 +45,7 @@ public class ProposalDTO {
 				.workWarranty(proposal.getWorkWarranty())
 				.emailed(proposal.isEmailed())
 				.note(proposal.getNote())
-				.items(proposal.getItems().stream().map(i->ItemDTO.toDTO(i)).collect(Collectors.toList()))
+				.items(proposal.getItems().stream().map(i->ItemDTO.of(i)).collect(Collectors.toList()))
 				.build();
 	}
 	
