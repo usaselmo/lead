@@ -45,18 +45,18 @@
         </small></td>
         <td nowrap="nowrap">  
           <span ng-repeat="event in lead.nextEvents">
-          <span ng-switch="event">
-            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="btn btn-default btn-sm" title="{{event}}">SV</a>
-            <a style="padding: 6px;" ng-switch-when="BEGIN" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">BE</a>
-            <a style="padding: 6px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">AE</a>
-            <a style="padding: 6px;" ng-switch-when="CONTACT_QUALIFY" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">CQ</a>
-            <a style="padding: 6px;" ng-switch-when="MARK_AS_VISITED" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">MV</a>
-            <a style="padding: 6px;" ng-switch-when="CREATE_PROPOSAL" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">CP</a>
-            <a style="padding: 6px;" ng-switch-when="BEGIN_WORK" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">BW</a>
-            <a style="padding: 6px;" ng-switch-when="FINISH_WORK" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">FW</a>
-            <a style="padding: 6px;" ng-switch-when="SEND_INVOICE" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">SI</a>
-            <a style="padding: 6px;" ng-switch-when="END_LEAD" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}">EL</a>
-            <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event}}"><span class="glyphicon glyphicon-th" aria-hidden="true"></span></a>
+          <span ng-switch="event.name">
+            <a style="padding: 6px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="btn btn-default btn-sm" title="{{event.action}}">SV</a>
+            <a style="padding: 6px;" ng-switch-when="BEGIN" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">BE</a>
+            <a style="padding: 6px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">AE</a>
+            <a style="padding: 6px;" ng-switch-when="CONTACT_QUALIFY" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">CQ</a>
+            <a style="padding: 6px;" ng-switch-when="MARK_AS_VISITED" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">MV</a>
+            <a style="padding: 6px;" ng-switch-when="CREATE_PROPOSAL" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">CP</a>
+            <a style="padding: 6px;" ng-switch-when="BEGIN_WORK" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">BW</a>
+            <a style="padding: 6px;" ng-switch-when="FINISH_WORK" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">FW</a>
+            <a style="padding: 6px;" ng-switch-when="SEND_INVOICE" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">SI</a>
+            <a style="padding: 6px;" ng-switch-when="END_LEAD" ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">EL</a>
+            <a style="padding: 6px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="btn btn-default btn-sm" title="{{event.action}}">{{event.abbreviation}}</a>
           </span></span>
         </td>
       </tr>
