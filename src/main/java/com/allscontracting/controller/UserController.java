@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,14 +28,14 @@ public class UserController {
 		return this.userService.findLikeName(userName);
 	}
 	
+	@PostMapping("")
+	public UserDTO createUser(@RequestBody UserDTO userDTO) throws Exception {
+		return userService.createUser(userDTO);
+	}
+	
 	@PutMapping("")
-	public UserDTO updateUser(@RequestBody UserDTO userDTO) throws Exception  {
-		try {
-			return userService.update(userDTO);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+	public UserDTO updateUser(@RequestBody UserDTO userDTO) throws Exception {
+		return userService.update(userDTO);
 	}
 
 	@GetMapping("profiles")

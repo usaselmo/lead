@@ -121,7 +121,21 @@ angular.module('leads', [])
     $scope.saveUser = function(user){
     	var u = copy(user)
     	u.profiles = transformProfilesToServerSide(user.profiles);
-  		updateUser(u);
+    	if(user.id==null || user.id == -1)
+    		createUser(u);
+    	else
+    		updateUser(u)
+    }
+    
+    var createUser = function(user){
+    	user.id=null
+  		$http.post(local_server_url + '/users', user ).then(function (response) {
+				$scope.currentUser = response.data
+	    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+				successMessage(user.name + ' created.')
+			}, function (response) {
+				errorMessage(response.data)
+			});
     }
     
     var updateUser = function(user){

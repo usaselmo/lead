@@ -30,7 +30,7 @@ public class UserService {
 		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.of(u)).collect(Collectors.toList());
 	}
 
-	public UserDTO create(UserDTO userDTO) throws LeadsException {
+/*	public UserDTO create(UserDTO userDTO) throws LeadsException {
 		User user = new User();
 		user.setCompany(this.companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
 		user.setEmail(userDTO.getEmail());
@@ -39,7 +39,7 @@ public class UserService {
 		user.setPassword(passencoder.encode(userDTO.getPassword()));
 		user.setProfiles(Collections.emptyList());
 		return UserDTO.of(this.userRepo.save(user));
-	}
+	}*/
 
 	@Transactional
 	public UserDTO update(UserDTO userDTO) throws LeadsException {
@@ -55,6 +55,22 @@ public class UserService {
 			return UserDTO.of(userRepo.save(user));
 		} catch (Exception e) {
 			throw new LeadsException("Couldn't save User details.");
+		}
+	}
+
+	public UserDTO createUser(UserDTO userDTO) {
+		try {
+			User user = UserDTO.toUser(userDTO);
+			user.setProfiles(null);
+			user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElse(null));
+			user.setPassword(this.passencoder.encode(user.getPassword()));
+			userRepo.save(user);
+			addProfiles(userDTO, user);
+			return UserDTO.of(userRepo.save(user)); 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
