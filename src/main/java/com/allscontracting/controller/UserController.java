@@ -31,7 +31,6 @@ public class UserController {
 	public UserDTO updateUser(@RequestBody UserDTO userDTO) throws Exception  {
 		try {
 			return userService.update(userDTO);
-			//return userService.updateUserProfiles(userDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

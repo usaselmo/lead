@@ -106,7 +106,8 @@ public class LeadService {
 	}
 
 	@Transactional
-	public LeadDTO saveNewLead(Lead lead, User user) throws LeadsException {
+	public LeadDTO saveNewLead(LeadDTO leadDTO, User user) throws LeadsException {
+		Lead lead = LeadDTO.toLead(leadDTO);
 		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Client not found")));
 		}else {

@@ -30,8 +30,6 @@ public enum EventType {
 		return abbreviation;
 	}
 
-
-
 	public String getStatus() {
 		return this.status;
 	}

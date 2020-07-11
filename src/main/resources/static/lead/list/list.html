@@ -16,7 +16,7 @@
 </div>
 <div class="col-sm-3">
   <div class="form-group">
-    <select class="form-control" ng-options="et for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
+    <select class="form-control" ng-options="et.name as et.status for et in eventTypes" ng-model="filter" ng-change="filterLeads(filter)">
       <option value="">All</option>
     </select>
   </div>

@@ -30,6 +30,10 @@ public class Client {
 		return StringUtils.isBlank(phone)?"":phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);
 	}
 
+	public void setCellPhone(String phone) {
+		this.cellPhone = phone.replaceAll("\\(|\\)|\\-| ", "");
+	}
+
 	public void setPhone(String phone) {
 		this.phone = phone.replaceAll("\\(|\\)|\\-| ", "");
 	}

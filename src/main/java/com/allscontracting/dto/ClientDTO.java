@@ -32,4 +32,15 @@ public class ClientDTO {
 				.phone(client.getPhone())
 				.build();
 	}
+	
+	public static final Client toClient(ClientDTO cd) {
+		Client c = new Client();
+		c.setAddress(cd.getAddress());
+		c.setCellPhone(cd.getCellPhone());
+		c.setEmail(cd.getEmail());
+		c.setId(Long.valueOf(cd.getId()));
+		c.setName(cd.getName());
+		c.setPhone(cd.getPhone());
+		return c;
+	}
 }

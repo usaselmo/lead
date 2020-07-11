@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,6 @@ import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.EventType;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Lead;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.Converter;
@@ -41,7 +42,10 @@ public class LeadController {
 	@Autowired FileService fileService;
 	@Autowired LeadRepository leadRepo;
 	
-	// /leads/id/estimator/id put
+	@GetMapping("eventtypes")
+	public List<EventTypeDTO> findEventTypes(){
+		return Stream.of(EventType.values()).map(et->EventTypeDTO.of(et)).collect(Collectors.toList());
+	}
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
 	public LeadDTO assignEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
@@ -55,8 +59,8 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public LeadDTO saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) throws LeadsException {
-		LeadDTO leadDTO = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+	public LeadDTO saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
+		leadDTO = this.leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 		return leadDTO;
 	}
 

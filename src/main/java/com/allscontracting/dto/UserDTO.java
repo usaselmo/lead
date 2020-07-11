@@ -37,4 +37,11 @@ public class UserDTO {
 				.profiles(user.getProfiles()==null||user.getProfiles().isEmpty()?Collections.emptyList():user.getProfiles().stream().map(p->p.getProfile().toString()).collect(Collectors.toList()))
 				.build();
 	}
+
+	public static final User toUser(UserDTO ud) {
+		User u = new User();
+		u.setCompany(CompanyDTO.toCompany(ud.getCompany()));
+		return u;
+	}
+
 }

@@ -29,4 +29,15 @@ public class CompanyDTO {
 			.website(company.getWebsite())
 		.build();
 	}
+
+	public static final Company toCompany(CompanyDTO cd) {
+		Company c = new Company();
+		c.setAddress(cd.getAddress());
+		c.setEmail(cd.getAddress());
+		c.setId(cd.getId());
+		c.setName(cd.getName());
+		//c.setUsers(users);
+		c.setWebsite(cd.getWebsite());
+		return c;
+	}
 }

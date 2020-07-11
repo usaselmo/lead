@@ -12,7 +12,7 @@ angular.module('leads', [])
     $scope.showLeads = true
     $scope.leads = []
     $scope.lead = {}
-    $scope.eventTypes = ['BEGIN', 'CONTACT_QUALIFY', 'ASSIGN_TO_ESTIMATOR', 'SCHEDULE_VISIT', 'MARK_AS_VISITED', 'CREATE_PROPOSAL', 'SEND_PROPOSAL', 'BEGIN_WORK', 'FINISH_WORK', 'SEND_INVOICE', 'RECEIVE_PAYMENT', 'END_LEAD']
+    $scope.eventTypes = {}
     $scope.totalLeads = 0
     var pageRange = 0
     $scope.filter = ''
@@ -33,6 +33,14 @@ angular.module('leads', [])
     $scope.currentProposal = {}
     $scope.estimators = []
     
+    $scope.findEventTypes = function(){
+  		$http.get(local_server_url + '/leads/eventtypes').then(function (response) {
+  			$scope.eventTypes = response.data
+  		}, function (response) {
+  			errorMessage(response.data)
+  		});
+    }
+   
     $scope.assignToEstimator = function(lead, estimatorId){
   		$http.put(local_server_url + '/leads/'+lead.id+'/estimator/' + estimatorId).then(function (response) {
   			lead = response.data
@@ -550,6 +558,7 @@ angular.module('leads', [])
     }
     
     $scope.reload();
+    $scope.findEventTypes();
     $scope.searchCompanies();
     getProfiles();
     getEstimators();

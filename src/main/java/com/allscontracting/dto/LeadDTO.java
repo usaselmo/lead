@@ -6,6 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.allscontracting.event.EventType;
+import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.Converter;
@@ -21,6 +25,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LeadDTO {
 	private String id;
+	private String oldid;
 	private String vendor;
 	private String date;
 	private String description;
@@ -39,6 +44,7 @@ public class LeadDTO {
 			return LeadDTO.builder().build();
 		return LeadDTO.builder()
 				.id(String.valueOf(lead.getId()))
+				.oldid(lead.getOldid())
 				.vendor(lead.getVendor().toString())
 				.date(Converter.dateToString(lead.getDate()))
 				.description(lead.getDescription())
@@ -52,6 +58,24 @@ public class LeadDTO {
 				.lastProposalTotal(  getLastProposalTotal(lead)  )
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
 				.build();
+	}
+	
+	public static final Lead toLead(LeadDTO leadDTO) throws LeadsException {
+		Lead lead = new Lead();
+		lead.setClient(ClientDTO.toClient(leadDTO.getClient()));
+		lead.setDate(Converter.convertToDate(leadDTO.getDate()));
+		lead.setDescription(leadDTO.getDescription());
+		lead.setEstimator(UserDTO.toUser(leadDTO.getEstimator()));
+		lead.setEvent(EventType.valueOf(leadDTO.getEvent()));
+		lead.setFee(StringUtils.isBlank(leadDTO.getFee())?BigDecimal.ZERO:new BigDecimal(leadDTO.getFee().replace("$", "")));
+		lead.setId(Long.valueOf(leadDTO.getId()));
+		lead.setOldid(leadDTO.getOldid());
+		lead.setNotes(leadDTO.getNotes());
+		lead.setProposals(leadDTO.getProposals().stream().map(p->ProposalDTO.toProposal(p)).collect(Collectors.toList()));
+		lead.setType(leadDTO.getType());
+		lead.setVendor(Lead.Vendor.valueOf(leadDTO.vendor));
+		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		return lead;
 	}
 
 	private static String getLastProposalTotal(Lead lead) {
