@@ -24,7 +24,7 @@ public class FileController {
 	@PostMapping(value = "upload")
 	public String upload(@RequestParam("file") MultipartFile file, @RequestParam String vendor, @Autowired Authentication authentication) {
 		try {
-			this.fileService.loadLeadFile(file, Vendor.valueOf(vendor), ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			this.fileService.loadLeadFile(file, Vendor.valueOf(vendor), ((LeadUserDetails)authentication.getPrincipal()).getUser());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}

@@ -26,12 +26,12 @@ public class ClientController {
 
 	@GetMapping("{clientId}/leads/{leadId}/hiringdecision")
 	public void sendHiringDecisionEmail(@PathVariable String clientId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
-		clientService.sendHiringDecisionEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+		clientService.sendHiringDecisionEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 
 	@GetMapping("{clientId}/leads/{leadId}/cantreach")
 	public void sendCantReachEmail(@PathVariable String clientId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
-		clientService.sendCantReachEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+		clientService.sendCantReachEmail(clientId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 	
 	@GetMapping("")
@@ -42,7 +42,7 @@ public class ClientController {
 	
 	@PutMapping("")
 	public ClientDTO updateClient(@RequestBody ClientDTO clientDTO, @Autowired Authentication authentication) throws LeadsException {
-		return this.clientService.updateClient(clientDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+		return this.clientService.updateClient(clientDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 	
 }

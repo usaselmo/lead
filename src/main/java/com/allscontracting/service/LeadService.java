@@ -49,11 +49,6 @@ public class LeadService {
 			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.leadToDTO(l)).collect(Collectors.toList());
 	}
 
-	public void drop(Long userId) throws Exception {
-		leadRepo.deleteAll();
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), null, "All leads deleted", userId));
-	}
-
 	public long getLeadsTotal(EventType eventType) throws Exception {
 		if (StringUtils.isEmpty(eventType)) 
 			return this.leadRepo.count();
@@ -70,21 +65,21 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void scheduleAVisit(String leadId, Date visitDateTime, Long userId) throws LeadsException {
+	public void scheduleAVisit(String leadId, Date visitDateTime, User user) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
 		lead.setEvent(EventType.SCHEDULE_VISIT);
 		this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, userId));
+		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, user));
 	}
 
 	@Transactional
-	public void fireEventToLead(String event, String leadId, Long userId) throws LeadsException {
+	public void fireEventToLead(String event, String leadId, User user) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		EventType eventType = EventType.reverse(event);
 		lead.setEvent(eventType); 
 		this.leadRepo.save(lead); 
-		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), String.valueOf(lead.getId()), eventType.toString(), new Date(), userId, ""));
+		this.eventLogRepo.save(new EventLog(Lead.class.getSimpleName(), String.valueOf(lead.getId()), eventType.toString(), new Date(), user, ""));
 //		this.eventLogRepo.save(EventLog.builder().eventTime(new Date()).eventType(eventType.toString()).objectId(leadId).objectName(Lead.class.getSimpleName()).userId(0L).build());
 	}
 
@@ -109,7 +104,7 @@ public class LeadService {
 	}
 
 	@Transactional
-	public Lead saveNewLead(Lead lead, Long userId) throws LeadsException {
+	public Lead saveNewLead(Lead lead, User user) throws LeadsException {
 		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
 			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Client not found")));
 		}else {
@@ -119,8 +114,8 @@ public class LeadService {
 		lead.setEvent(EventType.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		this.fireEventToLead(EventType.BEGIN.toString(), String.valueOf(lead.getId()), userId);
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(lead.getId()), "New Lead created: " + lead.getId(), userId));
+		this.fireEventToLead(EventType.BEGIN.toString(), String.valueOf(lead.getId()), user);
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(lead.getId()), "New Lead created: " + lead.getId(), user));
 		return lead;
 	}
 
@@ -128,13 +123,13 @@ public class LeadService {
 		return this.leadRepo.findByType(); 
 	}
 
-	public LeadDTO assignEstimator(String leadId, String estimatorId, Long userId) throws LeadsException {
+	public LeadDTO assignEstimator(String leadId, String estimatorId, User user) throws LeadsException {
 		Lead lead = leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
 		lead.setEstimator(estimator);
 		lead.setEvent(EventType.ASSIGN_TO_ESTIMATOR);
 		LeadDTO leadDTO = LeadDTO.leadToDTO(leadRepo.save(lead));
-		this.fireEventToLead(EventType.ASSIGN_TO_ESTIMATOR.toString(), String.valueOf(lead.getId()), userId);
+		this.fireEventToLead(EventType.ASSIGN_TO_ESTIMATOR.toString(), String.valueOf(lead.getId()), user);
 		return leadDTO;
 	}
 

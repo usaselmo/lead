@@ -1,5 +1,7 @@
 package com.allscontracting.event;
 
+import com.allscontracting.model.User;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -14,6 +16,6 @@ public class AuditEvent implements DomainEvent{
 	private String objectId ;
 	private final String eventType = KEY;
 	private String message;
-	private Long userId;
+	private User user;
 	
 }

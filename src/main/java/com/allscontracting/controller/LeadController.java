@@ -44,7 +44,7 @@ public class LeadController {
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
 	public LeadDTO assignEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
-		return leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId()); 
+		return leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
 	}
 	
 	@GetMapping("/types")
@@ -55,7 +55,7 @@ public class LeadController {
 	
 	@PostMapping
 	public Lead saveNewLead(@RequestBody Lead lead, @Autowired Authentication authentication) throws LeadsException {
-		lead = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+		lead = this.leadService.saveNewLead(lead, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 		return lead;
 	}
 
@@ -80,7 +80,7 @@ public class LeadController {
 	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException {
 		try {
 			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
-			this.leadService.scheduleAVisit(id, visitDateTime, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId()); 
+			this.leadService.scheduleAVisit(id, visitDateTime, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
 			return ResponseEntity.ok().body(visitDateTime);
 		} catch (ParseException e) {
 			log.error(e.getMessage());
@@ -92,10 +92,10 @@ public class LeadController {
 	public void fireEvent(@PathVariable String id, @RequestBody String event, @Autowired Authentication authentication) throws LeadsException {
 		switch (EventType.reverse(event)) {
 		case SCHEDULE_VISIT:
-			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			break;
 		default:
-			this.leadService.fireEventToLead(event, id, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			this.leadService.fireEventToLead(event, id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			break;
 		}
 	}
@@ -129,15 +129,6 @@ public class LeadController {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return Collections.emptyList();
-		}
-	}
-
-	@GetMapping(value = "/drop")
-	public void drop(@Autowired Authentication authentication) {
-		try {
-			leadService.drop( ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
-		} catch (Exception e) { 
-			e.printStackTrace();
 		}
 	}
 

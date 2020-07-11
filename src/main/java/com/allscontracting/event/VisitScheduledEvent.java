@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class VisitScheduledEvent implements DomainEvent {
 	private Lead lead;
 	private Client client;
 	private Date visitSchedule;
-	private Long userId;
+	private User user;
 	private final String eventType = EventType.SCHEDULE_VISIT.toString();
 	private final Date eventTime = new Date();
 	private final String objectName = Lead.class.getSimpleName();

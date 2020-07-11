@@ -23,6 +23,7 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
+import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.LineRepository;
@@ -89,7 +90,7 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public void sendPdfByEmail(long proposalId, Long userId) throws JRException, SQLException, IOException, LeadsException {
+	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(()->new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
@@ -99,8 +100,8 @@ public class ProposalService {
 		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), String.valueOf(proposal.getLead().getId()), userId));
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(proposal.getLead().getId()), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", userId));
+		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), String.valueOf(proposal.getLead().getId()), user));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(proposal.getLead().getId()), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", user));
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {

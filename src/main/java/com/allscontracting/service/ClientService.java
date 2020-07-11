@@ -15,6 +15,7 @@ import com.allscontracting.event.EventManager;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.User;
 import com.allscontracting.repo.ClientRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +29,14 @@ public class ClientService {
 	@Autowired EventManager eventManager;
 	
 	@Transactional
-	public ClientDTO updateClient(ClientDTO clientDTO, Long userId) throws NumberFormatException, LeadsException {
+	public ClientDTO updateClient(ClientDTO clientDTO, User user) throws NumberFormatException, LeadsException {
 		Client client = this.clientRepo.findById(Long.valueOf(clientDTO.getId())).orElseThrow(()->new LeadsException("Client not found"));
 		client.setAddress(clientDTO.getAddress());
 		client.setEmail(clientDTO.getEmail());
 		client.setName(clientDTO.getName());
 		client.setPhone(clientDTO.getPhone());
 		this.eventManager.notifyAllListeners(
-				new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()), "Client updated: " + client.toString(), userId)
+				new AuditEvent(Client.class.getSimpleName(), String.valueOf(client.getId()), "Client updated: " + client.toString(), user)
 				);
 		return ClientDTO.clientToDTO(clientRepo.save(client));
 	}
@@ -44,16 +45,16 @@ public class ClientService {
 		return this.clientRepo.findLikeName(name).stream().map(c->ClientDTO.clientToDTO(c)).collect(Collectors.toList());
 	}
 
-	public void sendCantReachEmail(String id, String leadId, Long userId) throws IOException, NumberFormatException, LeadsException {
+	public void sendCantReachEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
 		Client client = this.clientRepo.findById(Long.valueOf(id)).orElseThrow(()->new LeadsException("Client not found"));
 		this.mailService.sendCantReachEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Can't Reach E-mail sent to " + client.getName(), userId));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Can't Reach E-mail sent to " + client.getName(), user));
 	}
 
-	public void sendHiringDecisionEmail(String id, String leadId, Long userId) throws IOException, NumberFormatException, LeadsException {
+	public void sendHiringDecisionEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
 		Client client = this.clientRepo.findById(Long.valueOf(id)).orElseThrow(()->new LeadsException("Client not found"));
 		this.mailService.sendHiringDecisionEmail(client).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Hiring Decision Question E-mailed to " + client.getName(), userId));
+		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), leadId, "Hiring Decision Question E-mailed to " + client.getName(), user));
 	}
 	
 }

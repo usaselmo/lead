@@ -3,6 +3,7 @@ package com.allscontracting.event;
 import java.util.Date;
 
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class LeadStatusChangeEvent implements DomainEvent {
 	private final Date eventTime = new Date();
 	private String oid;
 	private String evTp;
-	private Long userId;
+	private User user;
 
 	@Override
 	public String getEventType() {

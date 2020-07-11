@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,20 +27,20 @@ public class EventLog {
 	private String eventType;
 	@NotNull
 	private Date eventTime;
-	private Long userId;
+	@ManyToOne private User user;
 	private String message;
 
 	public EventLog() {
 		super();
 	}
 
-	public EventLog(String objectName, String objectId, String eventType, Date eventTime, Long userId, String message) {
+	public EventLog(String objectName, String objectId, String eventType, Date eventTime, User user, String message) {
 		super();
 		this.objectName = objectName;
 		this.objectId = objectId;
 		this.eventType = eventType;
 		this.eventTime = eventTime;
-		this.userId = userId;
+		this.user = user;
 		this.message = message;
 	}
 
