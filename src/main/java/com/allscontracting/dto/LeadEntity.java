@@ -20,7 +20,7 @@ public class LeadEntity {
 	private final List<String> successMessages = new ArrayList<>();
 	private final List<String> errorMessages = new ArrayList<>();
 	private LeadDTO lead;
-	private final List<LeadDTO> leads = new ArrayList<>();
+	private List<LeadDTO> leads;
 	private List<EventTypeDTO> eventTypes;
 	private List<EventTypeDTO> nextEvents;
 	private List<String> leadTypes;
@@ -42,8 +42,10 @@ public class LeadEntity {
 	}
 	
 	public LeadEntity addAllLeads(List<Lead> leads) {
+		if(this.leads==null)
+			this.leads = new ArrayList<>();
 		this.leads.addAll(leads.stream().map(l->LeadDTO.of(l)).collect(Collectors.toList()));
 		return this;
 	}
-	
+		
 }

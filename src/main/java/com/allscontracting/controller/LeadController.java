@@ -104,13 +104,8 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "/search")
-	public List<LeadDTO> search(@RequestParam String text) {
-		try {
-			return this.leadService.search(text);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return Collections.emptyList();
-		}
+	public LeadEntity search(@RequestParam String text) {
+		return LeadEntity.builder().leads(leadService.search(text)).build();
 	}
 
 	@GetMapping(value = "")

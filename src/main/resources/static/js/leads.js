@@ -330,8 +330,8 @@ angular.module('leads', [])
     	}
     	else if(text.length > 2 ){
         $http.get(local_server_url + "/leads/search?text=" + text).then(function (response) {
-          $scope.leads = response.data
-          $scope.totalLeads = response.data.length
+          $scope.leads = response.data.leads
+          $scope.totalLeads = response.data.leads.length
           $scope.filter = ''
           showMessages(response.data)
         }, function (response) {
