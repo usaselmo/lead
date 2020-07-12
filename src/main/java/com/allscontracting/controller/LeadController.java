@@ -109,14 +109,8 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public List<LeadDTO> list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) {
-		try {
-			List<LeadDTO> leads = this.leadService.listLeads(pageRange, lines, eventType);
-			return leads;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return Collections.emptyList();
-		}
+	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) throws Exception {
+		return LeadEntity.builder().leads(leadService.listLeads(pageRange, lines, eventType)).build();
 	}
 
 	@GetMapping(value = "/total")

@@ -546,12 +546,12 @@ angular.module('leads', [])
 
     var findLeads = function (pageRange, lines, filter) {
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
-        $scope.leads = response.data
+        $scope.leads = response.data.leads
         findTotalLeads(filter)
+        showMessages(response.data)
         $scope.leads.forEach(function(l, index){ findNextEvents(l)})
       }, function (response) {
-        console.log(response)
-        errorMessage(response.data)
+        errorMessage('Could not find leads')
         checkAlive();
       });
     }
