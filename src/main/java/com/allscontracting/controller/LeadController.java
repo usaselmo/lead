@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
+import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.EventType;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.repo.LeadRepository;
@@ -43,25 +44,30 @@ public class LeadController {
 	@Autowired LeadRepository leadRepo;
 	
 	@GetMapping("eventtypes")
-	public List<EventTypeDTO> findEventTypes(){
-		return Stream.of(EventType.values()).map(et->EventTypeDTO.of(et)).collect(Collectors.toList());
+	public LeadEntity findEventTypes(){
+		return LeadEntity.builder().eventTypes(Stream.of(EventType.values()).map(et->EventTypeDTO.of(et)).collect(Collectors.toList())).build();
 	}
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
-	public LeadDTO assignEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
-		return leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
+	public LeadEntity assignToEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
+		return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build(); 
 	}
 	
 	@GetMapping("/types")
-	public List<String> getLeadTypes() {
-		List<String> types= this.leadService.getLeadTypes();
+	public LeadEntity getLeadTypes() {
+		LeadEntity types = LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
 		return types;
 	}
 	
 	@PostMapping
-	public LeadDTO saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
-		leadDTO = this.leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
-		return leadDTO;
+	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
+		try {
+			LeadEntity leadEntity = LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
+			return leadEntity;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 	@PostMapping(value = "{id}/addNote")

@@ -31,6 +31,8 @@ public class CompanyDTO {
 	}
 
 	public static final Company toCompany(CompanyDTO cd) {
+		if(cd==null)
+			return null;
 		Company c = new Company();
 		c.setAddress(cd.getAddress());
 		c.setEmail(cd.getAddress());

@@ -31,7 +31,7 @@ public class Client {
 	}
 
 	public void setCellPhone(String phone) {
-		this.cellPhone = phone.replaceAll("\\(|\\)|\\-| ", "");
+		this.cellPhone = StringUtils.isBlank(phone)?null:phone.replaceAll("\\(|\\)|\\-| ", "");
 	}
 
 	public void setPhone(String phone) {

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.ProposalDTO;
-import com.allscontracting.dto.ResponseEntity;
+import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ProposalService;
@@ -44,12 +44,12 @@ public class ProposalController {
 	}
 
 	@DeleteMapping(value = "")
-	public ResponseEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication){
+	public LeadEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication){
 		try {
 			proposalService.delete(leadId, proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
-			return new ResponseEntity().addSuccessMessage("Proposal Deleted");
+			return new LeadEntity().addSuccessMessage("Proposal Deleted");
 		} catch (Exception e) {
-			return new ResponseEntity().addErrorMessage(e.getMessage());
+			return new LeadEntity().addErrorMessage(e.getMessage());
 		}
 	}
 

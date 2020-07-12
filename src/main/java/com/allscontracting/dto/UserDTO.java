@@ -42,6 +42,8 @@ public class UserDTO {
 	}
 
 	public static final User toUser(UserDTO ud) {
+		if(ud==null)
+			return null;
 		User u = new User();
 		u.setCompany(CompanyDTO.toCompany(ud.getCompany()));
 		u.setEmail(ud.getEmail());

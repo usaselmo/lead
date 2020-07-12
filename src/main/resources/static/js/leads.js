@@ -35,17 +35,21 @@ angular.module('leads', [])
     
     $scope.findEventTypes = function(){
   		$http.get(local_server_url + '/leads/eventtypes').then(function (response) {
-  			$scope.eventTypes = response.data
+        $scope.eventTypes = response.data.eventTypes
+        successMessages(response.data.successMessages)
+        errorMessages(response.data.errorMessages)
   		}, function (response) {
-  			errorMessage(response.data)
+  			errorMessage('Could not find event types')
   		});
     }
    
     $scope.assignToEstimator = function(lead, estimatorId){
   		$http.put(local_server_url + '/leads/'+lead.id+'/estimator/' + estimatorId).then(function (response) {
-  			lead = response.data
+  			lead = response.data.lead
+        successMessages(response.data.successMessages)
+        errorMessages(response.data.errorMessages)
   		}, function (response) {
-  			errorMessage(response.data)
+  			errorMessage('Could not assign to Estimator')
   		});
     }
    
@@ -203,8 +207,16 @@ angular.module('leads', [])
       $scope.errorMessages = [msg]
     }
 
+    var errorMessages = function(msgArray){
+      $scope.errorMessages = msgArray
+    }
+
     var successMessage = function(msg){
       $scope.successMessages = [msg]
+    }
+
+    var successMessages = function(msgArray){
+      $scope.successMessages = msgArray
     }
 
     $scope.sendHiringDecisionEmail = function(lead, client){
@@ -233,22 +245,24 @@ angular.module('leads', [])
     
     var getLeadTypes = function(){
   		$http.get(local_server_url + '/leads/types').then(function (response) {
-  			$scope.newLead.types = response.data
+        $scope.newLead.types = response.data.leadTypes
+        successMessages(response.data.successMessages)
+        errorMessages(response.data.errorMessages)
   		}, function (response) {
   			console.log(response)
-        errorMessage(response.data)
+        errorMessage('Could not find lead types')
   		});
     }
     
     $scope.newLeadSave = function(newLead){
   		$http.post(local_server_url + '/leads', newLead).then(function (response) {
-  			$scope.leads.unshift(response.data)
+  			$scope.leads.unshift(response.data.lead)
   			$scope.totalLeads++
-  			$("button[data-dismiss=\"modal\"]"). click()
-  			successMessage('New lead saved')
+        successMessages(response.data.successMessages)
+        errorMessages(response.data.errorMessages)
   		}, function (response) {
   			console.log(response)
-        errorMessage(response.data)
+        errorMessage('Could not save this Lead')
   		});
     }
     

@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.allscontracting.exception.LeadsException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,8 @@ public class Converter {
 	}
 	
 	public static Date convertToDate(String date) throws LeadsException{
+		if(StringUtils.isBlank(date))
+			return null;
 		try {
 			return Converter.stringToDate(date, MM_dd_yyyy);
 		} catch (ParseException e) {
