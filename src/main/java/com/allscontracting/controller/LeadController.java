@@ -95,14 +95,7 @@ public class LeadController {
 
 	@PostMapping(value = "{id}/fireevent")
 	public void fireEvent(@PathVariable String id, @RequestBody EventTypeDTO event, @Autowired Authentication authentication) throws LeadsException {
-		switch (EventType.valueOf(event.getName())) {
-		case SCHEDULE_VISIT:
-			this.leadService.scheduleAVisit(id, new Date(), ((LeadUserDetails)authentication.getPrincipal()).getUser());
-			break;
-		default:
-			this.leadService.fireEventToLead(event.getName(), id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
-			break;
-		}
+		this.leadService.fireEventToLead(event.getName(), id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 
 	@GetMapping(value = "{id}/nextevents")

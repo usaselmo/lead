@@ -20,7 +20,6 @@ import com.allscontracting.event.AuditEvent;
 import com.allscontracting.event.EventManager;
 import com.allscontracting.event.EventType;
 import com.allscontracting.event.EventTypeDispatcher;
-import com.allscontracting.event.VisitScheduledEvent;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
@@ -70,9 +69,9 @@ public class LeadService {
 	public void scheduleAVisit(String leadId, Date visitDateTime, User user) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
-		lead.setEvent(EventType.SCHEDULE_VISIT);
+		//lead.setEvent(EventType.);
 		this.leadRepo.save(lead);
-		this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, user));
+		//this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, user));
 	}
 
 	@Transactional

@@ -4,17 +4,16 @@ import java.util.stream.Stream;
 
 public enum EventType {
 	
-	BEGIN("Started", "Begin", "BE"),
-	CONTACT_QUALIFY("Contact and Qualify", "Contact Client", "CQ"),
-	ASSIGN_TO_ESTIMATOR("Assign to Estimator", "Assign to Estimator", "AE"),
-	SCHEDULE_VISIT("Visit Scheduled", "Schedule a Visit", "SV"),
-	MARK_AS_VISITED("Marked as Visited", "Mark as Visited", "MV"),
-	CREATE_PROPOSAL("Proposal Created", "Create Proposal", "CP"),
-	SEND_PROPOSAL("Proposal Sent", "Send Proposal", "SP"),
-	BEGIN_WORK("Work Started", "Begin Work", "BW"),
-	FINISH_WORK("Work Finished", "Finish Work", "FW"),
-	END_LEAD("Ended", "End Lead", "EL"),
-	LOAD_VENDOR_FILE("Vendor File Loaded", "Load Vendor File", "LVF");
+	BEGIN("CONTACTING", "START OVER", "BE"),
+	ASSIGN_TO_ESTIMATOR("ASSIGNED TO ESTIMATOR", "Assign to Estimator", "AE"),
+	BID("BIDDING", "BID", "BD"),
+	CREATE_PROPOSAL("PROPOSAL CREATED", "Create Proposal", "CP"),
+	SEND_PROPOSAL("PROPOSAL SENT", "Send Proposal", "SP"),
+	ACCEPT_PROPOSAL("PROPOSAL ACCEPTED", "Accept Proposal", "AP"),
+	BEGIN_WORK("WORK IN PROGRESS", "Begin Work", "BW"),
+	FINISH_WORK("WORK FINISHED", "Finish Work", "FW"),
+	END_LEAD("ENDED", "End Lead", "EL"),
+	LOAD_VENDOR_FILE("VENDOR FILE LOADED", "Load Vendor File", "LVF");
 	
 	private String status;
 	private String action;

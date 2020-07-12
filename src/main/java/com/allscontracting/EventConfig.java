@@ -25,7 +25,6 @@ public class EventConfig {
 		/**
 		 * Register here all the event listeners
 		 */
-		em.subscribe(EventType.SCHEDULE_VISIT.toString(), this.emailListener);
 		em.subscribe(EventType.SEND_PROPOSAL.toString(), this.emailListener);
 		em.subscribe(EventType.LOAD_VENDOR_FILE.toString(), vendorFileListener);
 		Stream.of(EventType.values()).forEach(et->em.subscribe(et.toString(), eventLogListener));
