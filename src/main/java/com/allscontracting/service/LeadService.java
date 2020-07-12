@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.EventTypeDTO;
@@ -48,13 +47,6 @@ public class LeadService {
 			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 		else
 			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
-	}
-
-	public long getLeadsTotal(EventType eventType) throws Exception {
-		if (StringUtils.isEmpty(eventType)) 
-			return this.leadRepo.count();
-		else
-			return this.leadRepo.countByEvent(eventType);
 	}
 
 	public List<EventTypeDTO> findNextEvents(String leadId) throws LeadsException {

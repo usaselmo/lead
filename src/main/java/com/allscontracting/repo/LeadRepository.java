@@ -15,8 +15,6 @@ import com.allscontracting.model.Proposal;
 import com.allscontracting.model.Lead.Vendor;
 
 public interface LeadRepository extends JpaRepository<Lead, Long>{
-
-	long countByEvent(EventType event);
 	
 	Page<Lead> findAllByEvent(Pageable pageable, EventType eventType);
 	

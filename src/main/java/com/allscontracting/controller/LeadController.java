@@ -1,9 +1,7 @@
 package com.allscontracting.controller;
 
 import java.text.ParseException;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,17 +109,6 @@ public class LeadController {
 	@GetMapping(value = "")
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) throws Exception {
 		return LeadEntity.builder().leads(leadService.listLeads(pageRange, lines, eventType)).build();
-	}
-
-	@GetMapping(value = "/total")
-	public Long findTotal(@RequestParam EventType eventType) {
-		try {
-			long res = leadService.getLeadsTotal(eventType);
-			return res;
-		} catch (Exception e) { 
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 }
