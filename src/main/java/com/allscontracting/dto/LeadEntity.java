@@ -22,6 +22,7 @@ public class LeadEntity {
 	private LeadDTO lead;
 	private final List<LeadDTO> leads = new ArrayList<>();
 	private List<EventTypeDTO> eventTypes;
+	private List<EventTypeDTO> nextEvents;
 	private List<String> leadTypes;
 	private List<EventLogDTO> eventLogs;
 	

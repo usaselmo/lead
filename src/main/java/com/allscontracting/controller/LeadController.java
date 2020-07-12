@@ -94,13 +94,12 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "{id}/nextevents")
-	public List<EventTypeDTO> findNextEvents(@PathVariable String id) {
+	public LeadEntity findNextEvents(@PathVariable String id){
 		try {
-			List<EventTypeDTO> res = this.leadService.findNextEvents(id);
+			LeadEntity res = LeadEntity.builder().nextEvents(leadService.findNextEvents(id)).build();
 			return res;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Collections.emptyList();
+		} catch (LeadsException e) {
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		}
 	}
 

@@ -497,11 +497,11 @@ angular.module('leads', [])
 
     var findNextEvents = function (lead) {
       $http.get(local_server_url + "/leads/" + lead.id + "/nextevents").then(function (response) {
-        lead.nextEvents = response.data
-        return response.data
+        lead.nextEvents = response.data.nextEvents
+        showMessages(response.data)
+        return response.data.nextEvents
       }, function (response) {
-        console.log(response)
-        errorMessage(response.data)
+        errorMessage('Could not find next events')
         checkAlive();
       });
     }
