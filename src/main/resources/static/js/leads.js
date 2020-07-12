@@ -523,9 +523,10 @@ angular.module('leads', [])
 
     var findNextEventLogs = function (lead) {
       $http.get(local_server_url + "/leads/" + lead.id + "/eventlogs").then(function (response) {
-        lead.eventLogs = response.data
+        lead.eventLogs = response.data.eventLogs
+        showMessages(response.data)
       }, function (response) {
-        console.log(response)
+        errorMessage('Could not find event Logs')
         checkAlive();
       });
     }

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
@@ -72,14 +71,9 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "{id}/eventlogs")
-	public List<EventLogDTO> findEventLogs(@PathVariable String id) {
-		try {
-			List<EventLogDTO> res = this.leadService.findLeadEventLogs(id);
-			return res;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Collections.emptyList();
-		}
+	public LeadEntity findEventLogs(@PathVariable String id) {
+		LeadEntity res = LeadEntity.builder().eventLogs(leadService.findLeadEventLogs(id)).build();
+		return res;
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
