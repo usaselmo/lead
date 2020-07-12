@@ -1,6 +1,7 @@
 package com.allscontracting.service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,12 +59,11 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void scheduleAVisit(String leadId, Date visitDateTime, User user) throws LeadsException {
+	public LeadDTO scheduleAVisit(String leadId, String time, User user) throws LeadsException, ParseException {
+		Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
-		//lead.setEvent(EventType.);
-		this.leadRepo.save(lead);
-		//this.eventManager.notifyAllListeners(new VisitScheduledEvent(lead, lead.getClient(), visitDateTime, user));
+		return LeadDTO.of(leadRepo.save(lead));
 	}
 
 	@Transactional

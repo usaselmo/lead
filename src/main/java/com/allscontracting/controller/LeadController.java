@@ -1,13 +1,10 @@
 package com.allscontracting.controller;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,13 +22,9 @@ import com.allscontracting.event.EventType;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.security.LeadUserDetails;
-import com.allscontracting.service.Converter;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping("leads")
 public class LeadController {
@@ -52,38 +45,28 @@ public class LeadController {
 	
 	@GetMapping("/types")
 	public LeadEntity getLeadTypes() {
-		LeadEntity types = LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
-		return types;
+		return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
 	}
 	
 	@PostMapping
 	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
-		LeadEntity leadEntity = LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
-		return leadEntity;
+		return LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
 	}
 
 	@PostMapping(value = "{id}/addNote")
 	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-			LeadEntity leadEntity = LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
-			return leadEntity;
+		return LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
 	}
 
 	@GetMapping(value = "{id}/eventlogs")
 	public LeadEntity findEventLogs(@PathVariable String id) {
-		LeadEntity res = LeadEntity.builder().eventLogs(leadService.findLeadEventLogs(id)).build();
-		return res;
+		return LeadEntity.builder().eventLogs(leadService.findLeadEventLogs(id)).build();
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
-	public ResponseEntity<Object> scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException {
-		try {
-			Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
-			this.leadService.scheduleAVisit(id, visitDateTime, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
-			return ResponseEntity.ok().body(visitDateTime);
-		} catch (ParseException e) {
-			log.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
+	public LeadEntity scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException, ParseException {
+		LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
+		return LeadEntity.builder().lead(res).build();
 	}
 
 	@PostMapping(value = "{id}/fireevent")
@@ -92,13 +75,8 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "{id}/nextevents")
-	public LeadEntity findNextEvents(@PathVariable String id){
-		try {
-			LeadEntity res = LeadEntity.builder().nextEvents(leadService.findNextEvents(id)).build();
-			return res;
-		} catch (LeadsException e) {
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		}
+	public LeadEntity findNextEvents(@PathVariable String id) throws LeadsException{
+		return LeadEntity.builder().nextEvents(leadService.findNextEvents(id)).build();
 	}
 
 	@GetMapping(value = "/search")

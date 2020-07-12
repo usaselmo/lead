@@ -469,11 +469,11 @@ angular.module('leads', [])
 
     $scope.scheduleVisit = function (lead, time) {
       $http.post(local_server_url + "/leads/" + lead.id + "/schedulevisit", time).then(function (response) {
-        lead.visit = response.data
+        lead = response.data.lead
+        showMessages(response.data)
         $scope.showLeadDetails(lead)
       }, function (response) {
-        console.log(response)
-        alert("Error: " + response.status + ". Make sure the date format is right.")
+        errorMessage("Error: " + response.status + ". Make sure the date format is right.")
         checkAlive();
       });
     }
