@@ -1,8 +1,5 @@
 package com.allscontracting;
 
-import static org.junit.Assert.assertThat;
-
-import org.hamcrest.CoreMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -56,7 +53,6 @@ public class Main implements CommandLineRunner {
 		user.removeUserProfile(user.getProfiles().get(0));
 		user.addUserProfile(UserProfile.builder().user(user).profile(UserProfile.Description.ADMIN).build());
 		user = userRepo.save(user);
-		assertThat(user.getProfiles().size() <= previousSize, CoreMatchers.is(true));
 	}
 
 }

@@ -40,6 +40,7 @@ angular.module('leads', [])
         errorMessages(response.data.errorMessages)
   		}, function (response) {
   			errorMessage('Could not find event types')
+  	    checkAlive();
   		});
     }
    
@@ -50,6 +51,7 @@ angular.module('leads', [])
         errorMessages(response.data.errorMessages)
   		}, function (response) {
   			errorMessage('Could not assign to Estimator')
+  	    checkAlive();
   		});
     }
    
@@ -58,6 +60,7 @@ angular.module('leads', [])
   			$scope.estimators = response.data
   		}, function (response) {
   			errorMessage(response.data)
+  	    checkAlive();
   		});
     }
     
@@ -66,6 +69,7 @@ angular.module('leads', [])
   			$scope.profiles = response.data
   		}, function (response) {
   			errorMessage(response.data)
+  	    checkAlive();
   		});
     }
     
@@ -83,6 +87,7 @@ angular.module('leads', [])
   			successMessage(company.name + ' updated.')
   		}, function (response) {
   			errorMessage(response.data)
+  	    checkAlive();
   		});
     }
     
@@ -92,6 +97,7 @@ angular.module('leads', [])
     			$scope.companies = response.data
     		}, function (response) {
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}
     }
@@ -110,6 +116,7 @@ angular.module('leads', [])
 	  			$scope.companies = response.data
 	  		}, function (response) {
 	  			errorMessage(response.data)
+	  	    checkAlive();
 	  		});
     	}
     }
@@ -139,6 +146,7 @@ angular.module('leads', [])
 				successMessage(user.name + ' created.')
 			}, function (response) {
 				errorMessage(response.data)
+		    checkAlive();
 			});
     }
     
@@ -149,6 +157,7 @@ angular.module('leads', [])
 				successMessage(user.name + ' updated.')
 			}, function (response) {
 				errorMessage(response.data)
+		    checkAlive();
 			});
     }
 
@@ -219,6 +228,11 @@ angular.module('leads', [])
       $scope.successMessages = msgArray
     }
 
+    var showMessages = function(responsedata){
+      successMessages(responsedata.successMessages)
+      errorMessages(responsedata.errorMessages)
+    }
+
     $scope.sendHiringDecisionEmail = function(lead, client){
     	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
     		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
@@ -227,6 +241,7 @@ angular.module('leads', [])
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}
     }
@@ -239,6 +254,7 @@ angular.module('leads', [])
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}
     }
@@ -251,6 +267,7 @@ angular.module('leads', [])
   		}, function (response) {
   			console.log(response)
         errorMessage('Could not find lead types')
+        checkAlive();
   		});
     }
     
@@ -263,6 +280,7 @@ angular.module('leads', [])
   		}, function (response) {
   			console.log(response)
         errorMessage('Could not save this Lead')
+        checkAlive();
   		});
     }
     
@@ -283,6 +301,7 @@ angular.module('leads', [])
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}else{
     		$scope.newLead.clients = {}
@@ -296,6 +315,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
     
@@ -313,20 +333,22 @@ angular.module('leads', [])
           $scope.leads = response.data
           $scope.totalLeads = response.data.length
           $scope.filter = ''
+          showMessages(response.data)
         }, function (response) {
-          console.log(response)
-    			errorMessage(response.data)
+    			errorMessage('Could not find ' + text)
+    	    checkAlive();
         });
     	}
     }
     	
     $scope.saveNote = function(lead, note){
       $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
-      	$scope.lead.notes = response.data.notes
+      	$scope.lead.notes = response.data.lead.notes
       	note = ''
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -340,6 +362,7 @@ angular.module('leads', [])
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}
     }
@@ -367,6 +390,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -389,6 +413,7 @@ angular.module('leads', [])
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
     		});
     	}
     	if(proposal.id)
@@ -449,6 +474,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         alert("Error: " + response.status + ". Make sure the date format is right.")
+        checkAlive();
       });
     }
 
@@ -465,6 +491,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -475,6 +502,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -498,6 +526,7 @@ angular.module('leads', [])
         lead.eventLogs = response.data
       }, function (response) {
         console.log(response)
+        checkAlive();
       });
     }
 
@@ -510,6 +539,7 @@ angular.module('leads', [])
         }, function (response) {
           console.log(response)
     			errorMessage(response.data)
+    	    checkAlive();
         });
     }
 
@@ -521,6 +551,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -538,6 +569,7 @@ angular.module('leads', [])
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
+        checkAlive();
       });
     }
 
@@ -572,17 +604,14 @@ angular.module('leads', [])
       getLeadTypes();
     }
     
-    
     var checkAlive = function(){
-    	setInterval(function(){
     		$http.head(local_server_url).then(function (response) {
     			if(response.status != 200){
-    				location.reload()
+    				$http.get(local_server_url+'/logout')
     			}
     		}, function (response) {
-    			location.reload()
+          $http.get(local_server_url+'/logout')
     		});
-    	}, 2000);
     }
     
     $scope.reload();
@@ -590,7 +619,6 @@ angular.module('leads', [])
     $scope.searchCompanies();
     getProfiles();
     getEstimators();
-    checkAlive();
     
   });
 

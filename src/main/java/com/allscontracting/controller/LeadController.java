@@ -61,19 +61,14 @@ public class LeadController {
 	
 	@PostMapping
 	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
-		try {
-			LeadEntity leadEntity = LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
-			return leadEntity;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+		LeadEntity leadEntity = LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
+		return leadEntity;
 	}
 
 	@PostMapping(value = "{id}/addNote")
-	public LeadDTO addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-			LeadDTO lead = this.leadService.addNewNote(id, note);
-			return lead;
+	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
+			LeadEntity leadEntity = LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
+			return leadEntity;
 	}
 
 	@GetMapping(value = "{id}/eventlogs")
