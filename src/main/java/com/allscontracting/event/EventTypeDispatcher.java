@@ -20,19 +20,7 @@ import org.springframework.stereotype.Component;
 public class EventTypeDispatcher {
 
 	public List<EventType> findNextEvents(EventType event) {
-/* 	
-  -> BEGIN("Contacting", "Start Over", "BE"),
-	-> ASSIGN_TO_ESTIMATOR("Assigned to Estimator", "Assign to Estimator", "AE"),
-	-> SCHEDULE_VISIT("Visiting", "Schedule a Visit", "SV"),
-	-> MARK_AS_VISITED("Visited", "Mark as Visited", "MV"),
-	-> CREATE_PROPOSAL("Proposal Created", "Create Proposal", "CP"),
-	-> SEND_PROPOSAL("PROPOSAL SENT", "Send Proposal", "SP"),
-	ACCEPT_PROPOSAL("PROPOSAL ACCEPTED", "Accept Proposal", "AP"),
-	BEGIN_WORK("WORK IN PROGRESS", "Begin Work", "BW"),
-	FINISH_WORK("Work Finished", "Finish Work", "FW"),
-	END_LEAD("Ended", "End Lead", "EL"),
-	LOAD_VENDOR_FILE("Vendor File Loaded", "Load Vendor File", "LVF");
- */
+		
 		EventType[] VENDOR_FILE_LOADED = { BEGIN };
 		EventType[] BEGIN_ = {ASSIGN_TO_ESTIMATOR, BID, CREATE_PROPOSAL, END_LEAD };
 		EventType[] ASSIGN_TO_ESTIMATOR = {BID, CREATE_PROPOSAL, END_LEAD };
