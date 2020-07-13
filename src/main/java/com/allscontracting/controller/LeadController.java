@@ -88,5 +88,16 @@ public class LeadController {
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) throws Exception {
 		return LeadEntity.builder().leads(leadService.listLeads(pageRange, lines, eventType)).build();
 	}
+
+	@GetMapping(value = "/total")
+	public Long findTotal(@RequestParam EventType eventType) {
+		try {
+			long res = leadService.getLeadsTotal(eventType);
+			return res;
+		} catch (Exception e) { 
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

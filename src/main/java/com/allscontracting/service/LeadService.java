@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.EventTypeDTO;
@@ -125,6 +126,13 @@ public class LeadService {
 		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
 		this.fireEventToLead(EventType.ASSIGN_TO_ESTIMATOR.toString(), String.valueOf(lead.getId()), user);
 		return leadDTO;
+	}
+
+	public long getLeadsTotal(EventType eventType) throws Exception {
+		if (StringUtils.isEmpty(eventType)) 
+			return this.leadRepo.count();
+		else
+			return this.leadRepo.countByEvent(eventType);
 	}
 
 }

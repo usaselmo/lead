@@ -531,10 +531,26 @@ angular.module('leads', [])
       });
     }
 
+    var findTotalLeads = function (filter) {
+      $scope.filter = filter
+      $http.get(local_server_url + "/leads/total?eventType=" + $scope.filter)
+        .then(function (response) {
+          $scope.totalLeads = response.data
+          defineBolEol()
+        }, function (response) {
+          console.log(response)
+    			errorMessage(response.data)
+    	    checkAlive();
+        });
+    }
+
     var findLeads = function (pageRange, lines, filter) {
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
         $scope.leads = response.data.leads
-        $scope.totalLeads = response.data.leads.length
+        if(response.data.leads.length < 100)
+        	$scope.totalLeads = response.data.leads.length
+        else
+        	findTotalLeads(filter)
         showMessages(response.data)
         $scope.leads.forEach(function(l, index){ findNextEvents(l)})
       }, function (response) {
