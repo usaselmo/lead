@@ -1,6 +1,5 @@
 package com.allscontracting.controller;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -89,7 +88,7 @@ public class LeadController {
 	@GetMapping(value = "")
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) throws Exception {
 		List<LeadDTO> res = leadService.listLeads(pageRange, lines, eventType);
-		long leadsTotalPrice = res.stream().map(l->l.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
+		long leadsTotalPrice = res.stream().mapToLong(l->l.getPrice()).sum();
 		return LeadEntity.builder().leads(res).leadsTotalPrice(leadsTotalPrice).build();
 	}
 

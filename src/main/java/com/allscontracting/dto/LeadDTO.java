@@ -36,8 +36,7 @@ public class LeadDTO {
 	private List<ProposalDTO> proposals;
 	private String event;//EventType
 	private String visit;
-	private String lastProposalTotal;
-	private BigDecimal price;
+	private Long price;
 	private UserDTO estimator;
 	
 	public static final LeadDTO of(Lead lead) {
@@ -56,16 +55,16 @@ public class LeadDTO {
 				.proposals(lead.getProposals()==null?null:lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().toString())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
-				.lastProposalTotal(  getLastProposalTotal(lead)  )
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
 				.build();
 	}
 	
-	private static BigDecimal getTotalPrice(Lead lead) {
+	private static long getTotalPrice(Lead lead) {
 		if(lead.getProposals()==null || lead.getProposals().size()<=0)
-			return BigDecimal.ZERO;
-		return lead.getProposals().stream().map(l->l.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add);
+			return BigDecimal.ZERO.longValue();
+		BigDecimal total = lead.getProposals().stream().sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
+		return total.longValue();
 	}
 
 	public static final Lead toLead(LeadDTO leadDTO) throws LeadsException {
@@ -86,13 +85,4 @@ public class LeadDTO {
 		return lead;
 	}
 
-	private static String getLastProposalTotal(Lead lead) {
-		if(lead.getProposals()==null)
-			return null;
-		BigDecimal total = lead.getProposals().stream().sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
-		if (total == null || total.equals(BigDecimal.ZERO))
-			return null;
-		return NumberFormat.getCurrencyInstance().format(total);
-	}
-	
 }
