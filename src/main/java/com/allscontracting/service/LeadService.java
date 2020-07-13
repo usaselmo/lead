@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -31,15 +30,18 @@ import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class LeadService {
 
-	@Autowired private LeadRepository leadRepo;
-	@Autowired private EventTypeDispatcher eventDispatcher;
-	@Autowired private EventManager eventManager;
-	@Autowired private EventoLogRepository eventLogRepo;
-	@Autowired private ClientRepository clientRepo;
-	@Autowired private UserRepository userRepo;
+	private final LeadRepository leadRepo;
+	private final EventTypeDispatcher eventDispatcher; 
+	private final EventManager eventManager;
+	private final EventoLogRepository eventLogRepo;
+	private final ClientRepository clientRepo;
+	private final UserRepository userRepo;
 	
 	public List<LeadDTO> listLeads(int pageRange, int lines, EventType eventType) throws Exception {
 		if(pageRange<0)

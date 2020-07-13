@@ -331,6 +331,7 @@ angular.module('leads', [])
     	else if(text.length > 2 ){
         $http.get(local_server_url + "/leads/search?text=" + text).then(function (response) {
           $scope.leads = response.data.leads
+          $scope.leadsTotalPrice = response.data.leadsTotalPrice
           $scope.totalLeads = response.data.leads.length
           $scope.filter = ''
           showMessages(response.data)
@@ -547,6 +548,7 @@ angular.module('leads', [])
     var findLeads = function (pageRange, lines, filter) {
       $http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
         $scope.leads = response.data.leads
+        $scope.leadsTotalPrice = response.data.leadsTotalPrice
         if(response.data.leads.length < 100)
         	$scope.totalLeads = response.data.leads.length
         else

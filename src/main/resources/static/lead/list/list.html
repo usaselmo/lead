@@ -1,7 +1,7 @@
 
 <div class="col-sm-3" ng-if="!hideHeader">
   <h3 style="margin-top: 0px;">
-    {{totalLeads}} Leads <a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a>
+    {{totalLeads}} Leads <small style="font-size: 0.5em;" ng-if="leadsTotalPrice > 0">{{leadsTotalPrice | currency}}</small><a title="Reload" href="#" class="btn btn-sm" ng-click="reload()"><span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload"></span></a>
     <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"
       title="Create new Lead"></span></a>
   </h3>

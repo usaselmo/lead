@@ -21,6 +21,7 @@ public class LeadEntity {
 	private final List<String> errorMessages = new ArrayList<>();
 	private LeadDTO lead;
 	private List<LeadDTO> leads;
+	private Long leadsTotalPrice;
 	private List<EventTypeDTO> eventTypes;
 	private List<EventTypeDTO> nextEvents;
 	private List<String> leadTypes;
