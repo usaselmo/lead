@@ -50,8 +50,12 @@ public class LeadController {
 	}
 	
 	@PostMapping
-	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) throws LeadsException {
-		return LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build();
+	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
+		try {
+			return LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
+		} catch (LeadsException e) {
+			return LeadEntity.builder().lead(leadDTO).build().addErrorMessage(e.getMessage());
+		}
 	}
 
 	@PostMapping(value = "{id}/addNote")

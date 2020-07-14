@@ -1,5 +1,7 @@
 package com.allscontracting.dto;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.allscontracting.model.Client;
 
 import lombok.AllArgsConstructor;
@@ -38,7 +40,7 @@ public class ClientDTO {
 		c.setAddress(cd.getAddress());
 		c.setCellPhone(cd.getCellPhone());
 		c.setEmail(cd.getEmail());
-		c.setId(Long.valueOf(cd.getId()));
+		c.setId(StringUtils.isBlank(cd.getId())?null:Long.valueOf(cd.getId()));
 		c.setName(cd.getName());
 		c.setPhone(cd.getPhone());
 		return c;
