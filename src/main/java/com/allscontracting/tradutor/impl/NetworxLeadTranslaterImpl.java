@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -98,7 +98,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 					.description(removeSymbol(splitedLine[NX_Additional_Information]))
 					.fee(LeadHelper.defineCost(splitedLine[NX_Cost]))
 					.type(removeSymbol(splitedLine[NX_Task]))
-					.event(EventType.BEGIN)
+					.event(Event.BEGIN)
 					.client(Client.builder()
 							.address(removeSymbol(splitedLine[NX_Address]) + ", " + removeSymbol(splitedLine[NX_City]) + ", " + removeSymbol(splitedLine[NX_State]) + " " + removeSymbol(splitedLine[NX_Zip_Code]))
 							.phone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))

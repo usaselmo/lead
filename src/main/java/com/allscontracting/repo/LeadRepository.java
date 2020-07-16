@@ -9,16 +9,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.Lead.Vendor;
 
 public interface LeadRepository extends JpaRepository<Lead, Long>{
 	
-	long countByEvent(EventType event);
+	long countByEvent(Event event);
 	
-	Page<Lead> findAllByEvent(Pageable pageable, EventType eventType);
+	Page<Lead> findAllByEvent(Pageable pageable, Event eventType);
 	
 	@Query("SELECT p FROM Lead l, Proposal p WHERE p.id = ?1 ")
 	List<Proposal> findProposals(Long leadId);

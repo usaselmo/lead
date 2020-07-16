@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -73,7 +73,7 @@ public class LeadDTO {
 		lead.setDate(Converter.convertToDate(leadDTO.getDate()));
 		lead.setDescription(leadDTO.getDescription());
 		lead.setEstimator(UserDTO.toUser(leadDTO.getEstimator()));
-		lead.setEvent(StringUtils.isBlank(leadDTO.getEvent())?null:EventType.valueOf(leadDTO.getEvent()));
+		lead.setEvent(StringUtils.isBlank(leadDTO.getEvent())?null:Event.valueOf(leadDTO.getEvent()));
 		lead.setFee(StringUtils.isBlank(leadDTO.getFee())?BigDecimal.ZERO:new BigDecimal(leadDTO.getFee().replace("$", "")));
 		lead.setId(StringUtils.isBlank(leadDTO.getId())?null:Long.valueOf(leadDTO.getId()));
 		lead.setOldid(leadDTO.getOldid());

@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.dto.ProposalDTO;
-import com.allscontracting.event.AuditEvent;
-import com.allscontracting.event.EventManager;
-import com.allscontracting.event.EventType;
-import com.allscontracting.event.LeadStatusChangeEvent;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
@@ -43,7 +40,7 @@ public class ProposalService {
 	@Autowired LineRepository lineRepository;
 	@Autowired ReportService reportService;
 	@Autowired MailService mailService;
-	@Autowired EventManager eventManager;
+	@Autowired LogService logService;
 	
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
@@ -97,11 +94,10 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, client, res).onError((error) -> log.error("Error sending mail")).send();
-		proposal.getLead().setEvent(EventType.SEND_PROPOSAL);
+		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.SEND_PROPOSAL.toString(), String.valueOf(proposal.getLead().getId()), user));
-		this.eventManager.notifyAllListeners(new AuditEvent(Lead.class.getSimpleName(), String.valueOf(proposal.getLead().getId()), "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")", user));
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {

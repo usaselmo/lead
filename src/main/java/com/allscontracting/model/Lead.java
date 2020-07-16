@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.util.StringUtils;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.service.Converter;
 
 import lombok.AllArgsConstructor;
@@ -64,7 +64,7 @@ public class Lead implements Serializable {
 
   @NotNull
 	@Enumerated(EnumType.STRING)
-	private EventType event;
+	private Event event;
   
 	@ManyToOne(cascade = CascadeType.ALL)
   private User estimator;

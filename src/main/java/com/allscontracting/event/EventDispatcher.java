@@ -1,14 +1,14 @@
 package com.allscontracting.event;
 
-import static com.allscontracting.event.EventType.ASSIGN_TO_ESTIMATOR;
-import static com.allscontracting.event.EventType.BEGIN;
-import static com.allscontracting.event.EventType.BEGIN_WORK;
-import static com.allscontracting.event.EventType.CREATE_PROPOSAL;
-import static com.allscontracting.event.EventType.END_LEAD;
-import static com.allscontracting.event.EventType.FINISH_WORK;
-import static com.allscontracting.event.EventType.SEND_PROPOSAL;
-import static com.allscontracting.event.EventType.ACCEPT_PROPOSAL;
-import static com.allscontracting.event.EventType.BID;
+import static com.allscontracting.event.Event.ASSIGN_TO_ESTIMATOR;
+import static com.allscontracting.event.Event.BEGIN;
+import static com.allscontracting.event.Event.BEGIN_WORK;
+import static com.allscontracting.event.Event.CREATE_PROPOSAL;
+import static com.allscontracting.event.Event.END_LEAD;
+import static com.allscontracting.event.Event.FINISH_WORK;
+import static com.allscontracting.event.Event.SEND_PROPOSAL;
+import static com.allscontracting.event.Event.ACCEPT_PROPOSAL;
+import static com.allscontracting.event.Event.BID;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,20 +17,20 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EventTypeDispatcher {
+public class EventDispatcher {
 
-	public List<EventType> findNextEvents(EventType event) {
+	public List<Event> findNextEvents(Event event) {
 		
-		EventType[] VENDOR_FILE_LOADED = { BEGIN };
-		EventType[] BEGIN_ = {ASSIGN_TO_ESTIMATOR, BID, CREATE_PROPOSAL, END_LEAD };
-		EventType[] ASSIGN_TO_ESTIMATOR = {BID, CREATE_PROPOSAL, END_LEAD };
-		EventType[] BID = { BEGIN_WORK, END_LEAD };
-		EventType[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
-		EventType[] SEND_ESTIMATE = { ACCEPT_PROPOSAL, END_LEAD };
-		EventType[] ACCEPT_PROPOSAL = { BEGIN_WORK, END_LEAD };
-		EventType[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
-		EventType[] FINISH_WORK = {};
-		EventType[] END_LEAD = {BEGIN};
+		Event[] VENDOR_FILE_LOADED = { BEGIN };
+		Event[] BEGIN_ = {ASSIGN_TO_ESTIMATOR, BID, CREATE_PROPOSAL, END_LEAD };
+		Event[] ASSIGN_TO_ESTIMATOR = {BID, CREATE_PROPOSAL, END_LEAD };
+		Event[] BID = { BEGIN_WORK, END_LEAD };
+		Event[] CREATE_ESTIMATE = { SEND_PROPOSAL, END_LEAD };
+		Event[] SEND_ESTIMATE = { ACCEPT_PROPOSAL, END_LEAD };
+		Event[] ACCEPT_PROPOSAL = { BEGIN_WORK, END_LEAD };
+		Event[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
+		Event[] FINISH_WORK = {};
+		Event[] END_LEAD = {BEGIN};
 
 		switch (event) {
 		case LOAD_VENDOR_FILE:

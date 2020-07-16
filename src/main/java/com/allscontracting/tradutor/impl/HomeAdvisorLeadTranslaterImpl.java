@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
@@ -51,7 +51,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 			.description(removeSymbol(iterator.next().html()))
 			.fee(LeadHelper.defineCost(iterator.next().html()))
 			.type(removeSymbol(iterator.next().html()))
-			.event(EventType.BEGIN)
+			.event(Event.BEGIN)
 			.client(Client.builder()
 					.name(StringUtils.capitalize(removeSymbol(iterator.next().html())) + " " + StringUtils.capitalize(removeSymbol(iterator.next().html())))
 					.address(removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + " " + removeSymbol(iterator.next().html()))

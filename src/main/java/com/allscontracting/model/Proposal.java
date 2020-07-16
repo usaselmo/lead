@@ -42,7 +42,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private boolean callMissUtility;
 	private String paymentSchedule;
 	private String workWarranty;
-	private byte[] pdf;
+	private byte[] signedProposal;
 	private boolean emailed;
 	private String note;
 
@@ -55,7 +55,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private List<Item> items;
   
   boolean isFinished() { 
-  	return this.pdf != null; 
+  	return this.signedProposal != null; 
   }
 
 	@Override

@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.allscontracting.dto.EventTypeDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
+import com.allscontracting.service.LogService;
 
 @RestController
 @RequestMapping("leads")
@@ -33,10 +34,11 @@ public class LeadController {
 	@Autowired LeadService leadService;
 	@Autowired FileService fileService;
 	@Autowired LeadRepository leadRepo;
+	@Autowired LogService logg;
 	
 	@GetMapping("eventtypes")
 	public LeadEntity findEventTypes(){
-		return LeadEntity.builder().eventTypes(Stream.of(EventType.values()).map(et->EventTypeDTO.of(et)).collect(Collectors.toList())).build();
+		return LeadEntity.builder().eventTypes(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventTypeDTO.of(et)).collect(Collectors.toList())).build();
 	}
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
@@ -76,7 +78,7 @@ public class LeadController {
 
 	@PostMapping(value = "{id}/fireevent")
 	public void fireEvent(@PathVariable String id, @RequestBody EventTypeDTO event, @Autowired Authentication authentication) throws LeadsException {
-		this.leadService.fireEventToLead(event.getName(), id, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 
 	@GetMapping(value = "{id}/nextevents")
@@ -90,14 +92,14 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam EventType eventType) throws Exception {
+	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event eventType) throws Exception {
 		List<LeadDTO> res = leadService.listLeads(pageRange, lines, eventType);
 		long leadsTotalPrice = res.stream().mapToLong(l->l.getPrice()).sum();
 		return LeadEntity.builder().leads(res).leadsTotalPrice(leadsTotalPrice).build();
 	}
 
 	@GetMapping(value = "/total")
-	public Long findTotal(@RequestParam EventType eventType) {
+	public Long findTotal(@RequestParam Event eventType) {
 		try {
 			long res = leadService.getLeadsTotal(eventType);
 			return res;

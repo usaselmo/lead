@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.event.EventManager;
-import com.allscontracting.event.EventType;
-import com.allscontracting.event.LeadStatusChangeEvent;
-import com.allscontracting.event.VendorFileLoadedEvent;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
@@ -24,7 +21,7 @@ import com.allscontracting.tradutor.TranslaterDispatcher;
 public class FileService {
 	@Autowired private LeadRepository leadRepo;
 	@Autowired private TranslaterDispatcher tradutorFinder;
-	@Autowired private EventManager eventManager;
+	@Autowired private LogService logService;
 	
 /*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);
@@ -50,8 +47,7 @@ public class FileService {
 			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getClient().getName(), lead.getOldid());
 			if(fls == null || fls.size() <= 0) {
 				lead = leadRepo.save(lead);
-				this.eventManager.notifyAllListeners(new VendorFileLoadedEvent(lead, vendor, user));
-				this.eventManager.notifyAllListeners(new LeadStatusChangeEvent(EventType.BEGIN.toString(), String.valueOf(lead.getId()), user) );
+				logService.event(Lead.class, String.valueOf(lead.getId()), Event.LOAD_VENDOR_FILE, user);
 			}
 		});
 	}

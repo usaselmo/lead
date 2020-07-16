@@ -20,7 +20,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.allscontracting.event.EventManager;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
@@ -39,10 +38,7 @@ import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 @SpringBootTest
 public class DemoApplicationTests {
 
-	@Autowired
-	LeadService leadService;
-	@Autowired
-	EventManager eventManager;
+	@Autowired LeadService leadService;
 	@Autowired PasswordEncoder encoder;
 
 	@Test

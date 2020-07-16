@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.allscontracting.event.EventType;
+import com.allscontracting.event.Event;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +22,7 @@ public class EventTypeDTO {
 	private String action ;
 	private String abbreviation;
 	
-	public static EventTypeDTO of(EventType event) {
+	public static EventTypeDTO of(Event event) {
 		return EventTypeDTO.builder()
 				.name(event.name())
 				.action(event.getAction())
@@ -31,13 +31,13 @@ public class EventTypeDTO {
 				.build();
 	}
 	
-	public static EventType toEventType(EventTypeDTO eventTypeDTO) {
+	public static Event toEventType(EventTypeDTO eventTypeDTO) {
 		if(eventTypeDTO==null)
 			Objects.requireNonNull("Event Type can not be null");
 		if(StringUtils.isNotBlank(eventTypeDTO.getAction()))
-			return EventType.valueOf(eventTypeDTO.getAction());
+			return Event.valueOf(eventTypeDTO.getAction());
 		else
-			return EventType.valueOf(eventTypeDTO.getStatus());
+			return Event.valueOf(eventTypeDTO.getStatus());
 	}
 	
 }

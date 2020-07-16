@@ -2,27 +2,35 @@ package com.allscontracting.event;
 
 import java.util.stream.Stream;
 
-public enum EventType {
+public enum Event {
 	
-	BEGIN("CONTACTING", "START OVER", "BE"),
-	ASSIGN_TO_ESTIMATOR("ASSIGNED TO ESTIMATOR", "Assign to Estimator", "AE"),
-	BID("BIDDING", "BID", "BD"),
-	CREATE_PROPOSAL("PROPOSAL CREATED", "Create Proposal", "CP"),
-	SEND_PROPOSAL("PROPOSAL SENT", "Send Proposal", "SP"),
-	ACCEPT_PROPOSAL("PROPOSAL ACCEPTED", "Accept Proposal", "AP"),
-	BEGIN_WORK("WORK IN PROGRESS", "Begin Work", "BW"),
-	FINISH_WORK("WORK FINISHED", "Finish Work", "FW"),
-	END_LEAD("ENDED", "End Lead", "EL"),
-	LOAD_VENDOR_FILE("VENDOR FILE LOADED", "Load Vendor File", "LVF");
+	BEGIN("CONTACTING", "START OVER", "BE", true),
+	ASSIGN_TO_ESTIMATOR("ASSIGNED TO ESTIMATOR", "ASSIGN TO ESTIMATOR", "AE", true),
+	BID("BIDDING", "BID", "BD", true),
+	CREATE_PROPOSAL("PROPOSAL CREATED", "CREATE PROPOSAL", "CP", true),
+	SEND_PROPOSAL("PROPOSAL SENT", "SEND PROPOSAL", "SP", true),
+	ACCEPT_PROPOSAL("PROPOSAL ACCEPTED", "ACCEPT PROPOSAL", "AP", true),
+	BEGIN_WORK("WORK IN PROGRESS", "BEGIN WORK", "BW", true),
+	FINISH_WORK("WORK FINISHED", "FINISH WORK", "FW", true),
+	END_LEAD("ENDED", "END LEAD", "EL", true),
+	
+	
+	LOAD_VENDOR_FILE("VENDOR FILE LOADED", "LOAD VENDOR FILE", "LVF", false),
+	CREATE("CREATED", "CREATE", "C", false),
+	UPDATE("UPDATED", "UPDATE", "U", false),
+	EMAIL_SENT("EMAIL SENT", "SEND EMAIL", "SE", false),
+	;
 	
 	private String status;
 	private String action;
 	private String abbreviation;
+	private boolean showInMenu;
 	
-	EventType(String status, String action, String abbreviation) {
+	Event(String status, String action, String abbreviation, boolean showInMenu) {
 		this.status = status;
 		this.action = action;
 		this.abbreviation = abbreviation;
+		this.showInMenu = showInMenu;
 	}
 	
 	public String getAbbreviation() {
@@ -37,8 +45,12 @@ public enum EventType {
 		return action;
 	}
 
-	public static EventType reverse(String description) {
-		return Stream.of(EventType.values()).filter(type->type.toString().equalsIgnoreCase(description)).findFirst().get();
+	public boolean isShowInMenu() {
+		return showInMenu;
+	}
+
+	public static Event reverse(String description) {
+		return Stream.of(Event.values()).filter(type->type.toString().equalsIgnoreCase(description)).findFirst().get();
 	}
 	
 }
