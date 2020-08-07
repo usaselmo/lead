@@ -20,29 +20,15 @@
 
 <!-- ANGULARJS -->
 <script src="/js/angularjs/1.4.3/angular.min.js"></script>
-<script src="/js/leads.js"></script>
+<script src="/js/user.js"></script>
 
 </head>
-<body ng-app="leads">
-  <div class="container" ng-controller="MainController">
-    <div class="row" ng-include="'header.html'"></div>
-    <div class="row" ng-include="menu"></div>
+<body ng-app="user">
+  <div class="container" ng-controller="UserController">
+    <div class="row" ng-include="'/header.html'"></div>
+    <div class="row" ng-include="'/menu.html'"></div> 
     <div class="row">
-      <!-- ERROR -->
-      <div class="">
-        <p class="text-danger" ng-repeat="errorMessage in errorMessages">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> {{errorMessage}}
-        </p>
-      </div>
-      <div class="">
-        <p class="text-success" ng-repeat="successMessage in successMessages">
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> {{successMessage}}
-        </p>
-      </div>
-      <div id="body" ng-include="body"></div>
-    </div>
-    <div class="row">
-      <div id="footer"></div>
+    {{test}}
     </div>
   </div>
 </body>

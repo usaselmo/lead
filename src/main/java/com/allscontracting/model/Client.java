@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="client")
+@Table(name="person")
 public class Client {
 
 	@Id @GeneratedValue	private Long id;
