@@ -18,7 +18,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class Mail {
 
-	private static final String GMAIL_PASSWORD = "Getalife1969";
+	private static final String GMAIL_PASSWORD = "Getalife2009!";
 	private static final String GMAIL_USER = "allscontractingdc@gmail.com";
 	private static final int PORT = 465;
 	private static final String HOST = "smtp.gmail.com";
@@ -52,7 +52,8 @@ public class Mail {
 				}
 				emailSender().send(mimeMessage);
 				this.runnableOnSuccess.run();
-			} catch (MailException | MessagingException | IOException e) {
+			} catch (Exception e) {
+				e.printStackTrace();
 				this.runnableOnError.accept(e.getMessage());
 			}
 		});

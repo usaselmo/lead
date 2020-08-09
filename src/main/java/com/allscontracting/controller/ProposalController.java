@@ -33,7 +33,11 @@ public class ProposalController {
 	@GetMapping(value = "{proposalId}/email")
 	public void sendByEmail(@PathVariable long proposalId, @Autowired Authentication authentication)
 			throws IOException, JRException, SQLException, LeadsException {
-		this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		try {
+			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@PostMapping(value = "")
