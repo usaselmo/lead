@@ -1,5 +1,7 @@
 package com.allscontracting;
 
+import static org.junit.Assert.*;
+
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,8 @@ import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperRunManager;
 
@@ -39,10 +43,29 @@ public class ReportGenerationTest {
 			Proposal proposal = this.proposalRepo.findAll().get(2);
 			Client client =  proposal.getLead().getClient();
 			String sourceFile = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "")  ;
-			String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".pdf";
+			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
 			HashMap<String, Object> map = getParams(proposal, client);
 			//String res = JasperFillManager.fillReportToFile(sourceFile, map, dataSource.getConnection());
 			JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void compile() throws Exception {
+		try {
+			String sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
+			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
+			
+
+			Proposal proposal = this.proposalRepo.findAll().get(2);
+			Client client =  proposal.getLead().getClient();
+			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
+			HashMap<String, Object> map = getParams(proposal, client);
+			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

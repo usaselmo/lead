@@ -33,7 +33,7 @@ import net.sf.jasperreports.engine.JRException;
 @Service
 public class ProposalService {
 
-	private static final String PROPOSAL_FILE_NAME = "proposal2";
+	private static final String PROPOSAL_FILE_NAME = "estimate";
 	@Autowired
 	ProposalRepository proposalRepository;
 	@Autowired
@@ -71,28 +71,27 @@ public class ProposalService {
 
 	@Transactional
 	public void delete(String leadId, String proposalId, Long userId) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepository.findById(Long.valueOf(leadId))
-				.orElseThrow(() -> new LeadsException("Lead not found"));
-		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId))
-				.orElseThrow(() -> new LeadsException("Proposal not found"));
+		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
-		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId))
-				.orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client client = proposal.getLead().getClient();
-		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client, "pdf");
-		this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
+		try {
+			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
+			Client client = proposal.getLead().getClient();
+			HashMap<String, Object> map = getProposalParameters(proposal, client);
+			String streamFileName = getProposalFileName(proposal, client, "pdf");
+			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId)
-			throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
-		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId))
-				.orElseThrow(() -> new LeadsException("Proposal not found"));
+	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "rtf");
@@ -101,25 +100,21 @@ public class ProposalService {
 
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
-		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId))
-				.orElseThrow(() -> new LeadsException("Proposal not found"));
+		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		Client client = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, client);
 		String streamFileName = getProposalFileName(proposal, client, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, client, res).onError((error) -> log.error("Error sending mail"))
-				.send();
+		this.mailService.sendProposalByEmail(proposal, client, res).onError((error) -> log.error("Error sending mail")).send();
 		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
 		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user,
-				"Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " ("
-						+ NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+				"Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
-		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ")
-				.append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
+		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
 		return streamFileName;
 	}
 

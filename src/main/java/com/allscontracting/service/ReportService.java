@@ -1,11 +1,14 @@
 package com.allscontracting.service;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,7 +19,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.model.Client;
+import com.allscontracting.model.Proposal;
+import com.allscontracting.repo.ProposalRepository;
+
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperRunManager;
@@ -49,13 +57,49 @@ public class ReportService {
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}
+	
+	@Autowired ProposalRepository proposalRepo;
 
-	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX);
-		response.setContentType("application/pdf");
-		response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
-		JasperRunManager.runReportToPdfStream(is, response.getOutputStream(), map, dataSource.getConnection());
+	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
+
+		try {
+			String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
+			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
+			
+
+			Proposal proposal = this.proposalRepo.findAll().get(2);
+			Client client =  proposal.getLead().getClient();
+			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
+			map = getParams(proposal, client);
+			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
+			
+			
+			InputStream out = Files.newInputStream(Paths.get(destFile));
+			
+
+			response.setContentType("application/pdf");
+			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
+			
+
+      int c;
+      while ((c = out.read()) != -1) {
+          response.getOutputStream().write(c);
+      }
+      response.getOutputStream().flush();
+      response.getOutputStream().close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private HashMap<String, Object> getParams(Proposal proposal, Client client) {
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("CLIENT", client);
+		map.put("PROPOSAL", proposal);
+		map.put("PROPOSAL_ID", proposal.getId());
+		return map;
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
