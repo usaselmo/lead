@@ -61,7 +61,7 @@ public class ReportGenerationTest {
 
 			Proposal proposal = this.proposalRepo.findAll().get(2);
 			Client client =  proposal.getLead().getClient();
-			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
+			String destFile = "C:/temp/proposal.pdf";
 			HashMap<String, Object> map = getParams(proposal, client);
 			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
 			

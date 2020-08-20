@@ -1,11 +1,9 @@
 package com.allscontracting.service;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +37,7 @@ public class ReportService {
 	DataSource dataSource;
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";
+	private static final String JRXML_SUFFIX = ".jrxml";
 
 	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
 			String jasperReportFileName) throws IOException, JRException, SQLException {
@@ -61,34 +60,20 @@ public class ReportService {
 	@Autowired ProposalRepository proposalRepo;
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
-
 		try {
-			String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
+			String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX).getPath().replaceFirst("/", "")  ; 
 			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
-			
-
-			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Client client =  proposal.getLead().getClient();
-			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
-			map = getParams(proposal, client);
+			String destFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
 			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
-			
-			
 			InputStream out = Files.newInputStream(Paths.get(destFile));
-			
-
 			response.setContentType("application/pdf");
 			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
-			
-
       int c;
       while ((c = out.read()) != -1) {
           response.getOutputStream().write(c);
       }
       response.getOutputStream().flush();
       response.getOutputStream().close();
-			
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

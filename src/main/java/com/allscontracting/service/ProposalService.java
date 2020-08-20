@@ -125,5 +125,5 @@ public class ProposalService {
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
 	}
-
+	
 }
