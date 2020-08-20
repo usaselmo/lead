@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.5.1  -->
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="estimate" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="40" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5ed434e6-847a-4c24-b2bb-131c2d3a019a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
@@ -56,7 +56,7 @@ WHERE
 	<title>
 		<band height="87" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="290" height="87" uuid="9dafff24-a0e6-40ed-9131-53864bc8e43a"/>
+				<reportElement x="0" y="0" width="390" height="87" uuid="9dafff24-a0e6-40ed-9131-53864bc8e43a"/>
 				<imageExpression><![CDATA["/src/main/resources/jasper/image/aclogo.jpg"]]></imageExpression>
 			</image>
 		</band>
