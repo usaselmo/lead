@@ -47,6 +47,187 @@ WHERE
 	</field>
 	<group name="total">
 		<groupExpression><![CDATA[$F{total}]]></groupExpression>
+		<groupHeader>
+			<band height="330">
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="76" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d635ea07-cae7-4ae9-8da5-059861119260"/>
+					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SCOPE OF WORK]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="95" width="535" height="71" uuid="d7fe5864-14bc-4e52-bdd6-df3e9ea92e9e">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getScopeOfWork()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="390" y="196" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="48feb626-a488-41fa-b54f-8c9e8f9ec219"/>
+					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROPOSAL]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="0" y="176" width="380" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="35348b31-00f7-413c-bea3-42aaa1344bb2"/>
+					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CLIENT INFORMATION]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="390" y="236" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="e1c18065-ab3f-47b7-b95b-ebd50dfb7c0e"/>
+					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[PROJECT ESTIMATOR]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="196" width="380" height="20" uuid="2294c40e-cc8d-4ce4-9d36-eca8d816cfcc"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Name: " + $P{CLIENT}.getName()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="216" width="380" height="20" uuid="9f90615d-c2cb-42af-b089-520f1571dd8f"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["E-mail: " + $P{CLIENT}.getEmail()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="236" width="380" height="20" uuid="4a73065f-ac39-469b-9d1a-6180131bf309"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="256" width="380" height="20" uuid="eabb8d0c-100e-4331-bee1-09dbf0d95474"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="390" y="216" width="145" height="20" uuid="25e37857-4866-413a-82e8-adf3d4f9516d"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="390" y="256" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getEstimator()==null || StringUtils.isBlank($P{PROPOSAL}.getEstimator().getName())?"Eddie Lopes":$P{PROPOSAL}.getEstimator().getName()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="286" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14" isBold="false" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Proposal Detailed Items:]]></text>
+				</staticText>
+				<image>
+					<reportElement x="0" y="18" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
+					<imageExpression><![CDATA["/src/main/resources/jasper/image/accredited-business.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="440" y="9" width="95" height="60" uuid="96a5ab62-4d12-4c8c-b760-5b87543818fd"/>
+					<imageExpression><![CDATA["/src/main/resources/jasper/image/sbsd.png"]]></imageExpression>
+				</image>
+				<image>
+					<reportElement x="160" y="8" width="238" height="62" uuid="a6d5c7f1-19bc-4c4a-b26f-aafaae0c74b9"/>
+					<imageExpression><![CDATA["/src/main/resources/jasper/image/DunBradstreet.jpg"]]></imageExpression>
+				</image>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="119">
+				<staticText>
+					<reportElement x="5" y="22" width="220" height="19" uuid="984229c2-2b44-4c9a-8872-7b5f878e55d8"/>
+					<textElement>
+						<font size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Payment Schedule:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="5" y="45" width="471" height="70" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d"/>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<group name="title" keepTogether="true">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
@@ -75,18 +256,43 @@ WHERE
 	</group>
 	<group name="description">
 		<groupExpression><![CDATA[$F{description}]]></groupExpression>
+		<groupHeader>
+			<band height="50">
+				<staticText>
+					<reportElement x="145" y="15" width="315" height="30" uuid="38dd4a14-fe28-4232-8552-e6d72a724a82"/>
+					<text><![CDATA[Description Group Header]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="50">
+				<staticText>
+					<reportElement x="133" y="16" width="357" height="30" uuid="9222384e-1d73-40a5-b9bf-844b137f440f"/>
+					<text><![CDATA[description Group Footer
+]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="510" splitType="Stretch">
+		<band height="54">
+			<staticText>
+				<reportElement x="236" y="24" width="100" height="30" uuid="f438ef34-a238-48d8-8d31-8145c13f26fc"/>
+				<text><![CDATA[Title]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="97">
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="0" y="0" width="270" height="80" uuid="9dafff24-a0e6-40ed-9131-53864bc8e43a"/>
+				<reportElement x="5" y="5" width="270" height="80" uuid="38b81a9c-398a-4016-9863-f5acd06e8d5f"/>
 				<imageExpression><![CDATA["image/aclogo.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="270" y="0" width="265" height="22" uuid="e583f822-8ccf-4561-8047-b23809d35944">
+				<reportElement x="275" y="5" width="265" height="22" uuid="4fe92c4e-0f9b-4469-8f17-8dcec8556786">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -99,7 +305,7 @@ WHERE
 				<text><![CDATA[6923 Cabin John Road, Springfield, VA 22150]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="22" width="265" height="22" uuid="136b1bd9-2cb5-435c-9768-60286e23586c">
+				<reportElement x="275" y="27" width="265" height="22" uuid="a774cca4-2c5b-48c9-872a-52fb428c20a1">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -112,7 +318,7 @@ WHERE
 				<text><![CDATA[Telephone: (703) 495-4519]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="66" width="265" height="22" uuid="22bf73ed-c951-4688-bab9-9fb0b9803c34">
+				<reportElement x="275" y="71" width="265" height="22" uuid="fb7f228d-0fd2-4604-93f7-f9cd064d6257">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -125,7 +331,7 @@ WHERE
 				<text><![CDATA[www.allscontractingdc.com]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="44" width="265" height="22" uuid="3acc1a37-ec80-475f-9d1e-d442b0767239">
+				<reportElement x="275" y="49" width="265" height="22" uuid="1963882f-5c3e-4be3-b906-de7125ed9f27">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<box>
@@ -138,176 +344,22 @@ WHERE
 				<text><![CDATA[allscontractingdc@gmail.com]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="350" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d29fdcd7-5296-45a6-a254-3bb367fd4e5b"/>
-				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
-					<pen lineWidth="0.5" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SCOPE OF WORK]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="370" width="535" height="71" uuid="c2b218b3-6664-41e7-9a41-3370f849501b">
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-				</reportElement>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Top">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{PROPOSAL}.getScopeOfWork()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement mode="Opaque" x="390" y="240" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="31ab8ae8-f17f-4f86-afae-3b8b71812f75"/>
-				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
-					<pen lineWidth="0.5" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PROPOSAL]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="0" y="240" width="380" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="5312f3d9-3b5b-4f2a-b61b-ac52fd0b0b68"/>
-				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
-					<pen lineWidth="0.5" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="13" isBold="true"/>
-				</textElement>
-				<text><![CDATA[CLIENT INFORMATION]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="390" y="300" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="e4390c2c-4cdf-447a-9fe8-54711a3a4ec2"/>
-				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
-					<pen lineWidth="0.5" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[PROJECT ESTIMATOR]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="260" width="380" height="20" uuid="da5e0894-0c00-4a39-bf3a-1e48bd805527"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Name: " + $P{CLIENT}.getName()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="320" width="380" height="20" uuid="a2266d00-84c6-4056-898e-622081a42344"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["E-mail: " + $P{CLIENT}.getEmail()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="280" width="380" height="20" uuid="d750683a-222f-432a-b909-e9a933d69dfe"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="300" width="380" height="20" uuid="9fc19036-2734-41ff-9b2a-a4bfc1bd8542"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="390" y="260" width="145" height="20" uuid="dc9f0037-7f80-4d99-8633-35b0c2d55f58"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="0" y="70" width="270" height="18" forecolor="#5E4DFF" uuid="039053f1-445b-4d6b-a506-892a59464b3f"/>
+				<reportElement x="5" y="75" width="270" height="18" forecolor="#5E4DFF" uuid="05c64c8e-e4d4-4633-a44d-5f9a1def2e88"/>
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Your Licened and Minority Class A Contractor in Virginia]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="150" width="140" height="40" uuid="34265dc7-c9ff-4bea-b20c-d382bba53d03"/>
-				<imageExpression><![CDATA["/src/main/resources/jasper/image/accredited-business.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="440" y="141" width="95" height="60" uuid="2ef47639-aa91-45c0-841a-51608a2c4792"/>
-				<imageExpression><![CDATA["/src/main/resources/jasper/image/sbsd.png"]]></imageExpression>
-			</image>
-			<image>
-				<reportElement x="160" y="140" width="238" height="62" uuid="e66256c9-36f7-4f27-b7d1-40b1b2c4d49b"/>
-				<imageExpression><![CDATA["/src/main/resources/jasper/image/DunBradstreet.jpg"]]></imageExpression>
-			</image>
-			<staticText>
-				<reportElement x="0" y="480" width="535" height="30" uuid="0b88381b-0f6e-48ac-a7bb-5eca7a72a1ac"/>
-				<textElement verticalAlignment="Middle">
-					<font size="14" isBold="false" isUnderline="true"/>
-				</textElement>
-				<text><![CDATA[Proposal Detailed Items:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="390" y="320" width="145" height="20" uuid="04620c49-7b9f-46e1-82b2-89dcda8ab936"/>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{PROPOSAL}.getEstimator()==null || StringUtils.isBlank($P{PROPOSAL}.getEstimator().getName())?"Eddie Lopes":$P{PROPOSAL}.getEstimator().getName()]]></textFieldExpression>
-			</textField>
 		</band>
-	</title>
+	</pageHeader>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="334" y="18" width="100" height="30" uuid="34a284b1-81f5-4324-b399-95add0b3024b"/>
+				<text><![CDATA[column header]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -320,12 +372,12 @@ WHERE
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="57" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="42" splitType="Stretch"/>
+		<band splitType="Stretch"/>
 	</summary>
 </jasperReport>
