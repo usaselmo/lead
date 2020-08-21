@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,9 +31,9 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 
 	private static final long serialVersionUID = -8804397870000139075L;
 
+	//SINGLE PROPERTIES
 	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id; 
-	
 	private Long number;
 	private BigDecimal total;
 	private String fileName;
@@ -47,15 +45,14 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private boolean emailed;
 	private String note;
 	private Date date;
-
-	@JsonIgnore
-  @ManyToOne 
-  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)
-	private Lead lead;
-	
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	private List<Item> items;
+  @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	private Lead lead;
   
+  //LISTS
+  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL)	private List<Item> items;
+
+  /************************
+   * METHODS
+   ************************/
   boolean isFinished() { 
   	return this.signedProposal != null; 
   }

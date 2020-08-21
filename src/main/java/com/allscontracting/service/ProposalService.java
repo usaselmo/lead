@@ -20,7 +20,6 @@ import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
@@ -104,16 +103,17 @@ public class ProposalService {
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Person person = proposal.getLead().getClient();
+		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, person, res).onError((error) -> log.error("Error sending mail")).send();
+		this.mailService.sendProposalByEmail(proposal, person, res)
+			.onError((error) -> log.error("Error sending mail"))
+			.send();
 		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user,
-				"Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 	}
 
 	private String getProposalFileName(Proposal proposal, Client person, String suffix) {

@@ -59,11 +59,9 @@ public class ReportService {
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
 		try {
-			String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX).getPath().replaceFirst("/", "")  ; 
-			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
-			String tempFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
-			JasperRunManager.runReportToPdfFile(sourceFileName, tempFile, map, dataSource.getConnection());
-			InputStream out = Files.newInputStream(Paths.get(tempFile));
+			
+			InputStream out = getJasperFileAsStream(map, jasperReportFileName);
+			
 			response.setContentType("application/pdf");
 			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
       int c;
@@ -72,10 +70,24 @@ public class ReportService {
       }
       response.getOutputStream().flush();
       response.getOutputStream().close();
-      Files.delete(Paths.get(tempFile));
+      //Files.delete(Paths.get(tempFile));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private InputStream getJasperFileAsStream(HashMap<String, Object> map, String jasperReportFileName) throws JRException, IOException, SQLException {
+		String tempFile = getCompiledJasperFile(map, jasperReportFileName);
+		InputStream out = Files.newInputStream(Paths.get(tempFile));
+		return out;
+	}
+
+	private String getCompiledJasperFile(HashMap<String, Object> map, String jasperReportFileName) throws JRException, IOException, SQLException {
+		String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX).getPath().replaceFirst("/", "")  ; 
+		sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
+		String tempFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
+		JasperRunManager.runReportToPdfFile(sourceFileName, tempFile, map, dataSource.getConnection());
+		return tempFile;
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
