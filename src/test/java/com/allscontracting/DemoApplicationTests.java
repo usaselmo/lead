@@ -88,7 +88,7 @@ public class DemoApplicationTests {
 	@Test
 	public void test_runToHtmlFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Person person = proposal.getLead().getPerson();
+		Person person = proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
 		HashMap<String, Object> map = getParams(proposal, person);
@@ -99,7 +99,7 @@ public class DemoApplicationTests {
 	public void testHtmlProposal()  {
 		try {
 			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Person person = proposal.getLead().getPerson();
+			Person person = proposal.getLead().getClient();
 			String sourceFile = getSourceFile();
 			String htmlContent = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
 			HashMap<String, Object> map = getParams(proposal, person);
@@ -113,7 +113,7 @@ public class DemoApplicationTests {
 	@Test
 	public void test_runToPdfFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Person person =  proposal.getLead().getPerson();
+		Person person =  proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".pdf";
 		HashMap<String, Object> map = getParams(proposal, person);
@@ -123,7 +123,7 @@ public class DemoApplicationTests {
 	@Test
 	public void testProposalRtf() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Person person =  proposal.getLead().getPerson();
+		Person person =  proposal.getLead().getClient();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".rtf";
 		HashMap<String, Object> map = getParams(proposal, person);

@@ -99,7 +99,7 @@ public class NetworxLeadTranslaterImpl implements Translater<Lead>{
 					.fee(LeadHelper.defineCost(splitedLine[NX_Cost]))
 					.type(removeSymbol(splitedLine[NX_Task]))
 					.event(Event.BEGIN)
-					.person(Person.builder()
+					.client(Person.builder()
 							.address(removeSymbol(splitedLine[NX_Address]) + ", " + removeSymbol(splitedLine[NX_City]) + ", " + removeSymbol(splitedLine[NX_State]) + " " + removeSymbol(splitedLine[NX_Zip_Code]))
 							.phone(splitedLine[NX_Phone_Number].replaceAll("(|)|-", ""))
 							.cellPhone("")

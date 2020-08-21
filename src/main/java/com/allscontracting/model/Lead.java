@@ -40,36 +40,27 @@ import lombok.NoArgsConstructor;
 public class Lead implements Serializable {
 
 	private static final long serialVersionUID = -6183199069186068646L;
-
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-
-	private String oldid; 
 	
-	@Enumerated(EnumType.STRING)
-	private Vendor vendor;
-
-	@Temporal(value = TemporalType.DATE)
-	private Date date;
-
+	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
+	@Temporal(value = TemporalType.DATE)	private Date date;
 	private String description;
+	private String notes;
+  @NotNull	@Enumerated(EnumType.STRING)	private Event event;
+	@ManyToOne(cascade = CascadeType.ALL)  private User estimator;
+	@ManyToOne(cascade = CascadeType.ALL)	@JoinColumn(name = "client_id")	private Person client;
+
+	/**
+	 * LISTS
+	 */
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)	private List<Proposal> proposals;
+	
+	/**
+	 * DEPREDATED
+	 */
+	private String oldid; 
 	private BigDecimal fee;
 	private String type;
-	private String notes;
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "client_id")
-	private Person person;
-
-  @OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)
-	private List<Proposal> proposals;
-
-  @NotNull
-	@Enumerated(EnumType.STRING)
-	private Event event;
-  
-	@ManyToOne(cascade = CascadeType.ALL)
-  private User estimator;
+	@Enumerated(EnumType.STRING)	private Vendor vendor;
 
 	public enum Vendor {
 		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL

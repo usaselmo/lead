@@ -1,6 +1,5 @@
 package com.allscontracting.service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -56,23 +55,11 @@ public class Converter {
 			return "";
 		}
 	}
-	
+
 	public static Date convertToDate(String date) {
-		if(StringUtils.isBlank(date))
+		if (StringUtils.isBlank(date))
 			return null;
-		try {
-			return Converter.stringToDate(date, MM_dd_yyyy);
-		} catch (ParseException e) {
-			try {
-				return stringToDate(date, MM_dd_yy);
-			} catch (ParseException e1) {
-				try {
-					return stringToDate(date, yyyy_MM_dd);
-				} catch (Exception e2) {
-					return null;
-				}
-			}
-		}
+		return Converter.stringToDate(date, MM_dd_yyyy);
 	}
 
 	public static LocalDate convertToLocalDate(String date) throws LeadsException {

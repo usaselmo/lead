@@ -40,7 +40,7 @@ public class ReportGenerationTest {
 	public void test_runToPdfFile() throws Exception {
 		try {
 			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Person person =  proposal.getLead().getPerson();
+			Person person =  proposal.getLead().getClient();
 			String sourceFile = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "")  ;
 			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
 			HashMap<String, Object> map = getParams(proposal, person);
@@ -60,7 +60,7 @@ public class ReportGenerationTest {
 			//sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "proposal.jasper").getPath().replaceFirst("/", "")  ; 
 
 			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Person person =  proposal.getLead().getPerson();
+			Person person =  proposal.getLead().getClient();
 			String destFile = "C:/temp/proposal.pdf";
 			
 			HashMap<String, Object> map = getParams(proposal, person);

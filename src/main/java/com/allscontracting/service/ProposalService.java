@@ -84,7 +84,7 @@ public class ProposalService {
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		try {
 			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-			Person person = proposal.getLead().getPerson();
+			Person person = proposal.getLead().getClient();
 			HashMap<String, Object> map = getProposalParameters(proposal, person);
 			String streamFileName = getProposalFileName(proposal, person, "pdf");
 			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -95,7 +95,7 @@ public class ProposalService {
 
 	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Person person = proposal.getLead().getPerson();
+		Person person = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "rtf");
 		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -104,7 +104,7 @@ public class ProposalService {
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Person person = proposal.getLead().getPerson();
+		Person person = proposal.getLead().getClient();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);

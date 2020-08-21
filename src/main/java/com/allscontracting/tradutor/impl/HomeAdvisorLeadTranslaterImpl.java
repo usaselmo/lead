@@ -52,7 +52,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 			.fee(LeadHelper.defineCost(iterator.next().html()))
 			.type(removeSymbol(iterator.next().html()))
 			.event(Event.BEGIN)
-			.person(Person.builder()
+			.client(Person.builder()
 					.name(StringUtils.capitalize(removeSymbol(iterator.next().html())) + " " + StringUtils.capitalize(removeSymbol(iterator.next().html())))
 					.address(removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + " " + removeSymbol(iterator.next().html()))
 					.cellPhone(iterator.next().html().replaceAll("\\(|\\)|\\-| ", ""))

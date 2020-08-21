@@ -38,5 +38,9 @@ public class Company implements Serializable, Client{
 	public String getPhone() {
 		return "";
 	}
+
+	@Override
+	public void setPhone(String phone) {		
+	}
 	
 }

@@ -89,16 +89,16 @@ public class LeadService {
 	@Transactional
 	public LeadDTO saveNewLead(LeadDTO leadDTO, User user) throws LeadsException{
 		Lead lead = LeadDTO.toLead(leadDTO);
-		if(lead.getPerson().getId() != null && this.personRepo.existsById(lead.getPerson().getId())) {
-			lead.setPerson(this.personRepo.findById(lead.getPerson().getId()).orElseThrow(()->new LeadsException("Person not found")));
+		if(lead.getClient().getId() != null && this.personRepo.existsById(lead.getClient().getId())) {
+			lead.setClient(this.personRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Person not found")));
 		}else {
-			lead.setPerson(this.personRepo.save(lead.getPerson()));
+			lead.setClient(this.personRepo.save(lead.getClient()));
 		}
 		lead.setDate(new Date());
 		lead.setEvent(Event.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getPerson(), user); 
+		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user); 
 		return LeadDTO.of(lead);
 	}
 

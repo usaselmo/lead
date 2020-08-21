@@ -44,7 +44,7 @@ public class FileService {
 	@Transactional
 	private void saveAllLeads(Vendor vendor, List<Lead> leads, User user) {
 		leads.stream().forEach(lead->{
-			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getPerson().getName(), lead.getOldid());
+			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getClient().getName(), lead.getOldid());
 			if(fls == null || fls.size() <= 0) {
 				lead = leadRepo.save(lead);
 				logService.event(Lead.class, String.valueOf(lead.getId()), Event.LOAD_VENDOR_FILE, user);
