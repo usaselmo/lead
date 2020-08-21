@@ -1,5 +1,7 @@
 package com.allscontracting.model;
 
+import java.io.Serializable;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -17,7 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @javax.persistence.Entity
 @Table(name="person")
-public class Person {
+public class Person implements Serializable, Client{
+
+	private static final long serialVersionUID = -2053753047318969493L;
 
 	@Id @GeneratedValue	private Long id;
 	private String email;

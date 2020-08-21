@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="company")
-public class Company implements Serializable{
+public class Company implements Serializable, Client{
 	
 	private static final long serialVersionUID = -8940683804972801566L;
 
@@ -33,5 +33,10 @@ public class Company implements Serializable{
 	private String website;
 
 	@OneToMany(fetch=FetchType.LAZY) private List<User> users;
+
+	@Override
+	public String getPhone() {
+		return "";
+	}
 	
 }
