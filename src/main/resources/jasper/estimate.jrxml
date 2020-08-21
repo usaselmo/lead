@@ -48,9 +48,9 @@ WHERE
 	<group name="total">
 		<groupExpression><![CDATA[$F{total}]]></groupExpression>
 		<groupHeader>
-			<band height="330">
+			<band height="355">
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="76" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d635ea07-cae7-4ae9-8da5-059861119260"/>
+					<reportElement mode="Opaque" x="0" y="221" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d635ea07-cae7-4ae9-8da5-059861119260"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
@@ -60,7 +60,7 @@ WHERE
 					<text><![CDATA[SCOPE OF WORK]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="95" width="535" height="71" uuid="d7fe5864-14bc-4e52-bdd6-df3e9ea92e9e">
+					<reportElement x="0" y="240" width="535" height="71" uuid="d7fe5864-14bc-4e52-bdd6-df3e9ea92e9e">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -79,7 +79,7 @@ WHERE
 					<textFieldExpression><![CDATA[$P{PROPOSAL}.getScopeOfWork()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="390" y="196" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="48feb626-a488-41fa-b54f-8c9e8f9ec219"/>
+					<reportElement mode="Opaque" x="390" y="110" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="48feb626-a488-41fa-b54f-8c9e8f9ec219"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
@@ -89,7 +89,7 @@ WHERE
 					<text><![CDATA[PROPOSAL]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="176" width="380" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="35348b31-00f7-413c-bea3-42aaa1344bb2"/>
+					<reportElement mode="Opaque" x="0" y="110" width="380" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="35348b31-00f7-413c-bea3-42aaa1344bb2"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
@@ -99,7 +99,7 @@ WHERE
 					<text><![CDATA[CLIENT INFORMATION]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="390" y="236" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="e1c18065-ab3f-47b7-b95b-ebd50dfb7c0e"/>
+					<reportElement mode="Opaque" x="390" y="170" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="e1c18065-ab3f-47b7-b95b-ebd50dfb7c0e"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
@@ -109,7 +109,7 @@ WHERE
 					<text><![CDATA[PROJECT ESTIMATOR]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="0" y="196" width="380" height="20" uuid="2294c40e-cc8d-4ce4-9d36-eca8d816cfcc"/>
+					<reportElement x="0" y="130" width="380" height="20" uuid="2294c40e-cc8d-4ce4-9d36-eca8d816cfcc"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -123,7 +123,7 @@ WHERE
 					<textFieldExpression><![CDATA["Name: " + $P{CLIENT}.getName()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="216" width="380" height="20" uuid="9f90615d-c2cb-42af-b089-520f1571dd8f"/>
+					<reportElement x="0" y="150" width="380" height="20" uuid="9f90615d-c2cb-42af-b089-520f1571dd8f"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -137,7 +137,7 @@ WHERE
 					<textFieldExpression><![CDATA["E-mail: " + $P{CLIENT}.getEmail()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="236" width="380" height="20" uuid="4a73065f-ac39-469b-9d1a-6180131bf309"/>
+					<reportElement x="0" y="170" width="380" height="20" uuid="4a73065f-ac39-469b-9d1a-6180131bf309"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -151,7 +151,7 @@ WHERE
 					<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="0" y="256" width="380" height="20" uuid="eabb8d0c-100e-4331-bee1-09dbf0d95474"/>
+					<reportElement x="0" y="190" width="380" height="20" uuid="eabb8d0c-100e-4331-bee1-09dbf0d95474"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -165,7 +165,7 @@ WHERE
 					<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="390" y="216" width="145" height="20" uuid="25e37857-4866-413a-82e8-adf3d4f9516d"/>
+					<reportElement x="390" y="130" width="145" height="20" uuid="25e37857-4866-413a-82e8-adf3d4f9516d"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -179,7 +179,7 @@ WHERE
 					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="390" y="256" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>
+					<reportElement x="390" y="190" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -193,22 +193,22 @@ WHERE
 					<textFieldExpression><![CDATA[$P{PROPOSAL}.getEstimator()==null || StringUtils.isBlank($P{PROPOSAL}.getEstimator().getName())?"Eddie Lopes":$P{PROPOSAL}.getEstimator().getName()]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="286" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
-					<textElement verticalAlignment="Middle">
+					<reportElement x="0" y="325" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
+					<textElement verticalAlignment="Bottom">
 						<font size="14" isBold="false" isUnderline="true"/>
 					</textElement>
 					<text><![CDATA[Proposal Detailed Items:]]></text>
 				</staticText>
 				<image>
-					<reportElement x="0" y="18" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
+					<reportElement x="0" y="30" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
 					<imageExpression><![CDATA["/src/main/resources/jasper/image/accredited-business.png"]]></imageExpression>
 				</image>
 				<image>
-					<reportElement x="440" y="9" width="95" height="60" uuid="96a5ab62-4d12-4c8c-b760-5b87543818fd"/>
+					<reportElement x="440" y="21" width="95" height="60" uuid="96a5ab62-4d12-4c8c-b760-5b87543818fd"/>
 					<imageExpression><![CDATA["/src/main/resources/jasper/image/sbsd.png"]]></imageExpression>
 				</image>
 				<image>
-					<reportElement x="160" y="8" width="238" height="62" uuid="a6d5c7f1-19bc-4c4a-b26f-aafaae0c74b9"/>
+					<reportElement x="160" y="20" width="238" height="62" uuid="a6d5c7f1-19bc-4c4a-b26f-aafaae0c74b9"/>
 					<imageExpression><![CDATA["/src/main/resources/jasper/image/DunBradstreet.jpg"]]></imageExpression>
 				</image>
 			</band>
@@ -254,37 +254,6 @@ WHERE
 			</band>
 		</groupFooter>
 	</group>
-	<group name="description">
-		<groupExpression><![CDATA[$F{description}]]></groupExpression>
-		<groupHeader>
-			<band height="50">
-				<staticText>
-					<reportElement x="145" y="15" width="315" height="30" uuid="38dd4a14-fe28-4232-8552-e6d72a724a82"/>
-					<text><![CDATA[Description Group Header]]></text>
-				</staticText>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="50">
-				<staticText>
-					<reportElement x="133" y="16" width="357" height="30" uuid="9222384e-1d73-40a5-b9bf-844b137f440f"/>
-					<text><![CDATA[description Group Footer
-]]></text>
-				</staticText>
-			</band>
-		</groupFooter>
-	</group>
-	<background>
-		<band splitType="Stretch"/>
-	</background>
-	<title>
-		<band height="54">
-			<staticText>
-				<reportElement x="236" y="24" width="100" height="30" uuid="f438ef34-a238-48d8-8d31-8145c13f26fc"/>
-				<text><![CDATA[Title]]></text>
-			</staticText>
-		</band>
-	</title>
 	<pageHeader>
 		<band height="97">
 			<image hAlign="Center" vAlign="Middle">
@@ -352,14 +321,6 @@ WHERE
 			</staticText>
 		</band>
 	</pageHeader>
-	<columnHeader>
-		<band height="50">
-			<staticText>
-				<reportElement x="334" y="18" width="100" height="30" uuid="34a284b1-81f5-4324-b399-95add0b3024b"/>
-				<text><![CDATA[column header]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
 	<detail>
 		<band height="16" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -371,13 +332,4 @@ WHERE
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>
