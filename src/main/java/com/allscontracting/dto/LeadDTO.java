@@ -24,21 +24,29 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LeadDTO {
+	
+	//SINGLE PROPERTIES
 	private String id;
-	private String oldid;
-	private String vendor;
 	private String date;
+	private String visit;
 	private String description;
+	private String notes;
+	private String event;//EventType
+	private UserDTO estimator;
+	private CompanyDTO company;
+	private PersonDTO person;
+
+	//LISTS
+	private List<ProposalDTO> proposals;
+
+	//DEPRECATED
+	private String oldid;
 	private String fee;
 	private String type; 
-	private String notes;
-	private List<ProposalDTO> proposals;
-	private String event;//EventType
-	private String visit;
+	private String vendor;
+
+	//TRANSIENTS OR CALCULATED
 	private Long price;
-	private UserDTO estimator;
-	private PersonDTO person;
-	private CompanyDTO company;
 	
 	public static final LeadDTO of(Lead lead) {
 		if(lead==null)

@@ -40,8 +40,10 @@ public class Lead implements Serializable {
 
 	private static final long serialVersionUID = -6183199069186068646L;
 	
+	//SINGLE PROPERTIES
 	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
 	@Temporal(value = TemporalType.DATE)	private Date date;
+	@Temporal(TemporalType.TIMESTAMP)	private Date visit;
 	private String description;
 	private String notes;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
@@ -49,25 +51,26 @@ public class Lead implements Serializable {
 	@ManyToOne private Company company;
 	@ManyToOne @JoinColumn(name = "client_id")	private Person client;
 
-	/**
-	 * LISTS
-	 */
+	// LISTS
 	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)	private List<Proposal> proposals;
 	
-	/**
-	 * DEPREDATED
-	 */
+	// DEPREDATED
 	private String oldid; 
 	private BigDecimal fee;
 	private String type;
 	@Enumerated(EnumType.STRING)	private Vendor vendor;
+	
+	
+	/*******************
+	 * 
+	 * METHODS
+	 *
+	 *******************/
 
 	public enum Vendor {
 		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date visit;
 
 	public void addProposal (Proposal proposal) {
 		if(this.proposals == null)
