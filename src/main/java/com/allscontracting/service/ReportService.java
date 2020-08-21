@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.HashMap;
 
@@ -56,12 +54,11 @@ public class ReportService {
 	}
 	
 	@Autowired ProposalRepository proposalRepo;
+	private String tempFile;
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
 		try {
-			
-			InputStream out = getJasperFileAsStream(map, jasperReportFileName);
-			
+			InputStream out = getJasperFileAsStream(map, jasperReportFileName, streamFileName);
 			response.setContentType("application/pdf");
 			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
       int c;
@@ -70,32 +67,28 @@ public class ReportService {
       }
       response.getOutputStream().flush();
       response.getOutputStream().close();
-      //Files.delete(Paths.get(tempFile));
+      Files.deleteIfExists(Paths.get(this.tempFile));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private InputStream getJasperFileAsStream(HashMap<String, Object> map, String jasperReportFileName) throws JRException, IOException, SQLException {
-		String tempFile = getCompiledJasperFile(map, jasperReportFileName);
+	private InputStream getJasperFileAsStream(HashMap<String, Object> map, String jasperReportFileName, String fileName) throws JRException, IOException, SQLException {
+		String tempFile = getCompiledJasperFile(fileName, map, jasperReportFileName);
 		InputStream out = Files.newInputStream(Paths.get(tempFile));
-		return out;
-	}
+		return out; 
+	} 
 
-	private String getCompiledJasperFile(HashMap<String, Object> map, String jasperReportFileName) throws JRException, IOException, SQLException {
+	private String getCompiledJasperFile(String fileName, HashMap<String, Object> map, String jasperReportFileName) throws JRException, IOException, SQLException {
 		String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX).getPath().replaceFirst("/", "")  ; 
 		sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
-		String tempFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
+		this.tempFile = Files.createTempFile("", fileName).getFileName().toFile().getPath();
 		JasperRunManager.runReportToPdfFile(sourceFileName, tempFile, map, dataSource.getConnection());
 		return tempFile;
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map,	String jasperReportFileName) throws JRException, SQLException, IOException {
-		InputStream is = this.getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JASPER_SUFFIX);
-		Path destFile = Files.createTempFile("", fileName);
-		byte[] bytes = JasperRunManager.runReportToPdf(is, map, dataSource.getConnection());
-		Files.write(destFile, bytes, StandardOpenOption.WRITE);
-		return destFile.toFile();
+		return new File(this.getCompiledJasperFile(fileName, map, jasperReportFileName));
 	}
 
 	private String getSourceFileName(String jasperReportFileName) throws IOException {
