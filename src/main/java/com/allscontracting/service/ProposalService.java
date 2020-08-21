@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
@@ -81,9 +81,9 @@ public class ProposalService {
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		try {
 			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-			Client client = proposal.getLead().getClient();
-			HashMap<String, Object> map = getProposalParameters(proposal, client);
-			String streamFileName = getProposalFileName(proposal, client, "pdf");
+			Person person = proposal.getLead().getPerson();
+			HashMap<String, Object> map = getProposalParameters(proposal, person);
+			String streamFileName = getProposalFileName(proposal, person, "pdf");
 			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,35 +92,35 @@ public class ProposalService {
 
 	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client client = proposal.getLead().getClient();
-		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client, "rtf");
+		Person person = proposal.getLead().getPerson();
+		HashMap<String, Object> map = getProposalParameters(proposal, person);
+		String streamFileName = getProposalFileName(proposal, person, "rtf");
 		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
 	}
 
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client client = proposal.getLead().getClient();
-		HashMap<String, Object> map = getProposalParameters(proposal, client);
-		String streamFileName = getProposalFileName(proposal, client, "pdf");
+		Person person = proposal.getLead().getPerson();
+		HashMap<String, Object> map = getProposalParameters(proposal, person);
+		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, client, res).onError((error) -> log.error("Error sending mail")).send();
+		this.mailService.sendProposalByEmail(proposal, person, res).onError((error) -> log.error("Error sending mail")).send();
 		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
 		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user,
-				"Proposal E-mailed to " + client.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+				"Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 	}
 
-	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
-		String streamFileName = new StringBuilder(client.getName()).append(" - ").append(client.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
+	private String getProposalFileName(Proposal proposal, Person person, String suffix) {
+		String streamFileName = new StringBuilder(person.getName()).append(" - ").append(person.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
 		return streamFileName;
 	}
 
-	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
+	private HashMap<String, Object> getProposalParameters(Proposal proposal, Person person) {
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("CLIENT", client);
+		map.put("CLIENT", person);
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;

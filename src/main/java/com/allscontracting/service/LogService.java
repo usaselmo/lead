@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.event.Event;
-import com.allscontracting.model.Client;
 import com.allscontracting.model.EventLog;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.EventoLogRepository;
 
@@ -50,17 +50,17 @@ public class LogService {
 	}
 
 	@Transactional
-	public void eventCantReachEmailSent(String leadId, Client client, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + client.getName());
+	public void eventCantReachEmailSent(String leadId, Person person, User user) {
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + person.getName());
 	}
 
 	@Transactional
-	public void eventHiringDecisionEmailSent(String leadId, Client client, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " + client.getName());
+	public void eventHiringDecisionEmailSent(String leadId, Person person, User user) {
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " + person.getName());
 	}
 
 	@Transactional
-	public void newLeadCreated(String leadId, Client client, User user) {
+	public void newLeadCreated(String leadId, Person person, User user) {
 		fireEvent(Lead.class, leadId, Event.CREATE, user, "New Lead created. ID: " + leadId);
 	}
 

@@ -20,8 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
@@ -62,7 +62,7 @@ public class DemoApplicationTests {
 	public void changeLeadEvent() throws Exception {
 		LocalDateTime dateTime;
 		Lead lead;
-		Client client;
+		Person person;
 		//this.leadService.scheduleAVisit("", new Date());
 	}
 
@@ -70,7 +70,7 @@ public class DemoApplicationTests {
 	@Rollback
 	@Ignore
 	public void testEvent() throws Exception {
-		//this.eventManager.notifyAllListeners(new VisitScheduledEvent(Lead.builder().id("sdfsd").build(), Client.builder().id(125L).build(), new Date()));
+		//this.eventManager.notifyAllListeners(new VisitScheduledEvent(Lead.builder().id("sdfsd").build(), Person.builder().id(125L).build(), new Date()));
 	}
 
 	private static final String JASPER_FOLDER = "jasper/";
@@ -88,10 +88,10 @@ public class DemoApplicationTests {
 	@Test
 	public void test_runToHtmlFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Client client = proposal.getLead().getClient();
+		Person person = proposal.getLead().getPerson();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
-		HashMap<String, Object> map = getParams(proposal, client);
+		HashMap<String, Object> map = getParams(proposal, person);
 		JasperRunManager.runReportToHtmlFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 	
@@ -99,10 +99,10 @@ public class DemoApplicationTests {
 	public void testHtmlProposal()  {
 		try {
 			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Client client = proposal.getLead().getClient();
+			Person person = proposal.getLead().getPerson();
 			String sourceFile = getSourceFile();
 			String htmlContent = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
-			HashMap<String, Object> map = getParams(proposal, client);
+			HashMap<String, Object> map = getParams(proposal, person);
 			JasperRunManager.runReportToHtmlFile(sourceFile, htmlContent, map, dataSource.getConnection());
 			new Mail("anselmo.sr@gmail.com", "HTML test", new String(Files.readAllBytes(Paths.get(htmlContent)))).onError( System.out::println ).send();
 		} catch (Exception e) {
@@ -113,20 +113,20 @@ public class DemoApplicationTests {
 	@Test
 	public void test_runToPdfFile() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Client client =  proposal.getLead().getClient();
+		Person person =  proposal.getLead().getPerson();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".pdf";
-		HashMap<String, Object> map = getParams(proposal, client);
+		HashMap<String, Object> map = getParams(proposal, person);
 		JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 
 	@Test
 	public void testProposalRtf() throws Exception {
 		Proposal proposal = this.proposalRepo.findAll().get(2);
-		Client client =  proposal.getLead().getClient();
+		Person person =  proposal.getLead().getPerson();
 		String sourceFile = getSourceFile();
 		String destFile = "D:/temp/proposal" + System.currentTimeMillis() + ".rtf";
-		HashMap<String, Object> map = getParams(proposal, client);
+		HashMap<String, Object> map = getParams(proposal, person);
 		
     //final InputStream jrFile = Files.newInputStream(Paths.get(sourceFile)/*, StandardOpenOption.READ*/); 
     final ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -151,9 +151,9 @@ public class DemoApplicationTests {
 		return "";
 	}
 
-	private HashMap<String, Object> getParams(Proposal proposal, Client client) {
+	private HashMap<String, Object> getParams(Proposal proposal, Person person) {
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("CLIENT", client);
+		map.put("CLIENT", person);
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;

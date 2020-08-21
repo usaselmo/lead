@@ -26,8 +26,8 @@ public class FileService {
 /*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);
 		File proposalPdfFile = new File(PROPOSALS_FOLDER + "\\" + proposal.getFileName());
-		Client client = lead.getClient();
-		this.mailService.sendProposalByEmail(proposal, client, proposalPdfFile);
+		Person person = lead.getPerson();
+		this.mailService.sendProposalByEmail(proposal, person, proposalPdfFile);
 	}*/
 
 	@SuppressWarnings("unchecked")
@@ -44,7 +44,7 @@ public class FileService {
 	@Transactional
 	private void saveAllLeads(Vendor vendor, List<Lead> leads, User user) {
 		leads.stream().forEach(lead->{
-			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getClient().getName(), lead.getOldid());
+			List<Lead> fls = leadRepo.findByVDD(lead.getVendor(), lead.getDate(), lead.getDescription(), lead.getPerson().getName(), lead.getOldid());
 			if(fls == null || fls.size() <= 0) {
 				lead = leadRepo.save(lead);
 				logService.event(Lead.class, String.valueOf(lead.getId()), Event.LOAD_VENDOR_FILE, user);

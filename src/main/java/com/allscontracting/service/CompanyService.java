@@ -25,7 +25,7 @@ public class CompanyService {
 	}
 
 	public CompanyDTO update(CompanyDTO companyDTO) throws LeadsException {
-		Company company = this.companyRepo.findById(companyDTO.getId()).orElseThrow(()->new LeadsException("Client not found"));
+		Company company = this.companyRepo.findById(companyDTO.getId()).orElseThrow(()->new LeadsException("Person not found"));
 		company.setAddress(companyDTO.getAddress());
 		company.setEmail(companyDTO.getEmail());
 		company.setName(companyDTO.getName());

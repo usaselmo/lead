@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Client;
+import com.allscontracting.model.Person;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.service.Converter;
@@ -52,7 +52,7 @@ public class HomeAdvisorLeadTranslaterImpl implements Translater<Lead> {
 			.fee(LeadHelper.defineCost(iterator.next().html()))
 			.type(removeSymbol(iterator.next().html()))
 			.event(Event.BEGIN)
-			.client(Client.builder()
+			.person(Person.builder()
 					.name(StringUtils.capitalize(removeSymbol(iterator.next().html())) + " " + StringUtils.capitalize(removeSymbol(iterator.next().html())))
 					.address(removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + ", " + removeSymbol(iterator.next().html()) + " " + removeSymbol(iterator.next().html()))
 					.cellPhone(iterator.next().html().replaceAll("\\(|\\)|\\-| ", ""))

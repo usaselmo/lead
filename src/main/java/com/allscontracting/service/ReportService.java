@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.allscontracting.model.Client;
+import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 
@@ -80,9 +80,9 @@ public class ReportService {
 		}
 	}
 
-	private HashMap<String, Object> getParams(Proposal proposal, Client client) {
+	private HashMap<String, Object> getParams(Proposal proposal, Person person) {
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("CLIENT", client);
+		map.put("CLIENT", person);
 		map.put("PROPOSAL", proposal);
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;

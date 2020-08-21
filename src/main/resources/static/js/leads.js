@@ -22,7 +22,7 @@ angular.module('leads', [])
     $scope.searchable_text = ''
    	$scope.menu = 'menu.html';
     $scope.body = 'leads-list.html';
-    $scope.newLead = {'client':{}}
+    $scope.newLead = {'person':{}}
     $scope.errorMessages = []
     $scope.successMessages = []
     $scope.currentUser = {}
@@ -142,7 +142,7 @@ angular.module('leads', [])
     	user.id=null
   		$http.post(local_server_url + '/users', user ).then(function (response) {
 				$scope.currentUser = response.data
-	    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+	    	$scope.currentUser.profiles = transformProfilesToPersonSide($scope.currentUser.profiles);
 				successMessage(user.name + ' created.')
 			}, function (response) {
 				errorMessage(response.data)
@@ -153,7 +153,7 @@ angular.module('leads', [])
     var updateUser = function(user){
   		$http.put(local_server_url + '/users', user ).then(function (response) {
 				$scope.currentUser = response.data
-	    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+	    	$scope.currentUser.profiles = transformProfilesToPersonSide($scope.currentUser.profiles);
 				successMessage(user.name + ' updated.')
 			}, function (response) {
 				errorMessage(response.data)
@@ -163,7 +163,7 @@ angular.module('leads', [])
 
     $scope.chooseUser = function(user){
     	$scope.currentUser = user;
-    	$scope.currentUser.profiles = transformProfilesToClientSide($scope.currentUser.profiles);
+    	$scope.currentUser.profiles = transformProfilesToPersonSide($scope.currentUser.profiles);
     	$scope.users = [];
     }
     
@@ -178,7 +178,7 @@ angular.module('leads', [])
     	return profs;
     }
     
-    var transformProfilesToClientSide = function(profiles){
+    var transformProfilesToPersonSide = function(profiles){
     	var profs=[]
     	$scope.profiles.forEach(function(p, index){
     		for(let i = 0; i < profiles.length; ++i){
@@ -233,10 +233,10 @@ angular.module('leads', [])
       errorMessages(responsedata.errorMessages)
     }
 
-    $scope.sendHiringDecisionEmail = function(lead, client){
-    	if (confirm('Send e-mail asking about '+client.name+'\'s  hiring decision ? ')) {
-    		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
-    			successMessage('"Ask for Hiring Decision E-mail" sent to '+ client.name)
+    $scope.sendHiringDecisionEmail = function(lead, person){
+    	if (confirm('Send e-mail asking about '+person.name+'\'s  hiring decision ? ')) {
+    		$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
+    			successMessage('"Ask for Hiring Decision E-mail" sent to '+ person.name)
           findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
@@ -246,10 +246,10 @@ angular.module('leads', [])
     	}
     }
     
-    $scope.sendCantReachEmail = function(lead, client){
-    	if (confirm('Send Can\'t Reach E-mail to '+client.name+' ? ')) {
-    		$http.get(local_server_url + '/clients/'+client.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
-    			successMessage('"Can\'t Reach E-mail" sent to '+ client.name)
+    $scope.sendCantReachEmail = function(lead, person){
+    	if (confirm('Send Can\'t Reach E-mail to '+person.name+' ? ')) {
+    		$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
+    			successMessage('"Can\'t Reach E-mail" sent to '+ person.name)
     			findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
@@ -285,33 +285,33 @@ angular.module('leads', [])
     }
     
     $scope.newLeadCancel = function(){
-    	$scope.newLead.clients = {}
-      $scope.newLead = {'client':{}}
+    	$scope.newLead.persons = {}
+      $scope.newLead = {'person':{}}
     }
     
-    $scope.chooseClient= function(client){
-    	$scope.newLead.client = client;
-    	$scope.newLead.clients = {}
+    $scope.choosePerson= function(person){
+    	$scope.newLead.person = person;
+    	$scope.newLead.persons = {}
     }
     
-    $scope.searchClient = function(clientName){
-    	if( clientName.length > 2){
-    		$http.get(local_server_url + '/clients?name=' + clientName).then(function (response) {
-    			$scope.newLead.clients = response.data
+    $scope.searchPerson = function(personName){
+    	if( personName.length > 2){
+    		$http.get(local_server_url + '/persons?name=' + personName).then(function (response) {
+    			$scope.newLead.persons = response.data
     		}, function (response) {
     			console.log(response)
     			errorMessage(response.data)
     	    checkAlive();
     		});
     	}else{
-    		$scope.newLead.clients = {}
+    		$scope.newLead.persons = {}
     	}
     }
 
-    $scope.updateClient = function(client){
-      $http.put(local_server_url + '/clients', client).then(function (response) {
-      	$scope.lead.client = response.data
-        successMessage(client.name+'\'s information has been updated')
+    $scope.updatePerson = function(person){
+      $http.put(local_server_url + '/persons', person).then(function (response) {
+      	$scope.lead.person = response.data
+        successMessage(person.name+'\'s information has been updated')
       }, function (response) {
         console.log(response)
         errorMessage(response.data)
@@ -353,12 +353,12 @@ angular.module('leads', [])
       });
     }
 
-    $scope.emailProposal = function (client, proposal, lead) {
-    	if (confirm('Send Proposal #'+proposal.number+' to '+client.name+' via E-mail ? ')) {
+    $scope.emailProposal = function (person, proposal, lead) {
+    	if (confirm('Send Proposal #'+proposal.number+' to '+person.name+' via E-mail ? ')) {
     		$http.get(local_server_url + '/proposals/' + proposal.id + '/email').then(function (response) {
     			proposal.emailed = true;
     			proposal.finished = true;
-    			successMessage('Proposal #' + proposal.number + ' sent to ' + client.name)
+    			successMessage('Proposal #' + proposal.number + ' sent to ' + person.name)
     			findNextEventLogs(lead)
     		}, function (response) {
     			console.log(response)
@@ -396,7 +396,7 @@ angular.module('leads', [])
     }
 
     $scope.editProposal = function (proposal) {
-    	$scope.currentProposal = convertToClientFormat(proposal);
+    	$scope.currentProposal = convertToPersonFormat(proposal);
       angular.element(document.querySelector('#oiwk4397849jj9')).click()
     }
 
@@ -423,7 +423,7 @@ angular.module('leads', [])
     		save(lead, proposal)
     }
 
-    var convertToClientFormat = function (proposal) {
+    var convertToPersonFormat = function (proposal) {
       prop = copy(proposal)
       items = []
       prop.items.forEach(item => {

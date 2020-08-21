@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -57,7 +58,8 @@ public class Lead implements Serializable {
 	private String notes;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	private Client client;
+	@JoinColumn(name = "client_id")
+	private Person person;
 
   @OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)
 	private List<Proposal> proposals;

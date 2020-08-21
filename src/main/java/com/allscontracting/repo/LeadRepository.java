@@ -23,7 +23,7 @@ public interface LeadRepository extends JpaRepository<Lead, Long>{
 	@Query("SELECT p FROM Lead l, Proposal p WHERE p.id = ?1 ")
 	List<Proposal> findProposals(Long leadId);
 	
-	@Query("SELECT l FROM Lead l WHERE l.client.name LIKE %?1%  OR l.client.phone LIKE %?1% OR l.client.address LIKE %?1% OR l.client.email LIKE %?1% ")
+	@Query("SELECT l FROM Lead l WHERE l.person.name LIKE %?1%  OR l.person.phone LIKE %?1% OR l.person.address LIKE %?1% OR l.person.email LIKE %?1% ")
 	List<Lead> search(String text, Pageable pageable);
 
 	@Query("SELECT DISTINCT l.type FROM Lead l ORDER BY l.type")
@@ -36,7 +36,7 @@ public interface LeadRepository extends JpaRepository<Lead, Long>{
 		return findByOldId(oldId).isPresent();
 	}
 	
-	@Query("SELECT l FROM Lead l WHERE l.vendor = ?1 AND l.date = ?2 AND l.description = ?3 AND l.client.name = ?4 AND l.oldid = ?5")
-	List<Lead> findByVDD(Vendor vendor, Date date, String description, String clientName, String oldid);
+	@Query("SELECT l FROM Lead l WHERE l.vendor = ?1 AND l.date = ?2 AND l.description = ?3 AND l.person.name = ?4 AND l.oldid = ?5")
+	List<Lead> findByVDD(Vendor vendor, Date date, String description, String personName, String oldid);
 	
 }

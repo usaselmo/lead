@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.allscontracting.model.Client;
+import com.allscontracting.model.Person;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface PersonRepository extends JpaRepository<Person, Long> {
 
-	@Query("SELECT c FROM Client c WHERE c.name LIKE %?1% ORDER BY c.name")
-	List<Client> findLikeName(String name);
+	@Query("SELECT c FROM Person c WHERE c.name LIKE %?1% ORDER BY c.name")
+	List<Person> findLikeName(String name);
 
 }

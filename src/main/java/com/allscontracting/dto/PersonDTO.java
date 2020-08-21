@@ -2,7 +2,7 @@ package com.allscontracting.dto;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.allscontracting.model.Client;
+import com.allscontracting.model.Person;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDTO {
+public class PersonDTO {
 
 	private String id;
 	private String email;
@@ -22,21 +22,21 @@ public class ClientDTO {
 	private String cellPhone;
 	private String phone;
 	
-	public static final ClientDTO of(Client client) {
-		if(client==null)
-			return ClientDTO.builder().build();
-		return ClientDTO.builder()
-				.id(String.valueOf(client.getId()))
-				.email(client.getEmail())
-				.name(client.getName())
-				.address(client.getAddress())
-				.cellPhone(client.getCellPhone())
-				.phone(client.getPhone())
+	public static final PersonDTO of(Person person) {
+		if(person==null)
+			return PersonDTO.builder().build();
+		return PersonDTO.builder()
+				.id(String.valueOf(person.getId()))
+				.email(person.getEmail())
+				.name(person.getName())
+				.address(person.getAddress())
+				.cellPhone(person.getCellPhone())
+				.phone(person.getPhone())
 				.build();
 	}
 	
-	public static final Client toClient(ClientDTO cd) {
-		Client c = new Client();
+	public static final Person toPerson(PersonDTO cd) {
+		Person c = new Person();
 		c.setAddress(cd.getAddress());
 		c.setCellPhone(cd.getCellPhone());
 		c.setEmail(cd.getEmail());

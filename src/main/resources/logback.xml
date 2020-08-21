@@ -10,7 +10,7 @@
   </appender>
 
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <File>/Modulo Assinatura Digital/log/assinatura-client.log</File>
+    <File>/temp/log/leadsdc.log</File>
     <Append>false</Append>
     <encoder>
       <pattern>%-30(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{64} -

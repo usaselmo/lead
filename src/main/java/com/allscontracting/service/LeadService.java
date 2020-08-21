@@ -22,7 +22,7 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
-import com.allscontracting.repo.ClientRepository;
+import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.UserRepository;
@@ -36,7 +36,7 @@ public class LeadService {
 	private final LeadRepository leadRepo;
 	private final EventDispatcher eventDispatcher; 
 	private final EventoLogRepository eventLogRepo;
-	private final ClientRepository clientRepo;
+	private final PersonRepository personRepo;
 	private final UserRepository userRepo;
 	private final LogService logg;
 	
@@ -89,16 +89,16 @@ public class LeadService {
 	@Transactional
 	public LeadDTO saveNewLead(LeadDTO leadDTO, User user) throws LeadsException{
 		Lead lead = LeadDTO.toLead(leadDTO);
-		if(lead.getClient().getId() != null && this.clientRepo.existsById(lead.getClient().getId())) {
-			lead.setClient(this.clientRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Client not found")));
+		if(lead.getPerson().getId() != null && this.personRepo.existsById(lead.getPerson().getId())) {
+			lead.setPerson(this.personRepo.findById(lead.getPerson().getId()).orElseThrow(()->new LeadsException("Person not found")));
 		}else {
-			lead.setClient(this.clientRepo.save(lead.getClient()));
+			lead.setPerson(this.personRepo.save(lead.getPerson()));
 		}
 		lead.setDate(new Date());
 		lead.setEvent(Event.BEGIN); 
 		lead.setFee(BigDecimal.ZERO);
 		lead = this.leadRepo.save(lead);
-		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user); 
+		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getPerson(), user); 
 		return LeadDTO.of(lead);
 	}
 
