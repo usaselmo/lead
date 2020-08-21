@@ -121,7 +121,7 @@ public class ProposalService {
 	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
-		map.put("PROPOSAL", proposal);
+		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
 	}

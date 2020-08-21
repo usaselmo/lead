@@ -51,7 +51,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
   @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)
 	private Lead lead;
 	
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Item> items;
   
   boolean isFinished() { 

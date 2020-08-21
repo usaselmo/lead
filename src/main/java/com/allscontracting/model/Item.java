@@ -38,7 +38,7 @@ public class Item implements Entity<Long>{
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Proposal proposal;
 	
-  @OneToMany(mappedBy = "item", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Line> lines;
   
   public void addLine(Line line) {

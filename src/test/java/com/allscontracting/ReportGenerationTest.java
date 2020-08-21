@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
@@ -38,6 +40,7 @@ public class ReportGenerationTest {
 	@Autowired ProposalRepository proposalRepository;
 
 	@Test
+	@Ignore
 	public void test_runToPdfFile() throws Exception {
 		try {
 			Proposal proposal = this.proposalRepo.findAll().get(2);
@@ -55,16 +58,17 @@ public class ReportGenerationTest {
 	@Test
 	public void compile() throws Exception {
 		try {
+
 			String sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
 			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
-			
+			//sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "proposal.jasper").getPath().replaceFirst("/", "")  ; 
 
 			Proposal proposal = this.proposalRepo.findAll().get(2);
 			Client client =  proposal.getLead().getClient();
 			String destFile = "C:/temp/proposal.pdf";
+			
 			HashMap<String, Object> map = getParams(proposal, client);
 			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,7 +78,7 @@ public class ReportGenerationTest {
 	private HashMap<String, Object> getParams(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
-		map.put("PROPOSAL", proposal);
+		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
 	}
