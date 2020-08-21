@@ -48,7 +48,6 @@ public class ProposalDTO {
 				.emailed(proposal.isEmailed())
 				.note(proposal.getNote())
 				.items(proposal.getItems().stream().map(i->ItemDTO.of(i)).collect(Collectors.toList()))
-				.estimator(proposal.getEstimator())
 				.build();
 	}
 	
@@ -65,7 +64,6 @@ public class ProposalDTO {
 		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
 		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
-		proposal.setEstimator(proposalDTO.getEstimator());
 		return proposal;
 	}
 	

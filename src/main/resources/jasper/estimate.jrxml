@@ -16,6 +16,7 @@
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
+	<parameter name="ESTIMATOR" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
 	I.title,
@@ -190,7 +191,7 @@ WHERE
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$P{PROPOSAL}.getEstimator()==null || StringUtils.isBlank($P{PROPOSAL}.getEstimator().getName())?"Eddie Lopes":$P{PROPOSAL}.getEstimator().getName()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$P{ESTIMATOR}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="0" y="325" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
