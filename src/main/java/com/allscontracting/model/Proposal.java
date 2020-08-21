@@ -3,6 +3,7 @@ package com.allscontracting.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -45,6 +46,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private byte[] signedProposal;
 	private boolean emailed;
 	private String note;
+	private Date date;
 
 	@JsonIgnore
   @ManyToOne 

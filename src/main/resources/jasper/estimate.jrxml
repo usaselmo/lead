@@ -177,7 +177,7 @@ WHERE
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber() + " of " + $P{PROPOSAL}.getDate()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="390" y="190" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>

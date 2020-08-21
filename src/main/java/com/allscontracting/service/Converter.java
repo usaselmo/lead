@@ -33,15 +33,31 @@ public class Converter {
 		return LocalDate.parse(date, formatter);
 	}
 	
-	public static Date stringToDate(String dateToConvert, String pattern) throws ParseException {
-		return new SimpleDateFormat(pattern).parse(dateToConvert); 
+	public static Date stringToDate(String dateToConvert, String pattern){
+		try {
+			return new SimpleDateFormat(pattern).parse(dateToConvert);
+		} catch (Exception e) {
+			return null;
+		} 
 	}
 	
 	public static String dateToString(Date date) {
-		return new SimpleDateFormat(MM_dd_yy_hh_mm).format(date);
+		try {
+			return new SimpleDateFormat(MM_dd_yy_hh_mm).format(date);
+		} catch (Exception e) {
+			return "";
+		}
 	}
 	
-	public static Date convertToDate(String date) throws LeadsException{
+	public static String dateToString(Date date, String format) {
+		try {
+			return new SimpleDateFormat(format).format(date);
+		} catch (Exception e) {
+			return "";
+		}
+	}
+	
+	public static Date convertToDate(String date) {
 		if(StringUtils.isBlank(date))
 			return null;
 		try {
@@ -52,8 +68,8 @@ public class Converter {
 			} catch (ParseException e1) {
 				try {
 					return stringToDate(date, yyyy_MM_dd);
-				} catch (ParseException e2) {
-					throw new LeadsException("Could not convert this string to Date: " + date);
+				} catch (Exception e2) {
+					return null;
 				}
 			}
 		}

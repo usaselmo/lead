@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -53,6 +54,7 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
 		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
+		proposal.setDate(new Date());
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		if (proposal.getNumber() == null) {

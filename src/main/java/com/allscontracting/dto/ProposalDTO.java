@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
+import com.allscontracting.service.Converter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,7 @@ public class ProposalDTO {
 	private String note;
 	private List<ItemDTO> items;
 	private Person estimator;
+	private String date;
 	
 	public static final ProposalDTO of(Proposal proposal) {
 		if(proposal==null)
@@ -48,6 +50,7 @@ public class ProposalDTO {
 				.emailed(proposal.isEmailed())
 				.note(proposal.getNote())
 				.items(proposal.getItems().stream().map(i->ItemDTO.of(i)).collect(Collectors.toList()))
+				.date(Converter.dateToString(proposal.getDate(), Converter.MM_dd_yyyy))
 				.build();
 	}
 	
@@ -64,6 +67,7 @@ public class ProposalDTO {
 		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
 		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
+		proposal.setDate(Converter.stringToDate(proposalDTO.getDate(), Converter.MM_dd_yy));
 		return proposal;
 	}
 	
