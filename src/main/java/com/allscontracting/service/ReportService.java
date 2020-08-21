@@ -34,7 +34,7 @@ public class ReportService {
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";
 	private static final String JRXML_SUFFIX = ".jrxml";
-
+	
 	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
 			String jasperReportFileName) throws IOException, JRException, SQLException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
