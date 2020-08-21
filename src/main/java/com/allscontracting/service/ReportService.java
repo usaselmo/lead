@@ -63,9 +63,9 @@ public class ReportService {
 		try {
 			String sourceFileName = ReportService.class.getClassLoader().getResource(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX).getPath().replaceFirst("/", "")  ; 
 			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
-			String destFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
-			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
-			InputStream out = Files.newInputStream(Paths.get(destFile));
+			String tempFile = Files.createTempFile("leadsdc", "").getFileName().toFile().getPath();
+			JasperRunManager.runReportToPdfFile(sourceFileName, tempFile, map, dataSource.getConnection());
+			InputStream out = Files.newInputStream(Paths.get(tempFile));
 			response.setContentType("application/pdf");
 			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
       int c;
@@ -74,6 +74,7 @@ public class ReportService {
       }
       response.getOutputStream().flush();
       response.getOutputStream().close();
+      Files.delete(Paths.get(tempFile));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
