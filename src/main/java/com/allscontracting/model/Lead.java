@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -46,8 +45,9 @@ public class Lead implements Serializable {
 	private String description;
 	private String notes;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
-	@ManyToOne(cascade = CascadeType.ALL)  private User estimator;
-	@ManyToOne(cascade = CascadeType.ALL)	@JoinColumn(name = "client_id")	private Person client;
+	@ManyToOne private User estimator;
+	@ManyToOne private Company company;
+	@ManyToOne @JoinColumn(name = "client_id")	private Person client;
 
 	/**
 	 * LISTS

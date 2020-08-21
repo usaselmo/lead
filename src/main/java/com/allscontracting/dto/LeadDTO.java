@@ -32,12 +32,13 @@ public class LeadDTO {
 	private String fee;
 	private String type; 
 	private String notes;
-	private PersonDTO person;
 	private List<ProposalDTO> proposals;
 	private String event;//EventType
 	private String visit;
 	private Long price;
 	private UserDTO estimator;
+	private PersonDTO person;
+	private CompanyDTO company;
 	
 	public static final LeadDTO of(Lead lead) {
 		if(lead==null)
@@ -57,6 +58,7 @@ public class LeadDTO {
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
+				.company(CompanyDTO.of(lead.getCompany()))
 				.build();
 	}
 	
@@ -82,6 +84,7 @@ public class LeadDTO {
 		lead.setType(leadDTO.getType());
 		lead.setVendor(StringUtils.isBlank(leadDTO.vendor)?null:Lead.Vendor.valueOf(leadDTO.vendor));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
 		return lead;
 	}
 

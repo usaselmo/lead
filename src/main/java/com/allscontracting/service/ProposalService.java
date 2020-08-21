@@ -84,7 +84,7 @@ public class ProposalService {
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		try {
 			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-			Person person = proposal.getLead().getClient();
+			Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
 			HashMap<String, Object> map = getProposalParameters(proposal, person);
 			String streamFileName = getProposalFileName(proposal, person, "pdf");
 			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -95,7 +95,7 @@ public class ProposalService {
 
 	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Person person = proposal.getLead().getClient();
+		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "rtf");
 		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -116,7 +116,7 @@ public class ProposalService {
 				"Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 	}
 
-	private String getProposalFileName(Proposal proposal, Person person, String suffix) {
+	private String getProposalFileName(Proposal proposal, Client person, String suffix) {
 		String streamFileName = new StringBuilder(person.getName()).append(" - ").append(person.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
 		return streamFileName;
 	}
