@@ -14,6 +14,7 @@
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
+	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
 	I.title,
@@ -218,7 +219,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Name: "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Name: " + $P{CLIENT}.getName()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="320" width="380" height="20" uuid="a2266d00-84c6-4056-898e-622081a42344"/>
@@ -232,7 +233,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["E-mail: "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["E-mail: " + $P{CLIENT}.getEmail()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="280" width="380" height="20" uuid="d750683a-222f-432a-b909-e9a933d69dfe"/>
@@ -246,7 +247,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Address: "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="300" width="380" height="20" uuid="9fc19036-2734-41ff-9b2a-a4bfc1bd8542"/>
@@ -260,7 +261,7 @@ WHERE
 				<textElement verticalAlignment="Middle">
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Phone: "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="390" y="260" width="145" height="20" uuid="dc9f0037-7f80-4d99-8633-35b0c2d55f58"/>

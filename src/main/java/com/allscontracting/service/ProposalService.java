@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
+import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
@@ -118,9 +119,9 @@ public class ProposalService {
 		return streamFileName;
 	}
 
-	private HashMap<String, Object> getProposalParameters(Proposal proposal, Person person) {
+	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
-		map.put("CLIENT", person);
+		map.put("CLIENT", client);
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;
