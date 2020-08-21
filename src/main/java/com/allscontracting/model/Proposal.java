@@ -51,6 +51,9 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
   @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)
 	private Lead lead;
 	
+	@ManyToOne
+	private Person estimator;
+	
   @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Item> items;
   

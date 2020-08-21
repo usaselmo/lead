@@ -12,6 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="org.apache.commons.lang.StringUtils"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
@@ -195,18 +196,6 @@ WHERE
 				</textElement>
 				<text><![CDATA[PROJECT ESTIMATOR]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="390" y="320" width="145" height="20" uuid="8dbc7d55-9a87-42a7-a9f1-0d249362d29d">
-					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
-				</reportElement>
-				<box padding="2">
-					<pen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Eddie Lopes]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="0" y="260" width="380" height="20" uuid="da5e0894-0c00-4a39-bf3a-1e48bd805527"/>
 				<box padding="2">
@@ -303,6 +292,20 @@ WHERE
 				</textElement>
 				<text><![CDATA[Proposal Detailed Items:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="390" y="320" width="145" height="20" uuid="04620c49-7b9f-46e1-82b2-89dcda8ab936"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PROPOSAL}.getEstimator()==null || StringUtils.isBlank($P{PROPOSAL}.getEstimator().getName())?"Eddie Lopes":$P{PROPOSAL}.getEstimator().getName()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<detail>

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 
 import lombok.AllArgsConstructor;
@@ -30,6 +31,7 @@ public class ProposalDTO {
 	private boolean emailed;
 	private String note;
 	private List<ItemDTO> items;
+	private Person estimator;
 	
 	public static final ProposalDTO of(Proposal proposal) {
 		if(proposal==null)
@@ -46,6 +48,7 @@ public class ProposalDTO {
 				.emailed(proposal.isEmailed())
 				.note(proposal.getNote())
 				.items(proposal.getItems().stream().map(i->ItemDTO.of(i)).collect(Collectors.toList()))
+				.estimator(proposal.getEstimator())
 				.build();
 	}
 	
@@ -62,6 +65,7 @@ public class ProposalDTO {
 		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
 		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
+		proposal.setEstimator(proposalDTO.getEstimator());
 		return proposal;
 	}
 	
