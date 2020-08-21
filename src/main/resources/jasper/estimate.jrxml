@@ -214,18 +214,66 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="119">
+			<band height="561">
 				<staticText>
-					<reportElement x="5" y="22" width="220" height="19" uuid="984229c2-2b44-4c9a-8872-7b5f878e55d8"/>
+					<reportElement x="0" y="141" width="220" height="19" uuid="984229c2-2b44-4c9a-8872-7b5f878e55d8">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
+					</reportElement>
 					<textElement>
 						<font size="14" isBold="true" isUnderline="true"/>
 					</textElement>
 					<text><![CDATA[Payment Schedule:]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
-					<reportElement x="5" y="45" width="471" height="70" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d"/>
+					<reportElement x="0" y="160" width="535" height="70" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
+					</reportElement>
 					<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
 				</textField>
+				<staticText>
+					<reportElement x="0" y="391" width="535" height="50" uuid="057fcbb0-b412-47b4-a39f-1cfa473856f5"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[ACCEPTANCE OF PROPOSAL: The above prices, specifications, and conditions are satisfactory and are hereby accepted.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="8" width="220" height="19" isRemoveLineWhenBlank="true" uuid="1d0cb89a-a8ef-47cf-aa8e-d156ee72a0f1">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Notes]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="30" width="535" height="70" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getNote()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="268" width="220" height="19" uuid="04bee5c9-a3b1-41d9-aa47-fdea727de7be">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font size="14" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[Work Warranty:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="290" width="535" height="70" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
+						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="500" width="534" height="30" uuid="7951d301-cc86-4bd7-af6d-c9b424333d1a"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<text><![CDATA[Customer Signature: _________________________ Amount Accepted: ___________ Date: ________]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
