@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 	
+	@GetMapping(path= {"/", ""})
+	public String leadList() {
+		return "lead/lead-list";
+	}
+	
 	@GetMapping("/main/users")
 	public String users() {
 		return "user";

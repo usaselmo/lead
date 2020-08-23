@@ -96,7 +96,10 @@ public class LeadController {
 		try {
 			List<LeadDTO> res = leadService.listLeads(pageRange, lines, eventType);
 			long leadsTotalPrice = res.stream().mapToLong(l->l.getPrice()).sum();
-			return LeadEntity.builder().leads(res).leadsTotalPrice(leadsTotalPrice).build();
+			return LeadEntity.builder().leads(res).leadsTotalPrice(leadsTotalPrice)
+					.leadTypes(this.leadService.getLeadTypes())
+					.eventTypes(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventTypeDTO.of(et)).collect(Collectors.toList()))
+					.build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
