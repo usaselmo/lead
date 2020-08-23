@@ -81,17 +81,11 @@ public class ReportService {
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map, String jasperReportFileName) throws JRException, SQLException, IOException {
-
 		InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 		JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
 		byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
 		this.tempFile = Files.createTempFile("", fileName);
-
-		// JasperFillManager.fillReportToFile(compiledJasperReport, fileName, map,
-		// dataSource.getConnection());
-
 		return Files.write(this.tempFile, res).toFile();
-
 	}
 
 	private String getSourceFileName(String jasperReportFileName) throws IOException {
