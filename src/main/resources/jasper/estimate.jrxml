@@ -202,15 +202,15 @@ WHERE
 				</staticText>
 				<image>
 					<reportElement x="0" y="30" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
-					<imageExpression><![CDATA["jasper/accredited-business.png"]]></imageExpression>
+					<imageExpression><![CDATA["jasper/image/accredited-business.png"]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="440" y="21" width="95" height="60" uuid="96a5ab62-4d12-4c8c-b760-5b87543818fd"/>
-					<imageExpression><![CDATA["jasper/sbsd.png"]]></imageExpression>
+					<imageExpression><![CDATA["jasper/image/sbsd.png"]]></imageExpression>
 				</image>
 				<image>
 					<reportElement x="160" y="20" width="238" height="62" uuid="a6d5c7f1-19bc-4c4a-b26f-aafaae0c74b9"/>
-					<imageExpression><![CDATA["jasper/DunBradstreet.jpg"]]></imageExpression>
+					<imageExpression><![CDATA["jasper/image/DunBradstreet.jpg"]]></imageExpression>
 				</image>
 			</band>
 		</groupHeader>
@@ -307,7 +307,7 @@ WHERE
 		<band height="97">
 			<image hAlign="Center" vAlign="Middle">
 				<reportElement x="5" y="5" width="270" height="80" uuid="38b81a9c-398a-4016-9863-f5acd06e8d5f"/>
-				<imageExpression><![CDATA["jasper/aclogo.jpg"]]></imageExpression>
+				<imageExpression><![CDATA["jasper/image/aclogo.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="275" y="5" width="265" height="22" uuid="4fe92c4e-0f9b-4469-8f17-8dcec8556786">
