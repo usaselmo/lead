@@ -90,14 +90,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
-    
-    
-    
-    
-    
-    
-    
-    
     	<dependency>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -117,13 +109,10 @@
         </excludes>
       </resource>
       <resource>
-        <directory>src/main/resources</directory>
+        <directory>src/main/resources/*</directory>
       </resource>
       <resource>
-        <directory>src/main/resources/jasper</directory>
-        <excludes>
-          <exclude>**/*.jrxml</exclude>
-        </excludes>
+        <directory>src/main/resources/jasper/*</directory>
       </resource>
       <resource>
         <directory>src/main/resources/templates</directory>

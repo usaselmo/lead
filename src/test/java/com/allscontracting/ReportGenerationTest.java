@@ -1,5 +1,10 @@
 package com.allscontracting;
 
+import static org.junit.Assert.*;
+
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +25,9 @@ import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 
 @RunWith(SpringRunner.class)
@@ -34,24 +42,63 @@ public class ReportGenerationTest {
 	@Autowired DataSource dataSource;
 	@Autowired HttpServletResponse response;
 	@Autowired ProposalRepository proposalRepository;
+	
+	@Test
+	public void runToFileFromStream() throws Exception {
+		try {
+			InputStream is = this.getJrxmlFileAsStream();
+			JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
+
+			HashMap<String, Object> map = this.definaParams();
+			String destFile = this.defineDestinationFile();
+			
+			byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
+			Files.write(Paths.get(destFile),res);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+	}
 
 	@Test
 	@Ignore
 	public void test_runToPdfFile() throws Exception {
 		try {
-			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Person person =  proposal.getLead().getClient();
-			String sourceFile = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "")  ;
-			String destFile = "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
-			HashMap<String, Object> map = getParams(proposal, person);
-			//String res = JasperFillManager.fillReportToFile(sourceFile, map, dataSource.getConnection());
-			JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
+			HashMap<String, Object> map = definaParams();
+			InputStream is = getJrxmlFileAsStream() ;
+			String destFile = defineDestinationFile();
+			
+			JasperFillManager.fillReport(is, map, dataSource.getConnection());
+			
+			//JasperRunManager.runReportToPdfFile(sourceFile, destFile, map, dataSource.getConnection());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+	private String defineDestinationFile() {
+		return "C:/temp/proposal" + System.currentTimeMillis() + ".pdf";
+	}
+
+	private String defineSourceFile() {
+		return ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "");
+	}
+
+	private InputStream getJrxmlFileAsStream() {
+		return getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + "estimate.jrxml");
+	}
+
+	private HashMap<String, Object> definaParams() {
+		Proposal proposal = this.proposalRepo.findAll().get(2);
+		Person person =  proposal.getLead().getClient();
+		HashMap<String, Object> map = getParams(proposal, person);
+		return map;
+	}
 	
 	@Test
+	@Ignore
 	public void compile() throws Exception {
 		try {
 
@@ -67,7 +114,8 @@ public class ReportGenerationTest {
 			JasperRunManager.runReportToPdfFile(sourceFileName, destFile, map, dataSource.getConnection());
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(); 
+			fail();
 		}
 	}
 

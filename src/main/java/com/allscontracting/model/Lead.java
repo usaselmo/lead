@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -52,9 +53,9 @@ public class Lead implements Serializable {
 	@ManyToOne @JoinColumn(name = "client_id")	private Person client;
 
 	// LISTS
-	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY)	private List<Proposal> proposals;
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)	private List<Proposal> proposals;
 	
-	// DEPREDATED
+	// DEPRECATED
 	private String oldid; 
 	private BigDecimal fee;
 	private String type;
