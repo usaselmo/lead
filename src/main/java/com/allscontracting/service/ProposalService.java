@@ -108,7 +108,7 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, person, res)
-			.onError((error) -> log.error("Error sending mail"))
+			.onError((error) -> log.error("Error sending mail")) 
 			.send();
 		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);

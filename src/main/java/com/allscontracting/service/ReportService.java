@@ -36,11 +36,10 @@ public class ReportService {
 	private static final String JASPER_SUFFIX = ".jasper";
 	private static final String JRXML_SUFFIX = ".jrxml";
 
-	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-			String jasperReportFileName) throws IOException, JRException, SQLException {
+	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName)
+			throws IOException, JRException, SQLException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		final JasperPrint jasperPrint = JasperFillManager.fillReport(getSourceFileName(jasperReportFileName), map,
-				dataSource.getConnection());
+		final JasperPrint jasperPrint = JasperFillManager.fillReport(getSourceFileName(jasperReportFileName), map, dataSource.getConnection());
 		final JRRtfExporter saida = new JRRtfExporter();
 		saida.setExporterInput(new SimpleExporterInput(jasperPrint));
 		saida.setExporterOutput(new SimpleWriterExporterOutput(baos, "UTF-8"));
@@ -58,10 +57,10 @@ public class ReportService {
 	ProposalRepository proposalRepo;
 	private Path tempFile;
 
-	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName,
-			String jasperReportFileName) throws JRException, SQLException, IOException, Exception {
+	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName)
+			throws JRException, SQLException, IOException, Exception {
 		try {
-			InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + "estimate.jrxml");
+			InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 			JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
 			byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
 			this.tempFile = Files.createTempFile("", "");
@@ -81,37 +80,18 @@ public class ReportService {
 		}
 	}
 
-	/*
-	 * private InputStream getJasperFileAsStream(HashMap<String, Object> map, String
-	 * jasperReportFileName, String fileName) throws JRException, IOException,
-	 * SQLException { String tempFile = getCompiledJasperFile(fileName, map,
-	 * jasperReportFileName); InputStream out =
-	 * Files.newInputStream(Paths.get(tempFile)); return out; }
-	 */
+	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map, String jasperReportFileName) throws JRException, SQLException, IOException {
 
-	/*
-	 * private String getCompiledJasperFile(String fileName, HashMap<String, Object>
-	 * map, String jasperReportFileName) throws JRException, IOException,
-	 * SQLException { String sourceFileName = ReportService.class.getClassLoader()
-	 * .getResource(JASPER_FOLDER + jasperReportFileName +
-	 * JRXML_SUFFIX).getPath().replaceFirst("/", ""); sourceFileName =
-	 * JasperCompileManager.compileReportToFile(sourceFileName); this.tempFile =
-	 * Files.createTempFile("", fileName);
-	 * JasperRunManager.runReportToPdfFile(sourceFileName,
-	 * tempFile.getFileName().toFile().getPath(), map, dataSource.getConnection());
-	 * return tempFile.getFileName().toFile().getPath(); }
-	 */
-
-	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map, String jasperReportFileName)
-			throws JRException, SQLException, IOException {
-
-		InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + "estimate.jrxml");
+		InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 		JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
 		byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
-		this.tempFile = Files.createTempFile("", "");
+		this.tempFile = Files.createTempFile("", fileName);
+
+		// JasperFillManager.fillReportToFile(compiledJasperReport, fileName, map,
+		// dataSource.getConnection());
 
 		return Files.write(this.tempFile, res).toFile();
-		
+
 	}
 
 	private String getSourceFileName(String jasperReportFileName) throws IOException {
