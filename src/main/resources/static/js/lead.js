@@ -25,6 +25,12 @@
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, $http, $timeout, leadService) {   
 
+ 	$scope.reload = function(filter){
+ 		if(filter=='ALL' || !filter) 
+ 			filter=''
+ 		leadService.findLeads($scope, 0, 10, filter)
+ 	}
+
  	var init = function(){
  		leadService.findLeads($scope, 0, 10, '');
  	}  
