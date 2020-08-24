@@ -96,9 +96,9 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event) throws Exception {
+	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
 		try {
-			List<LeadDTO> leads = leadService.listLeads(pageRange, lines, event);
+			List<LeadDTO> leads = leadService.listLeads(pageRange, lines, text, event);
 			long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
 			return LeadEntity.builder()
 					.leads(leads)

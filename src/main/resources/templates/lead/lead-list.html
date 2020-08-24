@@ -47,7 +47,7 @@
                 {{leadsTotalPrice | currency}}
               </small>
               <a title="Reload" href="#" class="btn btn-sm">
-                <span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload" ng-click="reload(event)"></span>
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload" ng-click="reload(event, search)"></span>
               </a>
               <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"
@@ -61,10 +61,10 @@
             <button  class="btn btn-success btn-sm" ng-click="getNextListRange(1)" >&gt;&gt;</button>
           </td>
           <td>
-            <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" >
+            <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="search" ng-change="reload(event, search)">
           </td>
           <td>
-            <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event" ng-change="reload(event)" >
+            <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event" ng-change="reload(event, search)" >
               <option value="">All</option>
             </select>
           </td>

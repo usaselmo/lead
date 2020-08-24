@@ -7,8 +7,8 @@
  .service('leadService', function($http){
  	var local_server_url = "";
  	return {
- 		findLeads: function (scope, pageRange, lines, event) {
- 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + event).then(function (response) {
+ 		findLeads: function (scope, pageRange, lines, event, text) {
+ 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + event + "&text=" + text).then(function (response) {
  				scope.leads = response.data.leads
  				scope.leadsTotalPrice = response.data.leadsTotalPrice
  				scope.totalLeads = response.data.totalLeads
@@ -27,6 +27,7 @@
 
  	var pageRange = 0;
  	var lines = 10;
+ 	$scope.search = '';
 
  	$scope.getNextListRange = function(numero){
  		if(numero>0 && ((pageRange+1)*lines) < $scope.totalLeads)
@@ -35,18 +36,20 @@
  			pageRange--
  		if($scope.event=='ALL' || !$scope.event) 
  			$scope.event=''
- 		leadService.findLeads($scope, pageRange, lines, $scope.event)
+ 		if(!$scope.search) $scope.search = ''
+ 		leadService.findLeads($scope, pageRange, lines, $scope.event, $scope.search)
  	} 
 
- 	$scope.reload = function(event){
+ 	$scope.reload = function(event, search){
  		if(event=='ALL' || !event) 
  			event=''
+ 		if(!$scope.search) $scope.search = ''
  		pageRange = 0;
- 		leadService.findLeads($scope, pageRange, lines, event)
+ 		leadService.findLeads($scope, pageRange, lines, event, search)
  	}
 
  	var init = function(){
- 		leadService.findLeads($scope, pageRange, lines, '');
+ 		leadService.findLeads($scope, pageRange, lines, '', $scope.search);
  	}  
 
  	init();

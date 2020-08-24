@@ -2,6 +2,7 @@ package com.allscontracting.service;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,14 +41,13 @@ public class LeadService {
 	private final UserRepository userRepo;
 	private final LogService logg;
 	
-	public List<LeadDTO> listLeads(int pageRange, int lines, Event eventType) throws Exception {
-		if(pageRange<0)
-			pageRange=0;
-		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date") );
-		if(eventType==null)
-			return leadRepo.findAll(pageable).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
-		else
-			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
+	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws Exception {
+		if (pageRange < 0)
+			pageRange = 0;
+		List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
+		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
+		List<LeadDTO> res = leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		return res;
 	}
 
 	public List<EventDTO> findNextEvents(String leadId) throws LeadsException {
@@ -83,7 +83,7 @@ public class LeadService {
 
 	public List<LeadDTO> search(String text) {
 		//limited to 100 results
-		return this.leadRepo.search(text, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
+		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	@Transactional
