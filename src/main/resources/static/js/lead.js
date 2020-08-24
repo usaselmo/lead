@@ -41,6 +41,7 @@
  	$scope.reload = function(event){
  		if(event=='ALL' || !event) 
  			event=''
+ 		pageRange = 0;
  		leadService.findLeads($scope, pageRange, lines, event)
  	}
 
