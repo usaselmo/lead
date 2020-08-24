@@ -2,7 +2,7 @@ package com.allscontracting.event;
 
 import java.util.stream.Stream;
 
-public enum Event {
+public enum Event { 
 	
 	BEGIN("CONTACTING", "START OVER", "BE", true),
 	ASSIGN_TO_ESTIMATOR("ASSIGNED TO ESTIMATOR", "ASSIGN TO ESTIMATOR", "AE", true),

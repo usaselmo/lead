@@ -26,6 +26,7 @@ public class LeadEntity {
 	private List<EventDTO> nextEvents;
 	private List<String> leadTypes;
 	private List<EventLogDTO> eventLogs;
+	private Long totalLeads;
 	
 	public LeadEntity addSuccessMessage(String successMessage) {
 		this.successMessages.add(successMessage);

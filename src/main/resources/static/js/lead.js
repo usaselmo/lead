@@ -11,7 +11,7 @@
  			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + filter).then(function (response) {
  				scope.leads = response.data.leads
  				scope.leadsTotalPrice = response.data.leadsTotalPrice
- 				scope.totalLeads = response.data.leads.length
+ 				scope.totalLeads = response.data.totalLeads
  				scope.leadTypes = response.data.leadTypes;
  				scope.events = response.data.events;
  			}, function (response) {
