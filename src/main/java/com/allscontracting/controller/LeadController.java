@@ -31,26 +31,30 @@ import com.allscontracting.service.LogService;
 @RequestMapping("leads")
 public class LeadController {
 
-	@Autowired LeadService leadService;
-	@Autowired FileService fileService;
-	@Autowired LeadRepository leadRepo;
-	@Autowired LogService logg;
-	
+	@Autowired
+	LeadService leadService;
+	@Autowired
+	FileService fileService;
+	@Autowired
+	LeadRepository leadRepo;
+	@Autowired
+	LogService logg;
+
 	@GetMapping("eventtypes")
-	public LeadEntity findEventTypes(){
-		return LeadEntity.builder().events(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventDTO.of(et)).collect(Collectors.toList())).build();
+	public LeadEntity findEventTypes() {
+		return LeadEntity.builder().events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).build();
 	}
-	
+
 	@PutMapping("{leadId}/estimator/{estimatorId}")
 	public LeadEntity assignToEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
-		return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build(); 
+		return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
 	}
-	
+
 	@GetMapping("/types")
 	public LeadEntity getLeadTypes() {
 		return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
 	}
-	
+
 	@PostMapping
 	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
@@ -72,17 +76,17 @@ public class LeadController {
 
 	@PostMapping(value = "{id}/schedulevisit")
 	public LeadEntity scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException, ParseException {
-		LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails)authentication.getPrincipal()).getUser()); 
+		LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 		return LeadEntity.builder().lead(res).build();
 	}
 
 	@PostMapping(value = "{id}/fireevent")
 	public void fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
-		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
 	}
 
 	@GetMapping(value = "{id}/nextevents")
-	public LeadEntity findNextEvents(@PathVariable String id) throws LeadsException{
+	public LeadEntity findNextEvents(@PathVariable String id) throws LeadsException {
 		return LeadEntity.builder().nextEvents(leadService.findNextEvents(id)).build();
 	}
 
@@ -95,11 +99,11 @@ public class LeadController {
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event) throws Exception {
 		try {
 			List<LeadDTO> leads = leadService.listLeads(pageRange, lines, event);
-			long leadsTotalPrice = leads.stream().mapToLong(l->l.getPrice()).sum();
+			long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
 			return LeadEntity.builder()
-					.leads(leads).leadsTotalPrice(leadsTotalPrice)
-					.leadTypes(this.leadService.getLeadTypes())
-					.events(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventDTO.of(et)).collect(Collectors.toList()))
+					.leads(leads)
+					.leadsTotalPrice(leadsTotalPrice).leadTypes(this.leadService.getLeadTypes())
+					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
 					.totalLeads(this.leadRepo.countByEvent(event))
 					.build();
 		} catch (Exception e) {
@@ -113,10 +117,10 @@ public class LeadController {
 		try {
 			long res = leadService.getLeadsTotal(eventType);
 			return res;
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 }
