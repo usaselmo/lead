@@ -24,7 +24,12 @@
 
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, $http, $timeout, leadService) {  
+ 	/** LEAD DETAIL **/
+ 	$scope.edit = function(lead){
+ 		$scope.lead = lead;
+ 	}
 
+    /** LIST **/
  	var pageRange = 0;
  	var lines = 10;
  	$scope.search = '';
