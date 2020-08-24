@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.allscontracting.dto.EventTypeDTO;
+import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.Event;
@@ -38,7 +38,7 @@ public class LeadController {
 	
 	@GetMapping("eventtypes")
 	public LeadEntity findEventTypes(){
-		return LeadEntity.builder().eventTypes(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventTypeDTO.of(et)).collect(Collectors.toList())).build();
+		return LeadEntity.builder().events(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventDTO.of(et)).collect(Collectors.toList())).build();
 	}
 	
 	@PutMapping("{leadId}/estimator/{estimatorId}")
@@ -77,7 +77,7 @@ public class LeadController {
 	}
 
 	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody EventTypeDTO event, @Autowired Authentication authentication) throws LeadsException {
+	public void fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
 		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 
@@ -92,13 +92,13 @@ public class LeadController {
 	}
 
 	@GetMapping(value = "")
-	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event eventType) throws Exception {
+	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event) throws Exception {
 		try {
-			List<LeadDTO> res = leadService.listLeads(pageRange, lines, eventType);
+			List<LeadDTO> res = leadService.listLeads(pageRange, lines, event);
 			long leadsTotalPrice = res.stream().mapToLong(l->l.getPrice()).sum();
 			return LeadEntity.builder().leads(res).leadsTotalPrice(leadsTotalPrice)
 					.leadTypes(this.leadService.getLeadTypes())
-					.eventTypes(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventTypeDTO.of(et)).collect(Collectors.toList()))
+					.events(Stream.of(Event.values()).filter(e->e.isShowInMenu()==true).map(et->EventDTO.of(et)).collect(Collectors.toList()))
 					.build();
 		} catch (Exception e) {
 			e.printStackTrace();

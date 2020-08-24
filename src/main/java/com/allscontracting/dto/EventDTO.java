@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class EventTypeDTO {
+public class EventDTO {
 
 	private String name;
 	private String status ; 
 	private String action ;
 	private String abbreviation;
 	
-	public static EventTypeDTO of(Event event) {
-		return EventTypeDTO.builder()
+	public static EventDTO of(Event event) {
+		return EventDTO.builder()
 				.name(event.name())
 				.action(event.getAction())
 				.status(event.getStatus())
@@ -31,7 +31,7 @@ public class EventTypeDTO {
 				.build();
 	}
 	
-	public static Event toEventType(EventTypeDTO eventTypeDTO) {
+	public static Event toEventType(EventDTO eventTypeDTO) {
 		if(eventTypeDTO==null)
 			Objects.requireNonNull("Event Type can not be null");
 		if(StringUtils.isNotBlank(eventTypeDTO.getAction()))

@@ -8,12 +8,12 @@
  	var local_server_url = "";
  	return {
  		findLeads: function (scope, pageRange, lines, filter) {
- 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&eventType=" + filter).then(function (response) {
+ 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + filter).then(function (response) {
  				scope.leads = response.data.leads
  				scope.leadsTotalPrice = response.data.leadsTotalPrice
  				scope.totalLeads = response.data.leads.length
  				scope.leadTypes = response.data.leadTypes;
- 				scope.eventTypes = response.data.eventTypes;
+ 				scope.events = response.data.events;
  			}, function (response) {
  				console.log(response)
  			});

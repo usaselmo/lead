@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.EventLogDTO;
-import com.allscontracting.dto.EventTypeDTO;
+import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.event.EventDispatcher;
@@ -50,12 +50,12 @@ public class LeadService {
 			return leadRepo.findAllByEvent(pageable, eventType).getContent().stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
-	public List<EventTypeDTO> findNextEvents(String leadId) throws LeadsException {
+	public List<EventDTO> findNextEvents(String leadId) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
 		Event currentEvent = lead.getEvent();
 		if(null == currentEvent)
 			currentEvent = Event.BEGIN;
-		return eventDispatcher.findNextEvents(currentEvent).stream().map(et->EventTypeDTO.of(et)).collect(Collectors.toList());
+		return eventDispatcher.findNextEvents(currentEvent).stream().map(et->EventDTO.of(et)).collect(Collectors.toList());
 	}
 
 	@Transactional

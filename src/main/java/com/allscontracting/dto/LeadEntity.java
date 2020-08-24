@@ -22,8 +22,8 @@ public class LeadEntity {
 	private LeadDTO lead;
 	private List<LeadDTO> leads;
 	private Long leadsTotalPrice;
-	private List<EventTypeDTO> eventTypes;
-	private List<EventTypeDTO> nextEvents;
+	private List<EventDTO> events;
+	private List<EventDTO> nextEvents;
 	private List<String> leadTypes;
 	private List<EventLogDTO> eventLogs;
 	
