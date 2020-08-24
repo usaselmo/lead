@@ -106,9 +106,10 @@ public class LeadController {
 					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
 					.totalLeads(this.leadRepo.countByEvent(event))
 					.build();
+		} catch (LeadsException e) {
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
 		}
 	}
 

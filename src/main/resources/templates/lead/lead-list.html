@@ -47,7 +47,7 @@
                 {{leadsTotalPrice | currency}}
               </small>
               <a title="Reload" href="#" class="btn btn-sm">
-                <span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload" ng-click="reload(filter)"></span>
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true" title="Reload" ng-click="reload(event)"></span>
               </a>
               <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"
@@ -56,15 +56,15 @@
             </h3>
           </td>
           <td>
-            <button ng-disabled="BOL" class="btn btn-success btn-sm" >&lt;&lt;</button>
+            <button class="btn btn-success btn-sm" ng-click="getNextListRange(-1)" >&lt;&lt;</button>
             &nbsp;
-            <button ng-disabled="EOL" class="btn btn-success btn-sm" >&gt;&gt;</button>
+            <button  class="btn btn-success btn-sm" ng-click="getNextListRange(1)" >&gt;&gt;</button>
           </td>
           <td>
             <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" >
           </td>
           <td>
-            <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter" >
+            <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event" ng-change="reload(event)" >
               <option value="">All</option>
             </select>
           </td>
