@@ -69,11 +69,6 @@ public class LeadController {
 		return LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
 	}
 
-	@GetMapping(value = "{id}/eventlogs")
-	public LeadEntity findEventLogs(@PathVariable String id) {
-		return LeadEntity.builder().eventLogs(leadService.findLeadEventLogs(id)).build();
-	}
-
 	@PostMapping(value = "{id}/schedulevisit")
 	public LeadEntity scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException, ParseException {
 		LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails) authentication.getPrincipal()).getUser());
@@ -100,15 +95,18 @@ public class LeadController {
 		try {
 			List<LeadDTO> leads = leadService.listLeads(pageRange, lines, text, event);
 			long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-			return LeadEntity.builder()
+			LeadEntity res = LeadEntity.builder()
 					.leads(leads)
 					.leadsTotalPrice(leadsTotalPrice).leadTypes(this.leadService.getLeadTypes())
 					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
 					.totalLeads(this.leadRepo.countByEvent(event))
 					.build();
+			res.getLeads().stream().forEach(lead->lead.setEventLogs(leadService.findLeadEventLogs(lead.getId())));
+			return res;
 		} catch (LeadsException e) {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
+			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
 		}
 	}
