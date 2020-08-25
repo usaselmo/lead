@@ -99,7 +99,7 @@ public class LeadController {
 					.leads(leads)
 					.leadsTotalPrice(leadsTotalPrice).leadTypes(this.leadService.getLeadTypes())
 					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-					.totalLeads(this.leadRepo.countByEvent(event))
+					.totalLeads(this.leadService.getLeadsTotal(event))
 					.build();
 			res.getLeads().stream().forEach(lead->lead.setEventLogs(leadService.findLeadEventLogs(lead.getId())));
 			return res;

@@ -16,7 +16,8 @@ import com.allscontracting.model.Lead.Vendor;
 
 public interface LeadRepository extends JpaRepository<Lead, Long>{
 	
-	long countByEvent(Event event);
+	@Query("SELECT count(l) FROM Lead l WHERE l.event IN ?1 ")
+	Long countByEvent(List<Event> events);
 	
 	Page<Lead> findAllByEvent(Pageable pageable, Event eventType);
 	

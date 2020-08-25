@@ -26,19 +26,26 @@
 
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, $http, $timeout, leadService) {  
+ 	/** CRUD **/
+ 	$scope.newLead=false;
+ 	$scope.crud = function(){
+ 		$scope.newLead = true;
+ 	}
+
  	/** DETAIL **/
  	$scope.edit = function(lead){
  		$scope.lead = lead;
  	}
 
- 	$scope.exibitLeads = function(){
- 		$scope.lead = null;
- 		$scope.reload($scope.event, $scope.search)
- 	}
-
  	/** LIST **/
  	var pageRange = 0;
  	var lines = 10;
+
+ 	$scope.showList = function(){
+ 		$scope.lead = null;
+ 		$scope.newLead = null;
+ 		$scope.reload($scope.event, $scope.search);
+ 	}
 
  	$scope.getNextListRange = function(numero){
  		if(numero>0 && ((pageRange+1)*lines) < $scope.totalLeads)

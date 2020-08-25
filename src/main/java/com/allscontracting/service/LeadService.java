@@ -117,11 +117,13 @@ public class LeadService {
 		return leadDTO;
 	}
 
-	public long getLeadsTotal(Event eventType) throws Exception {
-		if (StringUtils.isEmpty(eventType)) 
+	public long getLeadsTotal(Event event) throws Exception {
+		if (StringUtils.isEmpty(event)) 
 			return this.leadRepo.count();
-		else
-			return this.leadRepo.countByEvent(eventType);
+		else {
+			List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
+			return this.leadRepo.countByEvent(events);
+		}
 	}
 
 	@Transactional

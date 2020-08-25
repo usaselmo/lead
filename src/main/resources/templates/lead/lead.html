@@ -43,12 +43,17 @@
 			<!-- ************* -->
 			<!--      LIST     -->
 			<!-- ************* -->
-			<div id="list" ng-if="!lead" ng-include="'include/lead/list.html'"></div>
+			<div id="list" ng-if="!lead && !newLead" ng-include="'include/lead/list.html'"></div>
 
 			<!-- ************* -->
 			<!--     DETAIL    -->
 			<!-- ************* -->
-			<div id="list" ng-if="lead" ng-include="'include/lead/detail.html'"></div>
+			<div id="list" ng-if="lead && !newLead" ng-include="'include/lead/detail.html'"></div>
+
+			<!-- ************* -->
+			<!--     CRUD      -->
+			<!-- ************* -->
+			<div id="list" ng-if="newLead" ng-include="'include/lead/crud.html'"></div>
 
 			<!-- END -->
 		</div>
