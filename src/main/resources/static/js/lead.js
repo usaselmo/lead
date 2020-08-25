@@ -33,7 +33,7 @@
  	}
 
  	/** DETAIL **/
- 	$scope.edit = function(lead){
+ 	$scope.detail = function(lead){
  		$scope.lead = lead;
  	}
 
@@ -41,7 +41,7 @@
  	var pageRange = 0;
  	var lines = 10;
 
- 	$scope.showList = function(){
+ 	$scope.list = function(){
  		$scope.lead = null;
  		$scope.newLead = null;
  		$scope.reload($scope.event, $scope.search);

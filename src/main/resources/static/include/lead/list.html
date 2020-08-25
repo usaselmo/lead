@@ -35,7 +35,7 @@
 <table class="table table-sm table-striped">
 	<tbody>
 		<tr ng-repeat="lead in leads">
-			<td><a href="#" class="btn btn-sm btn-default" ng-click="edit(lead)">View</a></td>
+			<td><a href="#" class="btn btn-sm btn-default" ng-click="detail(lead)">View</a></td>
 			<td><i>{{lead.vendor}}</i> {{lead.fee}} <b
 				ng-if="lead.price>0">{{lead.price|currency}}</b><br> <small>{{lead.type}}</small>
 				<br> <small><i>{{lead.date | date:'MMMM dd,
