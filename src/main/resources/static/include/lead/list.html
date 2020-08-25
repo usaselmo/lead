@@ -1,0 +1,54 @@
+<table class="table table-sm table-striped">
+	<tr>
+		<td>
+			<h3 style="margin-top: 0px;">
+				{{totalLeads}} Leads <small style="font-size: 0.5em;"
+				ng-if="leadsTotalPrice > 0"> {{leadsTotalPrice |
+			currency}} </small> <a title="Reload" href="#" class="btn btn-sm"> <span
+				class="glyphicon glyphicon-repeat" aria-hidden="true"
+				title="Reload" ng-click="reload(event, search)"></span>
+			</a> <a data-toggle="modal" data-target="#lead-new-modal"
+			title="new Lead" href="#" class="btn btn-sm"> <span
+			class="glyphicon glyphicon-plus" aria-hidden="true"
+			title="Create new Lead"></span>
+		</a>
+	</h3>
+</td>
+<td>
+	<button class="btn btn-success btn-sm"
+	ng-click="getNextListRange(-1)">&lt;&lt;</button> &nbsp;
+	<button class="btn btn-success btn-sm"
+	ng-click="getNextListRange(1)">&gt;&gt;</button>
+</td>
+<td><input type="text" class="form-control"
+	placeholder="Search" autofocus="autofocus" ng-model="search"
+	ng-change="reload(event, search)"></td>
+	<td><select class="form-control"
+		ng-options="et.name as et.status for et in events"
+		ng-model="event" ng-change="reload(event, search)">
+		<option value="">All</option>
+	</select>
+</td>
+</tr>
+</table>
+
+<table class="table table-sm table-striped">
+	<tbody>
+		<tr ng-repeat="lead in leads">
+			<td><a href="#" class="btn btn-sm btn-default" ng-click="edit(lead)">View</a></td>
+			<td><i>{{lead.vendor}}</i> {{lead.fee}} <b
+				ng-if="lead.price>0">{{lead.price|currency}}</b><br> <small>{{lead.type}}</small>
+				<br> <small><i>{{lead.date | date:'MMMM dd,
+				yyyy'}}</i> <i><u>{{lead.event}}</u></i> </small>
+				<p ng-if="lead.visit">
+					Visit scheduled for: <strong>{{lead.visit | date:'MMMM
+					dd, yyyy @hh:mm'}}</strong> 
+				</p></td>
+				<td><b>{{lead.person.name}}</b> <br> <small>{{lead.person.phone}}
+					<br>{{lead.person.email}}
+				</small></td>
+				<td><small>{{lead.person.address}}<br>{{lead.description}}
+				</small></td> 
+			</tr>
+		</tbody>
+	</table>

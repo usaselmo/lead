@@ -8,7 +8,7 @@ public class MainController {
 	
 	@GetMapping(path= {"/", ""})
 	public String leadList() {
-		return "lead/lead-list";
+		return "lead/lead";
 	}
 	
 	@GetMapping("/main/users")

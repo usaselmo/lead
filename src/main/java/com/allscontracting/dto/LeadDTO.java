@@ -35,6 +35,7 @@ public class LeadDTO {
 	private UserDTO estimator;
 	private CompanyDTO company;
 	private PersonDTO person;
+	private List<EventLogDTO> eventLogs;
 
 	//LISTS
 	private List<ProposalDTO> proposals;

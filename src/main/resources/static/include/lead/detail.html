@@ -1,0 +1,63 @@
+<a href="#" class="btn btn-default" ng-click="exibitLeads()"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Show Leads</a>
+<div class="card" style="width: 100%;">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <strong style="margin-right: 16px;">{{lead.person.name}}</strong>
+        <a title="Edit" data-toggle="modal" data-target="#editModal" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit"></span></a>
+        <a style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="sendCantReachEmail(lead, lead.person)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Send Can't Reach E-mail</a>
+        <a style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="sendHiringDecisionEmail(lead, lead.person)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Ask for Hiring Decision E-mail</a>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <!-- LEAD DETAILS -->
+      <div class="col-sm-5">
+        <address>
+          Source: <i>{{lead.vendor}}</i><br> {{lead.person.phone}}<br>
+          {{lead.person.email}}<br> {{lead.person.address}}
+        </address>
+        <p ng-if="lead.visit">
+          Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
+        </p>
+        <p ng-if="lead.estimator.id">
+          Estimator: <strong>{{lead.estimator.name}}</strong>
+        </p>
+      </div>
+      <div class="col-sm-4">
+        {{lead.date | date:'MMMM dd, yyyy'}}<br><small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
+      </div>
+
+      <!-- MENU -->
+      <div class="col-sm-3">
+        <strong>Mark an Event</strong>
+        <div class="list-group" >
+          <span ng-repeat="event in lead.nextEvents" ng-switch="event">
+            <a style="padding: 4px;" ng-switch-when="SCHEDULE_VISIT" data-toggle="modal" data-target="#scheduleModal" href="#" class="list-group-item">{{event.action}}</a>
+            <a style="padding: 4px;" ng-switch-when="ASSIGN_TO_ESTIMATOR" data-toggle="modal" data-target="#assignModal" href="#" class="list-group-item">{{event.action}}</a>
+            <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event.action}}</a>
+          </span>
+        </div>
+      </div>
+
+      <!-- BOTTOM NAV TABS -->
+      <div class="col-sm-12"><div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#proposals" aria-controls="proposals" role="tab" data-toggle="tab">Proposals</a></li>
+          <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+          <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="proposals" ng-include="'include/lead/detail-nav-tab-proposal.html'"></div>
+          <div role="tabpanel" class="tab-pane" id="notes" ng-include="'include/lead/detail-nav-tab-note.html'"></div>
+          <div role="tabpanel" class="tab-pane" id="events"  ng-include="'include/lead/detail-nav-tab-event.html'"></div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+</div>
