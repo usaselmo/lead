@@ -1,11 +1,23 @@
 /*
  * ANGULARJS 
  */
+ var local_server_url = "";
 
  angular.module('lead', [])
 
+ .service('companyService', function($http){
+ 	return {
+ 		findCompanies: function (scope) {
+ 			$http.get(local_server_url + "/companies").then(function (response) {
+ 				scope.companies = response.data
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 	} 
+ })
+
  .service('leadService', function($http){
- 	var local_server_url = "";
  	return {
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
@@ -25,12 +37,13 @@
 
 
  /*MAIN CONTROLLER*/
- .controller('LeadController', function ($scope, $http, $timeout, leadService) {  
+ .controller('LeadController', function ($scope, $http, $timeout, leadService, companyService) {  
  	/** CRUD **/
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
  		$scope.leads = null;
  		$scope.lead = null;
+ 		companyService.findCompanies($scope)
  	}
 
  	/** DETAIL **/
