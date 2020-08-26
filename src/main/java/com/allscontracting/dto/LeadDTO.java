@@ -65,7 +65,7 @@ public class LeadDTO {
 				.notes(lead.getNotes())
 				.client(PersonDTO.of(lead.getClient()))
 				.proposals(lead.getProposals()==null?null:lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
-				.event(lead.getEvent().toString())
+				.event(lead.getEvent().getStatus())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))

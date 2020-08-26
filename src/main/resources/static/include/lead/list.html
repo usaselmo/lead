@@ -39,9 +39,13 @@
 			</td>
 			
 			<td>
-				<span ng-if="lead.company"><p><strong>{{lead.company.name}} </strong>  <span ng-if="lead.price && lead.price > 0">{{lead.price|currency}}</span></p><p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} , {{lead.contact.email}}</p></span>
-				<p ng-if="lead.client"><strong>{{lead.client.name}}</strong> <span ng-if="lead.price && lead.price > 0">{{lead.price|currency}}</span></p>
-				<p><i><small>{{lead.event}}</small></i></p>
+				<span ng-if="lead.company">
+					<p><i>{{lead.company.name}}</i></p>
+					<p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} , {{lead.contact.email}}</p>
+				</span>
+				<p ng-if="lead.client">{{lead.client.name}}</p>
+				<span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
+				<p><i><small>{{lead.event}}</small></i></p> 
 			</td>
 			  
 			<td>
