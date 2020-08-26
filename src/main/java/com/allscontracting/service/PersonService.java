@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.dto.PersonDTO;
@@ -53,7 +54,7 @@ public class PersonService {
 	}
 
 	public List<PersonDTO> findAll() {
-		return PersonDTO.of(this.personRepo.findAll());
+		return PersonDTO.of(this.personRepo.findAll(Sort.by("name")));
 	}
 	
 }

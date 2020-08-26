@@ -5,6 +5,18 @@
 
  angular.module('lead', [])
 
+ .service('userService', function($http){
+ 	return {
+ 		findEstimators: function (scope) {
+ 			$http.get(local_server_url + "/users/estimators").then(function (response) {
+ 				scope.estimators = response.data
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 	} 
+ })
+
  .service('personService', function($http){
  	return {
  		findPersons: function (scope) {
@@ -44,12 +56,26 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		update: function (scope, lead) {
+ 			$http.put(local_server_url + "/leads", lead).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.lead = response.data.lead
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+
  	} 
  })
 
 
  /*MAIN CONTROLLER*/
- .controller('LeadController', function ($scope, $http, $timeout, leadService, companyService, personService) {  
+ .controller('LeadController', function ($scope, leadService, companyService, personService, userService) {  
  	/** CRUD **/
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
@@ -57,6 +83,22 @@
  		$scope.lead = null;
  		companyService.findCompanies($scope)
  		personService.findPersons($scope)
+ 		userService.findEstimators($scope)
+ 	}
+
+ 	$scope.save = function(lead){
+ 		if(lead.id)
+ 			leadService.update($scope, lead)
+ 		else
+ 			leadService.save($scope, lead);
+ 		$scope.cancel(lead)
+ 	}
+
+ 	$scope.cancel = function(lead){
+ 		if(lead.id)
+ 			$scope.detail(lead)
+ 		else
+ 			$scope.list()
  	}
 
  	/** DETAIL **/

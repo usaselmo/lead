@@ -1,54 +1,58 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"><span ng-if="!lead.person.name && !lead.company.name">New Lead</span> <span ng-if="lead.person.name || lead.company.name">Edit {{lead.company.name}} {{lead.person.name}}</span> </h3>
+    <h3 class="panel-title"><span ng-if="!crudLead.person.name && !crudLead.company.name">New Lead</span> <span ng-if="crudLead.person.name || crudLead.company.name">Edit {{crudLead.title}}</span> </h3>
   </div>
   <div class="panel-body"><form class="form-horizontal">
 
     <div class="form-group">
+      <label for="title" class="col-sm-2 control-label">Title</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="title" placeholder="Title" ng-model="crudLead.title">
+      </div>
+    </div>
+
+    <div class="form-group">
       <label for="company" class="col-sm-2 control-label">Company</label>
       <div class="col-sm-4">
-        <select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="lead.company"></select>
+        <select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="crudLead.company"></select>
       </div>
       <label for="contact" class="col-sm-2 control-label">Contact</label>
       <div class="col-sm-4">
-        <select id="contact" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="lead.contact"></select>
+        <select id="contact" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.contact"></select>
       </div>
     </div>
 
     <div class="form-group">
       <label for="002jgo4n49" class="col-sm-2 control-label">Client</label>
       <div class="col-sm-10">
-        <select id="002jgo4n49" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="lead.client"></select>
+        <select id="002jgo4n49" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.client"></select>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="address" class="col-sm-2 control-label">Address</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="address" placeholder="Address" ng-model="lead.person.address">
+      <label for="estimator" class="col-sm-2 control-label">Estimator</label>
+      <div class="col-sm-4">
+        <select id="estimator" class="form-control" ng-options="estimator as estimator.name for estimator in estimators track by estimator.id" ng-model="crudLead.estimator"></select>
+      </div>
+      <label for="date" class="col-sm-2 control-label">Visit</label>
+      <div class="col-sm-4">
+        <input type="date" class="form-control" id="date" placeholder="mm/dd/yyyy" ng-model="crudLead.visit">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+      <label for="description" class="col-sm-2 control-label">Description</label>
       <div class="col-sm-10">
-        <input type="email" class="form-control" id="inputEmail3" placeholder="Email" ng-model="lead.person.email">
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="phone" class="col-sm-2 control-label">Phone</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="phone" placeholder="Phone" ng-model="lead.person.phone">
+        <textarea class="form-control" id="description" ng-model="crudLead.description" >{{crudLead.description}}</textarea>
       </div>
     </div>
 
     <div class="form-group">
       <label for="phone" class="col-sm-2 control-label"></label>
       <div class="col-sm-10">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="list()">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="cancel(crudLead)">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save(crudLead)">Save</button>
       </div>
     </div>
 

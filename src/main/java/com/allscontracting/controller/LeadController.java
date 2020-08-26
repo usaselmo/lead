@@ -89,6 +89,18 @@ public class LeadController {
 	public LeadEntity search(@RequestParam String text) {
 		return LeadEntity.builder().leads(leadService.search(text)).build();
 	}
+	
+	@PutMapping
+	public LeadEntity update(@RequestBody LeadDTO leadDTO) {
+		try {
+			return LeadEntity.builder().lead(leadService.update(leadDTO)).build().addSuccessMessage("Lead updated.");
+		} catch (NumberFormatException | LeadsException e) {
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
+		}		
+	}
 
 	@GetMapping(value = "")
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {

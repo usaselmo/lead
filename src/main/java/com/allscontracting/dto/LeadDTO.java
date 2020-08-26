@@ -34,8 +34,10 @@ public class LeadDTO {
 	private String event;//EventType
 	private UserDTO estimator;
 	private CompanyDTO company;
-	private PersonDTO person;
+	private PersonDTO contact;
+	private PersonDTO client;
 	private List<EventLogDTO> eventLogs;
+	private String title;
 
 	//LISTS
 	private List<ProposalDTO> proposals;
@@ -61,13 +63,15 @@ public class LeadDTO {
 				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee())) 
 				.type(lead.getType())
 				.notes(lead.getNotes())
-				.person(PersonDTO.of(lead.getClient()))
+				.client(PersonDTO.of(lead.getClient()))
 				.proposals(lead.getProposals()==null?null:lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().toString())
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit()):"")
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
 				.company(CompanyDTO.of(lead.getCompany()))
+				.contact(PersonDTO.of(lead.getContact()))
+				.title(lead.getTitle())
 				.build();
 	}
 	
@@ -80,7 +84,7 @@ public class LeadDTO {
 
 	public static final Lead toLead(LeadDTO leadDTO) throws LeadsException {
 		Lead lead = new Lead();
-		lead.setClient(PersonDTO.toPerson(leadDTO.getPerson()));
+		lead.setClient(PersonDTO.toPerson(leadDTO.getClient()));
 		lead.setDate(Converter.convertToDate(leadDTO.getDate()));
 		lead.setDescription(leadDTO.getDescription());
 		lead.setEstimator(UserDTO.toUser(leadDTO.getEstimator()));
@@ -94,6 +98,8 @@ public class LeadDTO {
 		lead.setVendor(StringUtils.isBlank(leadDTO.vendor)?null:Lead.Vendor.valueOf(leadDTO.vendor));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
+		lead.setContact(PersonDTO.toPerson(leadDTO.getContact()));
+		lead.setTitle(leadDTO.getTitle());
 		return lead;
 	}
 

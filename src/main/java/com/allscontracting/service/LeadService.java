@@ -14,8 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.EventDTO;
+import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.event.EventDispatcher;
@@ -23,9 +23,10 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
-import com.allscontracting.repo.PersonRepository;
+import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.EventoLogRepository;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,7 @@ public class LeadService {
 	private final PersonRepository personRepo;
 	private final UserRepository userRepo;
 	private final LogService logg;
+	private final CompanyRepository companyRepo;
 	
 	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws Exception {
 		if (pageRange < 0)
@@ -132,6 +134,18 @@ public class LeadService {
 		lead.setEvent(event);
 		leadRepo.save(lead);
 		logg.event(Lead.class, id, event, user);
+	}
+
+	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow( () -> new LeadsException("Lead not found"));
+		lead.setTitle(leadDTO.getTitle());
+		lead.setCompany(leadDTO.getCompany()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator()==null?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		lead.setDescription(leadDTO.getDescription());
+		return LeadDTO.of(this.leadRepo.save(lead));
 	}
 
 }

@@ -47,9 +47,11 @@ public class Lead implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)	private Date visit;
 	private String description;
 	private String notes;
+	private String title;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
 	@ManyToOne private User estimator;
 	@ManyToOne private Company company;
+	@ManyToOne private Person contact;
 	@ManyToOne @JoinColumn(name = "client_id")	private Person client;
 
 	// LISTS
