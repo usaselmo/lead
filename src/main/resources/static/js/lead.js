@@ -62,7 +62,20 @@
  				if(response.data.errorMessages){
  					scope.errorMessages = response.data.errorMessages
  				}else{
- 					scope.lead = response.data.lead
+ 					lead = response.data.lead
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		save: function (scope, lead) {
+ 			$http.post(local_server_url + "/leads", lead).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					lead = response.data.lead
  					scope.successMessages = response.data.successMessages
  				}
  			}, function (response) {

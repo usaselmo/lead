@@ -89,16 +89,25 @@ public class LeadService {
 	}
 
 	@Transactional
-	public LeadDTO saveNewLead(LeadDTO leadDTO, User user) throws LeadsException{
-		Lead lead = LeadDTO.toLead(leadDTO);
-		if(lead.getClient().getId() != null && this.personRepo.existsById(lead.getClient().getId())) {
-			lead.setClient(this.personRepo.findById(lead.getClient().getId()).orElseThrow(()->new LeadsException("Person not found")));
-		}else {
-			lead.setClient(this.personRepo.save(lead.getClient()));
-		}
-		lead.setDate(new Date());
-		lead.setEvent(Event.BEGIN); 
+	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException{
+		Lead lead = new Lead();
+		
+		//deprecated properties
 		lead.setFee(BigDecimal.ZERO);
+		lead.setType("Concrete");
+		lead.setVendor(Lead.Vendor.EMAIL);
+		
+		//actual properties
+		lead.setEvent(Event.BEGIN); 
+		lead.setDate(new Date());
+		lead.setTitle(leadDTO.getTitle());
+		lead.setCompany(leadDTO.getCompany()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator()==null?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		lead.setDescription(leadDTO.getDescription());
+		
 		lead = this.leadRepo.save(lead);
 		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user); 
 		return LeadDTO.of(lead);

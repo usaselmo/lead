@@ -55,15 +55,6 @@ public class LeadController {
 		return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
 	}
 
-	@PostMapping
-	public LeadEntity saveNewLead(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
-		try {
-			return LeadEntity.builder().lead(leadService.saveNewLead(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
-		} catch (LeadsException e) {
-			return LeadEntity.builder().lead(leadDTO).build().addErrorMessage(e.getMessage());
-		}
-	}
-
 	@PostMapping(value = "{id}/addNote")
 	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
 		return LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
@@ -88,6 +79,18 @@ public class LeadController {
 	@GetMapping(value = "/search")
 	public LeadEntity search(@RequestParam String text) {
 		return LeadEntity.builder().leads(leadService.search(text)).build();
+	}
+
+	@PostMapping
+	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
+		try {
+			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead Created.");
+		} catch (NumberFormatException | LeadsException e) {
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
+		}		
 	}
 	
 	@PutMapping
