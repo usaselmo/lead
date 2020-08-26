@@ -72,7 +72,7 @@
 
  	$scope.list = function(){
  		$scope.lead = null;
- 		$scope.newLead = null;
+ 		$scope.crudLead = null;
  		$scope.reload($scope.event, $scope.search);
  	}
 
