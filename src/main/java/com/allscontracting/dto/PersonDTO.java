@@ -27,12 +27,14 @@ public class PersonDTO {
 
 	public static final PersonDTO of(Person person) {
 		if (person == null)
-			return PersonDTO.builder().build();
+			return null;
 		return PersonDTO.builder().id(String.valueOf(person.getId())).email(person.getEmail()).name(person.getName()).address(person.getAddress()).cellPhone(person.getCellPhone())
 				.phone(person.getPhone()).build();
 	}
 
 	public static final Person toPerson(PersonDTO cd) {
+		if(cd==null)
+			return null;
 		Person c = new Person();
 		c.setAddress(cd.getAddress());
 		c.setCellPhone(cd.getCellPhone());

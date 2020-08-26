@@ -23,7 +23,7 @@ public class EventLogDTO {
 	
 	public static EventLogDTO of(EventLog e) {
 		if(e==null)
-			return EventLogDTO.builder().build();
+			return null;
 		return EventLogDTO.builder()
 			.eventTime(Converter.dateToString(e.getEventTime()))
 			.eventType(e.getEventType())

@@ -25,7 +25,7 @@ public class ItemDTO {
 
 	public static final ItemDTO of(Item item) {
 		if(item==null)
-			return ItemDTO.builder().build();
+			return null;
 		ItemDTO reas = ItemDTO.builder()
 			.id(String.valueOf(item.getId()))
 			.lines(item.getLines().stream().map(l->LineDTO.of(l)).collect(Collectors.toList()))
@@ -36,6 +36,8 @@ public class ItemDTO {
 	}
 	
 	public static final Item toItem(ItemDTO itemDTO) {
+		if(itemDTO==null)
+			return null;
 		Item item = new Item();
 		item.setId(StringUtils.isBlank(itemDTO.getId())?null:Long.valueOf(itemDTO.getId()));
 		item.setLines(itemDTO.getLines().stream().map(l->LineDTO.toLine(l)).collect(Collectors.toList()));

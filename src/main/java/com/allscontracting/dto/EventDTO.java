@@ -23,6 +23,8 @@ public class EventDTO {
 	private String abbreviation;
 	
 	public static EventDTO of(Event event) {
+		if(event==null)
+			return null;
 		return EventDTO.builder()
 				.name(event.name())
 				.action(event.getAction())
@@ -33,7 +35,7 @@ public class EventDTO {
 	
 	public static Event toEventType(EventDTO eventTypeDTO) {
 		if(eventTypeDTO==null)
-			Objects.requireNonNull("Event Type can not be null");
+			return null;
 		if(StringUtils.isNotBlank(eventTypeDTO.getAction()))
 			return Event.valueOf(eventTypeDTO.getAction());
 		else

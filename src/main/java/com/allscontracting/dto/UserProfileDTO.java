@@ -18,7 +18,7 @@ public class UserProfileDTO {
 	
 	public final static UserProfileDTO of(UserProfile userProfile) {
 		if(userProfile==null)
-			return UserProfileDTO.builder().build();
+			return null;
 		return UserProfileDTO.builder()
 		.id(userProfile.getId())
 		.userId(userProfile.getUser().getId())

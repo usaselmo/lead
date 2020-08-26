@@ -20,7 +20,7 @@ public class CompanyDTO {
 
 	public static final CompanyDTO of(Company company) {
 		if(company==null)
-			return CompanyDTO.builder().build();
+			return null;
 		return CompanyDTO.builder()
 			.id(company.getId())
 			.address(company.getAddress())

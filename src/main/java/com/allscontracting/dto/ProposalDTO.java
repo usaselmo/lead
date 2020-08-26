@@ -37,7 +37,7 @@ public class ProposalDTO {
 	
 	public static final ProposalDTO of(Proposal proposal) {
 		if(proposal==null)
-			return ProposalDTO.builder().build();
+			return null;
 		return ProposalDTO.builder()
 				.id(String.valueOf(proposal.getId()))
 				.number(String.valueOf(proposal.getNumber()))
@@ -55,6 +55,8 @@ public class ProposalDTO {
 	}
 	
 	public static final Proposal toProposal(ProposalDTO proposalDTO) {
+		if(proposalDTO==null)
+			return null;
 		Proposal proposal = new Proposal();
 		proposal.setId(StringUtils.isBlank(proposalDTO.getId())?null:Long.valueOf(proposalDTO.getId()));
 		proposal.setCallMissUtility(proposalDTO.isCallMissUtility());

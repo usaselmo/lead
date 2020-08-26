@@ -17,7 +17,7 @@ public class LineDTO {
 	
 	public static final LineDTO of(Line line) {
 		if(line==null)
-			return LineDTO.builder().build();
+			return null;
 		return LineDTO.builder()
 			.id(String.valueOf(line.getId()))
 			.description(line.getDescription())
@@ -25,6 +25,8 @@ public class LineDTO {
 	}
 	
 	public static final Line toLine(LineDTO lineDTO) {
+		if(lineDTO==null)
+			return null;
 		Line line = new Line();
 		line.setDescription(lineDTO.getDescription());
 		line.setId(lineDTO.getId()==null?null:Long.valueOf(lineDTO.getId()));

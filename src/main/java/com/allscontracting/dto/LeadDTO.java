@@ -53,7 +53,7 @@ public class LeadDTO {
 	
 	public static final LeadDTO of(Lead lead) {
 		if(lead==null)
-			return LeadDTO.builder().build();
+			return null;
 		return LeadDTO.builder()
 				.id(String.valueOf(lead.getId()))
 				.oldid(lead.getOldid())
@@ -83,6 +83,8 @@ public class LeadDTO {
 	}
 
 	public static final Lead toLead(LeadDTO leadDTO) throws LeadsException {
+		if(leadDTO==null)
+			return null;
 		Lead lead = new Lead();
 		lead.setClient(PersonDTO.toPerson(leadDTO.getClient()));
 		lead.setDate(Converter.convertToDate(leadDTO.getDate()));

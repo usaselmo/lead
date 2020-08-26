@@ -29,7 +29,7 @@ public class UserDTO {
   
 	public static final UserDTO of(User user ) {
 		if(user==null)
-			return UserDTO.builder().build();
+			return null;
 		return UserDTO.builder()
 				.company(CompanyDTO.of(user.getCompany()))
 				.email(user.getEmail())
