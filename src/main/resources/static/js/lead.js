@@ -27,14 +27,17 @@
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, $http, $timeout, leadService) {  
  	/** CRUD **/
- 	$scope.newLead=false;
- 	$scope.crud = function(){
- 		$scope.newLead = true;
+ 	$scope.crud = function(lead){
+ 		$scope.crudLead = lead;
+ 		$scope.leads = null;
+ 		$scope.lead = null;
  	}
 
  	/** DETAIL **/
  	$scope.detail = function(lead){
  		$scope.lead = lead;
+ 		$scope.crudLead = null;
+ 		$scope.leads = null;
  	}
 
  	/** LIST **/
