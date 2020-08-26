@@ -34,9 +34,15 @@ public class PersonController {
 		personService.sendCantReachEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 	
-	@GetMapping("")
+	@GetMapping("search")
 	public List<PersonDTO> searchPerson(@RequestParam String name) {
 		List<PersonDTO> res = this.personService.findByName(name);
+		return res;
+	}
+	
+	@GetMapping("")
+	public List<PersonDTO> list() {
+		List<PersonDTO> res = this.personService.findAll();
 		return res;
 	}
 	

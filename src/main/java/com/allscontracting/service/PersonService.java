@@ -51,5 +51,9 @@ public class PersonService {
 		this.mailService.sendHiringDecisionEmail(person).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
 		logg.eventHiringDecisionEmailSent(leadId, person, user); 
 	}
+
+	public List<PersonDTO> findAll() {
+		return PersonDTO.of(this.personRepo.findAll());
+	}
 	
 }
