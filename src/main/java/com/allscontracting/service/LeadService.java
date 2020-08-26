@@ -148,10 +148,10 @@ public class LeadService {
 	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow( () -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator()==null?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany(leadDTO.getCompany()==null || leadDTO.getCompany().getId()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact()==null || StringUtils.isEmpty(leadDTO.getContact().getId())?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient()==null || StringUtils.isEmpty(leadDTO.getClient().getId())?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator()==null || StringUtils.isEmpty(leadDTO.getEstimator().getId())?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDescription(leadDTO.getDescription());
 		return LeadDTO.of(this.leadRepo.save(lead));

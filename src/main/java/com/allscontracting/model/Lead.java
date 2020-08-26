@@ -50,6 +50,7 @@ public class Lead implements Serializable {
 	private String title;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
 	@ManyToOne private User estimator;
+	
 	@ManyToOne private Company company;
 	@ManyToOne private Person contact;
 	@ManyToOne @JoinColumn(name = "client_id")	private Person client;

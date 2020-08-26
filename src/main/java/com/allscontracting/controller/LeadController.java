@@ -98,6 +98,7 @@ public class LeadController {
 		try {
 			return LeadEntity.builder().lead(leadService.update(leadDTO)).build().addSuccessMessage("Lead updated.");
 		} catch (NumberFormatException | LeadsException e) {
+			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
