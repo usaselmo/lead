@@ -71,11 +71,6 @@ public class LeadController {
 		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
 	}
 
-	@GetMapping(value = "{id}/nextevents")
-	public LeadEntity findNextEvents(@PathVariable String id) throws LeadsException {
-		return LeadEntity.builder().nextEvents(leadService.findNextEvents(id)).build();
-	}
-
 	@GetMapping(value = "/search")
 	public LeadEntity search(@RequestParam String text) {
 		return LeadEntity.builder().leads(leadService.search(text)).build();
@@ -117,7 +112,10 @@ public class LeadController {
 					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
 					.totalLeads(this.leadService.getLeadsTotal(event))
 					.build();
-			res.getLeads().stream().forEach(lead->lead.setEventLogs(leadService.findLeadEventLogs(lead.getId())));
+			res.getLeads().stream().forEach(lead->{
+				lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
+				lead.setNextEvents(leadService.findNextEvents(lead.getId()));
+			});
 			return res;
 		} catch (LeadsException e) {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());

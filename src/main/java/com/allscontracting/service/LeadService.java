@@ -52,8 +52,8 @@ public class LeadService {
 		return res;
 	}
 
-	public List<EventDTO> findNextEvents(String leadId) throws LeadsException {
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
+	public List<EventDTO> findNextEvents(String leadId) {
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElse(null);
 		Event currentEvent = lead.getEvent();
 		if(null == currentEvent)
 			currentEvent = Event.BEGIN;

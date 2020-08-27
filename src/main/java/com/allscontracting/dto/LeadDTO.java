@@ -36,11 +36,12 @@ public class LeadDTO {
 	private CompanyDTO company;
 	private PersonDTO contact;
 	private PersonDTO client;
-	private List<EventLogDTO> eventLogs;
 	private String title;
 
 	//LISTS
 	private List<ProposalDTO> proposals;
+	private List<EventLogDTO> eventLogs;
+	private List<EventDTO> nextEvents;
 
 	//DEPRECATED
 	private String oldid;
