@@ -57,7 +57,10 @@ public class LeadController {
 
 	@PostMapping(value = "{id}/addNote")
 	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-		return LeadEntity.builder().lead(leadService.addNewNote(id, note)).build();
+		LeadDTO lead = leadService.addNewNote(id, note);
+		lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
+		lead.setNextEvents(leadService.findNextEvents(lead.getId()));
+		return LeadEntity.builder().lead(lead).build();
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")

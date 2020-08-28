@@ -95,6 +95,19 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		saveNote: function (scope, lead, note) {
+ 			$http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.successMessages = response.data.successMessages
+ 					scope.lead = response.data.lead
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
 
  	} 
  })
@@ -136,6 +149,10 @@
 
  	$scope.fireEvent = function(lead, event){
  		leadService.fireEvent($scope, lead, event)
+ 	}
+
+ 	$scope.saveNote = function(lead, newNote){
+ 		leadService.saveNote($scope, lead, newNote)
  	}
 
  	/** LIST **/
