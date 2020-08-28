@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -17,6 +18,7 @@ import org.springframework.util.StringUtils;
 import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.LeadDTO;
+import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.Event;
 import com.allscontracting.event.EventDispatcher;
 import com.allscontracting.exception.LeadsException;
@@ -36,40 +38,45 @@ import lombok.RequiredArgsConstructor;
 public class LeadService {
 
 	private final LeadRepository leadRepo;
-	private final EventDispatcher eventDispatcher; 
+	private final EventDispatcher eventDispatcher;
 	private final EventoLogRepository eventLogRepo;
 	private final PersonRepository personRepo;
 	private final UserRepository userRepo;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
-	
-	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws Exception {
-		if (pageRange < 0)
-			pageRange = 0;
-		List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
-		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
-		List<LeadDTO> res = leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		return res;
+
+	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws LeadsException {
+		try {
+			if (pageRange < 0)
+				pageRange = 0;
+			List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
+			PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
+			List<LeadDTO> res = leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new LeadsException("Could not find Leads.");
+		}
 	}
 
 	public List<EventDTO> findNextEvents(String leadId) {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElse(null);
 		Event currentEvent = lead.getEvent();
-		if(null == currentEvent)
+		if (null == currentEvent)
 			currentEvent = Event.BEGIN;
-		return eventDispatcher.findNextEvents(currentEvent).stream().map(et->EventDTO.of(et)).collect(Collectors.toList());
+		return eventDispatcher.findNextEvents(currentEvent).stream().map(et -> EventDTO.of(et)).collect(Collectors.toList());
 	}
 
 	@Transactional
 	public LeadDTO scheduleAVisit(String leadId, String time, User user) throws LeadsException, ParseException {
 		Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
 		return LeadDTO.of(leadRepo.save(lead));
 	}
 
 	public List<EventLogDTO> findLeadEventLogs(String leadId) {
-		return eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId).stream().map(e->EventLogDTO.of(e)).collect(Collectors.toList());
+		return eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId).stream().map(e -> EventLogDTO.of(e)).collect(Collectors.toList());
 	}
 
 	public List<Proposal> findProposals(String leadId) {
@@ -77,44 +84,46 @@ public class LeadService {
 	}
 
 	public LeadDTO addNewNote(String leadId, String note) throws LeadsException {
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(()->new LeadsException("Lead not found"));
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.addNote(note);
 		lead = this.leadRepo.save(lead);
-		return LeadDTO.of(lead);
+		LeadDTO leadDTO = LeadDTO.of(lead);
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 	public List<LeadDTO> search(String text) {
-		//limited to 100 results
-		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l->LeadDTO.of(l)).collect(Collectors.toList());
+		// limited to 100 results
+		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	@Transactional
-	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException{
+	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException {
 		Lead lead = new Lead();
-		
-		//deprecated properties
+
+		// deprecated properties
 		lead.setFee(BigDecimal.ZERO);
 		lead.setType("Concrete");
 		lead.setVendor(Lead.Vendor.EMAIL);
-		
-		//actual properties
-		lead.setEvent(Event.BEGIN); 
+
+		// actual properties
+		lead.setEvent(Event.BEGIN);
 		lead.setDate(new Date());
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient()==null?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator()==null?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany(leadDTO.getCompany() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDescription(leadDTO.getDescription());
-		
+
 		lead = this.leadRepo.save(lead);
-		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user); 
+		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user);
 		return LeadDTO.of(lead);
 	}
 
 	public List<String> getLeadTypes() {
-		return this.leadRepo.findByType(); 
+		return this.leadRepo.findByType();
 	}
 
 	public LeadDTO assignEstimator(String leadId, String estimatorId, User user) throws LeadsException {
@@ -128,18 +137,23 @@ public class LeadService {
 		return leadDTO;
 	}
 
-	public long getLeadsTotal(Event event) throws Exception {
-		if (StringUtils.isEmpty(event)) 
-			return this.leadRepo.count();
-		else {
-			List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
-			return this.leadRepo.countByEvent(events);
+	public long getLeadsTotal(Event event) throws LeadsException {
+		try {
+			if (StringUtils.isEmpty(event))
+				return this.leadRepo.count();
+			else {
+				List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
+				return this.leadRepo.countByEvent(events);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new LeadsException("Could not find Event.");
 		}
 	}
 
 	@Transactional
 	public LeadDTO fireEvent(String id, Event event, User user) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepo.findById(Long.valueOf(id)).orElseThrow(()-> new LeadsException("Could not find Lead"));
+		Lead lead = this.leadRepo.findById(Long.valueOf(id)).orElseThrow(() -> new LeadsException("Could not find Lead"));
 		lead.setEvent(event);
 		lead = leadRepo.save(lead);
 		logg.event(Lead.class, id, event, user);
@@ -147,15 +161,34 @@ public class LeadService {
 	}
 
 	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow( () -> new LeadsException("Lead not found"));
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany()==null || leadDTO.getCompany().getId()==null?null:this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact()==null || StringUtils.isEmpty(leadDTO.getContact().getId())?null:this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient()==null || StringUtils.isEmpty(leadDTO.getClient().getId())?null:this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator()==null || StringUtils.isEmpty(leadDTO.getEstimator().getId())?null:this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null
+				: this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(
+				leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null
+				: this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDescription(leadDTO.getDescription());
 		return LeadDTO.of(this.leadRepo.save(lead));
+	}
+
+	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {
+		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
+		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
+		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
+				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).totalLeads(getLeadsTotal(event)).build();
+		res.getLeads().stream().forEach(lead -> {
+			completeLead(lead);
+		});
+		return res;
+	}
+
+	private void completeLead(LeadDTO lead) {
+		lead.setEventLogs(findLeadEventLogs(lead.getId()));
+		lead.setNextEvents(findNextEvents(lead.getId()));
 	}
 
 }

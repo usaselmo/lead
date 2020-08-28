@@ -27,13 +27,13 @@
         <p><i><small>{{lead.event}}</small></i></p> 
       </td>
         
-      <td nowrap="nowrap">
+      <td>
         <p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
-        <p ng-if="lead.description"><small>{{lead.description}}</small></p>
+        <span ng-if="lead.description"><small>{{lead.description}}</small></span>
       </td>
 
       <!-- MENU -->
-      <td>
+      <td nowrap="nowrap">
         <strong>Mark an Event</strong>
         <div class="list-group" >
           <span ng-repeat="event in lead.nextEvents" ng-switch="event">

@@ -1,7 +1,6 @@
 package com.allscontracting.controller;
 
 import java.text.ParseException;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -58,8 +57,6 @@ public class LeadController {
 	@PostMapping(value = "{id}/addNote")
 	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
 		LeadDTO lead = leadService.addNewNote(id, note);
-		lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
-		lead.setNextEvents(leadService.findNextEvents(lead.getId()));
 		return LeadEntity.builder().lead(lead).build();
 	}
 
@@ -110,18 +107,7 @@ public class LeadController {
 	@GetMapping(value = "")
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
 		try {
-			List<LeadDTO> leads = leadService.listLeads(pageRange, lines, text, event);
-			long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-			LeadEntity res = LeadEntity.builder()
-					.leads(leads)
-					.leadsTotalPrice(leadsTotalPrice).leadTypes(this.leadService.getLeadTypes())
-					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-					.totalLeads(this.leadService.getLeadsTotal(event))
-					.build();
-			res.getLeads().stream().forEach(lead->{
-				lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
-				lead.setNextEvents(leadService.findNextEvents(lead.getId()));
-			});
+			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
 			return res;
 		} catch (LeadsException e) {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
