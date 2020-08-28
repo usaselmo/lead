@@ -67,7 +67,9 @@ public class LeadService {
 		Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setVisit(visitDateTime);
-		return LeadDTO.of(leadRepo.save(lead));
+		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 	public List<EventLogDTO> findLeadEventLogs(String leadId) {
@@ -113,7 +115,9 @@ public class LeadService {
 
 		lead = this.leadRepo.save(lead);
 		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user);
-		return LeadDTO.of(lead);
+		leadDTO = LeadDTO.of(lead);
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 	public List<String> getLeadTypes() {
@@ -128,6 +132,7 @@ public class LeadService {
 		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
 		logg.event(Lead.class, String.valueOf(lead.getId()), Event.ASSIGN_TO_ESTIMATOR, user);
 		leadRepo.save(lead);
+		completeLead(leadDTO);
 		return leadDTO;
 	}
 
@@ -163,7 +168,9 @@ public class LeadService {
 				: this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDescription(leadDTO.getDescription());
-		return LeadDTO.of(this.leadRepo.save(lead));
+		leadDTO = LeadDTO.of(this.leadRepo.save(lead));
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {

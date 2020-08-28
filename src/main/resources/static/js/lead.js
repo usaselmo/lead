@@ -62,7 +62,7 @@
  				if(response.data.errorMessages){
  					scope.errorMessages = response.data.errorMessages
  				}else{
- 					lead = response.data.lead
+ 					scope.lead = response.data.lead
  					scope.successMessages = response.data.successMessages
  				}
  			}, function (response) {
@@ -75,7 +75,7 @@
  				if(response.data.errorMessages){
  					scope.errorMessages = response.data.errorMessages
  				}else{
- 					lead = response.data.lead
+ 					scope.lead = response.data.lead
  					scope.successMessages = response.data.successMessages
  				}   
  			}, function (response) {

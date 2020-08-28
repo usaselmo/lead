@@ -30,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LeadController {
 
+	private static final String UNEXTECTED_ERROR = "Unexpected error.";
 	private final LeadService leadService;
 
 	@GetMapping("eventtypes")
@@ -38,7 +39,7 @@ public class LeadController {
 			return LeadEntity.builder().events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -51,7 +52,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -61,7 +62,7 @@ public class LeadController {
 			return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -75,7 +76,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -89,19 +90,17 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
-	@GetMapping(value = "/search")
-	public LeadEntity search(@RequestParam String text) {
-		try {
-			return LeadEntity.builder().leads(leadService.search(text)).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
-		}
-	}
+	/*
+	 * @GetMapping(value = "/search") public LeadEntity search(@RequestParam String
+	 * text) { try { return
+	 * LeadEntity.builder().leads(leadService.search(text)).build(); } catch
+	 * (Exception e) { e.printStackTrace(); return
+	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
+	 */
 
 	@PostMapping
 	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
@@ -112,7 +111,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -125,7 +124,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -139,7 +138,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
@@ -153,7 +152,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
 
