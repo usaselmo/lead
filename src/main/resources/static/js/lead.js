@@ -88,7 +88,11 @@
  				if(response.data.errorMessages){
  					scope.errorMessages = response.data.errorMessages
  				}else{
- 					scope.lead = response.data.lead
+ 					if(scope.leads){
+ 						scope.leads = scope.leads.map(lead => lead.id==response.data.lead.id?response.data.lead:lead);
+ 					}else{
+ 						scope.lead = response.data.lead
+ 					}
  					scope.successMessages = response.data.successMessages
  				}
  			}, function (response) {
