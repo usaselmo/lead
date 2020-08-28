@@ -94,14 +94,6 @@ public class LeadController {
 		}
 	}
 
-	/*
-	 * @GetMapping(value = "/search") public LeadEntity search(@RequestParam String
-	 * text) { try { return
-	 * LeadEntity.builder().leads(leadService.search(text)).build(); } catch
-	 * (Exception e) { e.printStackTrace(); return
-	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
-	 */
-
 	@PostMapping
 	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
