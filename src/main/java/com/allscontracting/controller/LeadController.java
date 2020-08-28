@@ -43,19 +43,6 @@ public class LeadController {
 		}
 	}
 
-	@PutMapping("{leadId}/estimator/{estimatorId}")
-	public LeadEntity assignToEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
-		try {
-			return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
 	@GetMapping("/types")
 	public LeadEntity getLeadTypes() {
 		try {
