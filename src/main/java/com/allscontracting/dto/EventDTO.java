@@ -1,8 +1,6 @@
 package com.allscontracting.dto;
 
-import java.util.Objects;
-
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.event.Event;
 
@@ -36,7 +34,7 @@ public class EventDTO {
 	public static Event toEventType(EventDTO eventTypeDTO) {
 		if(eventTypeDTO==null)
 			return null;
-		if(StringUtils.isNotBlank(eventTypeDTO.getAction()))
+		if(!StringUtils.isEmpty(eventTypeDTO.getAction()))
 			return Event.valueOf(eventTypeDTO.getAction());
 		else
 			return Event.valueOf(eventTypeDTO.getStatus());

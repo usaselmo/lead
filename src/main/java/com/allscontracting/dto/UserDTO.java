@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.User;
 import com.allscontracting.model.UserProfile;
@@ -48,7 +48,7 @@ public class UserDTO {
 		u.setCompany(CompanyDTO.toCompany(ud.getCompany()));
 		u.setEmail(ud.getEmail());
 		u.setEnabled(ud.isEnabled());
-		u.setId(StringUtils.isBlank(ud.getId())?null:Long.valueOf(ud.getId()));
+		u.setId(StringUtils.isEmpty(ud.getId())?null:Long.valueOf(ud.getId()));
 		u.setName(ud.getName());
 		u.setPassword(ud.getPassword());
 		u.setProfiles(ud.getProfiles().stream().map(p->UserProfile.builder().user(u).profile(UserProfile.Description.valueOf(p)).build()).collect(Collectors.toList()));

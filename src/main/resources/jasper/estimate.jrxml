@@ -12,7 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
-	<import value="org.apache.commons.lang.StringUtils"/>
+	<import value="org.apache.commons.lang3.StringUtils"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
@@ -49,14 +49,14 @@ WHERE
 	<group name="total">
 		<groupExpression><![CDATA[$F{total}]]></groupExpression>
 		<groupHeader>
-			<band height="355">
+			<band height="353">
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="221" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d635ea07-cae7-4ae9-8da5-059861119260"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="13" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[SCOPE OF WORK]]></text>
 				</staticText>
@@ -85,7 +85,7 @@ WHERE
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="13" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[PROPOSAL]]></text>
 				</staticText>
@@ -95,7 +95,7 @@ WHERE
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="13" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CLIENT INFORMATION]]></text>
 				</staticText>
@@ -105,7 +105,7 @@ WHERE
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="11" isBold="true"/>
+						<font size="12" isBold="true"/>
 					</textElement>
 					<text><![CDATA[PROJECT ESTIMATOR]]></text>
 				</staticText>
@@ -194,11 +194,11 @@ WHERE
 					<textFieldExpression><![CDATA[$P{ESTIMATOR}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="325" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
+					<reportElement x="0" y="320" width="535" height="30" uuid="33bd25b5-09bd-4735-8947-b19c8011fde6"/>
 					<textElement verticalAlignment="Bottom">
-						<font size="14" isBold="false" isUnderline="true"/>
+						<font size="12" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[Proposal Detailed Items:]]></text>
+					<text><![CDATA[PROPOSAL DETAILED ITEMS]]></text>
 				</staticText>
 				<image>
 					<reportElement x="0" y="30" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
@@ -215,73 +215,108 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="561">
+			<band height="351" splitType="Immediate">
+				<frame>
+					<reportElement x="0" y="26" width="535" height="46" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
+					<staticText>
+						<reportElement x="0" y="0" width="220" height="25" isRemoveLineWhenBlank="true" uuid="37a9011e-bcdf-4000-b1be-787fb168c49f">
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font fontName="SansSerif" size="12" isBold="true" isUnderline="false"/>
+						</textElement>
+						<text><![CDATA[NOTES]]></text>
+					</staticText>
+					<textField isBlankWhenNull="true">
+						<reportElement stretchType="ElementGroupHeight" x="0" y="25" width="535" height="21" isRemoveLineWhenBlank="true" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA[$P{PROPOSAL}.getNote()]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="0" y="79" width="535" height="46" uuid="9ef8adc5-ced9-4b68-9210-3a20d79550bc"/>
+					<staticText>
+						<reportElement x="0" y="0" width="220" height="26" isRemoveLineWhenBlank="true" uuid="b342bfd0-e694-44bf-8b3f-fc59c549ac44">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
+						</reportElement>
+						<textElement textAlignment="Left" verticalAlignment="Bottom">
+							<font fontName="SansSerif" size="12" isBold="true" isUnderline="false"/>
+						</textElement>
+						<text><![CDATA[PAYMENT SCHEDULE]]></text>
+					</staticText>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="-1" y="131" width="535" height="46" uuid="c1561105-5857-407c-9ec6-6908752518c0"/>
+					<staticText>
+						<reportElement x="1" y="0" width="140" height="26" isRemoveLineWhenBlank="true" uuid="5ad3339e-208c-45db-95d6-a691c9df8ad9">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
+						</reportElement>
+						<textElement verticalAlignment="Bottom">
+							<font fontName="SansSerif" size="12" isBold="true" isUnderline="false"/>
+						</textElement>
+						<text><![CDATA[WORK WARRANTY]]></text>
+					</staticText>
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+						<reportElement stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
+						</reportElement>
+						<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
+					</textField>
+				</frame>
+				<frame>
+					<reportElement x="0" y="249" width="534" height="102" uuid="a08c0eff-f370-41be-886e-7113f2e623b2"/>
+					<staticText>
+						<reportElement x="0" y="1" width="534" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<box padding="2">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.5"/>
+							<leftPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement verticalAlignment="Top">
+							<font isBold="false"/>
+						</textElement>
+						<text><![CDATA[The above prices, specifications, and conditions are satisfactory and are hereby accepted.
+
+
+
+
+Customer Signature: ____________________________ Amount Accepted: ________________ Date: _____________]]></text>
+					</staticText>
+				</frame>
 				<staticText>
-					<reportElement x="0" y="141" width="220" height="19" uuid="984229c2-2b44-4c9a-8872-7b5f878e55d8">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
-					</reportElement>
-					<textElement>
-						<font size="14" isBold="true" isUnderline="true"/>
+					<reportElement mode="Opaque" x="0" y="230" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
+					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+						<pen lineWidth="0.5" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Payment Schedule:]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="160" width="535" height="70" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
-					</reportElement>
-					<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="0" y="391" width="535" height="50" uuid="057fcbb0-b412-47b4-a39f-1cfa473856f5"/>
-					<textElement>
-						<font size="11"/>
-					</textElement>
-					<text><![CDATA[ACCEPTANCE OF PROPOSAL: The above prices, specifications, and conditions are satisfactory and are hereby accepted.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="8" width="220" height="19" isRemoveLineWhenBlank="true" uuid="1d0cb89a-a8ef-47cf-aa8e-d156ee72a0f1">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
-					</reportElement>
-					<textElement>
-						<font size="14" isBold="true" isUnderline="true"/>
-					</textElement>
-					<text><![CDATA[Notes]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="30" width="535" height="70" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
-					</reportElement>
-					<textFieldExpression><![CDATA[$P{PROPOSAL}.getNote()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="0" y="268" width="220" height="19" uuid="04bee5c9-a3b1-41d9-aa47-fdea727de7be">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
-					</reportElement>
-					<textElement>
-						<font size="14" isBold="true" isUnderline="true"/>
-					</textElement>
-					<text><![CDATA[Work Warranty:]]></text>
-				</staticText>
-				<textField isBlankWhenNull="true">
-					<reportElement x="0" y="290" width="535" height="70" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
-						<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
-					</reportElement>
-					<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement x="0" y="500" width="534" height="30" uuid="7951d301-cc86-4bd7-af6d-c9b424333d1a"/>
-					<textElement>
-						<font size="11"/>
-					</textElement>
-					<text><![CDATA[Customer Signature: _________________________ Amount Accepted: ___________ Date: ________]]></text>
+					<text><![CDATA[ACCEPTANCE OF PROPOSAL]]></text>
 				</staticText>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="title" keepTogether="true">
+	<group name="title" keepTogether="true" preventOrphanFooter="true">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
-			<band height="41">
+			<band height="43">
 				<textField>
 					<reportElement x="0" y="20" width="535" height="21" uuid="708ef742-50bc-462e-a569-4ec9f3185207"/>
 					<textElement verticalAlignment="Middle">
@@ -292,15 +327,15 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="26">
+			<band height="30">
 				<textField>
-					<reportElement x="40" y="0" width="495" height="26" uuid="4effa761-eef2-4f5d-bdb8-459ac00be214">
+					<reportElement x="40" y="0" width="495" height="26" isRemoveLineWhenBlank="true" uuid="4effa761-eef2-4f5d-bdb8-459ac00be214">
 						<printWhenExpression><![CDATA[$F{price}.compareTo(BigDecimal.ZERO) > 0]]></printWhenExpression>
 					</reportElement>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Item's Total price including labor and material: " + $F{price}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Item's Total price including labor and material:  $" + $F{price}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -368,7 +403,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Your Licened and Minority Class A Contractor in Virginia]]></text>
+				<text><![CDATA[Your Licensed and Minority Class A Contractor in Virginia]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -383,4 +418,83 @@ WHERE
 			</textField>
 		</band>
 	</detail>
+	<pageFooter>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="40" uuid="0199bf26-ac56-4b5d-8e53-962c1b1d5f35"/>
+				<box padding="0">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Telephone: (703) 495-4519]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="215" height="20" uuid="35cda437-bde2-4686-806a-53063148247b"/>
+				<box padding="0">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[6923 Cabin John Road, Springfield, VA 22150]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="375" y="0" width="160" height="40" uuid="b0d77d3c-a99f-4e20-83e5-0191c68fa7b1"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page: "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="10" width="215" height="30" uuid="5870b118-20ce-4741-9944-dd9db0ed3676"/>
+				<box padding="0">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[www.allscontracting.com]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="40">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="40" uuid="b326c882-2660-4ba3-a45e-67b4860a2dba"/>
+				<box padding="0">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[Telephone: (703) 495-4519]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="375" y="0" width="160" height="40" uuid="7a69288e-30c7-4088-a9e3-6faf4afc904d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page: "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="160" y="10" width="215" height="30" uuid="43693f2d-a606-487e-be54-c26736236a95"/>
+				<box padding="0">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[www.allscontracting.com]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="0" width="215" height="20" uuid="bc4f24f3-811d-4fb7-a2c3-a5bc9c6fc278"/>
+				<box padding="0">
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[6923 Cabin John Road, Springfield, VA 22150]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
 </jasperReport>

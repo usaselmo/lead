@@ -3,7 +3,7 @@ package com.allscontracting.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Person;
 
@@ -39,7 +39,7 @@ public class PersonDTO {
 		c.setAddress(cd.getAddress());
 		c.setCellPhone(cd.getCellPhone());
 		c.setEmail(cd.getEmail());
-		c.setId(StringUtils.isBlank(cd.getId()) ? null : Long.valueOf(cd.getId()));
+		c.setId(StringUtils.isEmpty(cd.getId()) ? null : Long.valueOf(cd.getId()));
 		c.setName(cd.getName());
 		c.setPhone(cd.getPhone());
 		return c;

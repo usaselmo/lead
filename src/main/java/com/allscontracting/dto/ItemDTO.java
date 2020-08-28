@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Item;
 
@@ -39,9 +39,9 @@ public class ItemDTO {
 		if(itemDTO==null)
 			return null;
 		Item item = new Item();
-		item.setId(StringUtils.isBlank(itemDTO.getId())?null:Long.valueOf(itemDTO.getId()));
+		item.setId(StringUtils.isEmpty(itemDTO.getId())?null:Long.valueOf(itemDTO.getId()));
 		item.setLines(itemDTO.getLines().stream().map(l->LineDTO.toLine(l)).collect(Collectors.toList()));
-		item.setPrice(StringUtils.isBlank(itemDTO.getPrice())?BigDecimal.ZERO:new BigDecimal(itemDTO.getPrice().replace("$", "")));
+		item.setPrice(StringUtils.isEmpty(itemDTO.getPrice())?BigDecimal.ZERO:new BigDecimal(itemDTO.getPrice().replace("$", "")));
 		item.setTitle(itemDTO.getTitle());
 		return item;
 	}

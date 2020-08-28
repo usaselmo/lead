@@ -3,10 +3,10 @@ package com.allscontracting.security;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.User;
 
@@ -33,7 +33,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		if(!StringUtils.isBlank(this.user.getName()))
+		if(!StringUtils.isEmpty(this.user.getName()))
 			return this.user.getName();
 		return this.user.getEmail();
 	}
@@ -52,7 +52,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		return StringUtils.isNotBlank(this.user.getPassword());
+		return !StringUtils.isEmpty(this.user.getPassword());
 	}
 
 	@Override

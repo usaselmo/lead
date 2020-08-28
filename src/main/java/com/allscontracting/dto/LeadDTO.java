@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
@@ -91,14 +91,14 @@ public class LeadDTO {
 		lead.setDate(Converter.convertToDate(leadDTO.getDate()));
 		lead.setDescription(leadDTO.getDescription());
 		lead.setEstimator(UserDTO.toUser(leadDTO.getEstimator()));
-		lead.setEvent(StringUtils.isBlank(leadDTO.getEvent())?null:Event.valueOf(leadDTO.getEvent()));
-		lead.setFee(StringUtils.isBlank(leadDTO.getFee())?BigDecimal.ZERO:new BigDecimal(leadDTO.getFee().replace("$", "")));
-		lead.setId(StringUtils.isBlank(leadDTO.getId())?null:Long.valueOf(leadDTO.getId()));
+		lead.setEvent(StringUtils.isEmpty(leadDTO.getEvent())?null:Event.valueOf(leadDTO.getEvent()));
+		lead.setFee(StringUtils.isEmpty(leadDTO.getFee())?BigDecimal.ZERO:new BigDecimal(leadDTO.getFee().replace("$", "")));
+		lead.setId(StringUtils.isEmpty(leadDTO.getId())?null:Long.valueOf(leadDTO.getId()));
 		lead.setOldid(leadDTO.getOldid());
 		lead.setNotes(leadDTO.getNotes());
 		lead.setProposals(leadDTO.getProposals()==null?null:leadDTO.getProposals().stream().map(p->ProposalDTO.toProposal(p)).collect(Collectors.toList()));
 		lead.setType(leadDTO.getType());
-		lead.setVendor(StringUtils.isBlank(leadDTO.vendor)?null:Lead.Vendor.valueOf(leadDTO.vendor));
+		lead.setVendor(StringUtils.isEmpty(leadDTO.vendor)?null:Lead.Vendor.valueOf(leadDTO.vendor));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
 		lead.setContact(PersonDTO.toPerson(leadDTO.getContact()));

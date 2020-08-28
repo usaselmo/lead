@@ -5,7 +5,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
@@ -58,15 +58,15 @@ public class ProposalDTO {
 		if(proposalDTO==null)
 			return null;
 		Proposal proposal = new Proposal();
-		proposal.setId(StringUtils.isBlank(proposalDTO.getId())?null:Long.valueOf(proposalDTO.getId()));
+		proposal.setId(StringUtils.isEmpty(proposalDTO.getId())?null:Long.valueOf(proposalDTO.getId()));
 		proposal.setCallMissUtility(proposalDTO.isCallMissUtility());
 		proposal.setEmailed(proposalDTO.isEmailed());
 		proposal.setNote(proposalDTO.getNote()); 
-		proposal.setNumber(StringUtils.isBlank(proposalDTO.getNumber())?null:Long.valueOf(proposalDTO.getNumber()));
-		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "")));
+		proposal.setNumber(StringUtils.isEmpty(proposalDTO.getNumber())?null:Long.valueOf(proposalDTO.getNumber()));
+		proposal.setTotal(StringUtils.isEmpty(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "")));
 		proposal.setPaymentSchedule(proposalDTO.getPaymentSchedule());
 		proposal.setScopeOfWork(proposalDTO.getScopeOfWork());
-		proposal.setTotal(StringUtils.isBlank(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
+		proposal.setTotal(StringUtils.isEmpty(proposalDTO.getTotal())?BigDecimal.ZERO:new BigDecimal(proposalDTO.getTotal().replace("$", "").replace(",", "")));
 		proposal.setWorkWarranty(proposalDTO.getWorkWarranty());
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
 		proposal.setDate(Converter.stringToDate(proposalDTO.getDate(), Converter.MM_dd_yy));

@@ -11,9 +11,9 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
@@ -60,7 +60,7 @@ public class ProposalService {
 			long number = lead.getProposals().size();
 			proposal.setNumber(number + 1);
 		}
-		if (StringUtils.isBlank(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO)) {
+		if (StringUtils.isEmpty(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO)) {
 			proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		}
 		proposal.getItems().forEach(item -> {
@@ -124,7 +124,7 @@ public class ProposalService {
 	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
 		map.put("CLIENT", client);
-		map.put("ESTIMATOR", proposal.getLead()!=null && proposal.getLead().getEstimator()!=null && !StringUtils.isBlank(proposal.getLead().getEstimator().getName()) ?proposal.getLead().getEstimator().getName():"Eddie Lopes");
+		map.put("ESTIMATOR", proposal.getLead()!=null && proposal.getLead().getEstimator()!=null && !StringUtils.isEmpty(proposal.getLead().getEstimator().getName()) ?proposal.getLead().getEstimator().getName():"Eddie Lopes");
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		return map;

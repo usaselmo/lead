@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.allscontracting.exception.LeadsException;
 
@@ -57,7 +57,7 @@ public class Converter {
 	}
 
 	public static Date convertToDate(String date) {
-		if (StringUtils.isBlank(date))
+		if (StringUtils.isEmpty(date))
 			return null;
 		return Converter.stringToDate(date, MM_dd_yyyy);
 	}
