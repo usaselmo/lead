@@ -160,12 +160,9 @@ public class LeadService {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
 		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null
-				: this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(
-				leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null
-				: this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDescription(leadDTO.getDescription());
 		leadDTO = LeadDTO.of(this.leadRepo.save(lead));
@@ -176,13 +173,8 @@ public class LeadService {
 	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {
 		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-		LeadEntity res = LeadEntity.builder()
-					.leads(leads)
-					.leadsTotalPrice(leadsTotalPrice)
-					.leadTypes(getLeadTypes())
-					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-					.totalLeads(getLeadsTotal(event))
-					.build();
+		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
+				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).totalLeads(getLeadsTotal(event)).build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});

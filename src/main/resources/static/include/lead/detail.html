@@ -29,6 +29,7 @@
         
       <td>
         <p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
+        <p ng-if="lead.visit">Visit: {{lead.visit | date}}</p>
         <span ng-if="lead.description"><small>{{lead.description}}</small></span>
       </td>
 
