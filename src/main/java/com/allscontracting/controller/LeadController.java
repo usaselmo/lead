@@ -20,55 +20,87 @@ import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.security.LeadUserDetails;
-import com.allscontracting.service.FileService;
 import com.allscontracting.service.LeadService;
-import com.allscontracting.service.LogService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("leads")
+@RequiredArgsConstructor
 public class LeadController {
 
-	@Autowired
-	LeadService leadService;
-	@Autowired
-	FileService fileService;
-	@Autowired
-	LeadRepository leadRepo;
-	@Autowired
-	LogService logg;
+	private final LeadService leadService;
 
 	@GetMapping("eventtypes")
 	public LeadEntity findEventTypes() {
-		return LeadEntity.builder().events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).build();
+		try {
+			return LeadEntity.builder().events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@PutMapping("{leadId}/estimator/{estimatorId}")
 	public LeadEntity assignToEstimator(@PathVariable String leadId, @PathVariable String estimatorId, @Autowired Authentication authentication) throws LeadsException {
-		return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
+		try {
+			return LeadEntity.builder().lead(leadService.assignEstimator(leadId, estimatorId, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@GetMapping("/types")
 	public LeadEntity getLeadTypes() {
-		return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
+		try {
+			return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@PostMapping(value = "{id}/addNote")
 	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-		LeadDTO lead = leadService.addNewNote(id, note);
-		return LeadEntity.builder().lead(lead).build();
+		try {
+			LeadDTO lead = leadService.addNewNote(id, note);
+			return LeadEntity.builder().lead(lead).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@PostMapping(value = "{id}/schedulevisit")
 	public LeadEntity scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException, ParseException {
-		LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails) authentication.getPrincipal()).getUser());
-		return LeadEntity.builder().lead(res).build();
+		try {
+			LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().lead(res).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@GetMapping(value = "/search")
 	public LeadEntity search(@RequestParam String text) {
-		return LeadEntity.builder().leads(leadService.search(text)).build();
+		try {
+			return LeadEntity.builder().leads(leadService.search(text)).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@PostMapping
@@ -76,13 +108,14 @@ public class LeadController {
 		try {
 			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead Created.");
 		} catch (NumberFormatException | LeadsException e) {
+			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
-		}		
+		}
 	}
-	
+
 	@PutMapping
 	public LeadEntity update(@RequestBody LeadDTO leadDTO) {
 		try {
@@ -93,13 +126,21 @@ public class LeadController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
-		}		
+		}
 	}
 
 	@PostMapping(value = "{id}/fireevent")
 	public LeadEntity fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
-		LeadDTO lead = leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
-		return LeadEntity.builder().lead(lead).build().addSuccessMessage("Event fired.");
+		try {
+			LeadDTO lead = leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().lead(lead).build().addSuccessMessage("Event fired.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Erro inesperado.");
+		}
 	}
 
 	@GetMapping(value = "")
@@ -108,6 +149,7 @@ public class LeadController {
 			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
 			return res;
 		} catch (LeadsException e) {
+			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -122,8 +164,8 @@ public class LeadController {
 			return res;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 }
