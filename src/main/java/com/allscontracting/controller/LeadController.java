@@ -80,20 +80,6 @@ public class LeadController {
 		}
 	}
 
-	@PostMapping(value = "{id}/schedulevisit")
-	public LeadEntity scheduleVisit(@PathVariable String id, @RequestBody String time, @Autowired Authentication authentication) throws LeadsException, ParseException {
-		try {
-			LeadDTO res = leadService.scheduleAVisit(id, time, ((LeadUserDetails) authentication.getPrincipal()).getUser());
-			return LeadEntity.builder().lead(res).build();
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
 	@PostMapping
 	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
@@ -134,7 +120,7 @@ public class LeadController {
 		}
 	}
 
-	@GetMapping(value = "")
+	@GetMapping
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
 		try {
 			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
