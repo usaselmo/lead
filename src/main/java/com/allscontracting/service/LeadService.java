@@ -157,7 +157,9 @@ public class LeadService {
 		lead.setEvent(event);
 		lead = leadRepo.save(lead);
 		logg.event(Lead.class, id, event, user);
-		return LeadDTO.of(lead);
+		LeadDTO leadDTO = LeadDTO.of(lead);
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {

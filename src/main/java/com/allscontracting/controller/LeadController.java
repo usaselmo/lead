@@ -99,8 +99,6 @@ public class LeadController {
 	@PostMapping(value = "{id}/fireevent")
 	public LeadEntity fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
 		LeadDTO lead = leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
-		lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
-		lead.setNextEvents(leadService.findNextEvents(lead.getId()));
 		return LeadEntity.builder().lead(lead).build().addSuccessMessage("Event fired.");
 	}
 
