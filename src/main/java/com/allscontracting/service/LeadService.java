@@ -176,8 +176,13 @@ public class LeadService {
 	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {
 		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
-				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).totalLeads(getLeadsTotal(event)).build();
+		LeadEntity res = LeadEntity.builder()
+					.leads(leads)
+					.leadsTotalPrice(leadsTotalPrice)
+					.leadTypes(getLeadTypes())
+					.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
+					.totalLeads(getLeadsTotal(event))
+					.build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});
