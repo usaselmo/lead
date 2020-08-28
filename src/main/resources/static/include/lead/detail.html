@@ -10,32 +10,43 @@
       </h3>
     </div>
     <div class="panel-body">
+
+
       <!-- LEAD DETAILS -->
-      <div class="col-sm-5">
-        <address>
-          Source: <i>{{lead.vendor}}</i><br> {{lead.person.phone}}<br>
-          {{lead.person.email}}<br> {{lead.person.address}}
-        </address>
-        <p ng-if="lead.visit">
-          Visit scheduled for: <strong>{{lead.visit | date:'MMMM dd, yyyy @hh:mm'}}</strong>
-        </p>
-        <p ng-if="lead.estimator.id">
-          Estimator: <strong>{{lead.estimator.name}}</strong>
-        </p>
-      </div>
-      <div class="col-sm-4">
-        {{lead.date | date:'MMMM dd, yyyy'}}<br><small><i>{{lead.type}}</i></small> <br> <small>{{lead.description}}</small>
-      </div>
+<table class="table table-sm table-striped">
+  <tbody>
+    <tr>
+      
+      <td>
+        <span ng-if="lead.company">
+          <p><i>{{lead.company.name}}</i></p>
+          <p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} , {{lead.contact.email}}</p>
+        </span>
+        <p ng-if="lead.client">{{lead.client.name}}</p>
+        <span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
+        <p><i><small>{{lead.event}}</small></i></p> 
+      </td>
+        
+      <td nowrap="nowrap">
+        <p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
+        <p ng-if="lead.description"><small>{{lead.description}}</small></p>
+      </td>
 
       <!-- MENU -->
-      <div class="col-sm-3">
+      <td>
         <strong>Mark an Event</strong>
         <div class="list-group" >
           <span ng-repeat="event in lead.nextEvents" ng-switch="event">
             <a style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event.action}}</a>
           </span>
         </div>
-      </div>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+
+
 
       <!-- BOTTOM NAV TABS -->
       <div class="col-sm-12"><div>
