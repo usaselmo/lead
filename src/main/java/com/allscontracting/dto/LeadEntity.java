@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LeadEntity {
 
-	private final List<String> successMessages = new ArrayList<>();
-	private final List<String> errorMessages = new ArrayList<>();
+	private List<String> successMessages ;
+	private List<String> errorMessages ;
 	private LeadDTO lead;
 	private List<LeadDTO> leads;
 	private Long leadsTotalPrice;
@@ -27,16 +27,22 @@ public class LeadEntity {
 	private Long totalLeads;
 	
 	public LeadEntity addSuccessMessage(String successMessage) {
+		if(this.successMessages == null)
+			this.successMessages = new ArrayList<>();
 		this.successMessages.add(successMessage);
 		return this;
 	}
 	
 	public LeadEntity addErrorMessage(String errorMessage) {
+		if(this.errorMessages == null)
+			this.errorMessages = new ArrayList<>();
 		this.errorMessages.add(errorMessage);
 		return this;
 	}
 	
 	public LeadEntity addLead(Lead lead) {
+		if(this.leads == null)
+			this.leads = new ArrayList<>();
 		this.leads.add(LeadDTO.of(lead));
 		return this;
 	}

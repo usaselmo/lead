@@ -29,7 +29,7 @@ public class EventDispatcher {
 		Event[] SEND_ESTIMATE = { ACCEPT_PROPOSAL, END_LEAD };
 		Event[] ACCEPT_PROPOSAL = { BEGIN_WORK, END_LEAD };
 		Event[] BEGIN_WORK = { FINISH_WORK,  END_LEAD };
-		Event[] FINISH_WORK = {};
+		Event[] FINISH_WORK = {BEGIN};
 		Event[] END_LEAD = {BEGIN};
 
 		switch (event) {

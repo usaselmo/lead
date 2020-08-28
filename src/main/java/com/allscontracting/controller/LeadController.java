@@ -66,11 +66,6 @@ public class LeadController {
 		return LeadEntity.builder().lead(res).build();
 	}
 
-	@PostMapping(value = "{id}/fireevent")
-	public void fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
-		this.leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
-	}
-
 	@GetMapping(value = "/search")
 	public LeadEntity search(@RequestParam String text) {
 		return LeadEntity.builder().leads(leadService.search(text)).build();
@@ -99,6 +94,14 @@ public class LeadController {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Unexpected error.");
 		}		
+	}
+
+	@PostMapping(value = "{id}/fireevent")
+	public LeadEntity fireEvent(@PathVariable String id, @RequestBody EventDTO event, @Autowired Authentication authentication) throws LeadsException {
+		LeadDTO lead = leadService.fireEvent(id, Event.reverse(event.getName()), ((LeadUserDetails) authentication.getPrincipal()).getUser());
+		lead.setEventLogs(leadService.findLeadEventLogs(lead.getId()));
+		lead.setNextEvents(leadService.findNextEvents(lead.getId()));
+		return LeadEntity.builder().lead(lead).build().addSuccessMessage("Event fired.");
 	}
 
 	@GetMapping(value = "")

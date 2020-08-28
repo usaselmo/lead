@@ -138,11 +138,12 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void fireEvent(String id, Event event, User user) throws NumberFormatException, LeadsException {
+	public LeadDTO fireEvent(String id, Event event, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(id)).orElseThrow(()-> new LeadsException("Could not find Lead"));
 		lead.setEvent(event);
-		leadRepo.save(lead);
+		lead = leadRepo.save(lead);
 		logg.event(Lead.class, id, event, user);
+		return LeadDTO.of(lead);
 	}
 
 	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {

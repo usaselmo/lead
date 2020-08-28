@@ -77,6 +77,19 @@
  				}else{
  					lead = response.data.lead
  					scope.successMessages = response.data.successMessages
+ 				}   
+ 			}, function (response) {
+ 				console.log(response)            
+ 			});
+ 		},
+ 		
+ 		fireEvent: function (scope, lead, event) {
+ 			$http.post(local_server_url + "/leads/"+lead.id+"/fireevent", event).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.lead = response.data.lead
+ 					scope.successMessages = response.data.successMessages
  				}
  			}, function (response) {
  				console.log(response)
@@ -119,6 +132,10 @@
  		$scope.lead = lead;
  		$scope.crudLead = null;
  		$scope.leads = null;
+ 	}
+
+ 	$scope.fireEvent = function(lead, event){
+ 		leadService.fireEvent($scope, lead, event)
  	}
 
  	/** LIST **/
