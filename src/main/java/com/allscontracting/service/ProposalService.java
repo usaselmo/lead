@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.OptionalLong;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -57,8 +58,12 @@ public class ProposalService {
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		if (proposal.getNumber() == null) {
-			long number = lead.getProposals().size();
-			proposal.setNumber(number + 1);
+			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
+				long max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
+				proposal.setNumber(max+1);
+			}else {
+				proposal.setNumber(1L); 
+			}
 		}
 		if (StringUtils.isEmpty(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO)) {
 			proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));

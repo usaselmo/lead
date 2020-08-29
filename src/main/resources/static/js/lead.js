@@ -79,6 +79,18 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		delete: function (scope, proposal, lead_id) {
+ 			$http.delete(local_server_url + "/proposals?leadId=" + lead_id + "&proposalId=" + proposal.id ).then(function (response) {
+ 				if(!response.data.errorMessages){
+ 					scope.lead.proposals = scope.lead.proposals.filter(p=>p.id != proposal.id)
+ 				}
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
 
  	} 
  })
@@ -265,6 +277,12 @@
  			proposalService.update($scope, proposal, lead.id);
  		}else{
  			proposalService.save($scope, proposal, lead.id)
+ 		}
+ 	}
+
+ 	$scope.deleteProposal = function(lead, proposal){
+ 		if(confirm(' Are you sure you want to delete? ')){
+ 			proposalService.delete($scope, proposal, lead.id)
  		}
  	}
 

@@ -66,7 +66,7 @@ public class ProposalController {
 		}
 	}
 
-	@DeleteMapping(value = "")
+	@DeleteMapping
 	public LeadEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication){
 		try {
 			proposalService.delete(leadId, proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
