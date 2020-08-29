@@ -173,7 +173,9 @@
  	}
 
  	$scope.emailProposal = function(proposal){
- 		proposalService.sendByEmail($scope, proposal)
+ 		if (confirm('Send Proposal #'+proposal.number + ' via E-mail ? ')) {
+ 			proposalService.sendByEmail($scope, proposal)
+ 		}
  	}
 
  	/** LIST **/

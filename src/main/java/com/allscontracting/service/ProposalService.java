@@ -108,12 +108,16 @@ public class ProposalService {
 		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, person, res)
-			.onError((error) -> log.error("Error sending mail")) 
-			.send();
-		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-		proposal.setEmailed(true);
-		this.proposalRepository.save(proposal);
-		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+			.onError((error) -> {
+				log.error("Error sending mail");
+			})
+			.onSuccess(()->{
+				proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+				proposal.setEmailed(true);
+				this.proposalRepository.save(proposal);
+				logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+			})
+			.send(); 
 	}
 
 	private String getProposalFileName(Proposal proposal, Client person, String suffix) {
