@@ -15,6 +15,33 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		update: function (scope, company) {
+ 			$http.put(local_server_url + "/companies", company).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					company = response.data.company
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		save: function (scope, company) {
+ 			$http.post(local_server_url + "/companies", company).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.companies.push(response.data.company)
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+
  	} 
  })
 
@@ -25,13 +52,20 @@
  	}
 
  	$scope.crud = function(company){
- 		$scope.companies = null;
  		$scope.company = company; 
  	}
 
  	$scope.cancel = function(){
  		$scope.company = null
- 		companyService.findCompanies($scope)
+ 	}
+
+ 	$scope.save = function(company){
+ 		if(company.id){
+ 			companyService.update($scope, company)
+ 		}else{
+ 			companyService.save($scope, company)
+ 		}
+ 		$scope.cancel();
  	}
 
  	init();

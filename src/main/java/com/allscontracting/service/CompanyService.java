@@ -32,5 +32,10 @@ public class CompanyService {
 		company.setWebsite(companyDTO.getWebsite());
 		return CompanyDTO.of(this.companyRepo.save(company));
 	}
+
+	public CompanyDTO save(CompanyDTO companyDTO) {
+		Company company = CompanyDTO.toCompany(companyDTO);
+		return CompanyDTO.of(this.companyRepo.save(company));
+	}
 	
 }
