@@ -186,6 +186,16 @@
  		$scope.proposal = null;
  	}
 
+ 	$scope.proposalEncreaseItem = function(proposal){
+ 		$scope.proposal.items.push({})
+ 	}
+
+ 	$scope.proposalRemoveItem = function(proposal){
+ 		if($scope.proposal.items.length > 1 ){
+ 			$scope.proposal.items.pop();
+ 		}
+ 	}
+
     var convertToClientFormat = function (proposal) {
       prop = copy(proposal)
       items = []
