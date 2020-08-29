@@ -199,7 +199,7 @@ WHERE
 					<textElement verticalAlignment="Bottom">
 						<font size="12" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[PROPOSAL DETAILED ITEMS]]></text>
+					<text><![CDATA[PROPOSAL DETAILED ITEMS:]]></text>
 				</staticText>
 				<image>
 					<reportElement x="0" y="30" width="140" height="40" uuid="bdfe7337-3bce-4c17-9027-4931906f94bb"/>
@@ -216,7 +216,7 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="351" splitType="Immediate">
+			<band height="388" splitType="Immediate">
 				<frame>
 					<reportElement x="0" y="26" width="535" height="46" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
 					<staticText>
@@ -274,35 +274,8 @@ WHERE
 						<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
 					</textField>
 				</frame>
-				<frame>
-					<reportElement x="0" y="249" width="534" height="102" uuid="a08c0eff-f370-41be-886e-7113f2e623b2"/>
-					<staticText>
-						<reportElement x="0" y="1" width="534" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
-							<property name="com.jaspersoft.studio.unit.width" value="px"/>
-							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<property name="com.jaspersoft.studio.unit.x" value="px"/>
-							<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						</reportElement>
-						<box padding="2">
-							<pen lineWidth="0.5"/>
-							<topPen lineWidth="0.5"/>
-							<leftPen lineWidth="0.5"/>
-							<bottomPen lineWidth="0.5"/>
-							<rightPen lineWidth="0.5"/>
-						</box>
-						<textElement verticalAlignment="Top">
-							<font isBold="false"/>
-						</textElement>
-						<text><![CDATA[The above prices, specifications, and conditions are satisfactory and are hereby accepted.
-
-
-
-
-Customer Signature: ____________________________ Amount Accepted: ________________ Date: _____________]]></text>
-					</staticText>
-				</frame>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="230" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
+					<reportElement mode="Opaque" x="0" y="270" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
@@ -311,15 +284,39 @@ Customer Signature: ____________________________ Amount Accepted: ______________
 					</textElement>
 					<text><![CDATA[ACCEPTANCE OF PROPOSAL]]></text>
 				</staticText>
+				<staticText>
+					<reportElement x="0" y="290" width="535" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Top">
+						<font isBold="false"/>
+					</textElement>
+					<text><![CDATA[The above prices, specifications, and conditions are satisfactory and are hereby accepted.
+
+
+
+
+Customer Signature: ____________________________ Amount Accepted: ________________ Date: _____________]]></text>
+				</staticText>
 			</band>
 		</groupFooter>
 	</group>
-	<group name="title" keepTogether="true" preventOrphanFooter="true">
+	<group name="title" isReprintHeaderOnEachPage="true" keepTogether="true" preventOrphanFooter="true">
 		<groupExpression><![CDATA[$F{title}]]></groupExpression>
 		<groupHeader>
 			<band height="43">
 				<textField>
-					<reportElement x="0" y="20" width="535" height="21" uuid="708ef742-50bc-462e-a569-4ec9f3185207"/>
+					<reportElement isPrintRepeatedValues="false" x="0" y="20" width="535" height="23" uuid="708ef742-50bc-462e-a569-4ec9f3185207"/>
 					<textElement verticalAlignment="Middle">
 						<font isBold="true" isUnderline="true"/>
 					</textElement>
@@ -328,12 +325,13 @@ Customer Signature: ____________________________ Amount Accepted: ______________
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="30">
+			<band height="20">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField>
-					<reportElement x="40" y="0" width="495" height="26" isRemoveLineWhenBlank="true" uuid="4effa761-eef2-4f5d-bdb8-459ac00be214">
+					<reportElement x="40" y="0" width="495" height="20" isRemoveLineWhenBlank="true" uuid="4effa761-eef2-4f5d-bdb8-459ac00be214">
 						<printWhenExpression><![CDATA[$F{price}.compareTo(BigDecimal.ZERO) > 0]]></printWhenExpression>
 					</reportElement>
-					<textElement verticalAlignment="Middle">
+					<textElement verticalAlignment="Bottom">
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Item's Total price including labor and material:  " + NumberFormat.getCurrencyInstance().format($F{price})]]></textFieldExpression>
@@ -412,7 +410,7 @@ Customer Signature: ____________________________ Amount Accepted: ______________
 		<band height="16" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<textField>
-				<reportElement x="40" y="0" width="460" height="16" uuid="16e144db-d063-499c-9238-c0f24c7abecf">
+				<reportElement x="40" y="0" width="495" height="16" uuid="16e144db-d063-499c-9238-c0f24c7abecf">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$V{title_COUNT} + " -  " + $F{description}]]></textFieldExpression>
