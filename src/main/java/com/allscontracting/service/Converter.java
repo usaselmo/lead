@@ -18,6 +18,7 @@ public class Converter {
 	public static final String MM_dd_yy = "MM/dd/yy";
 	public static final String MM_dd_yy_hh_mm = "MM/dd/yy hh:mm";
 	public static final String MM_dd_yyyy = "MM/dd/yyyy";
+	public static final String MM_dd_yyyy_hh_mm = "MM/dd/yyyy hh:mm";
 	public static final String yyyy_MM_dd = "yyyy-MM-dd";
 
 	/**
@@ -60,6 +61,12 @@ public class Converter {
 		if (StringUtils.isEmpty(date))
 			return null;
 		return Converter.stringToDate(date, MM_dd_yyyy);
+	}
+
+	public static Date convertToDate(String date, String format) {
+		if (StringUtils.isEmpty(date))
+			return null;
+		return Converter.stringToDate(date, format);
 	}
 
 	public static LocalDate convertToLocalDate(String date) throws LeadsException {
