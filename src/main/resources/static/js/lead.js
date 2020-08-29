@@ -39,6 +39,14 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		sendCantReachEmail: function (lead, person) {
+ 			$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+
  	} 
  })
 
@@ -175,6 +183,12 @@
  	$scope.emailProposal = function(proposal){
  		if (confirm('Send Proposal #'+proposal.number + ' via E-mail ? ')) {
  			proposalService.sendByEmail($scope, proposal)
+ 		}
+ 	}
+
+ 	$scope.sendCantReachEmail = function(lead, person){
+ 		if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
+ 			personService.sendCantReachEmail(lead, person);
  		}
  	}
 

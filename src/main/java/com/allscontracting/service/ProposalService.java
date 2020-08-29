@@ -109,7 +109,7 @@ public class ProposalService {
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 		this.mailService.sendProposalByEmail(proposal, person, res)
 			.onError((error) -> {
-				log.error("Error sending mail");
+				log.error("Error sending mail: " + error);
 			})
 			.onSuccess(()->{
 				proposal.getLead().setEvent(Event.SEND_PROPOSAL);
