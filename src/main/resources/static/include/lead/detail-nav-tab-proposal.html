@@ -12,6 +12,7 @@
           <th>Email Proposal</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
+          <th>&nbsp;</th>
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,7 @@
           <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal #{{prop.number}}</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="proposalCrud(prop)" data-toggle="modal" data-target="#Ij3738hH33">Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
+          <td><a href="#" class="btn btn-default btn-sml" data-toggle="modal" data-target="#Ij3738hH33" ng-click="proposalCopy(prop)">Copy</a></td>
         </tr>
       </tbody>
     </table>

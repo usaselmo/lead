@@ -57,9 +57,21 @@
  		},
  		
  		update: function (scope, proposal, lead_id) {
- 			$http.put(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(copy(proposal))).then(function (response) {
+ 			$http.put(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(proposal)).then(function (response) {
  				if(response.data.proposal){
  					scope.lead.proposals = scope.lead.proposals.map(p=>p.id==response.data.proposal.id?response.data.proposal:p)
+ 				}
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		save: function (scope, proposal, lead_id) {
+ 			$http.post(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(proposal)).then(function (response) {
+ 				if(response.data.proposal){
+ 					scope.lead.proposals.push(response.data.proposal);
  				}
  				scope.successMessages = response.data.successMessages
  				scope.errorMessages = response.data.errorMessages
@@ -251,7 +263,22 @@
  	$scope.proposalSave = function(lead, proposal){
  		if(proposal.id){
  			proposalService.update($scope, proposal, lead.id);
+ 		}else{
+ 			proposalService.save($scope, proposal, lead.id)
  		}
+ 	}
+
+ 	$scope.proposalCopy = function(proposal){
+ 		nproposal = convertToClientFormat(proposal);
+ 		nproposal.id = null
+ 		nproposal.total = 0  
+ 		nproposal.emailed = false;
+ 		nproposal.number = null;
+ 		nproposal.items.forEach(item=>{
+ 			item.id=null;
+ 		})
+ 		originalLines=[];
+ 		$scope.proposal = nproposal;
  	}
 
  	/** DETAIL **/
