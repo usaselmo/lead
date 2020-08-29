@@ -13,7 +13,12 @@ public class MainController {
 	
 	@GetMapping("/main/users")
 	public String users() {
-		return "user";
+		return "user/user";
+	}
+	
+	@GetMapping("/main/companies")
+	public String companies() {
+		return "company/company";
 	}
 
 }
