@@ -51,8 +51,10 @@ public class PersonService {
 
 	public void sendHiringDecisionEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
 		Person person = this.personRepo.findById(Long.valueOf(id)).orElseThrow(()->new LeadsException("Person not found"));
-		this.mailService.sendHiringDecisionEmail(person).onError( (error)->log.error("Error sending e-mail: "+error) ).send();;
-		logg.eventHiringDecisionEmailSent(leadId, person, user); 
+		this.mailService.sendHiringDecisionEmail(person)
+			.onError( (error)->log.error("Error sending e-mail: "+error) )
+			.onSuccess( () -> logg.eventHiringDecisionEmailSent(leadId, person, user))
+			.send();
 	}
 
 	public List<PersonDTO> findAll() {

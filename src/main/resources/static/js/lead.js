@@ -46,6 +46,13 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		sendHiringDecisionEmail: function (lead, person) {
+ 			$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
 
  	} 
  })
@@ -189,6 +196,12 @@
  	$scope.sendCantReachEmail = function(lead, person){
  		if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
  			personService.sendCantReachEmail(lead, person);
+ 		}
+ 	}
+
+ 	$scope.sendHiringDecisionEmail = function(lead, person){
+ 		if (person && confirm('Send e-mail asking about '+person.name+'\'s  hiring decision ? ')) {
+ 			personService.sendHiringDecisionEmail(lead, person);
  		}
  	}
 
