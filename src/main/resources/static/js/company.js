@@ -2,15 +2,38 @@
 /*
  * ANGULARJS 
  */
+ var local_server_url = "";
 
  angular.module('company', [])
 
- .service('companyService', function(){
-
+ .service('companyService', function($http){
+ 	return { 
+ 		findCompanies: function (scope) {
+ 			$http.get(local_server_url + "/companies").then(function (response) {
+ 				scope.companies = response.data
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 	} 
  })
 
- /*MAIN CONTROLLER*/
+ /*COMPANY CONTROLLER*/
  .controller('CompanyController', function ($scope, $http, $timeout, companyService) {
- 	$scope.test = ' This is Company Controller'
+ 	var init = function(){
+ 		companyService.findCompanies($scope);
+ 	}
+
+ 	$scope.crud = function(company){
+ 		$scope.companies = null;
+ 		$scope.company = company; 
+ 	}
+
+ 	$scope.cancel = function(){
+ 		$scope.company = null
+ 		companyService.findCompanies($scope)
+ 	}
+
+ 	init();
  });
 
