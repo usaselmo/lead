@@ -5,6 +5,19 @@
 
  angular.module('lead', [])
 
+ .service('proposalService', function($http){
+ 	return { 
+ 		sendByEmail: function (scope, proposal) {
+ 			$http.get(local_server_url + "/proposals/" + proposal.id + "/email").then(function (response) {
+ 				scope.successMessages = response.data.successMessages;
+ 				scope.errorMessages = response.data.errorMessages;
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 	} 
+ })
+
  .service('userService', function($http){
  	return {
  		findEstimators: function (scope) {
@@ -118,7 +131,7 @@
 
 
  /*MAIN CONTROLLER*/
- .controller('LeadController', function ($scope, leadService, companyService, personService, userService) {  
+ .controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService) {  
  	/** CRUD **/
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
@@ -157,6 +170,10 @@
 
  	$scope.saveNote = function(lead, newNote){
  		leadService.saveNote($scope, lead, newNote)
+ 	}
+
+ 	$scope.emailProposal = function(proposal){
+ 		proposalService.sendByEmail($scope, proposal)
  	}
 
  	/** LIST **/

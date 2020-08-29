@@ -1,7 +1,6 @@
 package com.allscontracting.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.dto.LeadEntity;
+import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ProposalService;
-
-import net.sf.jasperreports.engine.JRException;
 
 @RestController
 @RequestMapping("proposals")
@@ -31,12 +28,13 @@ public class ProposalController {
 	@Autowired private ProposalService proposalService;
 
 	@GetMapping(value = "{proposalId}/email")
-	public void sendByEmail(@PathVariable long proposalId, @Autowired Authentication authentication)
-			throws IOException, JRException, SQLException, LeadsException {
+	public LeadEntity sendByEmail(@PathVariable long proposalId, @Autowired Authentication authentication) {
 		try {
 			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().build().addSuccessMessage("Email is being sent.");
 		} catch (Exception e) {
 			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
 		}
 	}
 
