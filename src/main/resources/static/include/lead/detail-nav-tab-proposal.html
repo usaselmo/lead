@@ -22,16 +22,16 @@
           <td><a href="proposals/{{prop.id}}/pdf"><span class="glyphicon glyphicon-download-alt" title="Download PDF" aria-hidden="true"></span></a></td>
           <td><a href="proposals/{{prop.id}}/rtf"><span class="glyphicon glyphicon-download-alt" title="Download RTF" aria-hidden="true"></span></a></td>
           <td><a href="#" class="btn btn-primary btn-sml" ng-click="emailProposal(prop)">Email Proposal #{{prop.number}}</a>&nbsp;</td>
-          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="editProposal(prop)" data-toggle="modal" data-target="#Ij3738hH33">Edit</a>&nbsp;</td>
+          <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-success" ng-click="crudProposal(prop)" data-toggle="modal" data-target="#Ij3738hH33">Edit</a>&nbsp;</td>
           <td><a ng-if="!prop.emailed" href="#" class="btn btn-sml btn-danger" ng-click="deleteProposal(lead, prop)">Delete</a>&nbsp;</td>
         </tr>
       </tbody>
     </table>
-    <a href="#" class="btn btn-sml btn-default" ng-click="createProposal()" data-toggle="modal" data-target="#Ij3738hH33">Create Proposal</a>
+    <a href="#" class="btn btn-sml btn-default" ng-click="crudProposal({})" data-toggle="modal" data-target="#Ij3738hH33">Create Proposal</a>
     <div>
       <!-- Modal -->
       <div class="modal fade" id="Ij3738hH33" tabindex="-1" role="dialog" aria-labelledby="Ij3738hH33Label">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -41,72 +41,72 @@
             </div>
             <div class="modal-body">
               <form action="#" class="form-horizontal">
-                <input type="hidden" ng-model="currentProposal.number">
-                <div ng-repeat="item in currentProposal.items ">
-                  <div class="form-group" ng-model="currentProposal.items[$index].title">
+                <input type="hidden" ng-model="proposal.number">
+                <div ng-repeat="item in proposal.items ">
+                  <div class="form-group" ng-model="proposal.items[$index].title">
                     <label class="col-sm-2 col-form-label">ITEM {{$index + 1}}</label>
                     <div class="col-sm-6">
-                      <input type="text" class="form-control" value="" placeholder="Title" ng-model="currentProposal.items[$index].title" />
+                      <input type="text" class="form-control" value="" placeholder="Title" ng-model="proposal.items[$index].title" />
                     </div>
                     <label class="col-sm-1 col-form-label">Price</label>
                     <div class="col-sm-3">
-                      <input type="text" class="form-control" value="" ng-model="currentProposal.items[$index].price" />
+                      <input type="text" class="form-control" value="" ng-model="proposal.items[$index].price" />
                     </div>
                   </div>
                   <div class="form-group">
                     <label class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
-                      <textarea rows="8" class="form-control" ng-model="currentProposal.items[$index].lines">
+                      <textarea rows="8" class="form-control" ng-model="proposal.items[$index].lines">
                       </textarea>
                     </div>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-default " ng-click="encreaseItem()">New Item</button>
-                    <button class="btn btn-default " ng-click="removeItem(currentProposal)">Remove Item</button>
+                    <button class="btn btn-default " ng-click="proposalEncreaseItem()">New Item</button>
+                    <button class="btn btn-default " ng-click="proposalRemoveItem(proposal)">Remove Item</button>
                   </div>
                 </div>
                 <hr style="margin: 1px; padding: 0px;">
                 <div class="form-group">
                   <label for="callMissUtility" class="col-sm-2 col-form-label">Call Miss Utiliy</label>
                   <div class="col-sm-1">
-                    <input type="checkbox" checked class="form-control" id="callMissUtility" ng-model="currentProposal.callMissUtility">
+                    <input type="checkbox" checked class="form-control" id="callMissUtility" ng-model="proposal.callMissUtility">
                   </div>
                   <label for="ossoOOh889Uj655" class=" col-sm-offset-3 col-sm-2 col-form-label">Total</label>
                   <div class="col-sm-4">
-                    <input type="text" checked class="form-control" id="ossoOOh889Uj655" ng-model="currentProposal.total">
+                    <input type="text" checked class="form-control" id="ossoOOh889Uj655" ng-model="proposal.total">
                   </div>
                 </div>
                 <div class="form-group ">
                   <label for="scopeOfWork" class="col-sm-2 col-form-label">Scope of Work</label>
                   <div class="col-sm-10">
-                    <textarea rows="1" class="form-control" id="scopeOfWork" ng-model="currentProposal.scopeOfWork"></textarea>
+                    <textarea rows="1" class="form-control" id="scopeOfWork" ng-model="proposal.scopeOfWork"></textarea>
                   </div>
                 </div>
                 <div class="form-group ">
                   <label for="paymentSchedule" class="col-sm-2 col-form-label">Payment Schedule</label>
                   <div class="col-sm-10">
-                    <textarea rows="1" class="form-control" id="paymentSchedule" ng-model="currentProposal.paymentSchedule"></textarea>
+                    <textarea rows="1" class="form-control" id="paymentSchedule" ng-model="proposal.paymentSchedule"></textarea>
                   </div>
                 </div>
                 <div class="form-group ">
                   <label for="warranty" class="col-sm-2 col-form-label">Warranty</label>
                   <div class="col-sm-10">
-                    <textarea rows="1" class="form-control" id="warranty" ng-model="currentProposal.workWarranty"></textarea>
+                    <textarea rows="1" class="form-control" id="warranty" ng-model="proposal.workWarranty"></textarea>
                   </div>
                 </div>
                 <div class="form-group ">
                   <label for="note" class="col-sm-2 col-form-label">Note</label>
                   <div class="col-sm-10">
-                    <textarea rows="1" class="form-control" id="note" ng-model="currentProposal.note"></textarea>
+                    <textarea rows="1" class="form-control" id="note" ng-model="proposal.note"></textarea>
                   </div>
                 </div>
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="createProposal() ">Cancel</button>
-              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="saveProposal(lead, currentProposal)">Save Proposal</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="proposalCancel() ">Cancel</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="proposalSave(lead, proposal)">Save Proposal</button>
             </div>
           </div>
         </div>

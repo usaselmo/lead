@@ -172,6 +172,12 @@
  			$scope.list()
  	}
 
+ 	$scope.crudProposal = function(proposal){
+ 		if(!proposal.id)
+ 			proposal.items = [{}]
+ 		$scope.proposal = proposal;
+ 	}
+
  	/** DETAIL **/
  	$scope.detail = function(lead){
  		$scope.lead = lead;
