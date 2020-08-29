@@ -3,6 +3,46 @@
  */
  var local_server_url = "";
 
+ var originalLines = [];
+
+ var convertToClientFormat = function (proposal) {
+ 	prop = copy(proposal)
+ 	items = []
+ 	prop.items.forEach(item => {
+ 		item.lines = item.lines.map(line => {
+ 			originalLines[item.id + line.description] = line.id;
+ 			return line.description;
+ 		}).join("\n")
+ 		items.push(item)
+ 	})
+ 	prop.items = items;
+ 	return prop;
+ }
+
+ var copy = function (obj) {
+ 	return JSON.parse(JSON.stringify(obj))
+ }
+
+
+ var convertToServerFormat = function (proposal) {
+ 	prop = copy(proposal)
+ 	var its = [];
+ 	let ols = originalLines
+ 	prop.items.forEach(item => {
+ 		var lns = [];
+ 		item.lines.split('\n').forEach(line => {
+ 			lns.push({ 'description': line, 'id': ols[item.id + line] });
+ 		})
+ 		its.push({'id':item.id, 'title': item.title, 'lines': lns, 'price': item.price });
+ 	})
+ 	prop.items=[]
+ 	prop.items = its
+ 	prop.lines = null
+ 	prop.note = proposal.note
+ 	originalLines=[]
+ 	return prop
+ }
+
  angular.module('lead', [])
 
  .service('proposalService', function($http){
@@ -15,6 +55,19 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		update: function (scope, proposal, lead_id) {
+ 			$http.put(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(copy(proposal))).then(function (response) {
+ 				if(response.data.proposal){
+ 					scope.lead.proposals = scope.lead.proposals.map(p=>p.id==response.data.proposal.id?response.data.proposal:p)
+ 				}
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+
  	} 
  })
 
@@ -148,7 +201,6 @@
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService) {  
  	/** CRUD **/
- 	$scope.originalLines = [];
 
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
@@ -196,42 +248,10 @@
  		}
  	}
 
-    var convertToClientFormat = function (proposal) {
-      prop = copy(proposal)
-      items = []
-      prop.items.forEach(item => {
-        item.lines = item.lines.map(line => {
-          $scope.originalLines[item.id + line.description] = line.id;
-          return line.description;
-        }).join("\n")
-        items.push(item)
-      })
-      prop.items = items;
-      return prop;
-    }
-
-    var copy = function (obj) {
-      return JSON.parse(JSON.stringify(obj))
-    }
-
-
- 	var convertToServerFormat = function (proposal) {
- 		prop = copy(proposal)
- 		var its = [];
- 		let ols = $scope.originalLines
- 		prop.items.forEach(item => {
- 			var lns = [];
- 			item.lines.split('\n').forEach(line => {
- 				lns.push({ 'description': line, 'id': ols[item.id + line] });
- 			})
- 			its.push({'id':item.id, 'title': item.title, 'lines': lns, 'price': item.price });
- 		})
- 		prop.items=[]
- 		prop.items = its
- 		prop.lines = null
- 		prop.note = proposal.note
- 		$scope.originalLines=[]
- 		return prop
+ 	$scope.proposalSave = function(lead, proposal){
+ 		if(proposal.id){
+ 			proposalService.update($scope, proposal, lead.id);
+ 		}
  	}
 
  	/** DETAIL **/

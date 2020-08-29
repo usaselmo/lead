@@ -1,7 +1,5 @@
 package com.allscontracting.controller;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +24,7 @@ import com.allscontracting.service.ProposalService;
 @RequestMapping("proposals")
 public class ProposalController {
 	
+	private static final String UNEXPECTED_ERROR = "Unexpected error.";
 	@Autowired private ProposalService proposalService;
 
 	@GetMapping(value = "{proposalId}/email")
@@ -38,11 +38,32 @@ public class ProposalController {
 		}
 	}
 
+	@PutMapping
+	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
+		try {
+			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXPECTED_ERROR);
+		}
+	}
+
 	@PostMapping(value = "")
-	public ProposalDTO saveProposal(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication)
-			throws IOException, LeadsException {
-		proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
-		return proposalDTO;
+	public LeadEntity saveProposal(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
+		try {
+			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			return LeadEntity.builder().proposal(proposalDTO).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXPECTED_ERROR);
+		}
 	}
 
 	@DeleteMapping(value = "")

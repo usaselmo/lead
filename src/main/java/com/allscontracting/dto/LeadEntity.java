@@ -26,6 +26,7 @@ public class LeadEntity {
 	private List<String> leadTypes;
 	private Long totalLeads;
 	private CompanyDTO company;
+	private ProposalDTO proposal;
 	
 	public LeadEntity addSuccessMessage(String successMessage) {
 		if(this.successMessages == null)
