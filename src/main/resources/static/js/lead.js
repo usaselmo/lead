@@ -148,6 +148,8 @@
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService) {  
  	/** CRUD **/
+ 	$scope.originalLines = [];
+
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
  		$scope.leads = null;
@@ -172,10 +174,54 @@
  			$scope.list()
  	}
 
- 	$scope.crudProposal = function(proposal){
+ 	$scope.proposalCrud = function(proposal){
  		if(!proposal.id)
  			proposal.items = [{}]
+ 		else
+ 			proposal = convertToClientFormat(proposal);
  		$scope.proposal = proposal;
+ 	}
+
+ 	$scope.proposalCancel = function(){
+ 		$scope.proposal = null;
+ 	}
+
+    var convertToClientFormat = function (proposal) {
+      prop = copy(proposal)
+      items = []
+      prop.items.forEach(item => {
+        item.lines = item.lines.map(line => {
+          $scope.originalLines[item.id + line.description] = line.id;
+          return line.description;
+        }).join("\n")
+        items.push(item)
+      })
+      prop.items = items;
+      return prop;
+    }
+
+    var copy = function (obj) {
+      return JSON.parse(JSON.stringify(obj))
+    }
+
+
+ 	var convertToServerFormat = function (proposal) {
+ 		prop = copy(proposal)
+ 		var its = [];
+ 		let ols = $scope.originalLines
+ 		prop.items.forEach(item => {
+ 			var lns = [];
+ 			item.lines.split('\n').forEach(line => {
+ 				lns.push({ 'description': line, 'id': ols[item.id + line] });
+ 			})
+ 			its.push({'id':item.id, 'title': item.title, 'lines': lns, 'price': item.price });
+ 		})
+ 		prop.items=[]
+ 		prop.items = its
+ 		prop.lines = null
+ 		prop.note = proposal.note
+ 		$scope.originalLines=[]
+ 		return prop
  	}
 
  	/** DETAIL **/
