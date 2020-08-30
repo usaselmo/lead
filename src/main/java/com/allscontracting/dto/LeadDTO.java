@@ -106,7 +106,7 @@ public class LeadDTO {
 		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
 		lead.setContact(PersonDTO.toPerson(leadDTO.getContact()));
 		lead.setTitle(leadDTO.getTitle());
-		lead.setAddress(address);
+		lead.setAddress(leadDTO.getAddress());
 		return lead;
 	}
 
