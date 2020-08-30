@@ -38,6 +38,7 @@ public class LeadDTO {
 	private PersonDTO client;
 	private String title;
 	private String dueDate;
+	private String address;
 
 	//LISTS
 	private List<ProposalDTO> proposals;
@@ -74,6 +75,7 @@ public class LeadDTO {
 				.company(CompanyDTO.of(lead.getCompany()))
 				.contact(PersonDTO.of(lead.getContact()))
 				.title(lead.getTitle())
+				.address(lead.getAddress())
 				.build();
 	}
 	
@@ -104,6 +106,7 @@ public class LeadDTO {
 		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
 		lead.setContact(PersonDTO.toPerson(leadDTO.getContact()));
 		lead.setTitle(leadDTO.getTitle());
+		lead.setAddress(address);
 		return lead;
 	}
 

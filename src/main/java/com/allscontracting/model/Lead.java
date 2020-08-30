@@ -48,6 +48,7 @@ public class Lead implements Serializable {
 	private String description;
 	private String notes;
 	private String title;
+	private String address;
 	@Temporal(TemporalType.TIMESTAMP)	private Date dueDate;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
 	@ManyToOne private User estimator;
