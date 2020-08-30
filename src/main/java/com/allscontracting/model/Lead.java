@@ -43,11 +43,12 @@ public class Lead implements Serializable {
 	
 	//SINGLE PROPERTIES
 	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
-	@Temporal(value = TemporalType.DATE)	private Date date;
+	@Temporal(TemporalType.DATE)	private Date date;
 	@Temporal(TemporalType.TIMESTAMP)	private Date visit;
 	private String description;
 	private String notes;
 	private String title;
+	@Temporal(TemporalType.TIMESTAMP)	private Date dueDate;
   @NotNull	@Enumerated(EnumType.STRING)	private Event event;
 	@ManyToOne private User estimator;
 	

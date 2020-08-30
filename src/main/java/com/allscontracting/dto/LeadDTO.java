@@ -37,6 +37,7 @@ public class LeadDTO {
 	private PersonDTO contact;
 	private PersonDTO client;
 	private String title;
+	private String dueDate;
 
 	//LISTS
 	private List<ProposalDTO> proposals;
