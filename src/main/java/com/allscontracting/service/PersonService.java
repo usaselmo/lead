@@ -60,5 +60,10 @@ public class PersonService {
 	public List<PersonDTO> findAll() {
 		return PersonDTO.of(this.personRepo.findAll(Sort.by("name")));
 	}
+
+	public PersonDTO save(PersonDTO personDTO, User user) {
+		Person person = PersonDTO.toPerson(personDTO);
+		return PersonDTO.of(this.personRepo.save(person));
+	}
 	
 }

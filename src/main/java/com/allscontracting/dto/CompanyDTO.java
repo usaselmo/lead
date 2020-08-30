@@ -35,7 +35,7 @@ public class CompanyDTO {
 			return null;
 		Company c = new Company();
 		c.setAddress(cd.getAddress());
-		c.setEmail(cd.getAddress());
+		c.setEmail(cd.getEmail());
 		c.setId(cd.getId());
 		c.setName(cd.getName());
 		//c.setUsers(users);

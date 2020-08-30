@@ -20,5 +20,10 @@ public class MainController {
 	public String companies() {
 		return "company/company";
 	}
+	
+	@GetMapping("/main/clients")
+	public String clients() {
+		return "client/client";
+	}
 
 }
