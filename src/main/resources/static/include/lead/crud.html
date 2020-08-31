@@ -35,13 +35,17 @@
     </div>
 
     <div class="form-group">
-      <label for="estimator" class="col-sm-2 control-label">Estimator</label>
-      <div class="col-sm-4">
-        <select id="estimator" class="form-control" ng-options="estimator as estimator.name for estimator in estimators track by estimator.id" ng-model="crudLead.estimator"></select>
+      <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
+      <div class="col-sm-2">
+        <input type="text" class="form-control" id="dueDate" placeholder="mm/dd/yyyy" ng-model="crudLead.dueDate">
       </div>
-      <label for="date" class="col-sm-2 control-label">Visit</label>
-      <div class="col-sm-4">
+      <label for="date" class="col-sm-1 control-label">Visit</label>
+      <div class="col-sm-3">
         <input type="text" class="form-control" id="date" placeholder="mm/dd/yyyy" ng-model="crudLead.visit">
+      </div>
+      <label for="estimator" class="col-sm-1 control-label">Estimator</label>
+      <div class="col-sm-3">
+        <select id="estimator" class="form-control" ng-options="estimator as estimator.name for estimator in estimators track by estimator.id" ng-model="crudLead.estimator"></select>
       </div>
     </div>
 

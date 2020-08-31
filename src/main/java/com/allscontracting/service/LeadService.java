@@ -111,11 +111,29 @@ public class LeadService {
 		lead.setClient(leadDTO.getClient() == null ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
 		lead.setEstimator(leadDTO.getEstimator() == null ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate()));
 		lead.setDescription(leadDTO.getDescription());
+		lead.setAddress(leadDTO.getAddress());
 
 		lead = this.leadRepo.save(lead);
 		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user);
 		leadDTO = LeadDTO.of(lead);
+		completeLead(leadDTO);
+		return leadDTO;
+	}
+
+	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
+		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
+		lead.setTitle(leadDTO.getTitle());
+		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setVisit(Converter.convertToDate(leadDTO.getVisit(), Converter.MM_dd_yyyy_hh_mm));
+		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
+		lead.setAddress(leadDTO.getAddress());
+		lead.setDescription(leadDTO.getDescription());
+		leadDTO = LeadDTO.of(this.leadRepo.save(lead));
 		completeLead(leadDTO);
 		return leadDTO;
 	}
@@ -152,20 +170,6 @@ public class LeadService {
 		lead = leadRepo.save(lead);
 		logg.event(Lead.class, id, event, user);
 		LeadDTO leadDTO = LeadDTO.of(lead);
-		completeLead(leadDTO);
-		return leadDTO;
-	}
-
-	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
-		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
-		lead.setVisit(Converter.convertToDate(leadDTO.getVisit(), Converter.MM_dd_yyyy_hh_mm));
-		lead.setDescription(leadDTO.getDescription());
-		leadDTO = LeadDTO.of(this.leadRepo.save(lead));
 		completeLead(leadDTO);
 		return leadDTO;
 	}

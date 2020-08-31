@@ -8,7 +8,7 @@
 
  .service('clientService', function($http){
  	return { 
- 		findCompanies: function (scope) {
+ 		findClients: function (scope) {
  			$http.get(local_server_url + "/persons").then(function (response) {
  				scope.clients = response.data
  			}, function (response) {
@@ -48,7 +48,7 @@
  /*COMPANY CONTROLLER*/
  .controller('ClientController', function ($scope, $http, $timeout, clientService) {
  	var init = function(){
- 		clientService.findCompanies($scope);
+ 		clientService.findClients($scope);
  	}
 
  	$scope.crud = function(client){

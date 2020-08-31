@@ -44,12 +44,13 @@
 					<p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} , {{lead.contact.email}}</p>
 				</span>
 				<p ng-if="lead.client">{{lead.client.name}}</p>
+                <p ng-if="lead.dueDate"><u><i>Due Date: </i></u>{{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}</p>
 				<span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
 				<p><i><small>{{lead.event}}</small></i></p> 
 			</td>
 
 			<td>
-				Lead #{{lead.id}}
+				Lead #{{lead.id}}, of {{lead.date | date }} 
 				<p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
 				<p ng-if="lead.description"><small>{{lead.description}}</small></p>
 			</td>

@@ -61,7 +61,6 @@ public class LeadDTO {
 				.id(String.valueOf(lead.getId()))
 				.oldid(lead.getOldid())
 				.vendor(lead.getVendor().toString())
-				.date(Converter.dateToString(lead.getDate()))
 				.description(lead.getDescription())
 				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee())) 
 				.type(lead.getType())
@@ -69,7 +68,9 @@ public class LeadDTO {
 				.client(PersonDTO.of(lead.getClient()))
 				.proposals(lead.getProposals()==null?null:lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
 				.event(lead.getEvent().getStatus())
+				.date(Converter.dateToString(lead.getDate(), Converter.dd_MM_yyyy))
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit(), Converter.MM_dd_yyyy_hh_mm):"")
+				.dueDate(lead.getDueDate()!=null?Converter.dateToString(lead.getDueDate(), Converter.MM_dd_yyyy_hh_mm):"")
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
 				.company(CompanyDTO.of(lead.getCompany()))
@@ -103,6 +104,7 @@ public class LeadDTO {
 		lead.setType(leadDTO.getType());
 		lead.setVendor(StringUtils.isEmpty(leadDTO.vendor)?null:Lead.Vendor.valueOf(leadDTO.vendor));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
+		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate()));
 		lead.setCompany(CompanyDTO.toCompany(leadDTO.getCompany()));
 		lead.setContact(PersonDTO.toPerson(leadDTO.getContact()));
 		lead.setTitle(leadDTO.getTitle());
