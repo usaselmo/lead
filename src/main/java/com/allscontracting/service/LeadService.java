@@ -50,8 +50,16 @@ public class LeadService {
 			pageRange = 0;
 		List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
 		PageRequest pageable = PageRequest.of(pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
-		List<LeadDTO> res = leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		List<LeadDTO> res = search(text, events, pageable);
 		return res;
+	}
+
+	private List<LeadDTO> search(String text, List<Event> events, PageRequest pageable) {
+		List<Lead> leads = leadRepo.search(text, events, pageable);
+		leads.addAll(leadRepo.search2(text, events, pageable));
+		leads.addAll(leadRepo.search3(text, events, pageable));
+		leads.addAll(leadRepo.search4(text, events, pageable));
+		return leads.stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	public List<EventDTO> findNextEvents(String leadId) {
@@ -89,9 +97,9 @@ public class LeadService {
 		return leadDTO;
 	}
 
-	public List<LeadDTO> search(String text) {
-		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-	}
+//	public List<LeadDTO> search(String text) {
+//		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+//	}
 
 	@Transactional
 	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException {
