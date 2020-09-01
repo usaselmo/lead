@@ -1,7 +1,9 @@
 package com.allscontracting.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class MainController {
@@ -24,6 +26,12 @@ public class MainController {
 	@GetMapping("/main/clients")
 	public String clients() {
 		return "client/client";
+	}
+	
+	@GetMapping("/main/leads/{leadId}/invitations")
+	public String invitations(@PathVariable String leadId, Model model) {
+		model.addAttribute("leadId", leadId);
+		return "lead/invitation";
 	}
 
 }
