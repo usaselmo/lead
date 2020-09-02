@@ -198,4 +198,8 @@ public class LeadService {
 		lead.setNextEvents(findNextEvents(lead.getId()));
 	}
 
+	public LeadDTO findLead(Long leadId) throws LeadsException {
+		return LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead")));
+	}
+
 }

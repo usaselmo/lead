@@ -65,6 +65,20 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
+	
+	@GetMapping("{leadId}")
+	public LeadEntity getLead(@PathVariable Long leadId) {
+		try {
+			LeadDTO leadDTO = this.leadService.findLead(leadId);
+			return LeadEntity.builder().lead(leadDTO).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
 
 	@PostMapping
 	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
