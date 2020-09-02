@@ -24,19 +24,15 @@
 <script src="/js/invitation.js"></script>
 
 </head>
-<body ng-app="invitation">
+<body ng-app="invitation" >
   <div class="container" ng-controller="InvitationController">
     <div class="row" ng-include="'/header.html'"></div>
     <div class="row" ng-include="'/menu.html'"></div> 
     <div class="row">
 
 
-    	<h1>Form</h1>
-    	<form action="#"  method="post">
-    		<p>Id: <input type="text" th:field="*{leadId}" /></p>
-    		<p>Message: <input type="text" value="11111" /></p>
-    		<p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-    	</form>
+
+<input type="text" id="leadId" th:attr='value=${leadId}' >
 
 
     </div>
