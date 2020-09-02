@@ -5,6 +5,8 @@
 
  var originalLines = [];
 
+ var lineBreaker = "\n"
+
  var convertToClientFormat = function (proposal) {
  	prop = copy(proposal)
  	items = []
@@ -12,7 +14,7 @@
  		item.lines = item.lines.map(line => {
  			originalLines[item.id + line.description] = line.id;
  			return line.description;
- 		}).join("\n")
+ 		}).join(lineBreaker)
  		items.push(item)
  	})
  	prop.items = items;
@@ -30,7 +32,7 @@
  	let ols = originalLines
  	prop.items.forEach(item => {
  		var lns = [];
- 		item.lines.split('\n').forEach(line => {
+ 		item.lines.split(lineBreaker).forEach(line => {
  			lns.push({ 'description': line, 'id': ols[item.id + line] });
  		})
  		its.push({'id':item.id, 'title': item.title, 'lines': lns, 'price': item.price });
