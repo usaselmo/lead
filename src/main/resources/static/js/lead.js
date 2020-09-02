@@ -334,7 +334,9 @@
  		}
  	}
 
- 	/** LIST **/
+ 	/****************
+ 	 **** LIST  *****
+ 	 ****************/
  	var pageRange = 0;
  	var lines = 10;
 
@@ -365,11 +367,15 @@
 
  	init();
 
- 	/*INVITATION*/
 
+
+ 	/****************
+ 	 ** INVITATION **
+ 	 ****************/
 
  	$scope.invitationCrud = function(invitation){
  		$scope.invitation = invitation; 
+ 		companyService.findCompanies($scope);
  	}
 
  	$scope.invitationCancel = function(){

@@ -1,48 +1,78 @@
-
-
-			<!-- LIST -->
-			<table class="table table-striped" ng-if="!invitation">
+<div class="row">
+	<div class="col-sm-12">
+		<!-- LIST -->
+		<table class="table table-striped table-hover" style="margin-top: 12px;" ng-if="!invitation">
+			<thead>
 				<tr>
-					<th colspan="5"><h3 class="panel-title">Invitations <a style="margin-left: 12px;" title="New Invitation" ng-click="invitationCrud({})" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></h3></th>
-				</tr>
+					<th>#</th>
+					<th>Date</th>
+					<th>Company</th>
+					<th>Accepted</th>
+					<th>E-mailed</th>
+				</tr>			
+			</thead>
+			<tbody>
 				<tr ng-repeat="invitation in lead.invitations">
 					<td>{{invitation}}</td>
 				</tr>
-			</table>
+			</tbody>
+		</table>
 
+		<a ng-if="!invitation" href="#" class="btn btn-sml btn-default" ng-click="invitationCrud({})"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create Invitation</a>
 
-			<!-- CRUD -->
-			<div class="panel panel-default" ng-if="invitation">
-				<div class="panel-heading">
-					<h3 class="panel-title"><span ng-if="!invitation.id">New Invitation</span> <span ng-if="invitation.id">Edit Invitation</span> </h3>
-				</div>
-				<div class="panel-body"><form class="form-horizontal">
-					<div class="form-group">
-						<label for="94kfk49r" class="col-sm-2 control-label">SC Due Date</label>
-						<div class="col-sm-10">
-							<input  autofocus type="text" class="form-control" id="94kfk49r" placeholder="mm/dd/yyyy hh:mm" ng-model="invitation.dueDate">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="email" class="col-sm-2 control-label">Companies</label>
-						<div class="col-sm-10">
-							<select class="form-control" multiple="multiple" size="10"></select>	
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="phone" class="col-sm-2 control-label"></label>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-secondary btn-block"  ng-click="invitationCancel()">Cancel</button>
-						</div>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-primary btn-block"  ng-click="invitationSave(invitation)">Save</button>
-						</div>
-					</div>
-
-
-				</form>
-
-
+		<!-- CRUD -->
+		<div class="panel panel-default" ng-if="invitation">
+			<div class="panel-heading">
+				<h3 class="panel-title"><span ng-if="!invitation.id">New Invitation</span> <span ng-if="invitation.id">Edit Invitation</span> </h3>
 			</div>
-		</div>
+			<div class="panel-body"><form class="form-horizontal">
+				<div class="form-group">
+					<label for="94kfk49r" class="col-sm-2 control-label">SC Due Date</label>
+					<div class="col-sm-10">
+						<input  autofocus type="text" class="form-control" id="94kfk49r" placeholder="mm/dd/yyyy hh:mm" ng-model="invitation.dueDate">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-sm-2 control-label">Company</label>
+					<div class="col-sm-10">
+						<select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="invitaion.company"><option value="">Select...</option></select>	
+					</div>
+				</div>
 
+
+				<div class="form-group">
+					<label for="sjej0" class="col-sm-2 control-label">Media</label>
+					<div class="col-sm-10">
+						<div class="checkbox">
+  <label>
+    <input type="checkbox" value="">
+    Option one is this and that&mdash;be sure to include why it's great
+  </label>
+  <label>
+    <input type="checkbox" value="">
+    Option one is this and that&mdash;be sure to include why it's great
+  </label>
+  <label>
+    <input type="checkbox" value="">
+    Option one is this and that&mdash;be sure to include why it's great
+  </label>
+</div>
+					</div>
+				</div>
+
+
+
+				<div class="form-group">
+					<label for="phone" class="col-sm-2 control-label"></label>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-secondary btn-block"  ng-click="invitationCancel()">Cancel</button>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn-primary btn-block"  ng-click="invitationSave(invitation, lead)">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
