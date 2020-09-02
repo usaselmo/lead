@@ -59,7 +59,7 @@ public class LeadService {
 		leads.addAll(leadRepo.search2(text, events, pageable));
 		leads.addAll(leadRepo.search3(text, events, pageable));
 		leads.addAll(leadRepo.search4(text, events, pageable));
-		return leads.stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		return leads.stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 	}
 
 	public List<EventDTO> findNextEvents(String leadId) {
