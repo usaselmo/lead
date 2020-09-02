@@ -27,11 +27,5 @@ public class MainController {
 	public String clients() {
 		return "client/client";
 	}
-	
-	@GetMapping("/main/leads/{leadId}/invitations")
-	public String invitations(@PathVariable String leadId, Model model) {
-		model.addAttribute("leadId", leadId);
-		return "lead/invitation";
-	}
 
 }

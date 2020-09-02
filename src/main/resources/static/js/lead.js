@@ -363,5 +363,17 @@
 
  	init();
 
+ 	/*INVITATION*/
+
+
+ 	$scope.invitationCrud = function(invitation){
+ 		$scope.invitation = invitation; 
+ 	}
+
+ 	$scope.invitationCancel = function(){
+ 		$scope.invitation = null
+ 	}
+
+
  })
 

@@ -65,14 +65,14 @@
           <li role="presentation" class="active"><a href="#proposals" aria-controls="proposals" role="tab" data-toggle="tab">Proposals</a></li>
           <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
           <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a></li>
-          <li role="presentation"><a href="/main/leads/{{lead.id}}/invitations" >Invitations</a></li>
+          <li role="presentation"><a href="#invitations" aria-controls="invitations" role="tab" data-toggle="tab">Invitations</a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane active" id="proposals" ng-include="'include/lead/detail-nav-tab-proposal.html'"></div>
           <div role="tabpanel" class="tab-pane" id="notes" ng-include="'include/lead/detail-nav-tab-note.html'"></div>
           <div role="tabpanel" class="tab-pane" id="events"  ng-include="'include/lead/detail-nav-tab-event.html'"></div>
-          <div role="tabpanel" class="tab-pane" id="invitation" ng-include="'include/lead/detail-nav-tab-invitation.html'"></div>
+          <div role="tabpanel" class="tab-pane" id="invitations" ng-include="'include/lead/detail-nav-tab-invitation.html'"></div>
         </div>
       </div>
 
