@@ -2,11 +2,15 @@ package com.allscontracting.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +35,12 @@ public class Invitation implements Serializable {
 	@ManyToOne private Company company;
 	@ManyToOne private Lead lead;
 	private Long number;
-	
+	@OneToMany 
+	@JoinTable(
+		  name = "invitation_media", 
+		  joinColumns = @JoinColumn(name = "invitation_id"), 
+		  inverseJoinColumns = @JoinColumn(name = "media_id"))
+	List<Media> medias;
 	
 	
 }

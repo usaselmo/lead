@@ -52,4 +52,8 @@ public class FileService {
 		});
 	}
 
+	public void storeLeadMedia(MultipartFile file, Long leadId) {
+		// TODO Auto-generated method stub
+	}
+
 }

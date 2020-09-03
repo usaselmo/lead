@@ -226,7 +226,11 @@
 
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService) {  
- 	/** CRUD **/
+
+
+ 	/****************
+ 	 **** CRUD ******
+ 	 ****************/
 
  	$scope.crud = function(lead){
  		$scope.crudLead = lead;
@@ -301,7 +305,12 @@
  		$scope.proposal = nproposal;
  	}
 
- 	/** DETAIL **/
+
+
+ 	/****************
+ 	 **** DETAIL ****
+ 	 ****************/
+
  	$scope.detail = function(lead){
  		$scope.lead = lead;
  		$scope.crudLead = null;
