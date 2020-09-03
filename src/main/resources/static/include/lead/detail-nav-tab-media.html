@@ -22,7 +22,7 @@
 		<div th:if="${message}">
 			<h2 th:text="${message}"/>
 		</div>
-		
+
 
 		<input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br/>
 		<ul ng-repeat="item in uploader.queue">
@@ -47,19 +47,6 @@
 				<span class="glyphicon glyphicon-trash"></span> Remove all
 			</button>
 		</div>
-
-
-
-		<!-- <form class="form-inline" action="{{'/main/leads/' + lead.id + '/file-upload'}}" method="post" enctype="multipart/form-data">
-			<div class="form-group">
-				<label for="exampleInputName2">Name</label>
-				<input type="text" class="form-control" name="name">
-			</div>
-			<div class="form-group">
-
-
-			</div>
-		</form> -->
 	</div>
 
 </div>

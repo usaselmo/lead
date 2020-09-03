@@ -31,19 +31,21 @@ import lombok.NoArgsConstructor;
 public class Invitation implements Serializable {
 
 	private static final long serialVersionUID = 5702457065775817600L;
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
-	@Temporal(TemporalType.TIMESTAMP)	private Date date;
-	@Temporal(TemporalType.TIMESTAMP)	private Date dueDate;
-	@ManyToOne private Company company;
-	@ManyToOne private Lead lead;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dueDate;
+	@ManyToOne
+	private Company company;
+	@ManyToOne
+	private Lead lead;
 	private Long number;
-	/*
-	 * @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE,
-	 * orphanRemoval = true)
-	 * 
-	 * @JoinTable( name = "invitation_media", joinColumns = @JoinColumn(name =
-	 * "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
-	 * List<Media> medias;
-	 */
-	
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinTable(name = "invitation_media", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
+	List<Media> medias;
+
 }
