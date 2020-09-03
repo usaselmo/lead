@@ -1,10 +1,15 @@
 package com.allscontracting.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,10 +44,10 @@ public class MainController {
 	}
 
 	@PostMapping("/main/leads/{leadId}/file-upload")
-	public String handleFileUpload(@PathVariable Long leadId, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+	@ResponseBody
+	public void handleFileUpload(HttpServletResponse response,@PathVariable Long leadId, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
 		fileService.storeLeadMedia(file, leadId);
 		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
-		return null;
 	}
 
 }

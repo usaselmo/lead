@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -59,6 +60,12 @@ public class Lead implements Serializable {
 
 	// LISTS
 	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)	private List<Proposal> proposals;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@JoinTable(
+		  name = "lead_media", 
+		  joinColumns = @JoinColumn(name = "lead_id"), 
+		  inverseJoinColumns = @JoinColumn(name = "media_id"))
+	List<Media> medias;
 	
 	// DEPRECATED
 	private String oldid; 
@@ -77,6 +84,26 @@ public class Lead implements Serializable {
 		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
 	}
 
+	public void addMedia (Media media) {
+		if(this.medias == null)
+			this.medias = new ArrayList<Media>();
+		if(!this.medias.contains(media)) {
+			this.medias.add(media);
+			/*
+			 * if(!media.getLead().equals(this)) media.setLead(this);
+			 */
+		}
+	}
+	
+	public void removeProposal(Media media) {
+		if(this.medias != null) {
+			if(this.medias.contains(media))
+				this.medias.remove(media);
+			/*
+			 * if(media.getLead().equals(this)) media.setLead(null);
+			 */
+		}
+	}
 
 	public void addProposal (Proposal proposal) {
 		if(this.proposals == null)

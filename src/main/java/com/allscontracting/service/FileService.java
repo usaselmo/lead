@@ -1,10 +1,10 @@
 package com.allscontracting.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,16 +12,23 @@ import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
+import com.allscontracting.model.Media;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.LeadRepository;
+import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.tradutor.Translater;
 import com.allscontracting.tradutor.TranslaterDispatcher;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class FileService {
-	@Autowired private LeadRepository leadRepo;
-	@Autowired private TranslaterDispatcher tradutorFinder;
-	@Autowired private LogService logService;
+	
+	private final LeadRepository leadRepo;
+	private final TranslaterDispatcher tradutorFinder;
+	private final LogService logService;
+	private final MediaRepo mediaRepo;
 	
 /*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);
@@ -52,8 +59,20 @@ public class FileService {
 		});
 	}
 
+	@Transactional
 	public void storeLeadMedia(MultipartFile file, Long leadId) {
-		// TODO Auto-generated method stub
+		Optional<Lead> otionalLead = leadRepo.findById(leadId);
+		if(otionalLead.isPresent()) {
+			try {
+				Lead lead = otionalLead.get();
+				Media media = new Media(null, file.getBytes(), file.getContentType(), file.getOriginalFilename());
+				media = this.mediaRepo.save(media);
+				lead.addMedia(media);
+				leadRepo.save(lead);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,12 +37,13 @@ public class Invitation implements Serializable {
 	@ManyToOne private Company company;
 	@ManyToOne private Lead lead;
 	private Long number;
-	@OneToMany 
-	@JoinTable(
-		  name = "invitation_media", 
-		  joinColumns = @JoinColumn(name = "invitation_id"), 
-		  inverseJoinColumns = @JoinColumn(name = "media_id"))
-	List<Media> medias;
-	
+	/*
+	 * @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE,
+	 * orphanRemoval = true)
+	 * 
+	 * @JoinTable( name = "invitation_media", joinColumns = @JoinColumn(name =
+	 * "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
+	 * List<Media> medias;
+	 */
 	
 }
