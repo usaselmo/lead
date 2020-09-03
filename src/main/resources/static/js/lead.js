@@ -227,24 +227,6 @@
  /*MAIN CONTROLLER*/
  .controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService, FileUploader) {  
 
- 	$scope.uploader = new FileUploader();
-
-
-
-
- 	$scope.uploadd = function(uploader, lead){
-
-        uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            $scope.lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
-        };
-
-        uploader.queue.forEach(item=>{
- 			item.url = '/main/leads/' + lead.id + '/file-upload'
- 			item.upload();
- 		})
- 	}
-
-
  	/****************
  	 **** CRUD ******
  	 ****************/
@@ -273,9 +255,28 @@
  			$scope.list()
  	}
 
- 	$scope.proposalCrud = function(proposal){
+
+
+
+ 	/****************
+ 	 *** PROPOSAL ***
+ 	 ****************/
+
+ 	var createProposal = function(lead){
+ 		var proposal = {
+ 			total: 0,
+ 			items: [{price:0}], 
+ 			callMissUtility: true,
+ 			scopeOfWork: 'Concrete work as per visit at ',
+ 			workWarranty: 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.' ,
+			paymentSchedule: '1. 50% down payment upon start of the project \r\n2. 50% final payment upon completion of the project.' 
+ 		}
+ 		return proposal;
+ 	}
+
+ 	$scope.proposalCrud = function(proposal, lead){
  		if(!proposal.id)
- 			proposal.items = [{}]
+ 			proposal = createProposal(lead);
  		else
  			proposal = convertToClientFormat(proposal);
  		$scope.proposal = proposal;
@@ -286,7 +287,7 @@
  	}
 
  	$scope.proposalEncreaseItem = function(proposal){
- 		$scope.proposal.items.push({})
+ 		$scope.proposal.items.push({price: 0})
  	}
 
  	$scope.proposalRemoveItem = function(proposal){
@@ -392,6 +393,25 @@
  	}  
 
  	init();
+
+
+
+ 	/****************
+ 	 **** MEDIA *****
+ 	 ****************/
+ 	$scope.uploader = new FileUploader();
+
+ 	$scope.uploadd = function(uploader, lead){
+
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            $scope.lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
+        };
+
+        uploader.queue.forEach(item=>{
+ 			item.url = '/main/leads/' + lead.id + '/file-upload'
+ 			item.upload();
+ 		})
+ 	}
 
 
 
