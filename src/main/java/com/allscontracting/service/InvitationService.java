@@ -45,4 +45,12 @@ public class InvitationService {
 		return InvitationDTO.of(invitation);
 	}
 
+	public void deleteInvitation(Long leadId, Long invitaionId, User user) throws LeadsException {
+		Lead lead = leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead"));
+		Invitation invitation = invitationRepo.findById(invitaionId).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
+		lead.removeInvitation(invitation);
+		invitationRepo.delete(invitation);
+		leadRepo.save(lead);
+	}
+
 }

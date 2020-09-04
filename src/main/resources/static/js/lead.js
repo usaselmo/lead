@@ -232,6 +232,17 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		deleteInvitation: function (scope, invitation, lead) {
+ 			$http.delete(local_server_url + '/leads/'+lead.id+'/invitations/' + invitation.id).then(function (response) {
+ 				if(!response.data.errorMessages)
+ 					scope.lead.invitations = scope.lead.invitations.filter(i=>i.id != invitation.id)
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
 
  	} 
  })
@@ -453,6 +464,12 @@
  			leadService.createInvitation($scope, inv, lead);	
  		})
  		$scope.invitationCancel();
+ 	}
+
+ 	$scope.invitationDelete = function(invitation, lead){
+ 		if(confirm(' Are you sure you want to delete invitation #'+invitation.id+'? ')){
+ 			leadService.deleteInvitation($scope, invitation, lead);
+ 		}
  	}
 
 

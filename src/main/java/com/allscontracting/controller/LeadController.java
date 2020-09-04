@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,20 @@ public class LeadController {
 	private static final String UNEXTECTED_ERROR = "Unexpected error.";
 	private final LeadService leadService;
 	private final InvitationService invitationService;
+
+	@DeleteMapping("{leadId}/invitations/{invitationId}")
+	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
+		try {
+			invitationService.deleteInvitation(leadId, invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser() );
+			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
 	
 	@PostMapping("{leadId}/invitations")
 	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {

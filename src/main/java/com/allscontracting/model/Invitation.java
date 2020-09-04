@@ -45,7 +45,7 @@ public class Invitation implements Serializable {
 	@ManyToOne	
 	private Company company;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany
 	@JoinTable(name = "invitation_media", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
 	private List<Media> medias;
 
