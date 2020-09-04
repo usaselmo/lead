@@ -36,9 +36,9 @@ public class LeadController {
 	private final InvitationService invitationService;
 	
 	@PostMapping("{leadId}/invitations")
-	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO) {
+	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId)).build();
+			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.allscontracting.event.Event;
 import com.allscontracting.model.EventLog;
+import com.allscontracting.model.Invitation;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
@@ -62,6 +63,11 @@ public class LogService {
 	@Transactional
 	public void newLeadCreated(String leadId, Person person, User user) {
 		fireEvent(Lead.class, leadId, Event.CREATE, user, "New Lead created. ID: " + leadId);
+	}
+
+	@Transactional
+	public void newInvitationCreated(Long leadId, Invitation inv, User user) {
+		fireEvent(Lead.class, String.valueOf(leadId), Event.CREATE, user, "New Invitation created. ID: "+inv.getId()+", to company: " + inv.getCompany().getName());
 	}
 
 }
