@@ -10,6 +10,8 @@
 
     <a style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="list()"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Show Leads</a> 
 
+    <a title="Reload Lead" ng-click="reloadLead(lead)" href="#" style="padding: 6px;" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Reload Lead"></span></a>
+
     <a title="Edit" ng-click="crud(lead)" data-toggle="modal" data-target="#editModal" href="#" style="padding: 6px;" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit"></span> Edit</a>
 
     <a title="Send Can't Reach E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="sendCantReachEmail(lead, lead.client)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>

@@ -199,7 +199,9 @@ public class LeadService {
 	}
 
 	public LeadDTO findLead(Long leadId) throws LeadsException {
-		return LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead")));
+		LeadDTO leadDTO = LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead")));
+		completeLead(leadDTO);
+		return leadDTO;
 	}
 
 }

@@ -67,7 +67,7 @@ public class LogService {
 
 	@Transactional
 	public void newInvitationCreated(Long leadId, Invitation inv, User user) {
-		fireEvent(Lead.class, String.valueOf(leadId), Event.CREATE, user, "New Invitation created. ID: "+inv.getId()+", to company: " + inv.getCompany().getName());
+		fireEvent(Lead.class, String.valueOf(leadId), Event.CREATE, user, "New Invitation #"+inv.getId()+" created to " + inv.getCompany().getName());
 	}
 
 }
