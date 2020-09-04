@@ -6,6 +6,7 @@
 				<tr>
 					<th>#</th>
 					<th>Date</th>
+					<th>Due Date</th>
 					<th>Company</th>
 					<th>E-mailed</th>
 					<th>Accepted</th>
@@ -14,7 +15,13 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="invitation in lead.invitations">
-					<td>{{invitation}}</td>
+					<td>{{invitation.id}}</td>
+					<td>{{invitation.date | date}}</td>
+					<td>{{invitation.dueDate | date}}</td>
+					<td>{{invitation.company.name}}</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
 				</tr>
 			</tbody>
 		</table>
@@ -38,7 +45,7 @@
 				<div class="form-group">
 					<label for="email" class="col-sm-2 control-label">Company</label>
 					<div class="col-sm-10">
-						<select multiple="multiple" style="max-height: 200px; min-height: 50px;" id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="invitaion.company"></select>	
+						<select multiple="multiple" style="max-height: 200px; min-height: 50px;" id="companies" class="form-control" ng-options="comp as comp.name for comp in companies" ng-model="invitation.companies"></select>	
 					</div>
 				</div>
 
@@ -46,12 +53,9 @@
 				<div class="form-group">
 					<label for="sjej0" class="col-sm-2 control-label">Media</label>
 					<div class="col-sm-10">
-						<div class="checkbox" ng-repeat="media in lead.medias">
-							<label>
-								<input type="checkbox" value="">
-								{{media.name}}
-							</label>
-						</div>
+						
+						<select multiple="multiple" style="max-height: 200px; min-height: 50px;" id="medias" class="form-control" ng-options="media as media.name for media in lead.medias" ng-model="invitation.medias"></select>	
+
 					</div>
 				</div>
 

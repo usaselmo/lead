@@ -60,12 +60,15 @@ public class Lead implements Serializable {
 
 	// LISTS
 	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)	private List<Proposal> proposals;
+	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinTable(
 		  name = "lead_media", 
 		  joinColumns = @JoinColumn(name = "lead_id"), 
 		  inverseJoinColumns = @JoinColumn(name = "media_id"))
 	List<Media> medias;
+	
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true) private List<Invitation> invitations;
 	
 	// DEPRECATED
 	private String oldid; 
@@ -87,21 +90,33 @@ public class Lead implements Serializable {
 	public void addMedia (Media media) {
 		if(this.medias == null)
 			this.medias = new ArrayList<Media>();
-		if(!this.medias.contains(media)) {
+		if(!this.medias.contains(media)) 
 			this.medias.add(media);
-			/*
-			 * if(!media.getLead().equals(this)) media.setLead(this);
-			 */
-		}
 	}
 	
-	public void removeProposal(Media media) {
+	public void removeMedia(Media media) {
 		if(this.medias != null) {
 			if(this.medias.contains(media))
 				this.medias.remove(media);
-			/*
-			 * if(media.getLead().equals(this)) media.setLead(null);
-			 */
+		}
+	}
+
+	public void addInvitation (Invitation invitation) {
+		if(this.invitations == null)
+			this.invitations = new ArrayList<Invitation>();
+		if(!this.invitations.contains(invitation)) {
+			this.invitations.add(invitation);
+			if(!invitation.getLead().equals(this))
+				invitation.setLead(this);
+		}
+	}
+	
+	public void removeInvitation(Invitation invitation) {
+		if(this.invitations != null) {
+			if(this.invitations.contains(invitation))
+				this.invitations.remove(invitation);
+			if(invitation.getLead().equals(this))
+				invitation.setLead(null);
 		}
 	}
 

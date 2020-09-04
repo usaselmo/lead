@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.EventDTO;
+import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
+import com.allscontracting.service.InvitationService;
 import com.allscontracting.service.LeadService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,18 @@ public class LeadController {
 
 	private static final String UNEXTECTED_ERROR = "Unexpected error.";
 	private final LeadService leadService;
-
+	private final InvitationService invitationService;
+	
+	@PostMapping("{leadId}/invitations")
+	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO) {
+		try {
+			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId)).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
 	@GetMapping("eventtypes")
 	public LeadEntity findEventTypes() {
 		try {

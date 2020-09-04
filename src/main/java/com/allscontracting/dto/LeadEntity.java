@@ -28,6 +28,7 @@ public class LeadEntity {
 	private CompanyDTO company;
 	private ProposalDTO proposal;
 	private PersonDTO person;
+	private InvitationDTO invitation;
 	
 	public LeadEntity addSuccessMessage(String successMessage) {
 		if(this.successMessages == null)

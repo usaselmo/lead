@@ -219,6 +219,19 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		createInvitation: function (scope, invitation, lead) {
+ 			$http.post(local_server_url + '/leads/' + lead.id + '/invitations', invitation).then(function (response) {
+ 				if(response.data.invitation)
+ 					scope.lead.invitations.push(response.data.invitation)
+ 				
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 				
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
 
  	} 
  })
@@ -407,10 +420,15 @@
             $scope.lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
         };
 
+        uploader.onCompleteAll = function(){
+ 			uploader.clearQueue();
+        }
+
         uploader.queue.forEach(item=>{
  			item.url = '/main/leads/' + lead.id + '/file-upload'
  			item.upload();
  		})
+
  	}
 
 
@@ -426,6 +444,15 @@
 
  	$scope.invitationCancel = function(){
  		$scope.invitation = null
+ 	}
+
+ 	$scope.invitationSave = function(invitation, lead){
+ 		invitation.companies.forEach(comp=>{
+ 			var inv = angular.copy(invitation);
+ 			inv.company = comp;
+ 			leadService.createInvitation($scope, inv, lead);	
+ 		})
+ 		$scope.invitationCancel();
  	}
 
 

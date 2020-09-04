@@ -25,7 +25,7 @@ public class MediaDTO {
 			return null;
 		return MediaDTO.builder()
 				.id(media.getId())
-				.content(media.getContent())
+				//.content(media.getContent())
 				.type(media.getType())
 				.name(media.getName())
 				.build();
@@ -38,6 +38,10 @@ public class MediaDTO {
 	public static final Media toMedia(MediaDTO mediaDTO) {
 		if(mediaDTO==null) return null;
 		return new Media(mediaDTO.getId(), mediaDTO.getContent(), mediaDTO.getType(), mediaDTO.getName());
+	}
+	
+	public static final List<Media> toMedia( List<MediaDTO> mediaDTOs){
+		return mediaDTOs.stream().map(m->MediaDTO.toMedia(m)).collect(Collectors.toList());
 	}
 	
 }

@@ -1,6 +1,7 @@
 package com.allscontracting.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,21 +32,41 @@ import lombok.NoArgsConstructor;
 public class Invitation implements Serializable {
 
 	private static final long serialVersionUID = 5702457065775817600L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
+	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	
 	private Long id;
-	@Temporal(TemporalType.TIMESTAMP)
+	
+	@Temporal(TemporalType.TIMESTAMP)	
 	private Date date;
-	@Temporal(TemporalType.TIMESTAMP)
+	
+	@Temporal(TemporalType.TIMESTAMP)	
 	private Date dueDate;
-	@ManyToOne
+	
+	@ManyToOne	
 	private Company company;
-	@ManyToOne
-	private Lead lead;
-	private Long number;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
 	@JoinTable(name = "invitation_media", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
-	List<Media> medias;
+	private List<Media> medias;
 
+  @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	
+  private Lead lead;
+
+  
+	public void addMedia(Media media) {
+		if(this.medias == null)
+			this.medias = new ArrayList<Media>();
+		if(!this.medias.contains(media)) {
+			this.medias.add(media);
+		}
+	}
+
+	public void removeMedia(Media media) {
+		if(this.medias != null) {
+			if(this.medias.contains(media))
+				this.medias.remove(media);
+		}
+	}
+	
+	
 }

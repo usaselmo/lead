@@ -45,6 +45,7 @@ public class LeadDTO {
 	private List<EventLogDTO> eventLogs;
 	private List<EventDTO> nextEvents;
 	private List<MediaDTO> medias;
+	private List<InvitationDTO> invitations;
 
 	//DEPRECATED
 	private String oldid;
@@ -79,6 +80,7 @@ public class LeadDTO {
 				.title(lead.getTitle())
 				.address(lead.getAddress())
 				.medias(MediaDTO.of(lead.getMedias()))
+				.invitations(InvitationDTO.of(lead.getInvitations()))
 				.build();
 	}
 	
@@ -112,6 +114,7 @@ public class LeadDTO {
 		lead.setTitle(leadDTO.getTitle());
 		lead.setAddress(leadDTO.getAddress());
 		lead.setMedias(leadDTO.getMedias().stream().map(media->MediaDTO.toMedia(media)).collect(Collectors.toList()));
+		lead.setInvitations(InvitationDTO.toInvitation(leadDTO.getInvitations()));
 		return lead;
 	}
 
