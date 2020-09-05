@@ -257,7 +257,6 @@
  		
  		sendInvitationByEmail: function (scope, invitation) {
  			$http.post(local_server_url + '/leads/'+invitation.lead.id+'/invitations/'+invitation.id+'/email', invitation).then(function (response) {
- 				console.log('resposta OK do servidor: ', response)
  				scope.successMessages = response.data.successMessages
  				scope.errorMessages = response.data.errorMessages
  			}, function (response) {
@@ -502,8 +501,10 @@
  	}
 
  	$scope.invitationEmail = function(invitation, lead){
- 		invitation.lead = {id: lead.id}
- 		leadService.sendInvitationByEmail($scope, invitation)
+ 		if(confirm(' Are you sure you want to send this invitation by e-mail ? ')){
+ 			invitation.lead = {id: lead.id}
+ 			leadService.sendInvitationByEmail($scope, invitation)	
+ 		}
  	}
 
  })
