@@ -215,6 +215,7 @@ public class LeadService {
 		return leadDTO;
 	}
 
+	@Transactional
 	public void sendInvitationByEmail(InvitationDTO invitationDTO) throws LeadsException, IOException {
 		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
 		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow( ()-> new LeadsException("Could not find Lead")));
@@ -228,10 +229,10 @@ public class LeadService {
 				System.out.println(error);
 			})
 			.onSuccess( ()->{
-				//invitation.set
+				invitation.setEmailed( (invitation.getEmailed()==null)?1L:invitation.getEmailed()+1L );
+				this.invitationRepo.save(invitation);
 			})
-			.send();  
-		;
+			.send();
 	}
 
 	private String definesuffix(String type) {

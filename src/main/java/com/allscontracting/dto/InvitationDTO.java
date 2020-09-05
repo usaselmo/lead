@@ -23,7 +23,8 @@ public class InvitationDTO {
 	private LeadDTO lead;
 	private CompanyDTO company;
 	private PersonDTO contact;
-	private List<MediaDTO> medias; 
+	private List<MediaDTO> medias;
+	private Long emailed;
 	
 	public static final InvitationDTO of(Invitation invitation) {
 		if(invitation==null)
@@ -36,6 +37,7 @@ public class InvitationDTO {
 			//.lead(LeadDTO.of(invitation.getLead()))
 			.medias(MediaDTO.of(invitation.getMedias()))
 			.contact(PersonDTO.of(invitation.getContact()))
+			.emailed(invitation.getEmailed()==null?0L:invitation.getEmailed())
 			.build();
 	}
 	
@@ -56,6 +58,7 @@ public class InvitationDTO {
 		//invitation.setLead(LeadDTO.toLead(i.getLead()));
 		invitation.setMedias(MediaDTO.toMedia(invitationDTO.getMedias()));
 		invitation.setContact(PersonDTO.toPerson(invitationDTO.getContact()));
+		invitation.setEmailed(invitationDTO.getEmailed()==null?0L:invitationDTO.getEmailed());
 		return invitation;
 	}
 

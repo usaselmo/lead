@@ -257,6 +257,8 @@
  		
  		sendInvitationByEmail: function (scope, invitation) {
  			$http.post(local_server_url + '/leads/'+invitation.lead.id+'/invitations/'+invitation.id+'/email', invitation).then(function (response) {
+ 				if(!response.data.errorMessages)
+ 					invitation.emailed++
  				scope.successMessages = response.data.successMessages
  				scope.errorMessages = response.data.errorMessages
  			}, function (response) {

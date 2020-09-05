@@ -34,6 +34,8 @@ public class Invitation implements Serializable {
 	@Id	@GeneratedValue(strategy = GenerationType.AUTO)	
 	private Long id;
 	
+	private Long emailed;
+	
 	@Temporal(TemporalType.TIMESTAMP)	
 	private Date date;
 	
