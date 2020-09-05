@@ -468,6 +468,7 @@
  	$scope.invitationCrud = function(invitation){
  		$scope.invitation = invitation; 
  		companyService.findCompanies($scope);
+ 		personService.findPersons($scope)
  	}
 
  	$scope.invitationCancel = function(){
@@ -475,11 +476,11 @@
  	}
 
  	$scope.invitationSave = function(invitation, lead){
- 		invitation.companies.forEach(comp=>{
- 			var inv = angular.copy(invitation);
- 			inv.company = comp;
- 			leadService.createInvitation($scope, inv, lead);	
- 		})
+ 		/*invitation.companies.forEach(comp=>{*/
+ 			//var inv = angular.copy(invitation);
+ 			//inv.company = comp;
+ 			leadService.createInvitation($scope, invitation, lead);	
+ 		/*})*/
  		$scope.reloadLead(lead)
  		$scope.invitationCancel();
  	}

@@ -22,6 +22,7 @@ public class InvitationDTO {
 	private String dueDate;
 	private LeadDTO lead;
 	private CompanyDTO company;
+	private PersonDTO contact;
 	private List<MediaDTO> medias; 
 	
 	public static final InvitationDTO of(Invitation invitation) {
@@ -34,6 +35,7 @@ public class InvitationDTO {
 			.company(CompanyDTO.of(invitation.getCompany()))
 			//.lead(LeadDTO.of(invitation.getLead()))
 			.medias(MediaDTO.of(invitation.getMedias()))
+			.contact(PersonDTO.of(invitation.getContact()))
 			.build();
 	}
 	
@@ -53,6 +55,7 @@ public class InvitationDTO {
 		invitation.setCompany(CompanyDTO.toCompany(invitationDTO.getCompany()));
 		//invitation.setLead(LeadDTO.toLead(i.getLead()));
 		invitation.setMedias(MediaDTO.toMedia(invitationDTO.getMedias()));
+		invitation.setContact(PersonDTO.toPerson(invitationDTO.getContact()));
 		return invitation;
 	}
 

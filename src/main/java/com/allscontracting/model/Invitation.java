@@ -50,6 +50,8 @@ public class Invitation implements Serializable {
   @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	
   private Lead lead;
 
+  @ManyToOne
+  private Person contact;
   
 	public void addMedia(Media media) {
 		if(this.medias == null)
