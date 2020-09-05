@@ -1,6 +1,6 @@
 package com.allscontracting;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -26,7 +26,6 @@ import com.allscontracting.service.LeadService;
 
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 
@@ -83,7 +82,7 @@ public class ReportGenerationTest {
 	}
 
 	private String defineSourceFile() {
-		return ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "");
+		return ReportGenerationTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jasper").getPath().replaceFirst("/", "");
 	}
 
 	private InputStream getJrxmlFileAsStream() {
@@ -102,7 +101,7 @@ public class ReportGenerationTest {
 	public void compile() throws Exception {
 		try {
 
-			String sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
+			String sourceFileName = ReportGenerationTest.class.getClassLoader().getResource(JASPER_FOLDER + "estimate.jrxml").getPath().replaceFirst("/", "")  ; 
 			sourceFileName = JasperCompileManager.compileReportToFile(sourceFileName);
 			//sourceFileName = ReportTest.class.getClassLoader().getResource(JASPER_FOLDER + "proposal.jasper").getPath().replaceFirst("/", "")  ; 
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -53,7 +52,7 @@ public class Invitation implements Serializable {
   @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	
   private Lead lead;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne
   private Person contact;
   
 	public void addMedia(Media media) {
