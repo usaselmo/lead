@@ -232,7 +232,8 @@ public class LeadService {
 				invitation.setEmailed( (invitation.getEmailed()==null)?1L:invitation.getEmailed()+1L );
 				this.invitationRepo.save(invitation);
 			})
-			.send();
+			//.send()
+			;
 	}
 
 	private String definesuffix(String type) {

@@ -101,7 +101,7 @@
   </dependencies>
 
   <build>
-
+<!-- 
     <resources>
       <resource>
         <directory>src/main/java</directory>
@@ -116,9 +116,9 @@
         <directory>src/main/resources/jasper/*</directory>
       </resource>
       <resource>
-        <directory>src/main/resources/templates</directory>
+        <directory>src/main/resources/templates/*</directory>
       </resource>
-    </resources>
+    </resources> -->
 
 
     <plugins>
