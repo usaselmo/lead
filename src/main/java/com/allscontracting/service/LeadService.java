@@ -41,7 +41,9 @@ import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LeadService {
@@ -107,10 +109,6 @@ public class LeadService {
 		completeLead(leadDTO);
 		return leadDTO;
 	}
-
-//	public List<LeadDTO> search(String text) {
-//		return this.leadRepo.search(text, null, PageRequest.of(0, 100, new Sort(Sort.Direction.DESC, "date"))).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-//	}
 
 	@Transactional
 	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException {
@@ -226,7 +224,7 @@ public class LeadService {
 		}
 		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
 			.onError( (error)->{
-				System.out.println(error);
+				log.error(error);
 			})
 			.onSuccess( ()->{
 				invitation.setEmailed( (invitation.getEmailed()==null)?1L:invitation.getEmailed()+1L );
