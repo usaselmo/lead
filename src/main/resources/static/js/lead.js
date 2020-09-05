@@ -254,6 +254,20 @@
  				console.log(response)
  			});
  		},
+ 		
+ 		sendInvitationByEmail: function (scope, invitation) {
+ 			$http.post(local_server_url + '/leads/'+invitation.lead.id+'/invitations/'+invitation.id+'/email', invitation).then(function (response) {
+ 				console.log('resposta OK do servidor: ', response)
+ 				scope.successMessages = response.data.successMessages
+ 				scope.errorMessages = response.data.errorMessages
+ 			}, function (response) {
+ 				console.log('aconteceu um erro', response)
+ 			});
+ 		},
+
+
+
+
 
  	} 
  })
@@ -476,11 +490,7 @@
  	}
 
  	$scope.invitationSave = function(invitation, lead){
- 		/*invitation.companies.forEach(comp=>{*/
- 			//var inv = angular.copy(invitation);
- 			//inv.company = comp;
- 			leadService.createInvitation($scope, invitation, lead);	
- 		/*})*/
+		leadService.createInvitation($scope, invitation, lead);	
  		$scope.reloadLead(lead)
  		$scope.invitationCancel();
  	}
@@ -491,6 +501,10 @@
  		}
  	}
 
+ 	$scope.invitationEmail = function(invitation, lead){
+ 		invitation.lead = {id: lead.id}
+ 		leadService.sendInvitationByEmail($scope, invitation)
+ 	}
 
  })
 

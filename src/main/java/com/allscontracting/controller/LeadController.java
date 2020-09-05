@@ -36,6 +36,17 @@ public class LeadController {
 	private final LeadService leadService;
 	private final InvitationService invitationService;
 
+	@PostMapping("/{leadId}/invitations/{invitationId}/email")
+	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO) {
+		try {
+			leadService.sendInvitationByEmail(invitationDTO);
+			return LeadEntity.builder().build().addSuccessMessage("Invitation sent by e-mail.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
 	@DeleteMapping("{leadId}/invitations/{invitationId}")
 	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
 		try {

@@ -36,7 +36,6 @@ public class InvitationService {
 		invitation.setLead(lead);
 		invitation.setMedias(invitation.getMedias().stream().map(m->mediaRepo.findById(m.getId()).orElse(null)).collect(Collectors.toList()));
 		
-		System.out.println(lead.getId()+" - "+ invitation.getCompany().getId());
 		invitation = this.invitationRepo.save(invitation);
 
 		lead.addInvitation(invitation);

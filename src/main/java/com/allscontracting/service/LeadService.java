@@ -1,7 +1,12 @@
 package com.allscontracting.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -17,16 +22,20 @@ import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.EventLogDTO;
+import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.event.Event;
 import com.allscontracting.event.EventDispatcher;
 import com.allscontracting.exception.LeadsException;
+import com.allscontracting.model.Invitation;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Media;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.EventoLogRepository;
+import com.allscontracting.repo.InvitationRepo;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.UserRepository;
@@ -44,6 +53,8 @@ public class LeadService {
 	private final UserRepository userRepo;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
+	private final MailService mailService;
+	private final InvitationRepo invitationRepo;
 
 	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws LeadsException {
 		if (pageRange < 0)
@@ -202,6 +213,31 @@ public class LeadService {
 		LeadDTO leadDTO = LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead")));
 		completeLead(leadDTO);
 		return leadDTO;
+	}
+
+	public void sendInvitationByEmail(InvitationDTO invitationDTO) throws LeadsException, IOException {
+		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
+		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow( ()-> new LeadsException("Could not find Lead")));
+		List<File>attachments = new ArrayList<>();
+		for (Media media : invitation.getMedias()) {
+			Path tempFile = Files.createTempFile("", this.definesuffix(media.getType()));
+			attachments.add(Files.write(tempFile, media.getContent()).toFile());
+		}
+		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
+			.onError( (error)->{
+				System.out.println(error);
+			})
+			.onSuccess( ()->{
+				//invitation.set
+			})
+			.send();  
+		;
+	}
+
+	private String definesuffix(String type) {
+		if(type.contains("pdf"))
+			return ".pdf";
+		return "";
 	}
 
 }
