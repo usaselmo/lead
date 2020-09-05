@@ -1,5 +1,6 @@
 package com.allscontracting.service;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -26,16 +27,16 @@ public class Mail {
 	private String subject;
 	private String emailTo;
 	private String text;
-	private FileSystemResource[] attachmentFiles = {} ;
+	private File[] attachmentFiles = {} ;
 
-	public Mail(String emailTo, String subject, String text, FileSystemResource... attachmentFiles) {
+	public Mail(String emailTo, String subject, String text, File... attachmentFiles) {
 		this.emailTo = emailTo;
 		this.subject = subject;
 		this.text = text;
 		if (attachmentFiles != null)
 			this.attachmentFiles = attachmentFiles;
 		else
-			this.attachmentFiles = new FileSystemResource[]{};
+			this.attachmentFiles = new File[]{};
 	}
 
 	public void send() {
@@ -45,8 +46,9 @@ public class Mail {
 				MimeMessage mimeMessage = emailSender().createMimeMessage();
 				MimeMessageHelper helper = getMiniMessageHelper(mimeMessage, subject, emailTo);
 				helper.setText(text, true);
-				for (FileSystemResource af : attachmentFiles) {
-					helper.addAttachment(af.getFilename(), af);
+				for (File af : attachmentFiles) {
+					FileSystemResource file = new FileSystemResource(af);
+					helper.addAttachment(file.getFilename(), file);
 				}
 				emailSender().send(mimeMessage);
 				this.runnableOnSuccess.run();
