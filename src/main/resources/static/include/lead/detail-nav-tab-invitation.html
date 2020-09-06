@@ -9,7 +9,6 @@
 					<th>Due Date</th>
 					<th>Company</th>
 					<th>E-mailed</th>
-					<th>Accepted</th>
 					<th>Proposals</th>
 					<th>&nbsp;</th>
 				</tr>			
@@ -19,9 +18,8 @@
 					<td>{{invitation.id}}</td>
 					<td>{{invitation.date | date}}</td>
 					<td>{{invitation.dueDate | date}}</td>
-					<td>{{invitation.company.name}}</td>
+					<td><strong>{{invitation.company.name}}</strong><br><i>{{invitation.contact.name}}</i> {{invitation.contact.phone}} {{invitation.contact.email}} </td>
 					<td>{{invitation.emailed}}</td>
-					<td>&nbsp;</td>
 					<td>
 						<span ng-if="invitation.proposals" ng-repeat="proposal in invitation.proposals">
 							<p><a href="/leads/{{lead.id}}/invitations/{{invitation.id}}/proposals/{{proposal.id}}/pdf" >{{proposal.name}}</a></p> 

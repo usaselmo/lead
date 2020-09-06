@@ -221,7 +221,7 @@ public class LeadService {
 		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow( ()-> new LeadsException("Could not find Lead")));
 		List<File>attachments = new ArrayList<>();
 		for (Media media : invitation.getMedias()) {
-			Path tempFile = Files.createTempFile("", this.definesuffix(media.getType()));
+			Path tempFile = Files.createTempFile("", "_"+media.getName());
 			attachments.add(Files.write(tempFile, media.getContent()).toFile());
 		}
 		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
@@ -233,12 +233,6 @@ public class LeadService {
 				this.invitationRepo.save(invitation);
 			})
 			.send();
-	}
-
-	private String definesuffix(String type) {
-		if(type.contains("pdf"))
-			return ".pdf";
-		return "";
 	}
 
 	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {
