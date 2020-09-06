@@ -4,6 +4,13 @@
  */
  var local_server_url = "";
 
+var initTable = function(){
+	[1,2,3].forEach(function(i) {
+		setTimeout(function(){ $('#94irjrn494h').DataTable(); }, i*1000);
+	});
+}
+
+
  angular.module('client', [])
 
  .service('clientService', function($http){
@@ -49,6 +56,7 @@
  .controller('ClientController', function ($scope, $http, $timeout, clientService) {
  	var init = function(){
  		clientService.findClients($scope);
+ 		initTable();
  	}
 
  	$scope.crud = function(client){
@@ -57,6 +65,7 @@
 
  	$scope.cancel = function(){
  		$scope.client = null
+ 		initTable();
  	}
 
  	$scope.save = function(client){
