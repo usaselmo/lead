@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.PageRequest;
@@ -57,6 +58,7 @@ public class LeadService {
 	private final CompanyRepository companyRepo;
 	private final MailService mailService;
 	private final InvitationRepo invitationRepo;
+	private final ReportService reportService;
 
 	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws LeadsException {
 		if (pageRange < 0)
@@ -237,6 +239,12 @@ public class LeadService {
 		if(type.contains("pdf"))
 			return ".pdf";
 		return "";
+	}
+
+	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {
+		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
+		Media proposal = invitation.getProposals().stream().filter(prop->prop.getId().equals(proposalId)).findFirst().orElseThrow( ()-> new LeadsException("Could not find Proposal"));
+		this.reportService.getFileAsPdfStream(response, proposal.getName(), proposal.getContent());
 	}
 
 }

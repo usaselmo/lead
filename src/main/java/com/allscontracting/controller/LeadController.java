@@ -3,6 +3,8 @@ package com.allscontracting.controller;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +37,20 @@ public class LeadController {
 	private static final String UNEXTECTED_ERROR = "Unexpected error.";
 	private final LeadService leadService;
 	private final InvitationService invitationService;
+
+	@GetMapping(value = "{leadId}/invitations/{invitationId}/proposals/{proposalId}/pdf")
+	public LeadEntity getInvitationPdf(HttpServletResponse response, @PathVariable Long invitationId, @PathVariable Long proposalId){
+		try {
+			this.leadService.getInvitationAsPdfStream(response, invitationId, proposalId);
+			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
 
 	@PostMapping("/{leadId}/invitations/{invitationId}/email")
 	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO) {
