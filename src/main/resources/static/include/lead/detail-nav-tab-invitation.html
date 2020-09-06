@@ -22,12 +22,12 @@
 					<td>{{invitation.company.name}}</td>
 					<td>{{invitation.emailed}}</td>
 					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+					<td>{{invitation.proposals}}</td>
 					<td nowrap="nowrap">
 
-            			<a href="#" title="Include Proposal" class="btn btn-default btn-sm" ng-click="invitationIncludeProposal(invitation)"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+						<a href="#" title="Include Proposal" class="btn btn-default btn-sm" ng-click="invitationIncludeProposal(invitation)"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a>&nbsp;
 
-            			<a href="#" title="Email Invitation #{{invitation.id}}" class="btn btn-default btn-sm" ng-click="invitationEmail(invitation, lead)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>&nbsp;
+						<a href="#" title="Email Invitation #{{invitation.id}}" class="btn btn-default btn-sm" ng-click="invitationEmail(invitation, lead)"><span class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>&nbsp;
 
 						<a ng-if="!invitation.emailed" title="Delete" href="#" class="btn btn-sm btn-danger" ng-click="invitationDelete(invitation, lead)"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></a>
 					</td>
@@ -35,7 +35,35 @@
 			</tbody>
 		</table>
 
-		<a ng-if="!invitation" href="#" class="btn btn-sml btn-default" ng-click="invitationCrud({})"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create Invitation</a>
+		<a ng-if="!uploading['processing'] && !invitation" ng-if="!invitation" href="#" class="btn btn-sml btn-default" ng-click="invitationCrud({})"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create Invitation</a>
+
+		<!-- UPLOAD -->
+		<div ng-if="uploading['processing']">
+			<input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br/>
+			<ul ng-repeat="item in uploader.queue">
+				<li >
+					<span ng-bind="item.file.name"></span><br/>
+				</li>
+			</ul> 
+
+			<div>
+				<div>
+					<div class="progress" style="">
+						<div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+					</div>
+				</div>
+				<button type="button" class="btn btn-success btn-s" ng-click="uploadProposal(uploader, uploading['invitation'], lead)" ng-disabled="!uploader.getNotUploadedItems().length">
+					<span class="glyphicon glyphicon-upload"></span> Upload all
+				</button>
+				<button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+					<span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+				</button>
+				<button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+					<span class="glyphicon glyphicon-trash"></span> Remove all
+				</button>
+			</div>
+		</div>
+
 
 		<!-- CRUD -->
 		<div class="panel panel-default" ng-if="invitation">
@@ -45,48 +73,50 @@
 			<div class="panel-body">
 
 				<form class="form-horizontal">
-				<div class="form-group">
-					<label for="94kfk49r" class="col-sm-2 control-label">SC Due Date</label>
-					<div class="col-sm-10">
-						<input  autofocus type="text" class="form-control" id="94kfk49r" placeholder="mm/dd/yyyy hh:mm" ng-model="invitation.dueDate">
+					<div class="form-group">
+						<label for="94kfk49r" class="col-sm-2 control-label">SC Due Date</label>
+						<div class="col-sm-10">
+							<input  autofocus type="text" class="form-control" id="94kfk49r" placeholder="mm/dd/yyyy hh:mm" ng-model="invitation.dueDate">
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="email" class="col-sm-2 control-label">Company</label>
-					<div class="col-sm-10">
-						<select id="companies" class="form-control" ng-options="comp as comp.name for comp in companies" ng-model="invitation.company"></select>	
+					<div class="form-group">
+						<label for="email" class="col-sm-2 control-label">Company</label>
+						<div class="col-sm-10">
+							<select id="companies" class="form-control" ng-options="comp as comp.name for comp in companies" ng-model="invitation.company"></select>	
+						</div>
 					</div>
-				</div>
-				<div class="form-group">
-					<label for="email" class="col-sm-2 control-label">Contact</label>
-					<div class="col-sm-10">
-						<select id="contacts" class="form-control" ng-options="contact as contact.name for contact in persons" ng-model="invitation.contact"></select>	
-					</div>
-				</div> 
+					<div class="form-group">
+						<label for="email" class="col-sm-2 control-label">Contact</label>
+						<div class="col-sm-10">
+							<select id="contacts" class="form-control" ng-options="contact as contact.name for contact in persons" ng-model="invitation.contact"></select>	
+						</div>
+					</div> 
 
 
-				<div class="form-group">
-					<label for="sjej0" class="col-sm-2 control-label">Media</label>
-					<div class="col-sm-10">
-						
-						<select multiple="multiple" style="max-height: 200px; min-height: 50px;" id="medias" class="form-control" ng-options="media as media.name for media in lead.medias" ng-model="invitation.medias"></select>	
+					<div class="form-group">
+						<label for="sjej0" class="col-sm-2 control-label">Media</label>
+						<div class="col-sm-10">
 
+							<select multiple="multiple" style="max-height: 200px; min-height: 50px;" id="medias" class="form-control" ng-options="media as media.name for media in lead.medias" ng-model="invitation.medias"></select>	
+
+						</div>
 					</div>
-				</div>
 
 
 
-				<div class="form-group">
-					<label for="phone" class="col-sm-2 control-label"></label>
-					<div class="col-sm-2">
-						<button type="button" class="btn btn-secondary btn-block"  ng-click="invitationCancel()">Cancel</button>
+					<div class="form-group">
+						<label for="phone" class="col-sm-2 control-label"></label>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-secondary btn-block"  ng-click="invitationCancel()">Cancel</button>
+						</div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-primary btn-block"  ng-click="invitationSave(invitation, lead)">Save</button>
+						</div>
 					</div>
-					<div class="col-sm-2">
-						<button type="button" class="btn btn-primary btn-block"  ng-click="invitationSave(invitation, lead)">Save</button>
-					</div>
-				</div>
-			</form>
+
+
+				</form>
+			</div>
 		</div>
 	</div>
-</div>
 </div>

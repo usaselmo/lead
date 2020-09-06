@@ -10,10 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
+import com.allscontracting.model.Invitation;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Lead.Vendor;
 import com.allscontracting.model.Media;
 import com.allscontracting.model.User;
+import com.allscontracting.repo.InvitationRepo;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.tradutor.Translater;
@@ -29,6 +31,7 @@ public class FileService {
 	private final TranslaterDispatcher tradutorFinder;
 	private final LogService logService;
 	private final MediaRepo mediaRepo;
+	private final InvitationRepo invitationRepo;
 	
 /*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
 		Lead lead = leadRepository.findOne(leadId);
@@ -69,6 +72,22 @@ public class FileService {
 				media = this.mediaRepo.save(media);
 				lead.addMedia(media);
 				leadRepo.save(lead);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Transactional
+	public void uploadInvitationProposal(Long invitationId, MultipartFile file) {
+		Optional<Invitation> optionalInv = invitationRepo.findById(invitationId);
+		if(optionalInv.isPresent()) {
+			try {
+				Invitation inv = optionalInv.get();
+				Media media = new Media(null, file.getBytes(), file.getContentType(), file.getOriginalFilename());
+				media = this.mediaRepo.save(media);
+				inv.addProposal(media);
+				invitationRepo.save(inv);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

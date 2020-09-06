@@ -49,5 +49,11 @@ public class MainController {
 		fileService.storeLeadMedia(file, leadId);
 		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 	}
+	
+	@PostMapping("/main/leads/{leadId}/invitations/{invitationId}")
+	@ResponseBody
+	public void uploadInvitaionProposal(@PathVariable Long invitationId, @RequestParam("file") MultipartFile file) {
+		fileService.uploadInvitationProposal(invitationId, file);
+	}
 
 }

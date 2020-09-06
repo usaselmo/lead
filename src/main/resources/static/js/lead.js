@@ -480,6 +480,8 @@
  	 ** INVITATION **
  	 ****************/
 
+ 	 $scope.uploading = [];
+
  	$scope.invitationCrud = function(invitation){
  		$scope.invitation = invitation; 
  		companyService.findCompanies($scope);
@@ -507,6 +509,33 @@
  			invitation.lead = {id: lead.id}
  			leadService.sendInvitationByEmail($scope, invitation)	
  		}
+ 	}
+
+ 	$scope.invitationIncludeProposal = function(invitation){
+ 		$scope.uploading['processing'] = !$scope.uploading['processing'];
+ 		if($scope.uploading['processing'])
+ 			$scope.uploading['invitation'] = invitation
+ 	}
+
+ 	$scope.uploadProposal = function(uploader, invitation, lead){
+ 		console.log(uploader, invitation, lead);
+
+
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            invitation.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
+        };
+
+        uploader.onCompleteAll = function(){
+ 			uploader.clearQueue();
+        }
+
+        uploader.queue.forEach(item=>{
+ 			item.url = '/main/leads/' + lead.id + '/invitations/' + invitation.id
+ 			item.upload();
+ 		})
+
+ 		$scope.uploading['processing'] = !$scope.uploading['processing'];
+ 		$scope.reloadLead(lead);
  	}
 
  })
