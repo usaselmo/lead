@@ -22,7 +22,11 @@
 					<td>{{invitation.company.name}}</td>
 					<td>{{invitation.emailed}}</td>
 					<td>&nbsp;</td>
-					<td>{{invitation.proposals}}</td>
+					<td>
+						<ul ng-if="invitation.proposals" ng-repeat="proposal in invitation.proposals">
+							<li>{{proposal.name}}</li>
+						</ul>
+					</td>
 					<td nowrap="nowrap">
 
 						<a href="#" title="Include Proposal" class="btn btn-default btn-sm" ng-click="invitationIncludeProposal(invitation)"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a>&nbsp;
@@ -38,7 +42,7 @@
 		<a ng-if="!uploading['processing'] && !invitation" ng-if="!invitation" href="#" class="btn btn-sml btn-default" ng-click="invitationCrud({})"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create Invitation</a>
 
 		<!-- UPLOAD -->
-		<div ng-if="uploading['processing']">
+		<div ng-if="uploading['processing']">Include Proposal
 			<input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br/>
 			<ul ng-repeat="item in uploader.queue">
 				<li >
