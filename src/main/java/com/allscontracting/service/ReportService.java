@@ -63,21 +63,25 @@ public class ReportService {
 			InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 			JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
 			byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
-			this.tempFile = Files.createTempFile("", "");
-			Path p = Files.write(this.tempFile, res);
-			InputStream nis = Files.newInputStream(p);
-			response.setContentType("application/pdf");
-			response.setHeader("content-disposition", "attachment; filename=\"" + streamFileName + "\"");
-			int c;
-			while ((c = nis.read()) != -1) {
-				response.getOutputStream().write(c);
-			}
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
-			Files.deleteIfExists(this.tempFile);
+			getFileAsPdfStream(response, streamFileName, res);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void getFileAsPdfStream(HttpServletResponse response, String userFriendlyFileNmae, byte[] fileContentBytes) throws IOException {
+		response.setContentType("application/pdf");
+		response.setHeader("content-disposition", "attachment; filename=\"" + userFriendlyFileNmae + "\"");
+		this.tempFile = Files.createTempFile("", "");
+		Path p = Files.write(this.tempFile, fileContentBytes);
+		InputStream nis = Files.newInputStream(p);
+		int c;
+		while ((c = nis.read()) != -1) {
+			response.getOutputStream().write(c);
+		}
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+		Files.deleteIfExists(this.tempFile);
 	}
 
 	public File getReportAsPdfFile(String fileName, HashMap<String, Object> map, String jasperReportFileName) throws JRException, SQLException, IOException {

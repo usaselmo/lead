@@ -518,8 +518,6 @@
  	}
 
  	$scope.uploadProposal = function(uploader, invitation, lead){
- 		console.log(uploader, invitation, lead);
-
 
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
             invitation.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})

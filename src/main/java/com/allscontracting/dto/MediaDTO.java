@@ -32,6 +32,7 @@ public class MediaDTO {
 	}
 	
 	public static final List<MediaDTO> of(List<Media> medias){
+		if(medias==null || medias.size()==0) return null;
 		return medias.stream().map(media-> MediaDTO.of(media)).collect(Collectors.toList());
 	}
 	
@@ -41,6 +42,7 @@ public class MediaDTO {
 	}
 	
 	public static final List<Media> toMedia( List<MediaDTO> mediaDTOs){
+		if(mediaDTOs==null || mediaDTOs.size()==0) return null;
 		return mediaDTOs.stream().map(m->MediaDTO.toMedia(m)).collect(Collectors.toList());
 	}
 	
