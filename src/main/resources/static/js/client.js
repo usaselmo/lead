@@ -6,7 +6,7 @@
 
 var initTable = function(){
 	[1,2,3].forEach(function(i) {
-		setTimeout(function(){ $('#94irjrn494h').DataTable(); }, i*1000);
+		setTimeout(function(){ $('#94irjrn494h').DataTable(); }, i*0);
 	});
 }
 
@@ -18,6 +18,7 @@ var initTable = function(){
  		findClients: function (scope) {
  			$http.get(local_server_url + "/persons").then(function (response) {
  				scope.clients = response.data
+ 				initTable();
  			}, function (response) {
  				console.log(response)
  			});
@@ -56,7 +57,6 @@ var initTable = function(){
  .controller('ClientController', function ($scope, $http, $timeout, clientService) {
  	var init = function(){
  		clientService.findClients($scope);
- 		initTable();
  	}
 
  	$scope.crud = function(client){
