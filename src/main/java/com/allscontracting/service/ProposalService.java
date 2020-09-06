@@ -7,12 +7,10 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.OptionalLong;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,31 +26,26 @@ import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.LineRepository;
 import com.allscontracting.repo.ProposalRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.JRException;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProposalService {
 
 	private static final String PROPOSAL_FILE_NAME = "estimate";
-	@Autowired
-	ProposalRepository proposalRepository;
-	@Autowired
-	LeadRepository leadRepository;
-	@Autowired
-	ItemRepository itemRepository;
-	@Autowired
-	LineRepository lineRepository;
-	@Autowired
-	ReportService reportService;
-	@Autowired
-	MailService mailService;
-	@Autowired
-	LogService logService;
+	public final ProposalRepository proposalRepository;
+	public final LeadRepository leadRepository;
+	public final ItemRepository itemRepository;
+	public final LineRepository lineRepository;
+	public final ReportService reportService;
+	public final MailService mailService;
+	public final LogService logService;
 
 	@Transactional
-	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, Long userId) throws LeadsException {
+	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
 		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
 		proposal.setDate(new Date());
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
@@ -73,16 +66,18 @@ public class ProposalService {
 			item.getLines().forEach(line -> item.addLine(line));
 		});
 		Proposal res = proposalRepository.save(proposal);
+		logService.event(Lead.class, lead.getId(), Event.CREATE_PROPOSAL, user);
 		return ProposalDTO.of(res);
 	}
 
 	@Transactional
-	public void delete(String leadId, String proposalId, Long userId) throws NumberFormatException, LeadsException {
+	public void delete(String leadId, String proposalId, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		lead.removeProposal(proposal);
 		this.leadRepository.save(lead);
 		this.proposalRepository.delete(proposal);
+		logService.event(Lead.class, lead.getId(), Event.DELETE, user);
 	}
 
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {

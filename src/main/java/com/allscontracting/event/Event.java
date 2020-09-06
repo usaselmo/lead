@@ -20,6 +20,7 @@ public enum Event {
 	CREATE("CREATED", "CREATE", "C", false),
 	UPDATE("UPDATED", "UPDATE", "U", false),
 	EMAIL_SENT("EMAIL SENT", "SEND EMAIL", "SE", false),
+	DELETE("DELETED", "DELETED", "DE", false),
 	;
 	
 	private String status;

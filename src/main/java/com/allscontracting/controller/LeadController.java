@@ -53,9 +53,9 @@ public class LeadController {
 	}
 
 	@PostMapping("/{leadId}/invitations/{invitationId}/email")
-	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO) {
+	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
 		try {
-			leadService.sendInvitationByEmail(invitationDTO);
+			leadService.sendInvitationByEmail(invitationDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().build().addSuccessMessage("Invitation sent by e-mail.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -152,9 +152,9 @@ public class LeadController {
 	}
 
 	@PutMapping
-	public LeadEntity update(@RequestBody LeadDTO leadDTO) {
+	public LeadEntity update(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().lead(leadService.update(leadDTO)).build().addSuccessMessage("Lead updated.");
+			return LeadEntity.builder().lead(leadService.update(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead updated.");
 		} catch (NumberFormatException | LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());

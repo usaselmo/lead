@@ -29,17 +29,6 @@ public class UserService {
 		return this.userRepo.findLikeName(name).stream().map(u->UserDTO.of(u)).collect(Collectors.toList());
 	}
 
-/*	public UserDTO create(UserDTO userDTO) throws LeadsException {
-		User user = new User();
-		user.setCompany(this.companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
-		user.setEmail(userDTO.getEmail());
-		user.setEnabled(userDTO.isEnabled());
-		user.setName(userDTO.getName());
-		user.setPassword(passencoder.encode(userDTO.getPassword()));
-		user.setProfiles(Collections.emptyList());
-		return UserDTO.of(this.userRepo.save(user));
-	}*/
-
 	@Transactional
 	public UserDTO update(UserDTO userDTO) throws LeadsException {
 		try {

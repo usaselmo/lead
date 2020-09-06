@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.dto.InvitationDTO;
+import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Invitation;
 import com.allscontracting.model.Lead;
@@ -50,6 +51,7 @@ public class InvitationService {
 		lead.removeInvitation(invitation);
 		invitationRepo.delete(invitation);
 		leadRepo.save(lead);
+		logService.event(Lead.class, lead.getId(), Event.UPDATE, user, "Invitation #? deleted - " + user.getName() );
 	}
 
 }

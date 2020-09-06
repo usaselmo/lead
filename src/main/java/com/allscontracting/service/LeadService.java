@@ -103,6 +103,7 @@ public class LeadService {
 		return this.leadRepo.findProposals(Long.valueOf(leadId));
 	}
 
+	@Transactional
 	public LeadDTO addNewNote(String leadId, String note) throws LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.addNote(note);
@@ -141,7 +142,8 @@ public class LeadService {
 		return leadDTO;
 	}
 
-	public LeadDTO update(LeadDTO leadDTO) throws NumberFormatException, LeadsException {
+	@Transactional
+	public LeadDTO update(LeadDTO leadDTO, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
 		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
@@ -154,6 +156,7 @@ public class LeadService {
 		lead.setDescription(leadDTO.getDescription());
 		leadDTO = LeadDTO.of(this.leadRepo.save(lead));
 		completeLead(leadDTO);
+		logg.event(Lead.class, lead.getId(), Event.UPDATE, user, "Lead has been changed");
 		return leadDTO;
 	}
 
@@ -161,6 +164,7 @@ public class LeadService {
 		return this.leadRepo.findByType();
 	}
 
+	@Transactional
 	public LeadDTO assignEstimator(String leadId, String estimatorId, User user) throws LeadsException {
 		Lead lead = leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
@@ -216,7 +220,7 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void sendInvitationByEmail(InvitationDTO invitationDTO) throws LeadsException, IOException {
+	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user) throws LeadsException, IOException {
 		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
 		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow( ()-> new LeadsException("Could not find Lead")));
 		List<File>attachments = new ArrayList<>();
@@ -231,6 +235,7 @@ public class LeadService {
 			.onSuccess( ()->{
 				invitation.setEmailed( (invitation.getEmailed()==null)?1L:invitation.getEmailed()+1L );
 				this.invitationRepo.save(invitation);
+				logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #"+invitation.getId()+" e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
 			})
 			.send();
 	}

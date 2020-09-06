@@ -41,7 +41,7 @@ public class ProposalController {
 	@PutMapping
 	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
-			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created.");
 		} catch (LeadsException e) {
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class ProposalController {
 	@PostMapping(value = "")
 	public LeadEntity saveProposal(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
-			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().proposal(proposalDTO).build();
 		} catch (LeadsException e) {
 			e.printStackTrace();
@@ -69,7 +69,7 @@ public class ProposalController {
 	@DeleteMapping
 	public LeadEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication){
 		try {
-			proposalService.delete(leadId, proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser().getId());
+			proposalService.delete(leadId, proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 			return new LeadEntity().addSuccessMessage("Proposal Deleted");
 		} catch (Exception e) {
 			return new LeadEntity().addErrorMessage(e.getMessage());
