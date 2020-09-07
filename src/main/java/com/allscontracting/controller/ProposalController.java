@@ -37,7 +37,6 @@ public class ProposalController {
 			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
 		}
 	}
-
 	@PutMapping
 	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
@@ -75,7 +74,7 @@ public class ProposalController {
 			return new LeadEntity().addErrorMessage(e.getMessage());
 		}
 	}
-
+	
 	@GetMapping(value = "{proposalId}/pdf")
 	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
 		this.proposalService.getProposalAsPdfStream(response, proposalId);

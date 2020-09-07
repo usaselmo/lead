@@ -25,27 +25,21 @@ import com.allscontracting.service.PersonService;
 public class PersonController { 
 
 	@Autowired PersonService personService;
-
-	@GetMapping("{personId}/leads/{leadId}/hiringdecision")
-	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
-		personService.sendHiringDecisionEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+	
+	@GetMapping("")
+	public List<PersonDTO> list() {
+		List<PersonDTO> res = this.personService.findAll();
+		return res;
 	}
 
 	@GetMapping("{personId}/leads/{leadId}/cantreach")
 	public void sendCantReachEmail(@PathVariable String personId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
 		personService.sendCantReachEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
-	
-	@GetMapping("search")
-	public List<PersonDTO> searchPerson(@RequestParam String name) {
-		List<PersonDTO> res = this.personService.findByName(name);
-		return res;
-	}
-	
-	@GetMapping("")
-	public List<PersonDTO> list() {
-		List<PersonDTO> res = this.personService.findAll();
-		return res;
+
+	@GetMapping("{personId}/leads/{leadId}/hiringdecision")
+	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
+		personService.sendHiringDecisionEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
 	}
 	
 	@PutMapping("")
@@ -62,5 +56,19 @@ public class PersonController {
 			return LeadEntity.builder().build().addErrorMessage("Could not save.");
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+
+	
+	/*
+	 * @GetMapping("search") public List<PersonDTO> searchPerson(@RequestParam
+	 * String name) { List<PersonDTO> res = this.personService.findByName(name);
+	 * return res; }
+	 */
 	
 }

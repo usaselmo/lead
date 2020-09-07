@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.CompanyDTO;
@@ -26,11 +25,6 @@ public class CompanyController {
 	@GetMapping
 	public List<CompanyDTO> getCompanies() {
 		return this.companyService.getCompanies();
-	}
-
-	@GetMapping("byName")
-	public List<CompanyDTO> getCompaniesByName(@RequestParam String companyName){
-		return this.companyService.findLikeName(companyName);
 	}
 	
 	@PutMapping
@@ -52,5 +46,20 @@ public class CompanyController {
 			return LeadEntity.builder().build().addErrorMessage("Could not save Company.");
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	/*
+	 * @GetMapping("byName") public List<CompanyDTO>
+	 * getCompaniesByName(@RequestParam String companyName){ return
+	 * this.companyService.findLikeName(companyName); }
+	 */
 
 }

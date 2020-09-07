@@ -23,6 +23,11 @@ public class UserController {
 
 	@Autowired UserService userService;
 	
+	@GetMapping("estimators")
+	public List<UserDTO> getEstimators(){
+		return userService.findEstimators();
+	}
+	
 	@GetMapping("")
 	public List<UserDTO> getUsersByName(@RequestParam String userName){
 		return this.userService.findLikeName(userName);
@@ -43,8 +48,4 @@ public class UserController {
 		return Stream.of(UserProfile.Description.values()).map(p->p.name()).collect(Collectors.toList());
 	}
 	
-	@GetMapping("estimators")
-	public List<UserDTO> getEstimators(){
-		return userService.findEstimators();
-	}
 }

@@ -38,111 +38,12 @@ public class LeadController {
 	private final LeadService leadService;
 	private final InvitationService invitationService;
 
-	@GetMapping(value = "{leadId}/invitations/{invitationId}/proposals/{proposalId}/pdf")
-	public LeadEntity getInvitationPdf(HttpServletResponse response, @PathVariable Long invitationId, @PathVariable Long proposalId){
+	@GetMapping
+	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
 		try {
-			this.leadService.getInvitationAsPdfStream(response, invitationId, proposalId);
-			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
+			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
+			return res;
 		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
-	@PostMapping("/{leadId}/invitations/{invitationId}/email")
-	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
-		try {
-			leadService.sendInvitationByEmail(invitationDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser());
-			return LeadEntity.builder().build().addSuccessMessage("Invitation sent by e-mail.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-	
-	@DeleteMapping("{leadId}/invitations/{invitationId}")
-	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
-		try {
-			invitationService.deleteInvitation(leadId, invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser() );
-			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-	
-	@PostMapping("{leadId}/invitations")
-	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
-		try {
-			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-	
-	@GetMapping("eventtypes")
-	public LeadEntity findEventTypes() {
-		try {
-			return LeadEntity.builder().events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
-	@GetMapping("/types")
-	public LeadEntity getLeadTypes() {
-		try {
-			return LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
-	@PostMapping(value = "{id}/addNote")
-	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
-		try {
-			LeadDTO lead = leadService.addNewNote(id, note);
-			return LeadEntity.builder().lead(lead).build();
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-	
-	@GetMapping("{leadId}")
-	public LeadEntity getLead(@PathVariable Long leadId) {
-		try {
-			LeadDTO leadDTO = this.leadService.findLead(leadId);
-			return LeadEntity.builder().lead(leadDTO).build();
-		} catch (LeadsException e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
-		}
-	}
-
-	@PostMapping
-	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
-		try {
-			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead Created.");
-		} catch (NumberFormatException | LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
 		} catch (Exception e) {
@@ -155,6 +56,19 @@ public class LeadController {
 	public LeadEntity update(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
 			return LeadEntity.builder().lead(leadService.update(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead updated.");
+		} catch (NumberFormatException | LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+
+	@PostMapping
+	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
+		try {
+			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead Created.");
 		} catch (NumberFormatException | LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -178,11 +92,52 @@ public class LeadController {
 		}
 	}
 
-	@GetMapping
-	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
+	@PostMapping(value = "{id}/addNote")
+	public LeadEntity addNewNote(@PathVariable String id, @RequestBody String note) throws LeadsException {
 		try {
-			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
-			return res;
+			LeadDTO lead = leadService.addNewNote(id, note);
+			return LeadEntity.builder().lead(lead).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
+	@PostMapping("{leadId}/invitations")
+	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
+		try {
+			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
+	@DeleteMapping("{leadId}/invitations/{invitationId}")
+	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
+		try {
+			invitationService.deleteInvitation(leadId, invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser() );
+			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
+	@GetMapping("{leadId}")
+	public LeadEntity getLead(@PathVariable Long leadId) {
+		try {
+			LeadDTO leadDTO = this.leadService.findLead(leadId);
+			return LeadEntity.builder().lead(leadDTO).build();
 		} catch (LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -192,15 +147,67 @@ public class LeadController {
 		}
 	}
 
-	@GetMapping(value = "/total")
-	public Long findTotal(@RequestParam Event eventType) {
+	@PostMapping("/{leadId}/invitations/{invitationId}/email")
+	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
 		try {
-			long res = leadService.getLeadsTotal(eventType);
-			return res;
+			leadService.sendInvitationByEmail(invitationDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().build().addSuccessMessage("Invitation sent by e-mail.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping(value = "{leadId}/invitations/{invitationId}/proposals/{proposalId}/pdf")
+	public LeadEntity getInvitationPdf(HttpServletResponse response, @PathVariable Long invitationId, @PathVariable Long proposalId) {
+		try {
+			this.leadService.getInvitationAsPdfStream(response, invitationId, proposalId);
+			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+
+	/*
+	 * @GetMapping("eventtypes") public LeadEntity findEventTypes() { try { return
+	 * LeadEntity.builder().events(Stream.of(Event.values()).filter(e ->
+	 * e.isShowInMenu() == true).map(et ->
+	 * EventDTO.of(et)).collect(Collectors.toList())).build(); } catch (Exception e)
+	 * { e.printStackTrace(); return
+	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
+	 */
+
+	/*
+	 * @GetMapping("/types") public LeadEntity getLeadTypes() { try { return
+	 * LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build(); }
+	 * catch (Exception e) { e.printStackTrace(); return
+	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
+	 */
+
+	/*
+	 * @GetMapping(value = "/total") public Long findTotal(@RequestParam Event
+	 * eventType) { try { long res = leadService.getLeadsTotal(eventType); return
+	 * res; } catch (Exception e) { e.printStackTrace(); return null; } }
+	 */
 
 }

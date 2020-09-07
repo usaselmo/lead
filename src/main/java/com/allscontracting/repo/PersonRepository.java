@@ -11,7 +11,9 @@ import com.allscontracting.model.Person;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
-	@Query("SELECT c FROM Person c WHERE c.name LIKE %?1% ORDER BY c.name")
-	List<Person> findLikeName(String name);
+	/*
+	 * @Query("SELECT c FROM Person c WHERE c.name LIKE %?1% ORDER BY c.name")
+	 * List<Person> findLikeName(String name);
+	 */
 
 }

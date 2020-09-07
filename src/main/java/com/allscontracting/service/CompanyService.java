@@ -20,9 +20,11 @@ public class CompanyService {
 		return this.companyRepo.findAll().stream().map(c->CompanyDTO.of(c)).collect(Collectors.toList());
 	}
 
-	public List<CompanyDTO> findLikeName(String companyName) {
-		return this.companyRepo.findLikeName(companyName).stream().map(c->CompanyDTO.of(c)).collect(Collectors.toList());
-	}
+	/*
+	 * public List<CompanyDTO> findLikeName(String companyName) { return
+	 * this.companyRepo.findLikeName(companyName).stream().map(c->CompanyDTO.of(c)).
+	 * collect(Collectors.toList()); }
+	 */
 
 	public CompanyDTO update(CompanyDTO companyDTO) throws LeadsException {
 		Company company = this.companyRepo.findById(companyDTO.getId()).orElseThrow(()->new LeadsException("Person not found"));

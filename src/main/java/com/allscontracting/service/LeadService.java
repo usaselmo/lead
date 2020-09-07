@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -85,16 +84,6 @@ public class LeadService {
 		return eventDispatcher.findNextEvents(currentEvent).stream().map(et -> EventDTO.of(et)).collect(Collectors.toList());
 	}
 
-	@Transactional
-	public LeadDTO scheduleAVisit(String leadId, String time, User user) throws LeadsException, ParseException {
-		Date visitDateTime = Converter.stringToDate(time, Converter.MM_dd_yy_hh_mm);
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
-		lead.setVisit(visitDateTime);
-		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
-		completeLead(leadDTO);
-		return leadDTO;
-	}
-
 	public List<EventLogDTO> findLeadEventLogs(String leadId) {
 		return eventLogRepo.findEventLogs(Lead.class.getSimpleName(), leadId).stream().map(e -> EventLogDTO.of(e)).collect(Collectors.toList());
 	}
@@ -164,19 +153,6 @@ public class LeadService {
 		return this.leadRepo.findByType();
 	}
 
-	@Transactional
-	public LeadDTO assignEstimator(String leadId, String estimatorId, User user) throws LeadsException {
-		Lead lead = leadRepo.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
-		User estimator = userRepo.findById(Long.valueOf(estimatorId)).orElseThrow(() -> new LeadsException("Estimator not found"));
-		lead.setEstimator(estimator);
-		lead.setEvent(Event.ASSIGN_TO_ESTIMATOR);
-		LeadDTO leadDTO = LeadDTO.of(leadRepo.save(lead));
-		logg.event(Lead.class, String.valueOf(lead.getId()), Event.ASSIGN_TO_ESTIMATOR, user);
-		leadRepo.save(lead);
-		completeLead(leadDTO);
-		return leadDTO;
-	}
-
 	public long getLeadsTotal(Event event) throws LeadsException {
 		if (StringUtils.isEmpty(event))
 			return this.leadRepo.count();
@@ -214,35 +190,32 @@ public class LeadService {
 	}
 
 	public LeadDTO findLead(Long leadId) throws LeadsException {
-		LeadDTO leadDTO = LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead")));
+		LeadDTO leadDTO = LeadDTO.of(this.leadRepo.findById(leadId).orElseThrow(() -> new LeadsException("Could not find Lead")));
 		completeLead(leadDTO);
 		return leadDTO;
 	}
 
 	@Transactional
 	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user) throws LeadsException, IOException {
-		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
-		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow( ()-> new LeadsException("Could not find Lead")));
-		List<File>attachments = new ArrayList<>();
+		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow(() -> new LeadsException("Could not find Invitation"));
+		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow(() -> new LeadsException("Could not find Lead")));
+		List<File> attachments = new ArrayList<>();
 		for (Media media : invitation.getMedias()) {
-			Path tempFile = Files.createTempFile("", "_"+media.getName());
+			Path tempFile = Files.createTempFile("", "_" + media.getName());
 			attachments.add(Files.write(tempFile, media.getContent()).toFile());
 		}
-		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
-			.onError( (error)->{
-				log.error(error);
-			})
-			.onSuccess( ()->{
-				invitation.setEmailed( (invitation.getEmailed()==null)?1L:invitation.getEmailed()+1L );
-				this.invitationRepo.save(invitation);
-				logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #"+invitation.getId()+" e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
-			})
-			.send();
+		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0])).onError((error) -> {
+			log.error(error);
+		}).onSuccess(() -> {
+			invitation.setEmailed((invitation.getEmailed() == null) ? 1L : invitation.getEmailed() + 1L);
+			this.invitationRepo.save(invitation);
+			logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
+		}).send();
 	}
 
 	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {
-		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
-		Media proposal = invitation.getProposals().stream().filter(prop->prop.getId().equals(proposalId)).findFirst().orElseThrow( ()-> new LeadsException("Could not find Proposal"));
+		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow(() -> new LeadsException("Could not find Invitation"));
+		Media proposal = invitation.getProposals().stream().filter(prop -> prop.getId().equals(proposalId)).findFirst().orElseThrow(() -> new LeadsException("Could not find Proposal"));
 		this.reportService.getFileAsPdfStream(response, proposal.getName(), proposal.getContent());
 	}
 

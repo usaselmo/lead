@@ -37,9 +37,11 @@ public class PersonService {
 		return PersonDTO.of(personRepo.save(person));
 	}
 
-	public List<PersonDTO> findByName(String name) {
-		return this.personRepo.findLikeName(name).stream().map(c->PersonDTO.of(c)).collect(Collectors.toList());
-	}
+	/*
+	 * public List<PersonDTO> findByName(String name) { return
+	 * this.personRepo.findLikeName(name).stream().map(c->PersonDTO.of(c)).collect(
+	 * Collectors.toList()); }
+	 */
 
 	public void sendCantReachEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
 		Person person = this.personRepo.findById(Long.valueOf(id)).orElseThrow(() -> new LeadsException("Person not found"));

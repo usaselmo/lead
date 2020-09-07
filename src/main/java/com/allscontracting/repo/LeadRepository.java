@@ -14,39 +14,39 @@ import com.allscontracting.model.Lead;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.Lead.Vendor;
 
-public interface LeadRepository extends JpaRepository<Lead, Long>{
-	
+public interface LeadRepository extends JpaRepository<Lead, Long> {
+
 	@Query("SELECT count(l) FROM Lead l WHERE l.event IN ?1 ")
 	Long countByEvent(List<Event> events);
-	
+
 	Page<Lead> findAllByEvent(Pageable pageable, Event eventType);
-	
+
 	@Query("SELECT p FROM Lead l, Proposal p WHERE p.id = ?1 ")
 	List<Proposal> findProposals(Long leadId);
-	
+
 	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.title LIKE %?1% OR l.description LIKE %?1% ) ")
 	List<Lead> search(String text, List<Event> events, Pageable pageable);
-	
+
 	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.client.name LIKE %?1% OR l.client.email LIKE %?1% OR l.client.phone LIKE %?1% OR l.client.address LIKE %?1% ) ")
 	List<Lead> search2(String text, List<Event> events, Pageable pageable);
-	
+
 	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.company.name LIKE %?1% OR l.company.email LIKE %?1% OR l.company.address LIKE %?1% OR l.company.website LIKE %?1% ) ")
 	List<Lead> search3(String text, List<Event> events, Pageable pageable);
 
 	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.contact.name LIKE %?1% OR l.contact.email LIKE %?1% OR l.contact.phone LIKE %?1% ) ")
 	List<Lead> search4(String text, List<Event> events, Pageable pageable);
-	
+
 	@Query("SELECT DISTINCT l.type FROM Lead l ORDER BY l.type")
 	List<String> findByType();
-	
+
 	@Query("SELECT l FROM Lead l WHERE l.oldid = ?1 ")
 	Optional<Lead> findByOldId(String oldId);
-	
+
 	default boolean existsByOldId(String oldId) {
 		return findByOldId(oldId).isPresent();
 	}
-	
+
 	@Query("SELECT l FROM Lead l WHERE l.vendor = ?1 AND l.date = ?2 AND l.description = ?3 AND l.client.name = ?4 AND l.oldid = ?5")
 	List<Lead> findByVDD(Vendor vendor, Date date, String description, String clientName, String oldid);
-	
+
 }
