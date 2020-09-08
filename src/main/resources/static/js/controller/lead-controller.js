@@ -184,7 +184,8 @@
  	$scope.uploadd = function(uploader, lead){
 
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
-            $scope.lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
+            lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
+            $scope.lead = lead;
         };
 
         uploader.onCompleteAll = function(){

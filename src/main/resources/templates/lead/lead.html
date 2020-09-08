@@ -43,13 +43,13 @@
 
 </head>
 <body ng-app="lead">
-	<div class="container" ng-controller="LeadController">
+	<div class="container">
 		<div class="" ng-include="'/header.html'"></div>
 		<div class="" ng-include="'/menu.html'"></div>
 		<div class="">
-			<!-- BEGIN -->
 
-			<div test-directive></div>
+			<!-- BEGIN -->
+			<div ng-controller="LeadController">
 
 			<!-- ************* -->
 			<!--      LIST     -->
@@ -66,7 +66,9 @@
 			<!-- ************* -->
 			<div id="crud" ng-if="crudLead" ng-include="'include/lead/crud.html'"></div>
 
+			</div>
 			<!-- END -->
+			
 		</div>
 	</div>
 </body>
