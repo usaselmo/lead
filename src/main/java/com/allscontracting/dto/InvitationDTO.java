@@ -44,14 +44,18 @@ public class InvitationDTO {
 	}
 	
 	public static final List<InvitationDTO> of(List<Invitation> invitations){
+		if(invitations==null || invitations.size()==0) return null;
 		return invitations.stream().map(inv->InvitationDTO.of(inv)).collect(Collectors.toList());
 	}
 	
 	public static final List<Invitation> toInvitation(List<InvitationDTO> invitationDTOs){
+		if(invitationDTOs==null || invitationDTOs.size()==0) return null;
 		return invitationDTOs.stream().map(inv->InvitationDTO.toInvitation(inv)).collect(Collectors.toList());
 	}
 	
 	public static final Invitation toInvitation(InvitationDTO invitationDTO) {
+		if(invitationDTO==null) 
+			return null;
 		Invitation invitation = new Invitation();
 		invitation.setId(invitationDTO.getId());
 		invitation.setDueDate(Converter.convertToDate(invitationDTO.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
