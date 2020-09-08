@@ -1,5 +1,4 @@
 
-
  app.service('userService', function($http){
  	return {
  		findEstimators: function (scope) {
