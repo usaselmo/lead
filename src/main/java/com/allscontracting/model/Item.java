@@ -38,16 +38,23 @@ public class Item implements Entity<Long>{
 	@ManyToOne(cascade=CascadeType.ALL)
 	private Proposal proposal;
 	
-  @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+  @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
 	private List<Line> lines;
   
   public void addLine(Line line) {
   	if(this.lines==null)
   		this.lines = new ArrayList<Line>();
-  	if(!this.lines.contains(line)) {
+  	if(!this.lines.contains(line)) 
   		this.lines.add(line);
-  	}
   	line.setItem(this);
+  }
+  
+  public void removeLine(Line line) {
+  	if(this.lines==null)
+  		this.lines = new ArrayList<Line>();
+  	if(this.lines.contains(line))
+  		this.lines.remove(line);
+  	line.setItem(null);
   }
 	
 }

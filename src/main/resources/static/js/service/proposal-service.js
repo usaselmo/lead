@@ -41,7 +41,7 @@ var convertToServerFormat = function (proposal) {
 	return prop
 };
 
-app.service('proposalService', function($http){
+var proposalService = function($http){
 	return { 
 		sendByEmail: function (scope, proposal) {
 			$http.get(local_server_url + "/proposals/" + proposal.id + "/email").then(function (response) {
@@ -89,5 +89,6 @@ app.service('proposalService', function($http){
 		},
 
 	} 
-});
+};
+
 

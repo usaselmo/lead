@@ -1,4 +1,4 @@
- app.service('leadService', function($http){
+var leadService = function($http){
  	return {
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
@@ -117,5 +117,6 @@
  		},
 
  	} 
- });
+ };
+
 

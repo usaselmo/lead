@@ -1,6 +1,7 @@
 
+ var local_server_url = "";
 
- app.service('personService', function($http){
+ var personService = function($http){
  	return {
  		findPersons: function (scope) {
  			$http.get(local_server_url + "/persons").then(function (response) {
@@ -24,5 +25,39 @@
  			});
  		},
 
+ 		findClients: function (scope, callBackFunction) {
+ 			$http.get(local_server_url + "/persons").then(function (response) {
+ 				scope.clients = response.data
+ 				callBackFunction.apply();
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		update: function (scope, client) {
+ 			$http.put(local_server_url + "/persons", client).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					client = response.data.client
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		save: function (scope, client) {
+ 			$http.post(local_server_url + "/persons", client).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.clients.push(response.data.client)
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
  	} 
- });
+ };
