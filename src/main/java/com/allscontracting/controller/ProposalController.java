@@ -40,8 +40,8 @@ public class ProposalController {
 	@PutMapping
 	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
-			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
-			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created.");
+			proposalDTO =  proposalService.update(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created."); 
 		} catch (LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());

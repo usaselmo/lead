@@ -48,7 +48,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
   @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	private Lead lead;
   
   //LISTS
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL)	private List<Item> items;
+  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)	private List<Item> items;
 
   /************************
    * METHODS
@@ -69,6 +69,14 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 			this.items.add(item);
 		}
 		item.setProposal(this);
+	}
+	
+	public void removeItem(Item item) {
+		if (this.items == null)
+			this.items = new ArrayList<Item>();
+		if(this.items.contains(item))
+			this.items.remove(item);
+		item.setProposal(null);
 	}
 
 	@Override

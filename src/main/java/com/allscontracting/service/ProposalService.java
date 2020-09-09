@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -18,7 +20,9 @@ import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
+import com.allscontracting.model.Item;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Line;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
@@ -50,6 +54,27 @@ public class ProposalService {
 		proposal.setDate(new Date());
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		proposal.setLead(lead);
+		defineNumber(proposal, lead);
+		defineTotal(proposalDTO, proposal);
+		defineItems(proposal);
+		Proposal res = proposalRepository.save(proposal);
+		return ProposalDTO.of(res);
+	}
+
+	@Transactional
+	public ProposalDTO update(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException{
+		proposalRepository.deleteById(Long.valueOf(proposalDTO.getId()));
+		return this.save(proposalDTO, leadId, user);
+	}
+
+	private void defineItems(Proposal proposal) {
+		proposal.getItems().forEach(item -> {
+			proposal.addItem(item);
+			item.getLines().forEach(line -> item.addLine(line));
+		});
+	}
+
+	private void defineNumber(Proposal proposal, Lead lead) {
 		if (proposal.getNumber() == null) {
 			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
 				long max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
@@ -58,16 +83,12 @@ public class ProposalService {
 				proposal.setNumber(1L); 
 			}
 		}
+	}
+
+	private void defineTotal(ProposalDTO proposalDTO, Proposal proposal) {
 		if (StringUtils.isEmpty(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO)) {
 			proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		}
-		proposal.getItems().forEach(item -> {
-			proposal.addItem(item);
-			item.getLines().forEach(line -> item.addLine(line));
-		});
-		Proposal res = proposalRepository.save(proposal);
-		logService.event(Lead.class, lead.getId(), Event.CREATE_PROPOSAL, user);
-		return ProposalDTO.of(res);
 	}
 
 	@Transactional
