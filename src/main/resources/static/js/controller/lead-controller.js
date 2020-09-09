@@ -79,11 +79,11 @@ $scope.proposalRemoveItem = function(proposal){
 
 $scope.proposalSave = function(lead, proposal){
     if(proposal.id){
-        proposalService.update($scope, proposal, lead.id);
+        proposalService.update($scope, proposal, lead.id)
+            .success( (response) => $scope.reloadLead(lead) );
     }else{
         proposalService.save($scope, proposal, lead.id)
     }
-    $scope.reloadLead(lead);  
 }
 
 $scope.deleteProposal = function(lead, proposal){
