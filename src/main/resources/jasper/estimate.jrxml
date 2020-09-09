@@ -18,6 +18,7 @@
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
 	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
 	<parameter name="ESTIMATOR" class="java.lang.String"/>
+	<parameter name="LEAD" class="com.allscontracting.dto.LeadDTO"/>
 	<queryString language="SQL">
 		<![CDATA[SELECT P.total,
 	I.title,
@@ -150,7 +151,7 @@ WHERE
 					<textElement verticalAlignment="Middle">
 						<font isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Address: " + $P{CLIENT}.getAddress()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Address: " +  $P{LEAD}.getAddress()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="0" y="190" width="380" height="20" uuid="eabb8d0c-100e-4331-bee1-09dbf0d95474"/>

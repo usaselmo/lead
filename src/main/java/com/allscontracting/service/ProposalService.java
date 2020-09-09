@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -16,13 +14,12 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
-import com.allscontracting.model.Item;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.Line;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
@@ -104,7 +101,7 @@ public class ProposalService {
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		try {
 			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-			Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
+			Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
 			HashMap<String, Object> map = getProposalParameters(proposal, person);
 			String streamFileName = getProposalFileName(proposal, person, "pdf");
 			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -152,6 +149,7 @@ public class ProposalService {
 		map.put("ESTIMATOR", proposal.getLead()!=null && proposal.getLead().getEstimator()!=null && !StringUtils.isEmpty(proposal.getLead().getEstimator().getName()) ?proposal.getLead().getEstimator().getName():"Eddie Lopes");
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
+		map.put("LEAD", LeadDTO.of(proposal.getLead()));
 		return map;
 	}
 	
