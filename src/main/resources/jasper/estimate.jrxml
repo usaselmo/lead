@@ -12,6 +12,7 @@
 	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
 	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<import value="java.lang.StringBuilder"/>
 	<import value="org.apache.commons.lang3.StringUtils"/>
 	<import value="java.text.NumberFormat"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
@@ -219,10 +220,10 @@ WHERE
 		<groupFooter>
 			<band height="301" splitType="Immediate">
 				<frame>
-					<reportElement x="0" y="26" width="535" height="46" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
+					<reportElement x="0" y="26" width="535" height="46" isRemoveLineWhenBlank="true" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
 					<staticText>
 						<reportElement x="0" y="0" width="220" height="25" isRemoveLineWhenBlank="true" uuid="37a9011e-bcdf-4000-b1be-787fb168c49f">
-							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility()]]></printWhenExpression>
 						</reportElement>
 						<textElement verticalAlignment="Bottom">
 							<font fontName="SansSerif" size="12" isBold="true" isUnderline="false"/>
@@ -232,13 +233,13 @@ WHERE
 					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 						<reportElement stretchType="ElementGroupHeight" x="0" y="25" width="535" height="21" isRemoveLineWhenBlank="true" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
-							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility()]]></printWhenExpression>
 						</reportElement>
-						<textFieldExpression><![CDATA[$P{PROPOSAL}.getNote()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[new StringBuilder().append(!StringUtils.isEmpty($P{PROPOSAL}.getNote())?$P{PROPOSAL}.getNote():"").append($P{PROPOSAL}.isCallMissUtility()&&!StringUtils.isEmpty($P{PROPOSAL}.getNote())?"\r\n\r\n":"").append($P{PROPOSAL}.isCallMissUtility()?"** We will call Miss Utility for this job. Contact Miss Utility before any excavation/concrete removal and determine if any utility cable/conduits or pipes need to be relocated after Miss Utility reports.":"").toString()]]></textFieldExpression>
 					</textField>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="79" width="535" height="46" uuid="9ef8adc5-ced9-4b68-9210-3a20d79550bc"/>
+					<reportElement positionType="Float" x="0" y="79" width="535" height="46" isRemoveLineWhenBlank="true" uuid="9ef8adc5-ced9-4b68-9210-3a20d79550bc"/>
 					<staticText>
 						<reportElement positionType="Float" x="0" y="0" width="220" height="26" isRemoveLineWhenBlank="true" uuid="b342bfd0-e694-44bf-8b3f-fc59c549ac44">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -257,7 +258,7 @@ WHERE
 					</textField>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="-1" y="131" width="535" height="46" uuid="c1561105-5857-407c-9ec6-6908752518c0"/>
+					<reportElement positionType="Float" x="-1" y="131" width="535" height="46" isRemoveLineWhenBlank="true" uuid="c1561105-5857-407c-9ec6-6908752518c0"/>
 					<staticText>
 						<reportElement positionType="Float" x="1" y="0" width="140" height="26" isRemoveLineWhenBlank="true" uuid="5ad3339e-208c-45db-95d6-a691c9df8ad9">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>

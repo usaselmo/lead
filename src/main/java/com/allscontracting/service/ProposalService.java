@@ -144,7 +144,7 @@ public class ProposalService {
 	}
 
 	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
-		HashMap<String, Object> map = new HashMap<>();
+		HashMap<String, Object> map = new HashMap<>(); new StringBuilder().append(!StringUtils.isEmpty(proposal.getNote())?proposal.getNote():"").append(proposal.isCallMissUtility()&&!StringUtils.isEmpty(proposal.getNote())?"\r\n":"").append(proposal.isCallMissUtility()?"We will call Miss Utility":"").toString();
 		map.put("CLIENT", client);
 		map.put("ESTIMATOR", proposal.getLead()!=null && proposal.getLead().getEstimator()!=null && !StringUtils.isEmpty(proposal.getLead().getEstimator().getName()) ?proposal.getLead().getEstimator().getName():"Eddie Lopes");
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
