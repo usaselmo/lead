@@ -217,7 +217,7 @@ WHERE
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="388" splitType="Immediate">
+			<band height="301" splitType="Immediate">
 				<frame>
 					<reportElement x="0" y="26" width="535" height="46" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
 					<staticText>
@@ -229,7 +229,7 @@ WHERE
 						</textElement>
 						<text><![CDATA[NOTES]]></text>
 					</staticText>
-					<textField isBlankWhenNull="true">
+					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 						<reportElement stretchType="ElementGroupHeight" x="0" y="25" width="535" height="21" isRemoveLineWhenBlank="true" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote())]]></printWhenExpression>
@@ -238,9 +238,9 @@ WHERE
 					</textField>
 				</frame>
 				<frame>
-					<reportElement x="0" y="79" width="535" height="46" uuid="9ef8adc5-ced9-4b68-9210-3a20d79550bc"/>
+					<reportElement positionType="Float" x="0" y="79" width="535" height="46" uuid="9ef8adc5-ced9-4b68-9210-3a20d79550bc"/>
 					<staticText>
-						<reportElement x="0" y="0" width="220" height="26" isRemoveLineWhenBlank="true" uuid="b342bfd0-e694-44bf-8b3f-fc59c549ac44">
+						<reportElement positionType="Float" x="0" y="0" width="220" height="26" isRemoveLineWhenBlank="true" uuid="b342bfd0-e694-44bf-8b3f-fc59c549ac44">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
 						</reportElement>
@@ -250,16 +250,16 @@ WHERE
 						<text><![CDATA[PAYMENT SCHEDULE]]></text>
 					</staticText>
 					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-						<reportElement stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
 						</reportElement>
 						<textFieldExpression><![CDATA[$P{PROPOSAL}.getPaymentSchedule()]]></textFieldExpression>
 					</textField>
 				</frame>
 				<frame>
-					<reportElement x="-1" y="131" width="535" height="46" uuid="c1561105-5857-407c-9ec6-6908752518c0"/>
+					<reportElement positionType="Float" x="-1" y="131" width="535" height="46" uuid="c1561105-5857-407c-9ec6-6908752518c0"/>
 					<staticText>
-						<reportElement x="1" y="0" width="140" height="26" isRemoveLineWhenBlank="true" uuid="5ad3339e-208c-45db-95d6-a691c9df8ad9">
+						<reportElement positionType="Float" x="1" y="0" width="140" height="26" isRemoveLineWhenBlank="true" uuid="5ad3339e-208c-45db-95d6-a691c9df8ad9">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
 						</reportElement>
@@ -269,46 +269,49 @@ WHERE
 						<text><![CDATA[WORK WARRANTY]]></text>
 					</staticText>
 					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-						<reportElement stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
+						<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
 						</reportElement>
 						<textFieldExpression><![CDATA[$P{PROPOSAL}.getWorkWarranty()]]></textFieldExpression>
 					</textField>
 				</frame>
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="270" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
-					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
-						<pen lineWidth="0.5" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[ACCEPTANCE OF PROPOSAL]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="0" y="290" width="535" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					</reportElement>
-					<box padding="2">
-						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.5"/>
-						<leftPen lineWidth="0.5"/>
-						<bottomPen lineWidth="0.5"/>
-						<rightPen lineWidth="0.5"/>
-					</box>
-					<textElement verticalAlignment="Top">
-						<font isBold="false"/>
-					</textElement>
-					<text><![CDATA[The above prices, specifications, and conditions are satisfactory and are hereby accepted.
+				<frame>
+					<reportElement positionType="Float" x="0" y="190" width="535" height="109" uuid="1b8d3121-cadc-4733-890c-2afb375bdb85"/>
+					<staticText>
+						<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
+						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
+							<pen lineWidth="0.5" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font size="12" isBold="true"/>
+						</textElement>
+						<text><![CDATA[ACCEPTANCE OF PROPOSAL]]></text>
+					</staticText>
+					<staticText>
+						<reportElement positionType="Float" x="0" y="20" width="535" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<box padding="2">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.5"/>
+							<leftPen lineWidth="0.5"/>
+							<bottomPen lineWidth="0.5"/>
+							<rightPen lineWidth="0.5"/>
+						</box>
+						<textElement verticalAlignment="Top">
+							<font isBold="false"/>
+						</textElement>
+						<text><![CDATA[The above prices, specifications, and conditions are satisfactory and are hereby accepted.
 
 
 
 
 Customer Signature: ____________________________ Amount Accepted: ________________ Date: _____________]]></text>
-				</staticText>
+					</staticText>
+				</frame>
 			</band>
 		</groupFooter>
 	</group>
