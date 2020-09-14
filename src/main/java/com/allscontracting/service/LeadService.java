@@ -204,13 +204,16 @@ public class LeadService {
 			Path tempFile = Files.createTempFile("", "_" + media.getName());
 			attachments.add(Files.write(tempFile, media.getContent()).toFile());
 		}
-		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0])).onError((error) -> {
+		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
+		.onError((error) -> {
 			log.error(error);
-		}).onSuccess(() -> {
+		})
+		.onSuccess(() -> {
 			invitation.setEmailed((invitation.getEmailed() == null) ? 1L : invitation.getEmailed() + 1L);
 			this.invitationRepo.save(invitation);
 			logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
-		}).send();
+		})
+		.send();
 	}
 
 	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {

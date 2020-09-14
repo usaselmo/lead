@@ -51,8 +51,8 @@ public class ProposalService {
 		proposal.setDate(new Date());
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		proposal.setLead(lead);
+		proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		defineNumber(proposal, lead);
-		defineTotal(proposalDTO, proposal);
 		defineItems(proposal);
 		Proposal res = proposalRepository.save(proposal);
 		return ProposalDTO.of(res);
@@ -79,12 +79,6 @@ public class ProposalService {
 			}else {
 				proposal.setNumber(1L); 
 			}
-		}
-	}
-
-	private void defineTotal(ProposalDTO proposalDTO, Proposal proposal) {
-		if (StringUtils.isEmpty(proposalDTO.getTotal()) || new BigDecimal(proposalDTO.getTotal()).equals(BigDecimal.ZERO)) {
-			proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));
 		}
 	}
 
