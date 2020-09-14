@@ -70,7 +70,11 @@ public class ReportService {
 	}
 
 	public void getFileAsPdfStream(HttpServletResponse response, String userFriendlyFileNmae, byte[] fileContentBytes) throws IOException {
-		response.setContentType("application/pdf");
+		this.getFileAsStream(response, userFriendlyFileNmae, fileContentBytes, "application/pdf");
+	}	
+	
+	public void getFileAsStream(HttpServletResponse response, String userFriendlyFileNmae, byte[] fileContentBytes, String contentType) throws IOException {
+		response.setContentType(contentType);
 		response.setHeader("content-disposition", "attachment; filename=\"" + userFriendlyFileNmae + "\"");
 		this.tempFile = Files.createTempFile("", "");
 		Path p = Files.write(this.tempFile, fileContentBytes);

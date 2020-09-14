@@ -152,7 +152,7 @@ public class ProposalService {
 
 	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
 		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
-		this.reportService.getFileAsPdfStream(response, media.getName(), media.getContent());
+		this.reportService.getFileAsStream(response, media.getName(), media.getContent(), media.getType());
 	}
 	
 }
