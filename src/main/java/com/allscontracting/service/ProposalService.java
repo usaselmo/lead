@@ -20,11 +20,13 @@ import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
+import com.allscontracting.model.Media;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.ItemRepository;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.LineRepository;
+import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.repo.ProposalRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,7 @@ public class ProposalService {
 	public final ReportService reportService;
 	public final MailService mailService;
 	public final LogService logService;
+	public final MediaRepo mediaRepo;
 
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
@@ -145,6 +148,11 @@ public class ProposalService {
 		map.put("PROPOSAL_ID", proposal.getId());
 		map.put("LEAD", LeadDTO.of(proposal.getLead()));
 		return map;
+	}
+
+	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
+		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
+		this.reportService.getFileAsPdfStream(response, media.getName(), media.getContent());
 	}
 	
 }

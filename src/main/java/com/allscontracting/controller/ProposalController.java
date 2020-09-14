@@ -84,5 +84,20 @@ public class ProposalController {
 	public void getProposalRtf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
 		this.proposalService.getProposalAsRtfStream(response, proposalId);
 	}
+	
+	@GetMapping(value = "/medias/{mediaId}/pdf")
+	public LeadEntity getMediapdf(HttpServletResponse response, @PathVariable Long mediaId) throws Exception {
+		try {
+			this.proposalService.getMediaAsPdfStream(mediaId, response);
+			return LeadEntity.builder().build().addSuccessMessage("Media downloaded");
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXPECTED_ERROR);
+		}
+		
+	}
 
 }
