@@ -169,7 +169,7 @@ WHERE
 					<textFieldExpression><![CDATA["Phone: " + $P{CLIENT}.getPhone()]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="390" y="130" width="145" height="20" uuid="25e37857-4866-413a-82e8-adf3d4f9516d"/>
+					<reportElement x="390" y="130" width="40" height="20" uuid="25e37857-4866-413a-82e8-adf3d4f9516d"/>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
 						<topPen lineWidth="0.5"/>
@@ -178,9 +178,9 @@ WHERE
 						<rightPen lineWidth="0.5"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font isBold="false"/>
+						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber() + " of " + $P{PROPOSAL}.getDate()]]></textFieldExpression>
+					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="390" y="190" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>
@@ -215,6 +215,20 @@ WHERE
 					<reportElement x="160" y="20" width="238" height="62" uuid="a6d5c7f1-19bc-4c4a-b26f-aafaae0c74b9"/>
 					<imageExpression><![CDATA["jasper/image/DunBradstreet.jpg"]]></imageExpression>
 				</image>
+				<textField>
+					<reportElement x="430" y="130" width="105" height="20" uuid="49e4d63b-29e8-4ccb-beb0-adcaf653c111"/>
+					<box padding="2">
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{PROPOSAL}.getDate()]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
