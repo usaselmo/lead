@@ -65,6 +65,10 @@ public class Mail {
 		return this;
 	}
 
+	/**
+	 * Provides error message
+	 * @param consumer for the error message
+	 */
 	public Mail onError(Consumer<String> consumer) {
 		this.runnableOnError = consumer;
 		return this;
