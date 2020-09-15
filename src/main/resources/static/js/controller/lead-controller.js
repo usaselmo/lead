@@ -190,20 +190,21 @@ init();
    $scope.uploadd = function(uploader, lead){
 
     uploader.onSuccessItem = function(fileItem, response, status, headers) {
+        if(!lead.medias)
+            lead.medias = [];
         lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
         $scope.lead = lead;
     };
 
     uploader.onCompleteAll = function(){
         uploader.clearQueue();
+        $scope.reloadLead(lead);
     }
 
     uploader.queue.forEach(item=>{
         item.url = '/main/leads/' + lead.id + '/file-upload'
         item.upload();
     })
-
-    $scope.reloadLead(lead);
 
 }
 
@@ -226,8 +227,8 @@ init();
  }
 
  $scope.invitationSave = function(invitation, lead){
-  leadService.createInvitation($scope, invitation, lead);	
-  $scope.reloadLead(lead)
+  leadService.createInvitation($scope, invitation, lead)
+    .success( ()=> $scope.reloadLead(lead) )
   $scope.invitationCancel();
 }
 
@@ -258,6 +259,7 @@ $scope.uploadProposal = function(uploader, invitation, lead){
 
     uploader.onCompleteAll = function(){
         uploader.clearQueue();
+        $scope.reloadLead(lead);
     }
 
     uploader.queue.forEach(item=>{
@@ -266,7 +268,7 @@ $scope.uploadProposal = function(uploader, invitation, lead){
     })
 
     $scope.uploading['processing'] = !$scope.uploading['processing'];
-    $scope.reloadLead(lead);
+
 }
 
 });

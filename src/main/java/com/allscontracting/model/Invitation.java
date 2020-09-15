@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -47,11 +48,11 @@ public class Invitation implements Serializable {
 	@ManyToOne
 	private Company company;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.DETACH)
 	@JoinTable(name = "invitation_media", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
 	private List<Media> medias;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "invitation_proposal", joinColumns = @JoinColumn(name = "invitation_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
 	private List<Media> proposals;
 
