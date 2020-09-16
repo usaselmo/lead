@@ -19,7 +19,7 @@
     <div class="form-group">
       <label for="company" class="col-sm-2 control-label">Company</label>
       <div class="col-sm-4">
-        <select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="crudLead.company"><option value="">Select...</option></select>
+        <select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="crudLead.company" ng-change="companyOnChange(crudLead.company)" ><option value="">Select...</option></select>
       </div>
       <label for="contact" class="col-sm-2 control-label">Contact</label>
       <div class="col-sm-4">

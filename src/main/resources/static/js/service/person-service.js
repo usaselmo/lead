@@ -4,11 +4,13 @@
  var personService = function($http){
  	return {
  		findPersons: function (scope) {
- 			$http.get(local_server_url + "/persons").then(function (response) {
+ 			var res = $http.get(local_server_url + "/persons");
+ 			res.then(function (response) {
  				scope.persons = response.data
  			}, function (response) {
  				console.log(response)
  			});
+ 			return res;
  		},
  		
  		sendCantReachEmail: function (lead, person) {

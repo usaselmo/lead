@@ -36,6 +36,16 @@ else
     $scope.list()
 }
 
+$scope.companyOnChange = function(company){
+    personService.findPersons($scope)
+        .success ( ()=> {
+            var persons = $scope.persons
+                .filter(p=> p.company && p.company.id && p.company.id == company.id);
+            if(persons.length>0)
+                $scope.persons = persons;
+        } );
+}
+
 
 
 
