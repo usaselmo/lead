@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.util.StringUtils;
@@ -29,6 +30,10 @@ public class Person implements Serializable, Client{
 	private String address;
 	private String cellPhone;
 	private String phone;
+	
+	@ManyToOne
+	private Company company;
+	
 	
 	public String getPhone() {
 		return StringUtils.isEmpty(phone)?"":phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6);

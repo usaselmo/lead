@@ -2,11 +2,9 @@ package com.allscontracting.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +12,21 @@ import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
+import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.PersonRepository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class PersonService {
 
-	@Autowired PersonRepository personRepo;
-	@Autowired MailService mailService;
-	@Autowired LogService logg;
+	private final PersonRepository personRepo;
+	private final MailService mailService;
+	private final LogService logg;
+	private final CompanyRepository companyRepo;
 	
 	@Transactional
 	public PersonDTO updatePerson(PersonDTO personDTO, User user) throws NumberFormatException, LeadsException {
@@ -33,6 +35,7 @@ public class PersonService {
 		person.setEmail(personDTO.getEmail());
 		person.setName(personDTO.getName());
 		person.setPhone(personDTO.getPhone());
+		person.setCompany(this.companyRepo.findById(personDTO.getCompany().getId()).orElse(null));
 		logg.eventUpdated(Person.class, person.getId(), user, "");
 		return PersonDTO.of(personRepo.save(person));
 	}

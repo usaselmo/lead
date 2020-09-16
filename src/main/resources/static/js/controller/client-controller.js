@@ -1,5 +1,6 @@
 
 app_client.service('clientService', personService);
+app_client.service('companyService', companyService);
 
 var initTable = function(){
 	[1,2,3].forEach(function(i) {
@@ -8,9 +9,10 @@ var initTable = function(){
 };
 
 /*COMPANY CONTROLLER*/
-app_client.controller('ClientController', function ($scope, $http, $timeout, clientService) {
+app_client.controller('ClientController', function ($scope, $http, $timeout, clientService, companyService) {
 	var init = function(){
 		clientService.findClients($scope, initTable);
+		companyService.findCompanies($scope);
 	}
 
 	$scope.crud = function(client){

@@ -30,6 +30,7 @@
   <!-- ANGULARJS -->
   <script src="/js/angularjs/1.4.3/angular.min.js"></script>
   <script src="/js/client.js"></script>
+  <script src="/js/service/company-service.js"></script>
   <script src="/js/service/person-service.js"></script>
   <script src="/js/controller/client-controller.js"></script>
 
@@ -54,6 +55,7 @@
               <th>Email</th>
               <th>Address</th>
               <th>Phone</th>
+              <th>Company</th>
             </tr>
           </thead>
           <tbody>
@@ -63,6 +65,7 @@
               <td>{{client.email}}</td>
               <td>{{client.address}}</td>
               <td>{{client.phone}}</td>
+              <td>{{client.company.name}}</td>
             </tr>
           </tbody>
         </table>
@@ -99,6 +102,14 @@
             <label for="address" class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="address" placeholder="Address" ng-model="client.address">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="company" class="col-sm-2 control-label">Company</label>
+            <div class="col-sm-10">         
+              <select id="company" class="form-control"  ng-model="client.company" ng-options="c as c.name for c in companies track by c.id ">
+                <option value="choose a value">-- please choose a Company --</option>
+              </select>
             </div>
           </div>
 
