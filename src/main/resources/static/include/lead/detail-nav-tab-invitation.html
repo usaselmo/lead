@@ -5,8 +5,8 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Date</th>
-					<th>Due Date</th>
+					<th>Dates</th>
+					<th>Medias</th>
 					<th>Company</th>
 					<th>E-mailed</th>
 					<th>Proposals</th>
@@ -16,8 +16,8 @@
 			<tbody>
 				<tr ng-repeat="invitation in lead.invitations">
 					<td>{{invitation.id}}</td>
-					<td>{{invitation.date | date}}</td>
-					<td>{{invitation.dueDate | date}}</td>
+					<td>Created: {{invitation.date | date}}<br>Due Date: {{invitation.dueDate | date}}</td>
+					<td><span ng-repeat="m in invitation.medias">{{m.id}}, </span></td>
 					<td><strong>{{invitation.company.name}}</strong><br><i>{{invitation.contact.name}}</i> {{invitation.contact.phone}} {{invitation.contact.email}} </td>
 					<td>{{invitation.emailed}}</td>
 					<td>

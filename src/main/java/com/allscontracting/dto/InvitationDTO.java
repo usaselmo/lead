@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.allscontracting.model.Invitation;
+import com.allscontracting.model.Media;
 import com.allscontracting.service.Converter;
 
 import lombok.AllArgsConstructor;
