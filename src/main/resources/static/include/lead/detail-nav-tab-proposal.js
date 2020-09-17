@@ -16,7 +16,7 @@ proposalCrud.directive('proposalCrud', function() {
     controller: function($scope, proposalService, leadService){
 
 		$scope.proposalCancel = function(){
-		 	$scope.proposal = null;
+		 	//$scope.proposal = null;
 		}
 
 		$scope.proposalEncreaseItem = function(proposal){
