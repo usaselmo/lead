@@ -73,29 +73,6 @@ else
 $scope.proposal = proposal;
 }
 
-$scope.proposalCancel = function(){
- $scope.proposal = null;
-}
-
-$scope.proposalEncreaseItem = function(proposal){
- $scope.proposal.items.push({price: 0})
-}
-
-$scope.proposalRemoveItem = function(proposal){
- if($scope.proposal.items.length > 1 ){
-    $scope.proposal.items.pop();
-}
-}
-
-$scope.proposalSave = function(lead, proposal){
-    if(proposal.id){
-        proposalService.update($scope, proposal, lead.id)
-            .success( (response) => $scope.reloadLead(lead) );
-    }else{
-        proposalService.save($scope, proposal, lead.id)
-    }
-}
-
 $scope.deleteProposal = function(lead, proposal){
  if(confirm(' Are you sure you want to delete? ')){
     proposalService.delete($scope, proposal, lead.id)
