@@ -14,6 +14,8 @@ proposalCrud.directive('proposalCrud', function() {
     },
     templateUrl: '/include/lead/detail-nav-tab-proposal-crud.html' , 
     controller: function($scope, proposalService, leadService){
+    	
+    	console.log($scope)
 
 		$scope.proposalCancel = function(){
 		 	//$scope.proposal = null;
