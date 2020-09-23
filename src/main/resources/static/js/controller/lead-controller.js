@@ -65,32 +65,7 @@ $scope.companyOnChange = function(company){
     return proposal;
 }
 
-$scope.proposalCrud = function(proposal, lead){
- if(!proposal.id)
-    proposal = createProposal(lead);
-else
-    proposal = convertToClientFormat(proposal);
-$scope.proposal = proposal;
-}
 
-$scope.deleteProposal = function(lead, proposal){
- if(confirm(' Are you sure you want to delete? ')){
-    proposalService.delete($scope, proposal, lead.id)
-}
-}
-
-$scope.proposalCopy = function(proposal){
- nproposal = convertToClientFormat(proposal);
- nproposal.id = null
- nproposal.total = 0  
- nproposal.emailed = false;
- nproposal.number = null;
- nproposal.items.forEach(item=>{
-    item.id=null;
-})
- originalLines=[];
- $scope.proposal = nproposal;
-}
 
 
 
@@ -111,12 +86,6 @@ $scope.proposalCopy = function(proposal){
  $scope.saveNote = function(lead, newNote){
      leadService.saveNote($scope, lead, newNote)
  }
-
- $scope.emailProposal = function(proposal){
-     if (confirm('Send Proposal #'+proposal.number + ' via E-mail ? ')) {
-        proposalService.sendByEmail($scope, proposal)
-    }
-}
 
 $scope.sendCantReachEmail = function(lead, person){
  if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
