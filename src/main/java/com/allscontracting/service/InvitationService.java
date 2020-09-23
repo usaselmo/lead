@@ -44,6 +44,17 @@ public class InvitationService {
 		logService.newInvitationCreated(lead.getId(), invitation, user);
 		return InvitationDTO.of(invitation);
 	}
+	
+	@Transactional
+	public InvitationDTO update(InvitationDTO invitationDTO, Long leadId, User user) throws LeadsException {
+		Invitation dto = InvitationDTO.toInvitation(invitationDTO);
+		Invitation invitation = this.invitationRepo.findById(dto.getId()).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
+		invitation.setCompany(dto.getCompany());
+		invitation.setContact(dto.getContact());
+		invitation.setPrice(dto.getPrice());
+		invitation.setDueDate(dto.getDueDate());
+		return InvitationDTO.of(this.invitationRepo.save(invitation));
+	}
 
 	public void deleteInvitation(Long leadId, Long invitaionId, User user) throws LeadsException {
 		Lead lead = leadRepo.findById(leadId).orElseThrow( ()-> new LeadsException("Could not find Lead"));

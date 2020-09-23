@@ -183,10 +183,13 @@ init();
  }
 
  $scope.invitationSave = function(invitation, lead){
-  leadService.createInvitation($scope, invitation, lead)
-    .success( ()=> $scope.reloadLead(lead) )
+ 	if(!invitation.id)
+  		leadService.createInvitation($scope, invitation, lead).success( ()=> $scope.reloadLead(lead) )
+  	else
+  		leadService.updateInvitation($scope, invitation, lead).success( ()=> $scope.reloadLead(lead) )
   $scope.invitationCancel();
 }
+
 
 $scope.invitationDelete = function(invitation, lead){
  if(confirm(' Are you sure you want to delete invitation #'+invitation.id+'? ')){

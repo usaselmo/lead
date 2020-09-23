@@ -72,12 +72,11 @@ var leadService = function($http){
  		
  		createInvitation: function (scope, invitation, lead) {
  			var res = $http.post(local_server_url + '/leads/' + lead.id + '/invitations', invitation);
- 			res.then(function (response) {
- 				scope.successMessages = response.data.successMessages
- 				scope.errorMessages = response.data.errorMessages
- 			}, function (response) {
- 				console.log(response)
- 			});
+ 			return res;
+ 		},
+ 		
+ 		updateInvitation: function (scope, invitation, lead) {
+ 			var res = $http.put(local_server_url + '/leads/' + lead.id + '/invitations', invitation);
  			return res;
  		},
  		

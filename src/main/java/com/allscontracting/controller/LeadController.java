@@ -116,6 +116,19 @@ public class LeadController {
 		}
 	}
 	
+	@PutMapping("{leadId}/invitations")
+	public LeadEntity updateInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
+		try {
+			return LeadEntity.builder().invitation(invitationService.update(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
+		} catch (LeadsException e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
+	
 	@DeleteMapping("{leadId}/invitations/{invitationId}")
 	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
 		try {
