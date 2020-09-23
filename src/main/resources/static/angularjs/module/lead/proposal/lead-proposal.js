@@ -1,4 +1,6 @@
-var leadProposal = angular.module('app.module.lead.proposal', []);
+var leadProposal = angular.module('app.module.lead.proposal', [
+	'app.module.lead.proposal.crud',
+	]);
 
 leadProposal.service('proposalService', proposalService);
 

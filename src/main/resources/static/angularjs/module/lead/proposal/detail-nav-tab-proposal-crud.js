@@ -1,6 +1,6 @@
 
 
-var proposalCrud = angular.module('docsRestrictDirective', []);
+var proposalCrud = angular.module('app.module.lead.proposal.crud', []);
 
 proposalCrud.service('proposalService', proposalService);
 proposalCrud.service('leadService', leadService);

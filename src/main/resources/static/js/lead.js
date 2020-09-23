@@ -5,7 +5,6 @@
 
  var app = angular.module('lead', [
 	'angularFileUpload', 
-	'docsRestrictDirective',
 	'app.module.lead.proposal'
 	]);
 
