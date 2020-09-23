@@ -1,6 +1,7 @@
 package com.allscontracting.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,8 @@ public class Invitation implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dueDate;
+	
+	private BigDecimal price;
 
 	@ManyToOne
 	private Company company;

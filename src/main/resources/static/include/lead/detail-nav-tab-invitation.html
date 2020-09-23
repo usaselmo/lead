@@ -10,6 +10,7 @@
 					<th>Company</th>
 					<th>E-mailed</th>
 					<th>Proposals</th>
+					<th>$</th>
 					<th>&nbsp;</th>
 				</tr>			
 			</thead>
@@ -25,6 +26,7 @@
 							<p><a href="/leads/{{lead.id}}/invitations/{{invitation.id}}/proposals/{{proposal.id}}/pdf" >{{proposal.name}}</a></p> 
 						</span>
 					</td>
+					<td>{{invitation.price | currency }}</td>
 					<td nowrap="nowrap">
 
 						<a href="#" title="Include Proposal" class="btn btn-default btn-sm" ng-click="invitationIncludeProposal(invitation)"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a>&nbsp;

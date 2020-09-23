@@ -1,10 +1,10 @@
 package com.allscontracting.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.allscontracting.model.Invitation;
-import com.allscontracting.model.Media;
 import com.allscontracting.service.Converter;
 
 import lombok.AllArgsConstructor;
@@ -27,6 +27,7 @@ public class InvitationDTO {
 	private List<MediaDTO> medias;
 	private List<MediaDTO> proposals;
 	private Long emailed;
+	private BigDecimal price;
 	
 	public static final InvitationDTO of(Invitation invitation) {
 		if(invitation==null)
@@ -41,6 +42,7 @@ public class InvitationDTO {
 			.proposals(MediaDTO.of(invitation.getProposals()))
 			.contact(PersonDTO.of(invitation.getContact()))
 			.emailed(invitation.getEmailed()==null?0L:invitation.getEmailed())
+			.price(invitation.getPrice())
 			.build();
 	}
 	
@@ -67,6 +69,7 @@ public class InvitationDTO {
 		invitation.setProposals(MediaDTO.toMedia(invitationDTO.getProposals()));
 		invitation.setContact(PersonDTO.toPerson(invitationDTO.getContact()));
 		invitation.setEmailed(invitationDTO.getEmailed()==null?0L:invitationDTO.getEmailed());
+		invitation.setPrice(invitationDTO.getPrice());
 		return invitation;
 	}
 
