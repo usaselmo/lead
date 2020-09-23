@@ -40,10 +40,6 @@ proposalCrud.directive('proposalCrud', function() {
 		    }
 		}
 
-		$scope.reloadLead = function(lead){
-		 leadService.findLead($scope, lead.id)
-		}
-
     },
   };
 });
