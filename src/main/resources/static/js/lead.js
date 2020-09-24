@@ -7,5 +7,6 @@
 	'angularFileUpload', 
 	'app.module.lead.proposal',
 	'app.module.lead.note',
+	'app.module.lead.event',
 	]);
 
