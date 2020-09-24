@@ -1,4 +1,11 @@
-var applead = angular.module('app.module.lead', []);
+var applead = angular.module('app.module.lead', [
+ 	'app.module.lead.proposal',
+ 	'app.module.lead.note',
+ 	'app.module.lead.event',
+ 	'app.module.lead.media',
+ 	'app.module.lead.invitation',
+ 	'app.module.loading',
+ 	]);
 
 applead.service('companyService', companyService);
 applead.service('leadService', leadService);
@@ -41,6 +48,75 @@ applead.directive('appLead', function() {
 			}
 
 			init();
+			
+
+			$scope.crud = function(lead){
+				$scope.crudLead = lead;
+				$scope.leads = null;
+				$scope.lead = null;
+				companyService.findCompanies($scope)
+				personService.findPersons($scope)
+				userService.findEstimators($scope)
+			}
+
+			$scope.save = function(lead){
+				if(lead.id)
+					leadService.update($scope, lead)
+				else
+					leadService.save($scope, lead);
+				$scope.cancel(lead)
+			}
+
+			$scope.cancel = function(lead){
+				if(lead.id)
+					$scope.detail(lead)
+				else
+					$scope.list()
+			}
+
+			$scope.companyOnChange = function(company){
+				personService.findPersons($scope)
+				.success ( ()=> {
+					var persons = $scope.persons
+					.filter(p=> p.company && p.company.id && p.company.id == company.id);
+					if(persons.length>0)
+						$scope.persons = persons;
+				} );
+			}
+			
+			$scope.detail = function(lead){
+				$scope.lead = lead;
+				$scope.crudLead = null;
+				$scope.leads = null;
+			}
+
+			$scope.fireEvent = function(lead, event){
+				leadService.fireEvent($scope, lead, event)
+			}
+
+			$scope.saveNote = function(lead, newNote){
+				leadService.saveNote($scope, lead, newNote)
+			}
+
+			$scope.sendCantReachEmail = function(lead, person){
+				if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
+					personService.sendCantReachEmail(lead, person);
+				}
+			}
+
+			$scope.sendHiringDecisionEmail = function(lead, person){
+				if (person && confirm('Send e-mail asking about '+person.name+'\'s  hiring decision ? ')) {
+					personService.sendHiringDecisionEmail(lead, person);
+				}
+			}
+
+			$scope.reloadLead = function(lead){
+				leadService.findLead($scope, lead.id)
+			}
+
+			
+			
+			
 
 		}
 	};
