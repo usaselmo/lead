@@ -12,5 +12,6 @@
 	'app.module.lead.invitation',
 	'app.module.loading',
 	'app.module.header',
+	'app.module.menu',
 	]);
 
