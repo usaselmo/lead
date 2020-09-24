@@ -34,7 +34,10 @@ proposalCrud.directive('proposalCrud', function() {
 		$scope.proposalSave = function(lead, proposal){
 		    if(proposal.id){
 		        proposalService.update($scope, proposal, lead.id)
-		            .success( (response) => $scope.reloadLead(lead) );
+		            .success( (response) => {
+		            	$scope.lead.proposals = $scope.lead.proposals.filter(p=>p.id != proposal.id)
+		            	$scope.lead.proposals.push(response.proposal)
+		            } );
 		    }else{
 		        proposalService.save($scope, proposal, lead.id)
 		    }
