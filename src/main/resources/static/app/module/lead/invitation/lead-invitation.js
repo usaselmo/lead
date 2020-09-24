@@ -13,7 +13,7 @@ invitation.directive('appLeadInvitation', function() {
 		scope : {
 			lead : '=',
 		},
-		templateUrl : '/angularjs/module/lead/invitation/lead-invitation.html',
+		templateUrl : '/app/module/lead/invitation/lead-invitation.html',
 		controller : function($scope, leadService, companyService, personService, FileUploader) {
 			   
 			$scope.uploader = new FileUploader();

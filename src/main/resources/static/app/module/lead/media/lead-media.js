@@ -10,7 +10,7 @@ proposalMedia.directive('appLeadMedia', function() {
 		scope : {
 			lead : '=',
 		},
-		templateUrl : '/angularjs/module/lead/media/lead-media.html',
+		templateUrl : '/app/module/lead/media/lead-media.html',
 		controller : function($scope, leadService, FileUploader) {
 			   $scope.uploader = new FileUploader();
 

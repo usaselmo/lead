@@ -12,7 +12,7 @@ proposalCrud.directive('proposalCrud', function() {
     	proposal: '=', 
     	lead: '=',
     },
-    templateUrl: '/angularjs/module/lead/proposal/lead-proposal-crud.html' , 
+    templateUrl: '/app/module/lead/proposal/lead-proposal-crud.html' , 
     controller: function($scope, proposalService, leadService){
     	
 		$scope.proposalCancel = function(){

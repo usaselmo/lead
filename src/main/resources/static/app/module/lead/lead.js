@@ -17,7 +17,7 @@ applead.directive('appLead', function() {
 	return {
 		restrict : 'E',
 		scope : {},
-		templateUrl : '/angularjs/module/lead/lead.html',
+		templateUrl : '/app/module/lead/lead.html',
 		controller : function($scope, leadService, companyService, personService, userService, proposalService) {
 			var pageRange = 0;
 			var lines = 10;

@@ -4,6 +4,6 @@ menu.directive('appMenu', function() {
 	return {
 		restrict : 'E',
 		scope : {},
-		templateUrl : '/angularjs/module/menu/menu.html',
+		templateUrl : '/app/module/menu/menu.html',
 	};
 });

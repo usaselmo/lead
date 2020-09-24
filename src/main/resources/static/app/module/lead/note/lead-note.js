@@ -8,7 +8,7 @@ proposalNote.directive('appLeadNote', function() {
 		scope : {
 			lead : '=',
 		},
-		templateUrl : '/angularjs/module/lead/note/lead-note.html',
+		templateUrl : '/app/module/lead/note/lead-note.html',
 		controller : function($scope, leadService) {
 
 			$scope.saveNote = function(lead, newNote) {

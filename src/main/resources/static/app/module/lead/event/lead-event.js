@@ -8,6 +8,6 @@ proposalEvent.directive('appLeadEvent', function() {
 		scope : {
 			lead : '=',
 		},
-		templateUrl : '/angularjs/module/lead/event/lead-event.html',
+		templateUrl : '/app/module/lead/event/lead-event.html',
 	};
 });
