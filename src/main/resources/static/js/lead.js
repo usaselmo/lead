@@ -5,6 +5,7 @@
 
  var app = angular.module('lead', [
 	'angularFileUpload', 
+	'app.module.lead',
 	'app.module.lead.proposal',
 	'app.module.lead.note',
 	'app.module.lead.event',
@@ -23,7 +24,7 @@
  app.service('userService', userService);
 
  /*MAIN CONTROLLER*/
- app.controller('LeadController', function ($scope, leadService, companyService, personService, userService, proposalService, FileUploader) {  
+ app.controller('LeadController', function ($scope, leadService, companyService, personService, userService, FileUploader) {  
 
   	/****************
   	 **** CRUD ******

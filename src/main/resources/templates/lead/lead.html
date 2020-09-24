@@ -39,6 +39,7 @@
   <script src="/js/service/company-service.js"></script>
   <script src="/js/service/lead-service.js"></script>
 	<script src="/js/lead.js"></script>
+  <script src="/angularjs/module/lead/lead.js"></script>
   
     <script src="/angularjs/module/loading/loading.js"></script>
     <script src="/angularjs/module/menu/menu.js"></script>
@@ -59,22 +60,10 @@
 
 			<!-- BEGIN -->
 			<div ng-controller="LeadController">
+      
+            <app-lead></app-lead>
 
-			<!-- ************* -->
-			<!--      LIST     -->
-			<!-- ************* -->
-            <div ng-if="!lead && !crudLead && !leads"> <app-loading></app-loading> </div>
-			<div id="list" ng-if="leads" ng-include="'include/lead/list.html'"></div>
-
-			<!-- ************* -->
-			<!--     DETAIL    -->
-			<!-- ************* -->
-			<div id="detail" ng-if="lead" ng-include="'include/lead/detail.html'"></div>
-
-			<!-- ************* -->
-			<!--     CRUD      -->
-			<!-- ************* -->
-			<div id="crud" ng-if="crudLead" ng-include="'include/lead/crud.html'"></div>
+			
 
 			</div>
 			<!-- END -->
