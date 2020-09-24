@@ -11,5 +11,6 @@
 	'app.module.lead.media',
 	'app.module.lead.invitation',
 	'app.module.loading',
+	'app.module.header',
 	]);
 
