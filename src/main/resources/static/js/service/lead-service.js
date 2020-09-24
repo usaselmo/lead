@@ -59,16 +59,6 @@ var leadService = function($http){
  		
  		saveNote: function (scope, lead, note) {
  			var res = $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note); 
- 			res.then(function (response) {
- 				if(response.data.errorMessages){
- 					scope.errorMessages = response.data.errorMessages
- 				}else{
- 					scope.successMessages = response.data.successMessages
- 					scope.lead = response.data.lead
- 				}
- 			}, function (response) {
- 				console.log(response)
- 			});
  			return res;
  		},
  		
