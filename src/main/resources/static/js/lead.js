@@ -9,5 +9,6 @@
 	'app.module.lead.note',
 	'app.module.lead.event',
 	'app.module.lead.media',
+	'app.module.loading',
 	]);
 
