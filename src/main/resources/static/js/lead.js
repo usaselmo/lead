@@ -8,5 +8,6 @@
 	'app.module.lead.proposal',
 	'app.module.lead.note',
 	'app.module.lead.event',
+	'app.module.lead.media',
 	]);
 
