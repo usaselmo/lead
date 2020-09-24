@@ -5,6 +5,7 @@
 
  var app = angular.module('lead', [
 	'angularFileUpload', 
-	'app.module.lead.proposal'
+	'app.module.lead.proposal',
+	'app.module.lead.note',
 	]);
 

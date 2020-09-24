@@ -58,7 +58,8 @@ var leadService = function($http){
  		},
  		
  		saveNote: function (scope, lead, note) {
- 			$http.post(local_server_url + '/leads/' + lead.id + '/addNote', note).then(function (response) {
+ 			var res = $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note); 
+ 			res.then(function (response) {
  				if(response.data.errorMessages){
  					scope.errorMessages = response.data.errorMessages
  				}else{
@@ -68,6 +69,7 @@ var leadService = function($http){
  			}, function (response) {
  				console.log(response)
  			});
+ 			return res;
  		},
  		
  		createInvitation: function (scope, invitation, lead) {
