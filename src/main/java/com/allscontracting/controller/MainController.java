@@ -44,7 +44,7 @@ public class MainController {
 
 	@GetMapping("/main/clients")
 	public String clients(Model model) {
-		model.addAttribute("target", "client");
+		model.addAttribute("target", "person");
 		return "index";
 	}
 
