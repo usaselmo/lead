@@ -1,4 +1,4 @@
-var leadService = function($http){
+function leadService($http){
  	return {
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
