@@ -19,22 +19,22 @@ var mediaController = function($scope, FileUploader) {
   $scope.uploadd = function(uploader, lead){
 
    uploader.onSuccessItem = function(fileItem, response, status, headers) {
-       if(!lead.medias)
-           lead.medias = [];
-       lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
-       $scope.lead = lead;
+     if(!lead.medias)
+       lead.medias = [];
+     lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
+     $scope.lead = lead;
    };
 
    uploader.onCompleteAll = function(){
-       uploader.clearQueue();
+     uploader.clearQueue();
    }
 
    uploader.queue.forEach(item=>{
-       item.url = '/main/leads/' + lead.id + '/file-upload'
-       item.upload();
+     item.url = '/main/leads/' + lead.id + '/file-upload'
+     item.upload();
    })
 
-}
+ }
 
 }	
 

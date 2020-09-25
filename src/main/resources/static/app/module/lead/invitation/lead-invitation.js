@@ -5,7 +5,7 @@ import leadService from '/app/service/lead-service.js'
 var invitation = angular.module('app.module.lead.invitation', [
 	'angularFileUpload', 
 	
-]);
+	]);
 
 invitation.service('leadService', leadService);
 invitation.service('companyService', companyService);
@@ -19,7 +19,7 @@ invitation.directive('appLeadInvitation', function() {
 		},
 		templateUrl : '/app/module/lead/invitation/lead-invitation.html',
 		controller : function($scope, leadService, companyService, personService, FileUploader) {
-			   
+			
 			$scope.uploader = new FileUploader();
 
 			$scope.uploading = [];

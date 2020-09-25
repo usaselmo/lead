@@ -24,30 +24,30 @@ person.directive('appPerson', function() {
 });
 
 var personController = function ($scope, $http, $timeout, personService, companyService) {
- 	var init = function(){
- 		personService.findClients($scope, initTable);
- 		companyService.findCompanies($scope);
- 	}
+	var init = function(){
+		personService.findClients($scope, initTable);
+		companyService.findCompanies($scope);
+	}
 
- 	$scope.crud = function(client){
- 		$scope.client = client; 
- 	}
+	$scope.crud = function(client){
+		$scope.client = client; 
+	}
 
- 	$scope.cancel = function(){
- 		$scope.client = null
- 		initTable();
- 	}
+	$scope.cancel = function(){
+		$scope.client = null
+		initTable();
+	}
 
- 	$scope.save = function(client){
- 		if(client.id){
- 			personService.update($scope, client)
- 		}else{
- 			personService.save($scope, client)
- 		}
- 		$scope.cancel();
- 	}
+	$scope.save = function(client){
+		if(client.id){
+			personService.update($scope, client)
+		}else{
+			personService.save($scope, client)
+		}
+		$scope.cancel();
+	}
 
- 	init();
- }
+	init();
+}
 
 export default person

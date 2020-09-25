@@ -15,11 +15,11 @@ proposalNote.directive('appLeadNote', function() {
 
 			$scope.saveNote = function(lead, newNote) {
 				leadService.saveNote($scope, lead, newNote)
-					.success(data=>{
-						$scope.lead = data.lead
-						$scope.newNote = ''
-					})
-					.error(error=>console.log(error))
+				.success(data=>{
+					$scope.lead = data.lead
+					$scope.newNote = ''
+				})
+				.error(error=>console.log(error))
 			}
 
 		},

@@ -10,28 +10,28 @@ company.directive('appCompany', function() {
 });
 
 var companyController = function ($scope, $http, $timeout, companyService) {
- 	var init = function(){
- 		companyService.findCompanies($scope);
- 	}
+	var init = function(){
+		companyService.findCompanies($scope);
+	}
 
- 	$scope.crud = function(company){
- 		$scope.company = company; 
- 	}
+	$scope.crud = function(company){
+		$scope.company = company; 
+	}
 
- 	$scope.cancel = function(){
- 		$scope.company = null
- 	}
+	$scope.cancel = function(){
+		$scope.company = null
+	}
 
- 	$scope.save = function(company){
- 		if(company.id){
- 			companyService.update($scope, company)
- 		}else{
- 			companyService.save($scope, company)
- 		}
- 		$scope.cancel();
- 	}
+	$scope.save = function(company){
+		if(company.id){
+			companyService.update($scope, company)
+		}else{
+			companyService.save($scope, company)
+		}
+		$scope.cancel();
+	}
 
- 	init();
- }
+	init();
+}
 
 export default company

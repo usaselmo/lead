@@ -13,13 +13,13 @@ import proposalService from '/app/service/proposal-service.js'
 
 
 var applead = angular.module('app.module.lead', [
- 	'app.module.lead.proposal',
- 	'app.module.lead.note',
- 	'app.module.lead.event',
- 	'app.module.lead.media',
- 	'app.module.lead.invitation',
- 	'app.module.loading',
- 	]);
+	'app.module.lead.proposal',
+	'app.module.lead.note',
+	'app.module.lead.event',
+	'app.module.lead.media',
+	'app.module.lead.invitation',
+	'app.module.loading',
+	]);
 
 applead.service('companyService', companyService);
 applead.service('leadService', leadService);

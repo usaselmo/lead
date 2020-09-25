@@ -59,18 +59,18 @@ leadProposal.directive('appLeadProposal', function() {
 				$scope.proposal = proposal;
 			}
 
-		    var createProposal = function () {
-		      var prop = {
-		        'items': [{'price':0}],
-		        'callMissUtility': true,
-		        'scopeOfWork': 'Concrete work as per visit',
-		        'paymentSchedule': '1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.',
-		        'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
-		        'total': 0,	
-		      }
-		      $scope.currentProposal = prop;
-		      return prop;
-		    }
+			var createProposal = function () {
+				var prop = {
+					'items': [{'price':0}],
+					'callMissUtility': true,
+					'scopeOfWork': 'Concrete work as per visit',
+					'paymentSchedule': '1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.',
+					'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
+					'total': 0,	
+				}
+				$scope.currentProposal = prop;
+				return prop;
+			}
 
 			$scope.deleteProposal = function(lead, proposal) {
 				if (confirm(' Are you sure you want to delete? ')) {
