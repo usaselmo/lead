@@ -1,3 +1,5 @@
+import companyService from '/app/service/company-service.js'
+
 var invitation = angular.module('app.module.lead.invitation', [
 	'angularFileUpload', 
 	

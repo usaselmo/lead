@@ -5,6 +5,8 @@ import proposalEvent from '/app/module/lead/event/lead-event.js'
 import proposalCrud from '/app/module/lead/proposal/lead-proposal.js'
 import loading from '/app/module/loading/loading.js'
 
+import companyService from '/app/service/company-service.js'
+
 
 var applead = angular.module('app.module.lead', [
  	'app.module.lead.proposal',
