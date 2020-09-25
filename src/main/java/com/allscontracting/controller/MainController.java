@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,23 +25,27 @@ public class MainController {
 	private final FileService fileService;
 
 	@GetMapping(path = { "/", "" })
-	public String leadList() {
-		return "lead/lead";
+	public String leadList(Model model) {
+		model.addAttribute("target", "lead");
+		return "index";
 	}
 
 	@GetMapping("/main/users")
-	public String users() {
-		return "user/user";
+	public String users(Model model) {
+		model.addAttribute("target", "user");
+		return "index";
 	}
 
 	@GetMapping("/main/companies")
-	public String companies() {
-		return "company/company";
+	public String companies(Model model) {
+		model.addAttribute("target", "company");
+		return "index";
 	}
 
 	@GetMapping("/main/clients")
-	public String clients() {
-		return "client/client";
+	public String clients(Model model) {
+		model.addAttribute("target", "client");
+		return "index";
 	}
 
 	@PostMapping("/main/leads/{leadId}/file-upload")
