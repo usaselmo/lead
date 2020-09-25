@@ -9,6 +9,34 @@ var local_server_url = "";
  				console.log(response)
  			});
  		},
+ 		
+ 		update: function (scope, company) {
+ 			$http.put(local_server_url + "/companies", company).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					company = response.data.company
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+ 		
+ 		save: function (scope, company) {
+ 			$http.post(local_server_url + "/companies", company).then(function (response) {
+ 				if(response.data.errorMessages){
+ 					scope.errorMessages = response.data.errorMessages
+ 				}else{
+ 					scope.companies.push(response.data.company)
+ 					scope.successMessages = response.data.successMessages
+ 				}
+ 			}, function (response) {
+ 				console.log(response)
+ 			});
+ 		},
+
+ 		
  	} 
  }
  
