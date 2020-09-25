@@ -2,6 +2,7 @@ import header from '/app/module/header/header.js'
 import menu from '/app/module/menu/menu.js'
 import appLead from '/app/module/lead/lead.js'
 import user from '/app/module/user/user.js'
+import company from '/app/module/company/company.js'
 
 /*
  * ANGULARJS 
@@ -13,6 +14,7 @@ import user from '/app/module/user/user.js'
  	'app.module.menu',
  	'app.module.lead',
  	'app.module.user',
+ 	'app.module.company',
  	]);
 
 
