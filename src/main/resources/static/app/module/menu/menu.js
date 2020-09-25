@@ -7,3 +7,5 @@ menu.directive('appMenu', function() {
 		templateUrl : '/app/module/menu/menu.html',
 	};
 });
+
+export default menu

@@ -7,3 +7,5 @@ header.directive('appHeader', function() {
 		template : '<h1>Leads DC <small>Version 2.0.6</small></h1>',
 	};
 });
+
+export default header

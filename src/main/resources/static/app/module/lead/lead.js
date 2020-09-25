@@ -1,3 +1,10 @@
+import invitation from '/app/module/lead/invitation/lead-invitation.js'
+import proposalMedia from '/app/module/lead/media/lead-media.js'
+import proposalNote from '/app/module/lead/note/lead-note.js'
+import proposalEvent from '/app/module/lead/event/lead-event.js'
+import proposalCrud from '/app/module/lead/proposal/lead-proposal.js'
+import loading from '/app/module/loading/loading.js'
+
 
 var applead = angular.module('app.module.lead', [
  	'app.module.lead.proposal',
@@ -23,6 +30,8 @@ applead.directive('appLead', function() {
 	};
 });
 
+
+export default applead 
 
 var leadController = function ( $scope, leadService, companyService, personService, userService, proposalService) {
 	

@@ -80,3 +80,6 @@ invitation.directive('appLeadInvitation', function() {
 		},
 	};
 });
+
+
+export default invitation

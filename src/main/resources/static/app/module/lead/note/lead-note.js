@@ -23,3 +23,5 @@ proposalNote.directive('appLeadNote', function() {
 		},
 	};
 });
+
+export default proposalNote

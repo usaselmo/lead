@@ -1,3 +1,7 @@
+import header from '/app/module/header/header.js'
+import menu from '/app/module/menu/menu.js'
+import appLead from '/app/module/lead/lead.js'
+
 /*
  * ANGULARJS 
  */

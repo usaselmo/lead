@@ -7,3 +7,5 @@ loading.directive('appLoading', function() {
 		template : 'LOADING ... ',
 	};
 });
+
+export default loading

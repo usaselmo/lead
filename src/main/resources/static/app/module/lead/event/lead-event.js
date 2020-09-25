@@ -11,3 +11,6 @@ proposalEvent.directive('appLeadEvent', function() {
 		templateUrl : '/app/module/lead/event/lead-event.html',
 	};
 });
+
+
+export default proposalEvent

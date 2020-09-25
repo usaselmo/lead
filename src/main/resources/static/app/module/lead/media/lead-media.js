@@ -37,3 +37,5 @@ var mediaController = function($scope, FileUploader) {
 }
 
 }	
+
+export default proposalMedia

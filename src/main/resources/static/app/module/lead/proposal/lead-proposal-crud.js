@@ -45,3 +45,4 @@ proposalCrud.directive('proposalCrud', function() {
   };
 });
 
+export default proposalCrud

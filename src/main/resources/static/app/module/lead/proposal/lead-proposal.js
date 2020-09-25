@@ -1,3 +1,5 @@
+import proposalCrud from '/app/module/lead/proposal/lead-proposal-crud.js';
+
 var leadProposal = angular.module('app.module.lead.proposal', [
 	'app.module.lead.proposal.crud',
 	]);
@@ -16,8 +18,8 @@ leadProposal.directive('appLeadProposal', function() {
 			$scope.originalLines = [];
 			
 			var convertToClientFormat = function(proposal) {
-				prop = copy(proposal)
-				items = []
+				var prop = copy(proposal)
+				var items = []
 				prop.items.forEach(item => {
 					item.lines = item.lines.map(line => {
 						$scope.originalLines[item.id + line.description] = line.id;
@@ -80,3 +82,5 @@ leadProposal.directive('appLeadProposal', function() {
 		}],
 	}
 })
+
+export default proposalCrud
