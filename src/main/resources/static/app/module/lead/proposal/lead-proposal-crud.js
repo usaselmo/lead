@@ -1,4 +1,5 @@
 import leadService from '/app/service/lead-service.js'
+import proposalService from '/app/service/proposal-service.js'
 
 var proposalCrud = angular.module('app.module.lead.proposal.crud', []);
 

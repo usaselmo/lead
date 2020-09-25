@@ -95,3 +95,4 @@ var proposalService = function($http){
 };
 
 
+export default proposalService
