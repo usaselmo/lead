@@ -4,7 +4,7 @@ user.directive('appUser', function() {
 	return {
 		restrict : 'E',
 		scope : {},
-		template : '<h1>This is User page</h1>',
+		templateUrl : '/app/module/user/user.html',
 	};
 });
 
