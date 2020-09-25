@@ -1,3 +1,5 @@
+var local_server_url = "";
+
 export default function leadService($http){
  	return {
  		findLeads: function (scope, pageRange, lines) {

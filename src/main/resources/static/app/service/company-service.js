@@ -1,4 +1,4 @@
-
+var local_server_url = "";
 
  var companyService = function($http){
  	return {

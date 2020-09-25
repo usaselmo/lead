@@ -1,3 +1,5 @@
+var local_server_url = "";
+
 var userService = function($http){
  	return {
  		findEstimators: function (scope) {
