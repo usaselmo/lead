@@ -1,4 +1,5 @@
 import companyService from '/app/service/company-service.js'
+import leadService from '/app/service/lead-service.js'
 
 var invitation = angular.module('app.module.lead.invitation', [
 	'angularFileUpload', 

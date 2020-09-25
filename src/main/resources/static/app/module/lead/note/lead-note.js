@@ -1,3 +1,5 @@
+import leadService from '/app/service/lead-service.js'
+
 var proposalNote = angular.module('app.module.lead.note', []);
 
 proposalNote.service('leadService', leadService);

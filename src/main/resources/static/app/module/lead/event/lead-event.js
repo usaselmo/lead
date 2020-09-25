@@ -1,3 +1,6 @@
+
+import leadService from '/app/service/lead-service.js'
+
 var proposalEvent = angular.module('app.module.lead.event', []);
 
 proposalEvent.service('leadService', leadService);

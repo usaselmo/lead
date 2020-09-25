@@ -1,4 +1,4 @@
-function leadService($http){
+export default function leadService($http){
  	return {
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
