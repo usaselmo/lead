@@ -11,3 +11,6 @@ var userService = function($http){
  		},
  	} 
  };
+
+ 
+ export default userService

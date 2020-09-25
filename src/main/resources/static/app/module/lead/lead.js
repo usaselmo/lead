@@ -8,6 +8,7 @@ import loading from '/app/module/loading/loading.js'
 import companyService from '/app/service/company-service.js'
 import leadService from '/app/service/lead-service.js'
 import personService from '/app/service/person-service.js'
+import userService from '/app/service/user-service.js'
 
 
 var applead = angular.module('app.module.lead', [
