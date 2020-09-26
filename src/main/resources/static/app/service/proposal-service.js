@@ -3,9 +3,11 @@ var originalLines = [];
 
 var lineBreaker = "\n";
 
+var local_server_url = '';
+
 var convertToClientFormat = function (proposal) {
-	prop = copy(proposal)
-	items = []
+	var prop = copy(proposal)
+	var items = []
 	prop.items.forEach(item => {
 		item.lines = item.lines.map(line => {
 			originalLines[item.id + line.description] = line.id;
@@ -23,7 +25,7 @@ var copy = function (obj) {
 
 
 var convertToServerFormat = function (proposal) {
-	prop = copy(proposal)
+	var prop = copy(proposal)
 	var its = [];
 	let ols = originalLines
 	prop.items.forEach(item => {
