@@ -19,7 +19,7 @@ var applead = angular.module('app.module.lead', [
 	'app.module.lead.media',
 	'app.module.lead.invitation',
 	'app.module.loading',
-	]);
+]);
 
 applead.service('companyService', companyService);
 applead.service('leadService', leadService);
@@ -27,30 +27,30 @@ applead.service('personService', personService);
 applead.service('proposalService', proposalService);
 applead.service('userService', userService);
 
-applead.directive('appLead', function() {
+applead.directive('appLead', function () {
 	return {
-		restrict : 'E',
-		scope : {},
-		templateUrl : '/app/module/lead/lead.html',
-		controller : leadController,
+		restrict: 'E',
+		scope: {},
+		templateUrl: '/app/module/lead/lead.html',
+		controller: leadController,
 	};
 });
 
 
-export default applead 
+export default applead
 
-var leadController = function ( $scope, leadService, companyService, personService, userService, proposalService) {
-	
+var leadController = function ($scope, leadService, companyService, personService, userService, proposalService) {
+
 	var pageRange = 0;
 	var lines = 10;
 
-	$scope.list = function() {
+	$scope.list = function () {
 		$scope.lead = null;
 		$scope.crudLead = null;
 		$scope.reload($scope.event, $scope.search);
 	}
 
-	$scope.getNextListRange = function(numero) {
+	$scope.getNextListRange = function (numero) {
 		if (numero > 0 && ((pageRange + 1) * lines) < $scope.totalLeads)
 			pageRange++
 		if (numero < 0 && pageRange > 0)
@@ -58,21 +58,21 @@ var leadController = function ( $scope, leadService, companyService, personServi
 		leadService.findLeads($scope, pageRange, lines, $scope.event, $scope.search)
 	}
 
-	$scope.reload = function(event, search) {
+	$scope.reload = function (event, search) {
 		$scope.event = event;
 		$scope.search = search;
 		pageRange = 0;
 		leadService.findLeads($scope, pageRange, lines)
 	}
 
-	var init = function() {
+	var init = function () {
 		leadService.findLeads($scope, pageRange, lines);
 	}
 
 	init();
-	
 
-	$scope.crud = function(lead){
+
+	$scope.crud = function (lead) {
 		$scope.crudLead = lead;
 		$scope.leads = null;
 		$scope.lead = null;
@@ -81,58 +81,58 @@ var leadController = function ( $scope, leadService, companyService, personServi
 		userService.findEstimators($scope)
 	}
 
-	$scope.save = function(lead){
-		if(lead.id)
+	$scope.save = function (lead) {
+		if (lead.id)
 			leadService.update($scope, lead)
 		else
 			leadService.save($scope, lead);
 		$scope.cancel(lead)
 	}
 
-	$scope.cancel = function(lead){
-		if(lead.id)
+	$scope.cancel = function (lead) {
+		if (lead.id)
 			$scope.detail(lead)
 		else
 			$scope.list()
 	}
 
-	$scope.companyOnChange = function(company){
+	$scope.companyOnChange = function (company) {
 		personService.findPersons($scope)
-		.success ( ()=> {
-			var persons = $scope.persons
-			.filter(p=> p.company && p.company.id && p.company.id == company.id);
-			if(persons.length>0)
-				$scope.persons = persons;
-		} );
+			.success(() => {
+				var persons = $scope.persons
+					.filter(p => p.company && p.company.id && p.company.id == company.id);
+				if (persons.length > 0)
+					$scope.persons = persons;
+			});
 	}
-	
-	$scope.detail = function(lead){
+
+	$scope.detail = function (lead) {
 		$scope.lead = lead;
 		$scope.crudLead = null;
 		$scope.leads = null;
 	}
 
-	$scope.fireEvent = function(lead, event){
+	$scope.fireEvent = function (lead, event) {
 		leadService.fireEvent($scope, lead, event)
 	}
 
-	$scope.saveNote = function(lead, newNote){
+	$scope.saveNote = function (lead, newNote) {
 		leadService.saveNote($scope, lead, newNote)
 	}
 
-	$scope.sendCantReachEmail = function(lead, person){
+	$scope.sendCantReachEmail = function (lead, person) {
 		if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
 			personService.sendCantReachEmail(lead, person);
 		}
 	}
 
-	$scope.sendHiringDecisionEmail = function(lead, person){
-		if (person && confirm('Send e-mail asking about '+person.name+'\'s  hiring decision ? ')) {
+	$scope.sendHiringDecisionEmail = function (lead, person) {
+		if (person && confirm('Send e-mail asking about ' + person.name + '\'s  hiring decision ? ')) {
 			personService.sendHiringDecisionEmail(lead, person);
 		}
 	}
 
-	$scope.reloadLead = function(lead){
+	$scope.reloadLead = function (lead) {
 		leadService.findLead($scope, lead.id)
 	}
 

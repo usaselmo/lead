@@ -1,11 +1,11 @@
 import proposalCrud from '/app/module/lead/proposal/lead-proposal-crud.js';
 import proposalService from '/app/service/proposal-service.js'
-var copy = function(obj) {
+var copy = function (obj) {
     return JSON.parse(JSON.stringify(obj))
 };
-var leadProposal = angular.module('app.module.lead.proposal', ['app.module.lead.proposal.crud', ]);
+var leadProposal = angular.module('app.module.lead.proposal', ['app.module.lead.proposal.crud',]);
 leadProposal.service('proposalService', proposalService);
-leadProposal.directive('appLeadProposal', function() {
+leadProposal.directive('appLeadProposal', function () {
     var originalLines = [];
     return {
         retrict: 'E',
@@ -13,9 +13,9 @@ leadProposal.directive('appLeadProposal', function() {
         scope: {
             lead: '=',
         },
-        controller: ['$scope', 'proposalService', function($scope, proposalService) {
+        controller: ['$scope', 'proposalService', function ($scope, proposalService) {
             $scope.originalLines = [];
-            var convertToClientFormat = function(proposal) {
+            var convertToClientFormat = function (proposal) {
                 var prop = copy(proposal)
                 var items = []
                 prop.items.forEach(item => {
@@ -28,12 +28,12 @@ leadProposal.directive('appLeadProposal', function() {
                 prop.items = items;
                 return prop;
             }
-            $scope.emailProposal = function(proposal) {
+            $scope.emailProposal = function (proposal) {
                 if (confirm('Send Proposal #' + proposal.number + ' via E-mail ? ')) {
                     proposalService.sendByEmail($scope, proposal)
                 }
             }
-            $scope.proposalCopy = function(proposal) {
+            $scope.proposalCopy = function (proposal) {
                 var nproposal = convertToClientFormat(proposal);
                 nproposal.total = 0;
                 nproposal.id = null;
@@ -45,12 +45,12 @@ leadProposal.directive('appLeadProposal', function() {
                 originalLines = [];
                 $scope.proposal = nproposal;
             }
-            $scope.proposalCrud = function(proposal, lead) {
+            $scope.proposalCrud = function (proposal, lead) {
                 if (!proposal.id) proposal = createProposal(lead);
                 else proposal = convertToClientFormat(proposal);
                 $scope.proposal = proposal;
             }
-            var createProposal = function() {
+            var createProposal = function () {
                 var prop = {
                     'items': [{
                         'price': 0, title: 'ITEM 1 - '
@@ -64,7 +64,7 @@ leadProposal.directive('appLeadProposal', function() {
                 $scope.currentProposal = prop;
                 return prop;
             }
-            $scope.deleteProposal = function(lead, proposal) {
+            $scope.deleteProposal = function (lead, proposal) {
                 if (confirm(' Are you sure you want to delete? ')) {
                     proposalService.delete($scope, proposal, lead.id)
                 }

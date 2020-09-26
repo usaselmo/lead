@@ -3,7 +3,7 @@ import proposalService from '/app/service/proposal-service.js'
 var proposalCrud = angular.module('app.module.lead.proposal.crud', []);
 proposalCrud.service('proposalService', proposalService);
 proposalCrud.service('leadService', leadService);
-proposalCrud.directive('proposalCrud', function() {
+proposalCrud.directive('proposalCrud', function () {
     return {
         restrict: 'E',
         scope: {
@@ -14,21 +14,21 @@ proposalCrud.directive('proposalCrud', function() {
         controller: proposalCrudController,
     };
 });
-var proposalCrudController = function($scope, proposalService, leadService) {
-    $scope.proposalCancel = function() {
+var proposalCrudController = function ($scope, proposalService, leadService) {
+    $scope.proposalCancel = function () {
         // $scope.proposal = null;
     }
-    $scope.proposalEncreaseItem = function(proposal) {
+    $scope.proposalEncreaseItem = function (proposal) {
         $scope.proposal.items.push({
-            price: 0, title: 'ITEM '+(proposal.items.length+1)+' - '
+            price: 0, title: 'ITEM ' + (proposal.items.length + 1) + ' - '
         })
     }
-    $scope.proposalRemoveItem = function(proposal) {
+    $scope.proposalRemoveItem = function (proposal) {
         if ($scope.proposal.items.length > 1) {
             $scope.proposal.items.pop();
         }
     }
-    $scope.proposalSave = function(lead, proposal) {
+    $scope.proposalSave = function (lead, proposal) {
         if (proposal.id) {
             proposalService.update($scope, proposal, lead.id).success((response) => {
                 $scope.lead.proposals = $scope.lead.proposals.filter(p => p.id != proposal.id)
