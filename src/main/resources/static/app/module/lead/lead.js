@@ -133,7 +133,8 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.reloadLead = function (lead) {
-		leadService.findLead($scope, lead.id)
+		$scope.lead = null;
+		leadService.findLead($scope, lead.id)		
 	}
 
 } 
