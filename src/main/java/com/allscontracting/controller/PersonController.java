@@ -43,8 +43,9 @@ public class PersonController {
 	}
 	
 	@PutMapping("")
-	public PersonDTO updatePerson(@RequestBody PersonDTO personDTO, @Autowired Authentication authentication) throws LeadsException {
-		return this.personService.updatePerson(personDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+	public LeadEntity updatePerson(@RequestBody PersonDTO personDTO, @Autowired Authentication authentication) throws LeadsException {
+		PersonDTO res = this.personService.updatePerson(personDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		return LeadEntity.builder().person(res).build();
 	}
 	
 	@PostMapping("")

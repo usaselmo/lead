@@ -36,7 +36,7 @@ public class UserService {
 			user.setEmail(userDTO.getEmail());
 			user.setEnabled(userDTO.isEnabled());
 			user.setName(userDTO.getName());
-			user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")));
+			user.setCompany(userDTO.getCompany()!=null?companyRepo.findById(userDTO.getCompany().getId()).orElseThrow(()->new LeadsException("Company not found")):null);
 			removeProfiles(user);
 			addProfiles(userDTO, user);
 			userRepo.flush();
@@ -50,7 +50,7 @@ public class UserService {
 		try {
 			User user = UserDTO.toUser(userDTO);
 			user.setProfiles(null);
-			user.setCompany(companyRepo.findById(userDTO.getCompany().getId()).orElse(null));
+			user.setCompany(userDTO.getCompany()!=null?companyRepo.findById(userDTO.getCompany().getId()).orElse(null):null);
 			user.setPassword(this.passencoder.encode(user.getPassword()));
 			userRepo.save(user);
 			addProfiles(userDTO, user);

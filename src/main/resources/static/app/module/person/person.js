@@ -9,9 +9,9 @@ person.service('companyService', companyService);
 person.service('personService', personService);
 
 var initTable = function(){
-	[1,2,3].forEach(function(i) {
+	/*[1,2,3].forEach(function(i) {
 		setTimeout(function(){ $('#94irjrn494h').DataTable(); }, i*0);
-	});
+	});*/
 };
 
 person.directive('appPerson', function() {
@@ -40,9 +40,9 @@ var personController = function ($scope, $http, $timeout, personService, company
 
 	$scope.save = function(client){
 		if(client.id){
-			personService.update($scope, client)
+			personService.update($scope, client).success(data=> client = data.person )
 		}else{
-			personService.save($scope, client)
+			personService.save($scope, client).success(data => $scope.clients.unshift(data.person) )
 		}
 		$scope.cancel();
 	}

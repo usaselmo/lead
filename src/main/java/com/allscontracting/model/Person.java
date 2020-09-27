@@ -44,7 +44,7 @@ public class Person implements Serializable, Client{
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone.replaceAll("\\(|\\)|\\-| ", "");
+		phone = !StringUtils.isEmpty(phone)?phone.replaceAll("\\(|\\)|\\-| ", ""):"";
 	}
 	
 }

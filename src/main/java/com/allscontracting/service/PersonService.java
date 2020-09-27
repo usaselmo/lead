@@ -35,7 +35,7 @@ public class PersonService {
 		person.setEmail(personDTO.getEmail());
 		person.setName(personDTO.getName());
 		person.setPhone(personDTO.getPhone());
-		person.setCompany(this.companyRepo.findById(personDTO.getCompany().getId()).orElse(null));
+		person.setCompany(personDTO.getCompany()!=null?this.companyRepo.findById(personDTO.getCompany().getId()).orElse(null):null);
 		logg.eventUpdated(Person.class, person.getId(), user, "");
 		return PersonDTO.of(personRepo.save(person));
 	}
