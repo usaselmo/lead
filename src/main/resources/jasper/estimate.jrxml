@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.14.0.final using JasperReports Library version 6.14.0-2ab0d8625be255bf609c78e1181801213e51db8f  -->
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="estimate" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="40" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5ed434e6-847a-4c24-b2bb-131c2d3a019a">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
@@ -53,16 +53,16 @@ WHERE
 		<groupExpression><![CDATA[$F{total}]]></groupExpression>
 		<groupHeader>
 			<band height="353">
-				<staticText>
-					<reportElement mode="Opaque" x="0" y="221" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="d635ea07-cae7-4ae9-8da5-059861119260"/>
+				<textField>
+					<reportElement mode="Opaque" x="0" y="221" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="5052390c-c83a-4673-a5e3-fe3d00898704"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[SCOPE OF WORK]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[!$P{PROPOSAL}.isChangeorder()?"SCOPE OF WORK":"CHANGE ORDER DESCRIPTION"]]></textFieldExpression>
+				</textField>
 				<textField>
 					<reportElement x="0" y="240" width="535" height="71" uuid="d7fe5864-14bc-4e52-bdd6-df3e9ea92e9e">
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -82,16 +82,16 @@ WHERE
 					</textElement>
 					<textFieldExpression><![CDATA[$P{PROPOSAL}.getScopeOfWork()]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement mode="Opaque" x="390" y="110" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="48feb626-a488-41fa-b54f-8c9e8f9ec219"/>
+				<textField>
+					<reportElement mode="Opaque" x="390" y="110" width="145" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="f51ecba9-2813-4c99-a072-8e2541308186"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
 						<pen lineWidth="0.5" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[PROPOSAL]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[!$P{PROPOSAL}.isChangeorder()?"PROPOSAL":"CHANGE ORDER"]]></textFieldExpression>
+				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="110" width="380" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="35348b31-00f7-413c-bea3-42aaa1344bb2"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="3">
@@ -180,7 +180,7 @@ WHERE
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA["#" + $P{PROPOSAL}.getNumber()]]></textFieldExpression>
+					<textFieldExpression><![CDATA[!$P{PROPOSAL}.isChangeorder()?"SCOPE OF WORK":""]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="390" y="190" width="145" height="20" uuid="2c6f704a-2180-4f12-9fe6-07eb5e46b5d4"/>
@@ -244,7 +244,7 @@ WHERE
 						</textElement>
 						<text><![CDATA[NOTES]]></text>
 					</staticText>
-					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement stretchType="ElementGroupHeight" x="0" y="25" width="535" height="21" isRemoveLineWhenBlank="true" uuid="1988a416-9c60-43d0-88ca-08c8713e09d4">
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility()]]></printWhenExpression>
@@ -264,7 +264,7 @@ WHERE
 						</textElement>
 						<text><![CDATA[PAYMENT SCHEDULE]]></text>
 					</staticText>
-					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="15c5a68e-4c15-408c-a5f4-1d1c292ac09d">
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getPaymentSchedule())]]></printWhenExpression>
 						</reportElement>
@@ -283,7 +283,7 @@ WHERE
 						</textElement>
 						<text><![CDATA[WORK WARRANTY]]></text>
 					</staticText>
-					<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement positionType="Float" stretchType="ContainerHeight" x="0" y="26" width="535" height="20" isRemoveLineWhenBlank="true" uuid="1563c296-e40e-481d-beee-1e3467d35bbe">
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getWorkWarranty())]]></printWhenExpression>
 						</reportElement>
@@ -291,7 +291,9 @@ WHERE
 					</textField>
 				</frame>
 				<frame>
-					<reportElement positionType="Float" x="0" y="190" width="535" height="109" uuid="1b8d3121-cadc-4733-890c-2afb375bdb85"/>
+					<reportElement positionType="Float" x="0" y="190" width="535" height="109" uuid="1b8d3121-cadc-4733-890c-2afb375bdb85">
+						<printWhenExpression><![CDATA[!$P{PROPOSAL}.isChangeorder()]]></printWhenExpression>
+					</reportElement>
 					<staticText>
 						<reportElement positionType="Float" mode="Opaque" x="0" y="0" width="535" height="20" forecolor="#0F0F0F" backcolor="#DDDCE0" uuid="bb3f2b1c-e190-4024-9e14-e1489777e810"/>
 						<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="1">
@@ -348,7 +350,7 @@ Customer Signature: ____________________________ Amount Accepted: ______________
 				<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				<textField>
 					<reportElement x="40" y="0" width="495" height="20" isRemoveLineWhenBlank="true" uuid="4effa761-eef2-4f5d-bdb8-459ac00be214">
-						<printWhenExpression><![CDATA[$F{price}.compareTo(BigDecimal.ZERO) > 0]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$F{price}.compareTo(BigDecimal.ZERO) != 0]]></printWhenExpression>
 					</reportElement>
 					<textElement verticalAlignment="Bottom">
 						<font isBold="true"/>

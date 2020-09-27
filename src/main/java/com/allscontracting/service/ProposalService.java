@@ -77,7 +77,11 @@ public class ProposalService {
 	private void defineNumber(Proposal proposal, Lead lead) {
 		if (proposal.getNumber() == null) {
 			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
-				long max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
+				long max = 0;
+				if(proposal.isChangeorder())
+					max = lead.getProposals().stream().filter(p->p.isChangeorder()).mapToLong(p->p.getNumber()).max().orElse(0L);
+				else
+					max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
 				proposal.setNumber(max+1);
 			}else {
 				proposal.setNumber(1L); 

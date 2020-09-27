@@ -153,7 +153,7 @@ public class LeadService {
 		return this.leadRepo.findByType();
 	}
 
-	public long getLeadsTotal(Event event) throws LeadsException {
+	public long getLeadsTotal(List<LeadDTO> leads, Event event) throws LeadsException {
 		if (StringUtils.isEmpty(event))
 			return this.leadRepo.count();
 		else {
@@ -177,7 +177,7 @@ public class LeadService {
 		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
 		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
-				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).totalLeads(getLeadsTotal(event)).build();
+				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList())).totalLeads(getLeadsTotal(leads, event)).build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});

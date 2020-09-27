@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="prop in lead.proposals">
-            <th scope="row">{{prop.number}}</th>
+            <th scope="row"><span ng-if="prop.changeorder">Change Order #{{prop.number}}</span><span ng-if="!prop.changeorder">Proposal #{{prop.number}}</span></th>
             <td>{{prop.formattedTotal}}</td>
             <td>{{prop.date | date}}</td>
             <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /><input ng-if="!prop.emailed" type="checkbox" readonly

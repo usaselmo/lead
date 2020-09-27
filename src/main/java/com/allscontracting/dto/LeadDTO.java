@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
@@ -87,7 +88,8 @@ public class LeadDTO {
 	private static long getTotalPrice(Lead lead) {
 		if(lead.getProposals()==null || lead.getProposals().size()<=0)
 			return BigDecimal.ZERO.longValue();
-		BigDecimal total = lead.getProposals().stream().sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
+		
+		BigDecimal total = lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
 		return total.longValue();
 	}
 
