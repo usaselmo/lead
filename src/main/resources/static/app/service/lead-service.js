@@ -85,8 +85,9 @@ export default function leadService($http){
  			});
  		},
  		
- 		findLead: function (scope, leadId) {
-			 var res = $http.get(local_server_url + '/leads/'+leadId);
+ 		findLead: function (leadId) {
+			var res = $http.get(local_server_url + '/leads/'+leadId);
+			res.error(error=>console.log(error))
 			return res; 
  		},
  		

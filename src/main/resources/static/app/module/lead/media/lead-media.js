@@ -1,41 +1,46 @@
-var proposalMedia = angular.module('app.module.lead.media', [
-	'angularFileUpload', 
-	]);
+import leadService from '/app/service/lead-service.js'
 
-proposalMedia.directive('appLeadMedia', function() {
-	return {
-		restrict : 'E',
-		scope : {
-			lead : '=',
-		},
-		templateUrl : '/app/module/lead/media/lead-media.html',
-		controller : mediaController,
-	};
+var proposalMedia = angular.module('app.module.lead.media', [
+  'angularFileUpload',
+]);
+
+proposalMedia.service('leadService', leadService);
+
+proposalMedia.directive('appLeadMedia', function () {
+  return {
+    restrict: 'E',
+    scope: {
+      lead: '=',
+    },
+    templateUrl: '/app/module/lead/media/lead-media.html',
+    controller: mediaController,
+  };
 });
 
-var mediaController = function($scope, FileUploader) {
+var mediaController = function ($scope, FileUploader, leadService) {
   $scope.uploader = new FileUploader();
 
-  $scope.uploadd = function(uploader, lead){
+  $scope.uploadd = function (uploader, lead) {
 
-   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-     if(!lead.medias)
-       lead.medias = [];
-     lead.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
-     $scope.lead = lead;
-   };
+    uploader.onSuccessItem = function (fileItem, response, status, headers) {
+      if (!lead.medias)
+        lead.medias = [];
+      lead.medias.push({ id: '', type: fileItem.file.type, name: fileItem.file.name })
+      $scope.lead = lead;
+    };
 
-   uploader.onCompleteAll = function(){
-     uploader.clearQueue();
-   }
+    uploader.onCompleteAll = function () {
+      uploader.clearQueue();
+      leadService.findLead(lead.id).success(data=> $scope.lead = data.lead )	
+    }
 
-   uploader.queue.forEach(item=>{
-     item.url = '/main/leads/' + lead.id + '/file-upload'
-     item.upload();
-   })
+    uploader.queue.forEach(item => {
+      item.url = '/main/leads/' + lead.id + '/file-upload'
+      item.upload();
+    })
 
- }
+  }
 
-}	
+}
 
 export default proposalMedia
