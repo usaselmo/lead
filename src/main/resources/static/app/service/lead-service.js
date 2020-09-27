@@ -2,6 +2,11 @@ var local_server_url = "";
 
 export default function leadService($http){
  	return {
+
+		reloadLead: function (lead) {
+			$http.get(local_server_url + '/leads/'+lead.id).success(data=> lead = data.lead )
+		},
+
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
  			if(!scope.search) scope.search = '';

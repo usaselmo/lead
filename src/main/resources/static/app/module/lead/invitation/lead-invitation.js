@@ -36,10 +36,9 @@ invitation.directive('appLeadInvitation', function() {
 
 			$scope.invitationSave = function(invitation, lead){
 				if(!invitation.id)
-					leadService.createInvitation($scope, invitation, lead).success( ()=> console.log('success') )
+					leadService.createInvitation($scope, invitation, lead).success( data => leadService.reloadLead($scope.lead) )
 				else
-					leadService.updateInvitation($scope, invitation, lead).success( ()=> console.log('success') )
-				leadService.findLead(lead.id).success(data=> $scope.lead = data.lead )
+					leadService.updateInvitation($scope, invitation, lead).success( data => leadService.reloadLead($scope.lead) )
 				$scope.invitationCancel();
 			}
 
