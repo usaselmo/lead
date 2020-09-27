@@ -1,70 +1,76 @@
-<table class="table table-sm table-striped">
-	<tr>
-		<td>
-			<h3 style="margin-top: 0px;">
-				{{totalLeads}} Leads <small style="font-size: 0.5em;"
-				ng-if="leadsTotalPrice > 0"> {{leadsTotalPrice | currency}}
-			</small> <a title="Reload" href="#" class="btn btn-sm btn-default"> <span
-				class="glyphicon glyphicon-refresh" aria-hidden="true"
-				title="Reload" ng-click="reload(event, search)"></span>
-			</a> <a data-toggle="modal" data-target="#lead-new-modal"
-			title="new Lead" href="#" class="btn btn-sm btn-default"
-			ng-click="crud({})"> <span class="glyphicon glyphicon-plus"
-			aria-hidden="true" title="Create new Lead"></span>
-		</a>
-	</h3>
-</td>
-<td>
-	<button class="btn btn-success btn-sm"
-	ng-click="getNextListRange(-1)">&lt;&lt;</button> &nbsp;
-	<button class="btn btn-success btn-sm" ng-click="getNextListRange(1)">&gt;&gt;</button>
-</td>
-<td><input type="text" class="form-control" placeholder="Search"
-	autofocus="autofocus" ng-model="search"
-	ng-change="reload(event, search)"></td>
-	<td><select class="form-control"
-		ng-options="et.name as et.status for et in events" ng-model="event"
-		ng-change="reload(event, search)">
-		<option value="">All</option>
-	</select></td>
-</tr>
-</table>
-
-<table class="table table-sm table-striped">
-	<tbody>
-		<tr ng-repeat="lead in leads">
-			
+<div ng-if="leads">
+	<table class="table table-sm table-striped">
+		<tr>
 			<td>
-				<a href="#" class="btn btn-sm btn-default" ng-click="detail(lead)">View</a>
+				<h3 style="margin-top: 0px;">
+					{{totalLeads}} Leads <small style="font-size: 0.5em;" ng-if="leadsTotalPrice > 0">
+						{{leadsTotalPrice | currency}}
+					</small> <a title="Reload" href="#" class="btn btn-sm btn-default"> <span
+							class="glyphicon glyphicon-refresh" aria-hidden="true" title="Reload"
+							ng-click="reload(event, search)"></span>
+					</a> <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#"
+						class="btn btn-sm btn-default" ng-click="crud({})"> <span class="glyphicon glyphicon-plus"
+							aria-hidden="true" title="Create new Lead"></span>
+					</a>
+				</h3>
 			</td>
-			
 			<td>
-				<span ng-if="lead.company">
-					<p><i>{{lead.company.name}}</i></p>
-					<p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} , {{lead.contact.email}}</p>
-				</span>
-				<span ng-if="lead.client">
-					<p>{{lead.client.name}} , {{lead.client.phone}} , {{lead.client.email}}, {{lead.client.address}}</p>
-				</span>
-                <p ng-if="lead.dueDate"><u><i>Due Date: </i></u>{{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}</p>
-				<span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
-				<p><i><small>{{lead.event}}</small></i></p> 
+				<button class="btn btn-success btn-sm" ng-click="getNextListRange(-1)">&lt;&lt;</button> &nbsp;
+				<button class="btn btn-success btn-sm" ng-click="getNextListRange(1)">&gt;&gt;</button>
 			</td>
-
-			<td>
-				Lead #{{lead.id}}, of {{lead.date | date }} 
-				<p ng-if="lead.title"><strong>{{lead.title}}</strong> <span ng-if="lead.address"> at {{lead.address}}</span></p>
-				<p ng-if="lead.description"><small>{{lead.description}}</small></p>
-			</td>
-
-			<td nowrap="nowrap">				
-				<div class="list-group" >
-					<span ng-repeat="event in lead.nextEvents" ng-switch="event">
-						<a style="padding: 4px;" title="{{event.action}}" ng-switch-default ng-click="fireEvent(lead, event)" href="#" class="list-group-item">{{event.abbreviation}}</a>
-					</span>
-				</div>
-			</td>
-
+			<td><input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="search"
+					ng-change="reload(event, search)"></td>
+			<td><select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event"
+					ng-change="reload(event, search)">
+					<option value="">All</option>
+				</select></td>
 		</tr>
-	</tbody>
-</table>
+	</table>
+
+	<table class="table table-sm table-striped">
+		<tbody>
+			<tr ng-repeat="lead in leads">
+
+				<td>
+					<a href="#" class="btn btn-sm btn-default" ng-click="detail(lead)">View</a>
+				</td>
+
+				<td>
+					<span ng-if="lead.company">
+						<p><i>{{lead.company.name}}</i></p>
+						<p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} ,
+							{{lead.contact.email}}</p>
+					</span>
+					<span ng-if="lead.client">
+						<p>{{lead.client.name}} , {{lead.client.phone}} , {{lead.client.email}}, {{lead.client.address}}
+						</p>
+					</span>
+					<p ng-if="lead.dueDate"><u><i>Due Date: </i></u>{{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}</p>
+					<span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
+					<p><i><small>{{lead.event}}</small></i></p>
+				</td>
+
+				<td>
+					Lead #{{lead.id}}, of {{lead.date | date }}
+					<p ng-if="lead.title"><strong>{{lead.title}}</strong> <span ng-if="lead.address"> at
+							{{lead.address}}</span></p>
+					<p ng-if="lead.description"><small>{{lead.description}}</small></p>
+				</td>
+
+				<td nowrap="nowrap">
+					<div class="list-group">
+						<span ng-repeat="event in lead.nextEvents" ng-switch="event">
+							<a style="padding: 4px;" title="{{event.action}}" ng-switch-default
+								ng-click="fireEvent(lead, event)" href="#"
+								class="list-group-item">{{event.abbreviation}}</a>
+						</span>
+					</div>
+				</td>
+
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div ng-if="!leads">
+	<app-loading></app-loading>
+</div>

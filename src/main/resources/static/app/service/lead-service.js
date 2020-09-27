@@ -86,14 +86,8 @@ export default function leadService($http){
  		},
  		
  		findLead: function (scope, leadId) {
- 			$http.get(local_server_url + '/leads/'+leadId).then(function (response) {
- 				if(!response.data.errorMessages)
- 					scope.lead = response.data.lead
- 				scope.successMessages = response.data.successMessages
- 				scope.errorMessages = response.data.errorMessages
- 			}, function (response) {
- 				console.log(response)
- 			});
+			 var res = $http.get(local_server_url + '/leads/'+leadId);
+			return res; 
  		},
  		
  		sendInvitationByEmail: function (scope, invitation) {

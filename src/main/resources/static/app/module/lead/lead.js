@@ -53,8 +53,11 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.getNextListRange = function (numero) {
 		if (numero > 0 && ((pageRange + 1) * lines) < $scope.totalLeads)
 			pageRange++
-		if (numero < 0 && pageRange > 0)
+		else if (numero < 0 && pageRange > 0)
 			pageRange--
+		else
+			return
+		$scope.leads = null;
 		leadService.findLeads($scope, pageRange, lines, $scope.event, $scope.search)
 	}
 
@@ -62,6 +65,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 		$scope.event = event;
 		$scope.search = search;
 		pageRange = 0;
+		$scope.leads = null;
 		leadService.findLeads($scope, pageRange, lines)
 	}
 
@@ -133,8 +137,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.reloadLead = function (lead) {
-		$scope.lead = null;
-		leadService.findLead($scope, lead.id)		
+		leadService.findLead($scope, lead.id).success(data=> $scope.lead = data.lead )	
 	}
 
 } 
