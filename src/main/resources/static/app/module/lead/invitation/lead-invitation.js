@@ -71,6 +71,7 @@ invitation.directive('appLeadInvitation', function() {
 
 				uploader.onCompleteAll = function(){
 					uploader.clearQueue();
+					leadService.findLead($scope.lead.id).success(data=> $scope.lead = data.lead )
 				}
 
 				uploader.queue.forEach(item=>{
