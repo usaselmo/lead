@@ -5,6 +5,7 @@ import proposalEvent from '/app/module/lead/event/lead-event.js'
 import proposalCrud from '/app/module/lead/proposal/lead-proposal.js'
 import loading from '/app/module/loading/loading.js'
 import personCrud from '/app/module/person/person-crud.js'
+import modal from '/app/module/modal/modal.js'
 
 import companyService from '/app/service/company-service.js'
 import leadService from '/app/service/lead-service.js'
@@ -21,6 +22,7 @@ var applead = angular.module('app.module.lead', [
 	'app.module.lead.invitation',
 	'app.module.loading',
 	'app.module.lead.person.crud',
+	'app.module.modal',
 ]);
 
 applead.service('companyService', companyService);
