@@ -1,71 +1,118 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title"><span ng-if="!crudLead.person.name && !crudLead.company.name">New Lead</span> <span ng-if="crudLead.person.name || crudLead.company.name">Edit {{crudLead.title}}</span> </h3>
+    <h3 class="panel-title"><span ng-if="!crudLead.person.name && !crudLead.company.name">New Lead</span> <span
+        ng-if="crudLead.person.name || crudLead.company.name">Edit {{crudLead.title}}</span> </h3>
   </div>
-  <div class="panel-body"><form class="form-horizontal">
+  <div class="panel-body">
+    <form class="form-horizontal">
 
-    <div class="form-group">
-      <label for="title" class="col-sm-2 control-label">Title</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="title" placeholder="Title" ng-model="crudLead.title">
+      <div class="form-group">
+        <label for="title" class="col-sm-2 control-label">Title</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="title" placeholder="Title" ng-model="crudLead.title">
+        </div>
+        <label for="address" class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" id="address" placeholder="Address" ng-model="crudLead.address">
+        </div>
       </div>
-      <label for="address" class="col-sm-2 control-label">Address</label>
-      <div class="col-sm-4">
-        <input type="text" class="form-control" id="address" placeholder="Address" ng-model="crudLead.address">
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label for="company" class="col-sm-2 control-label">Company</label>
-      <div class="col-sm-4">
-        <select id="company" class="form-control" ng-options="company as company.name for company in companies track by company.id" ng-model="crudLead.company" ng-change="companyOnChange(crudLead.company)" ><option value="">Select...</option></select>
+      <div class="form-group">
+        <label for="company" class="col-sm-2 control-label">Company</label>
+        <div class="col-sm-4">
+          <select id="company" class="form-control"
+            ng-options="company as company.name for company in companies track by company.id"
+            ng-model="crudLead.company" ng-change="companyOnChange(crudLead.company)">
+            <option value="">Select...</option>
+          </select>
+        </div>
+        <label for="contact" class="col-sm-2 control-label">Contact</label>
+        <div class="col-sm-4">
+          <div class="input-group">
+            <select id="contact" class="form-control"
+              ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.contact">
+              <option value="">Select...</option>
+            </select>
+            <div class="input-group-addon">
+              <a title="Create new Contact" href="#" class="" data-toggle="modal" data-target="#myModal"
+                ng-click="createNewPerson()">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              </a></div>
+          </div>
+        </div>
       </div>
-      <label for="contact" class="col-sm-2 control-label">Contact</label>
-      <div class="col-sm-4">
-        <select id="contact" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.contact"><option value="">Select...</option></select>
+      <div class="form-group">
+        <label for="002jgo4n49" class="col-sm-2 control-label">Client</label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <select id="002jgo4n49" class="form-control"
+              ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.client">
+              <option value="">Select...</option>
+            </select>
+            <div class="input-group-addon">
+              <a title="Create new Client" href="#" class="" data-toggle="modal" data-target="#myModal"
+                ng-click="createNewPerson()">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              </a></div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="002jgo4n49" class="col-sm-2 control-label">Client</label>
-      <div class="col-sm-10">
-        <select id="002jgo4n49" class="form-control" ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.client"><option value="">Select...</option></select>
+      <div class="form-group">
+        <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" id="dueDate" placeholder="mm/dd/yyyy" ng-model="crudLead.dueDate">
+        </div>
+        <label for="date" class="col-sm-1 control-label">Visit</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="date" placeholder="mm/dd/yyyy" ng-model="crudLead.visit">
+        </div>
+        <label for="estimator" class="col-sm-1 control-label">Estimator</label>
+        <div class="col-sm-3">
+          <select id="estimator" class="form-control"
+            ng-options="estimator as estimator.name for estimator in estimators track by estimator.id"
+            ng-model="crudLead.estimator"></select>
+        </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
-      <div class="col-sm-2">
-        <input type="text" class="form-control" id="dueDate" placeholder="mm/dd/yyyy" ng-model="crudLead.dueDate">
+      <div class="form-group">
+        <label for="description" class="col-sm-2 control-label">Description</label>
+        <div class="col-sm-10">
+          <textarea class="form-control" id="description"
+            ng-model="crudLead.description">{{crudLead.description}}</textarea>
+        </div>
       </div>
-      <label for="date" class="col-sm-1 control-label">Visit</label>
-      <div class="col-sm-3">
-        <input type="text" class="form-control" id="date" placeholder="mm/dd/yyyy" ng-model="crudLead.visit">
+
+      <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"
+            ng-click="cancel(crudLead)">Cancel</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save(crudLead)">Save</button>
+        </div>
       </div>
-      <label for="estimator" class="col-sm-1 control-label">Estimator</label>
-      <div class="col-sm-3">
-        <select id="estimator" class="form-control" ng-options="estimator as estimator.name for estimator in estimators track by estimator.id" ng-model="crudLead.estimator"></select>
+    </form>
+
+
+      <!-- NEW PERSON MODAL -->
+      <div ng-if="person">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <app-person-crud person="person" persons="persons" hide-cancel-button="true"></app-person-crud>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label for="description" class="col-sm-2 control-label">Description</label>
-      <div class="col-sm-10">
-        <textarea class="form-control" id="description" ng-model="crudLead.description" >{{crudLead.description}}</textarea>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="phone" class="col-sm-2 control-label"></label>
-      <div class="col-sm-10">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="cancel(crudLead)">Cancel</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save(crudLead)">Save</button>
-      </div>
-    </div>
 
 
-  </form>
-
-
-</div>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import proposalNote from '/app/module/lead/note/lead-note.js'
 import proposalEvent from '/app/module/lead/event/lead-event.js'
 import proposalCrud from '/app/module/lead/proposal/lead-proposal.js'
 import loading from '/app/module/loading/loading.js'
+import personCrud from '/app/module/person/person-crud.js'
 
 import companyService from '/app/service/company-service.js'
 import leadService from '/app/service/lead-service.js'
@@ -19,6 +20,7 @@ var applead = angular.module('app.module.lead', [
 	'app.module.lead.media',
 	'app.module.lead.invitation',
 	'app.module.loading',
+	'app.module.lead.person.crud',
 ]);
 
 applead.service('companyService', companyService);
@@ -43,6 +45,11 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	var pageRange = 0;
 	var lines = 10;
+
+	$scope.createNewPerson = function(){
+		$scope.person = {};
+		console.log('create new person button clicked', $scope.person)
+	}
 
 	$scope.list = function () {
 		$scope.lead = null;
