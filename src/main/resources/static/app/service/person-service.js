@@ -29,10 +29,9 @@
  			});
  		},
 
- 		findClients: function (scope, callBackFunction) {
+ 		findClients: function (scope) {
  			$http.get(local_server_url + "/persons").then(function (response) {
  				scope.clients = response.data
- 				callBackFunction.apply();
  			}, function (response) {
  				console.log(response)
  			});

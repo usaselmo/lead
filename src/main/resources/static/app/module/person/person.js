@@ -1,18 +1,16 @@
 
+import personCrud from '/app/module/person/person-crud.js'
+
 import companyService from '/app/service/company-service.js'
 import personService from '/app/service/person-service.js'
 
-var person = angular.module('app.module.person', []);
+var person = angular.module('app.module.person', [
+	'app.module.lead.person.crud',
+]);
 
 
 person.service('companyService', companyService);
 person.service('personService', personService);
-
-var initTable = function(){
-	/*[1,2,3].forEach(function(i) {
-		setTimeout(function(){ $('#94irjrn494h').DataTable(); }, i*0);
-	});*/
-};
 
 person.directive('appPerson', function() {
 	return {
@@ -25,26 +23,12 @@ person.directive('appPerson', function() {
 
 var personController = function ($scope, $http, $timeout, personService, companyService) {
 	var init = function(){
-		personService.findClients($scope, initTable);
+		personService.findPersons($scope);
 		companyService.findCompanies($scope);
 	}
 
-	$scope.crud = function(client){
-		$scope.client = client; 
-	}
-
-	$scope.cancel = function(){
-		$scope.client = null
-		initTable();
-	}
-
-	$scope.save = function(client){
-		if(client.id){
-			personService.update($scope, client).success(data=> client = data.person )
-		}else{
-			personService.save($scope, client).success(data => $scope.clients.unshift(data.person) )
-		}
-		$scope.cancel();
+	$scope.crud = function(person){
+		$scope.person = person; 
 	}
 
 	init();
