@@ -105,8 +105,13 @@ export default function leadService($http){
  			}, function (response) {
  				console.log('aconteceu um erro', response)
  			});
- 		},
-
+		 },
+		 
+		 markInvitationAsEmailed: function(invitation, lead){
+			var res = $http.put(local_server_url + '/leads/'+lead.id+'/invitations/'+invitation.id+'/email');
+			return res;
+		 },
+		 
  	} 
  };
 

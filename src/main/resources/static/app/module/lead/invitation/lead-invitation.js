@@ -24,6 +24,12 @@ invitation.directive('appLeadInvitation', function() {
 
 			$scope.uploading = [];
 
+			$scope.markInvitationAsEmailed = function(invitation, lead){
+				if(confirm(' Confirm mark invitation #'+invitation.id+' as e-mailed ? ')){
+					leadService.markInvitationAsEmailed(invitation, lead).success( data => $scope.lead.invitations = $scope.lead.invitations.map(i => i.id==data.invitation.id?data.invitation:i) )
+				}
+			}
+
 			$scope.invitationCrud = function(invitation){
 				$scope.invitation = invitation; 
 				companyService.findCompanies($scope);

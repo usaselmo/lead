@@ -167,6 +167,17 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
+
+	@PutMapping("/{leadId}/invitations/{invitationId}/email")
+	public LeadEntity markInvitationAsEmailed(@PathVariable Long invitationId, @Autowired Authentication authentication) {
+		try {
+			InvitationDTO invitationDTO = leadService.markAsEmailed(invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().invitation(invitationDTO).build().addSuccessMessage("Invitation sent by e-mail.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
+		}
+	}
 	
 	
 	

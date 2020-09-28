@@ -218,6 +218,15 @@ public class LeadService {
 		})
 		.send();
 	}
+	
+	@Transactional
+	public InvitationDTO markAsEmailed(Long invitationId, User user) throws LeadsException {
+		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
+		invitation.setEmailed(invitation.getEmailed()+1L);
+		invitation = this.invitationRepo.save(invitation);
+		logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
+		return InvitationDTO.of(invitation);
+	}
 
 	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {
 		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow(() -> new LeadsException("Could not find Invitation"));
