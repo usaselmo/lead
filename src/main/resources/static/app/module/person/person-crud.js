@@ -12,9 +12,15 @@ personCrud.directive('appPersonCrud', function () {
         restrict: 'E',
         scope: {
             person: '=',
+            persons: "=",
         },
         templateUrl: '/app/module/person/person-crud.html',
         controller: function ($scope, personService, companyService) {
+
+            var init = function () {
+                companyService.findCompanies($scope);
+            }
+            init();
 
             $scope.cancel = function () {
                 $scope.person = null

@@ -1,62 +1,58 @@
-
-
 <!-- CRUD -->
 <div class="panel panel-default" ng-if="person">
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        <span ng-if="!person.name">New Person</span> <span ng-if="person.name">Edit {{person.name}}</span>
-      </h3>
-    </div>
-    <div class="panel-body">
-      <form class="form-horizontal">
-  
-        <div class="form-group">
-          <label for="94kfk49r" class="col-sm-2 control-label">Name</label>
-          <div class="col-sm-10">
-            <input autofocus type="text" class="form-control" id="94kfk49r" placeholder="Name" ng-model="person.name">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="email" class="col-sm-2 control-label">Email</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control" id="email" placeholder="Email" ng-model="person.email">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="phone" class="col-sm-2 control-label">Phone</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="phone" placeholder="Phone" ng-model="person.phone">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="address" class="col-sm-2 control-label">Address</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" id="address" placeholder="Address" ng-model="person.address">
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="company" class="col-sm-2 control-label">Company</label>
-          <div class="col-sm-10">
-            <select id="company" class="form-control" ng-model="person.company" ng-options="c as c.name for c in companies track by c.id ">
-              <option value="choose a value">-- please choose a Company --</option>
-            </select>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label for="phone" class="col-sm-2 control-label"></label>
-          <div class="col-sm-2">
-            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" ng-click="cancel()">Cancel</button>
-          </div>
-          <div class="col-sm-2">
-            <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" ng-click="save(person)">Save</button>
-          </div>
-        </div>
-  
-  
-      </form>
-  
-  
-    </div>
-  
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <span ng-if="!person.name">New Person</span> <span ng-if="person.name">Edit {{person.name}}</span>
+    </h3>
   </div>
+  <div class="panel-body">
+    <form class="form-horizontal">
+
+      <div class="form-group">
+        <label for="94kfk49r" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input autofocus type="text" class="form-control" id="94kfk49r" placeholder="Name" ng-model="person.name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="email" placeholder="Email" ng-model="person.email">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label">Phone</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="phone" placeholder="Phone" ng-model="person.phone">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="address" class="col-sm-2 control-label">Address</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="address" placeholder="Address" ng-model="person.address">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="company" class="col-sm-2 control-label">Company</label>
+        <div class="col-sm-10">
+          <select id="company" class="form-control" ng-model="person.company"
+            ng-options="c as c.name for c in companies track by c.id ">
+            <option value="choose a value">-- please choose a Company --</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label"></label>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal"
+            ng-click="cancel()">Cancel</button>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+            ng-click="save(person)">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

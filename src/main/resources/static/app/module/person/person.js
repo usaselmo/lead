@@ -22,9 +22,9 @@ person.directive('appPerson', function() {
 });
 
 var personController = function ($scope, $http, $timeout, personService, companyService) {
+
 	var init = function(){
 		personService.findPersons($scope);
-		companyService.findCompanies($scope);
 	}
 
 	$scope.crud = function(person){
