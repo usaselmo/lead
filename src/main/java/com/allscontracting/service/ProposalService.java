@@ -122,7 +122,7 @@ public class ProposalService {
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
+		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "pdf");
 		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);

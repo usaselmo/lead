@@ -92,7 +92,7 @@ public class ReportService {
 		InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 		JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
 		byte[] res = JasperRunManager.runReportToPdf(compiledJasperReport, map, dataSource.getConnection());
-		this.tempFile = Files.createTempFile("", fileName);
+		this.tempFile = Files.createTempFile("leadsdc-", fileName.replace("/", "_"));
 		return Files.write(this.tempFile, res).toFile();
 	}
 
