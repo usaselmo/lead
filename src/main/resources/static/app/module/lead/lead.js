@@ -48,7 +48,6 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.createNewPerson = function(){
 		$scope.person = {};
-		console.log('create new person button clicked', $scope.person)
 	}
 
 	$scope.list = function () {

@@ -18,8 +18,6 @@ personCrud.directive('appPersonCrud', function () {
         templateUrl: '/app/module/person/person-crud.html',
         controller: function ($scope, personService, companyService) {
 
-            console.log('aa', $scope.hideCancelButton, $scope.person)
-
             var init = function () {
                 companyService.findCompanies($scope);
             }
