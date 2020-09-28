@@ -139,9 +139,13 @@ public class ProposalService {
 			.send(); 
 	}
 
-	private String getProposalFileName(Proposal proposal, Client person, String suffix) {
-		String streamFileName = new StringBuilder(person.getName()).append(" - ").append(person.getAddress()).append(" - ").append("proposal #").append(proposal.getNumber()).append("." + suffix).toString();
-		return streamFileName;
+	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
+		StringBuilder streamFileName = new StringBuilder(client.getName())
+				.append(" - ")
+				.append( !StringUtils.isEmpty(proposal.getLead().getAddress())?proposal.getLead().getAddress():client.getAddress() ).append(" - ")
+				.append(proposal.isChangeorder()? "Change Order "+Converter.dateToString(proposal.getDate(), Converter.MM_dd_yy) : "Proposal #"+proposal.getNumber())
+				.append("." + suffix);
+		return streamFileName.toString();
 	}
 
 	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {

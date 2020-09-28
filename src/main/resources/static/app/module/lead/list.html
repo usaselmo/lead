@@ -19,9 +19,9 @@
 				<button class="btn btn-success btn-sm" ng-click="getNextListRange(1)">&gt;&gt;</button>
 			</td>
 			<td><input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="search"
-					ng-change="reload(event, search)"></td>
+					ng-change="filter(event, search)"></td>
 			<td><select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event"
-					ng-change="reload(event, search)">
+					ng-change="filter(event, search)">
 					<option value="">All</option>
 				</select></td>
 		</tr>

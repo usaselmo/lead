@@ -69,6 +69,13 @@ var leadController = function ($scope, leadService, companyService, personServic
 		leadService.findLeads($scope, pageRange, lines)
 	}
 
+	$scope.filter = function (event, search) {
+		$scope.event = event;
+		$scope.search = search;
+		pageRange = 0;
+		leadService.findLeads($scope, pageRange, lines)
+	}
+
 	var init = function () {
 		leadService.findLeads($scope, pageRange, lines);
 	}
