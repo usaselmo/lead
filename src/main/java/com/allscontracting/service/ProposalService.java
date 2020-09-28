@@ -162,5 +162,15 @@ public class ProposalService {
 		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
 		this.reportService.getFileAsStream(response, media.getName(), media.getContent(), media.getType());
 	}
+
+	public ProposalDTO markAsEmailed(long proposalId, User user) throws LeadsException {
+		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow( ()-> new LeadsException("Could not find Proposal"));
+		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
+		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+		proposal.setEmailed(true);
+		this.proposalRepository.save(proposal);
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		return ProposalDTO.of(proposal);
+	}
 	
 }

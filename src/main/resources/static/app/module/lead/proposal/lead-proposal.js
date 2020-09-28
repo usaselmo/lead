@@ -14,7 +14,17 @@ leadProposal.directive('appLeadProposal', function () {
             lead: '=',
         },
         controller: ['$scope', 'proposalService', function ($scope, proposalService) {
+
             $scope.originalLines = [];
+
+            $scope.markAsEmailed = function (proposal) {
+                if (confirm('Confirm mark this document as e-mailed ? ')) {
+                    proposalService.markAsEmailed(proposal).success(data => {
+                        $scope.lead.proposals = $scope.lead.proposals.map( p => p.id==data.proposal.id?data.proposal:p )
+                    })
+                }
+            }
+
             var convertToClientFormat = function (proposal) {
                 var prop = copy(proposal)
                 var items = []

@@ -45,6 +45,12 @@ var convertToServerFormat = function (proposal) {
 
 var proposalService = function($http){
 	return { 
+
+		markAsEmailed: function(proposal){
+			var res = $http.get(local_server_url + '/proposals/' + proposal.id + '/markasemailed');
+			return res;
+		},
+
 		sendByEmail: function (scope, proposal) {
 			$http.get(local_server_url + "/proposals/" + proposal.id + "/email").then(function (response) {
 				scope.successMessages = response.data.successMessages;

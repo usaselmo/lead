@@ -27,6 +27,17 @@ public class ProposalController {
 	private static final String UNEXPECTED_ERROR = "Unexpected error.";
 	@Autowired private ProposalService proposalService;
 
+	@GetMapping(value = "{proposalId}/markasemailed")
+	public LeadEntity markAsEmailed(@PathVariable long proposalId, @Autowired Authentication authentication) {
+		try {
+			ProposalDTO proposalDTO = this.proposalService.markAsEmailed(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Email is being sent.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
+		}
+	}
+
 	@GetMapping(value = "{proposalId}/email")
 	public LeadEntity sendByEmail(@PathVariable long proposalId, @Autowired Authentication authentication) {
 		try {
@@ -37,6 +48,7 @@ public class ProposalController {
 			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
 		}
 	}
+	
 	@PutMapping
 	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
