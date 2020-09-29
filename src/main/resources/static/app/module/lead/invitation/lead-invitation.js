@@ -1,10 +1,13 @@
+
+import fileUploader from '/app/module/file-uploader/file-uploader.js'
+
 import companyService from '/app/service/company-service.js'
 import personService from '/app/service/person-service.js'
 import leadService from '/app/service/lead-service.js'
 
 var invitation = angular.module('app.module.lead.invitation', [
 	'angularFileUpload', 
-	
+	'app.module.file-uploader', 
 	]);
 
 invitation.service('leadService', leadService);
@@ -19,8 +22,6 @@ invitation.directive('appLeadInvitation', function() {
 		},
 		templateUrl : '/app/module/lead/invitation/lead-invitation.html',
 		controller : function($scope, leadService, companyService, personService, FileUploader) {
-			
-			$scope.uploader = new FileUploader();
 
 			$scope.uploading = [];
 
@@ -66,26 +67,6 @@ invitation.directive('appLeadInvitation', function() {
 				$scope.uploading['processing'] = !$scope.uploading['processing'];
 				if($scope.uploading['processing'])
 					$scope.uploading['invitation'] = invitation
-			}
-
-			$scope.uploadProposal = function(uploader, invitation, lead){
-
-				uploader.onSuccessItem = function(fileItem, response, status, headers) {
-					invitation.medias.push({id:'', type:fileItem.file.type, name:fileItem.file.name})
-				};
-
-				uploader.onCompleteAll = function(){
-					uploader.clearQueue();
-					leadService.findLead($scope.lead.id).success(data=> $scope.lead = data.lead )
-				}
-
-				uploader.queue.forEach(item=>{
-					item.url = '/main/leads/' + lead.id + '/invitations/' + invitation.id
-					item.upload();
-				})
-
-				$scope.uploading['processing'] = !$scope.uploading['processing'];
-
 			}
 
 		},

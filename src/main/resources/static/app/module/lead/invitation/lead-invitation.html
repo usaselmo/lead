@@ -57,34 +57,7 @@
       Invitation</a>
 
     <!-- UPLOAD -->
-    <div ng-if="uploading['processing']">
-      Upload Proposal from <strong>{{uploading['invitation'].company.name}}</strong>
-      <input type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br />
-      <ul ng-repeat="item in uploader.queue">
-        <li><span ng-bind="item.file.name"></span><br /></li>
-      </ul>
-
-      <div>
-        <div>
-          <div class="progress" style="">
-            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-          </div>
-        </div>
-        <button type="button" class="btn btn-success btn-s"
-          ng-click="uploadProposal(uploader, uploading['invitation'], lead)"
-          ng-disabled="!uploader.getNotUploadedItems().length">
-          <span class="glyphicon glyphicon-upload"></span> Upload all
-        </button>
-        <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()"
-          ng-disabled="!uploader.isUploading">
-          <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-        </button>
-        <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()"
-          ng-disabled="!uploader.queue.length">
-          <span class="glyphicon glyphicon-trash"></span> Remove all
-        </button>
-      </div>
-    </div>
+    <app-file-uploader ng-if="uploading['processing'] && !invitation" url="'/main/leads/' + lead.id + '/invitations/' + uploading['invitation'].id"></app-file-uploader>
 
 
     <!-- CRUD -->
