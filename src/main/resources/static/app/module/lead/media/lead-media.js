@@ -1,7 +1,9 @@
 import leadService from '/app/service/lead-service.js'
+import fileUploader from '/app/module/file-uploader/file-uploader.js'
 
 var proposalMedia = angular.module('app.module.lead.media', [
   'angularFileUpload',
+  'app.module.file-uploader',
 ]);
 
 proposalMedia.service('leadService', leadService);
@@ -18,29 +20,31 @@ proposalMedia.directive('appLeadMedia', function () {
 });
 
 var mediaController = function ($scope, FileUploader, leadService) {
+
+  $scope.url = '/main/leads/' + $scope.lead.id + '/file-upload';
   
-  $scope.uploader = new FileUploader();
+  // $scope.uploader = new FileUploader();
 
-  $scope.uploadd = function (uploader, lead) {
+  // $scope.uploadd = function (uploader, lead) {
 
-    uploader.onSuccessItem = function (fileItem, response, status, headers) {
-      if (!lead.medias)
-        lead.medias = [];
-      lead.medias.push({ id: '', type: fileItem.file.type, name: fileItem.file.name })
-      $scope.lead = lead;
-    };
+  //   uploader.onSuccessItem = function (fileItem, response, status, headers) {
+  //     if (!lead.medias)
+  //       lead.medias = [];
+  //     lead.medias.push({ id: '', type: fileItem.file.type, name: fileItem.file.name })
+  //     $scope.lead = lead;
+  //   };
 
-    uploader.onCompleteAll = function () {
-      uploader.clearQueue();
-      leadService.findLead(lead.id).success(data=> $scope.lead = data.lead )	
-    }
+  //   uploader.onCompleteAll = function () {
+  //     uploader.clearQueue();
+  //     leadService.findLead(lead.id).success(data=> $scope.lead = data.lead )	
+  //   }
 
-    uploader.queue.forEach(item => {
-      item.url = '/main/leads/' + lead.id + '/file-upload'
-      item.upload();
-    })
+  //   uploader.queue.forEach(item => {
+  //     item.url = '/main/leads/' + lead.id + '/file-upload'
+  //     item.upload();
+  //   })
 
-  }
+  // }
 
 }
 
