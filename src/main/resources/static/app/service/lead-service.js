@@ -7,10 +7,10 @@ export default function leadService($http){
 			$http.get(local_server_url + '/leads/'+lead.id).success(data=> lead = data.lead )
 		},
 
- 		findLeads: function (scope, pageRange, lines) {
- 			if(scope.event=='ALL' || !scope.event) scope.event='';
- 			if(!scope.search) scope.search = '';
- 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + scope.filter.event + "&text=" + scope.filter.searchText).then(function (response) {
+ 		findLeads: function (scope) {
+ 			if(scope.filter.event=='ALL' || !scope.filter.event) scope.filter.event='';
+ 			if(!scope.filter.searchText) scope.filter.searchText = '';
+				$http.get(local_server_url + "/leads?pageRange=" + scope.filter.pageRange + "&lines=" + scope.filter.lines + "&event=" + scope.filter.event + "&text=" + scope.filter.searchText).then(function (response) {
  				scope.leads = response.data.leads
  				scope.leadsTotalPrice = response.data.leadsTotalPrice
  				scope.totalLeads = response.data.totalLeads

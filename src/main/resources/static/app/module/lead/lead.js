@@ -66,7 +66,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 		else
 			return
 		$scope.leads = null;
-		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines, $scope.filter.event, $scope.filter.searchText)
+		leadService.findLeads($scope)
 	}
 
 	$scope.reload = function (event, search) {
@@ -74,16 +74,16 @@ var leadController = function ($scope, leadService, companyService, personServic
 		$scope.filter.searchText = search;
 		$scope.filter.pageRange = 0;
 		$scope.leads = null;
-		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines)
+		leadService.findLeads($scope)
 	}
 
 	$scope.applyFilter = function (event, search) {
 		$scope.filter.pageRange = 0;
-		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines)
+		leadService.findLeads($scope)
 	}
 
 	var init = function () {
-		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines);
+		leadService.findLeads($scope)
 	}
 
 	init();
