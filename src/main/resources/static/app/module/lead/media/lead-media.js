@@ -18,6 +18,7 @@ proposalMedia.directive('appLeadMedia', function () {
 });
 
 var mediaController = function ($scope, FileUploader, leadService) {
+  
   $scope.uploader = new FileUploader();
 
   $scope.uploadd = function (uploader, lead) {
