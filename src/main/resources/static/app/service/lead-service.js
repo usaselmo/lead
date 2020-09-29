@@ -10,7 +10,7 @@ export default function leadService($http){
  		findLeads: function (scope, pageRange, lines) {
  			if(scope.event=='ALL' || !scope.event) scope.event='';
  			if(!scope.search) scope.search = '';
- 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + scope.event + "&text=" + scope.search).then(function (response) {
+ 			$http.get(local_server_url + "/leads?pageRange=" + pageRange + "&lines=" + lines + "&event=" + scope.filter.event + "&text=" + scope.filter.searchText).then(function (response) {
  				scope.leads = response.data.leads
  				scope.leadsTotalPrice = response.data.leadsTotalPrice
  				scope.totalLeads = response.data.totalLeads

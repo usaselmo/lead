@@ -9,7 +9,7 @@
           </small>
           <a title="Reload" href="#" class="btn btn-sm btn-default">
             <span class="glyphicon glyphicon-refresh" aria-hidden="true" title="Reload"
-              ng-click="reload(event, search)"></span>
+              ng-click="reload(filter.event, filter.searchText)"></span>
           </a>
           <a data-toggle="modal" data-target="#lead-new-modal" title="new Lead" href="#" class="btn btn-sm btn-default"
             ng-click="crud({})">
@@ -27,12 +27,12 @@
         </button>
       </td>
       <td>
-        <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="search"
-          ng-change="filter(event, search)" />
+        <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="filter.searchText"
+          ng-change="applyFilter(filter.event, filter.searchText)" />
       </td>
       <td>
-        <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="event"
-          ng-change="filter(event, search)">
+        <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter.event"
+          ng-change="applyFilter(filter.event, filter.searchText)">
           <option value="">All</option>
         </select>
       </td>

@@ -6,6 +6,7 @@ import proposalCrud from '/app/module/lead/proposal/lead-proposal.js'
 import loading from '/app/module/loading/loading.js'
 import personCrud from '/app/module/person/person-crud.js'
 import modal from '/app/module/modal/modal.js'
+import Filter from '/app/model/filter.js'
 
 import companyService from '/app/service/company-service.js'
 import leadService from '/app/service/lead-service.js'
@@ -43,10 +44,9 @@ applead.directive('appLead', function () {
 
 export default applead
 
-var leadController = function ($scope, leadService, companyService, personService, userService, proposalService) {
+var leadController = function ($scope, leadService, companyService, personService, userService) {
 
-	var pageRange = 0;
-	var lines = 10;
+	$scope.filter = new Filter(0, 5, '', '');
 
 	$scope.createNewPerson = function () {
 		$scope.person = {};
@@ -55,37 +55,35 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.list = function () {
 		$scope.lead = null;
 		$scope.crudLead = null;
-		$scope.reload($scope.event, $scope.search);
+		$scope.reload($scope.filter.event, $scope.filter.searchText);
 	}
 
 	$scope.getNextListRange = function (numero) {
-		if (numero > 0 && ((pageRange + 1) * lines) < $scope.totalLeads)
-			pageRange++
-		else if (numero < 0 && pageRange > 0)
-			pageRange--
+		if (numero > 0 && (($scope.filter.pageRange + 1) * $scope.filter.lines) < $scope.totalLeads)
+			$scope.filter.pageRange++
+		else if (numero < 0 && $scope.filter.pageRange > 0)
+			$scope.filter.pageRange--
 		else
 			return
 		$scope.leads = null;
-		leadService.findLeads($scope, pageRange, lines, $scope.event, $scope.search)
+		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines, $scope.filter.event, $scope.filter.searchText)
 	}
 
 	$scope.reload = function (event, search) {
-		$scope.event = event;
-		$scope.search = search;
-		pageRange = 0;
+		$scope.filter.event = event;
+		$scope.filter.searchText = search;
+		$scope.filter.pageRange = 0;
 		$scope.leads = null;
-		leadService.findLeads($scope, pageRange, lines)
+		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines)
 	}
 
-	$scope.filter = function (event, search) {
-		$scope.event = event;
-		$scope.search = search;
-		pageRange = 0;
-		leadService.findLeads($scope, pageRange, lines)
+	$scope.applyFilter = function (event, search) {
+		$scope.filter.pageRange = 0;
+		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines)
 	}
 
 	var init = function () {
-		leadService.findLeads($scope, pageRange, lines);
+		leadService.findLeads($scope, $scope.filter.pageRange, $scope.filter.lines);
 	}
 
 	init();
