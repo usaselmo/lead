@@ -6,7 +6,7 @@ header.directive('appHeader', function() {
 		scope : {
 			modalId: '='
 				},
-		template : '<h1>Leads DC <small>Version 2.1.0</small></h1>',
+		template : '<h1>Leads DC <small>Version 2.1.1</small></h1>',
 	};
 });
 

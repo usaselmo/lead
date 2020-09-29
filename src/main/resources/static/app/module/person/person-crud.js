@@ -16,28 +16,30 @@ personCrud.directive('appPersonCrud', function () {
             hideCancelButton: '=',
         },
         templateUrl: '/app/module/person/person-crud.html',
-        controller: function ($scope, personService, companyService) {
-
-            var init = function () {
-                companyService.findCompanies($scope);
-            }
-            init();
-
-            $scope.cancel = function () {
-                $scope.person = null
-            }
-
-            $scope.save = function (person) {
-                if (person.id) {
-                    personService.update($scope, person).success(data => person = data.person)
-                } else {
-                    personService.save($scope, person).success(data => $scope.persons.unshift(data.person))
-                }
-                $scope.cancel();
-            }
-
-        },
+        controller: personCrudController,
     };
 });
+
+var personCrudController = function ($scope, personService, companyService) {
+
+    var init = function () {
+        companyService.findCompanies($scope);
+    }
+    init();
+
+    $scope.cancel = function () {
+        $scope.person = null
+    }
+
+    $scope.save = function (person) {
+        if (person.id) {
+            personService.update($scope, person).success(data => person = data.person)
+        } else {
+            personService.save($scope, person).success(data => $scope.persons.unshift(data.person))
+        }
+        $scope.cancel();
+    }
+
+}
 
 export default personCrud
