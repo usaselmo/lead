@@ -1,117 +1,108 @@
 <div>
-    <h4>
-      Lead # {{lead.id}}
-      <span ng-if="lead.title" style="margin-right: 12px;"> - {{lead.title}}</span>
-      <span ng-if="lead.company.name && !lead.client.name"> <small> {{lead.company.name}}</small></span>
-      <span ng-if="!lead.company.name && lead.client.name"> <small> {{lead.client.name}}</small></span>
-    </h4>
-    <div class="panel panel-default">
-      <div class="panel-heading">
+  <h4>
+    Lead # {{lead.id}}
+    <span ng-if="lead.title" style="margin-right: 12px;"> - {{lead.title}}</span>
+    <span ng-if="lead.company.name && !lead.client.name"> <small> {{lead.company.name}}</small></span>
+    <span ng-if="!lead.company.name && lead.client.name"> <small> {{lead.client.name}}</small></span>
+  </h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <a style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="list()"><span
+          class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Show Leads</a>
 
-        <a style="padding: 6px;" href="#" class="btn btn-default btn-sm" ng-click="list()"><span
-            class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Show Leads</a>
+      <a title="Reload Lead" ng-click="reloadLead(lead)" href="#" style="padding: 6px;" href="#"
+        class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh" aria-hidden="true"
+          title="Reload Lead"></span></a>
 
-        <a title="Reload Lead" ng-click="reloadLead(lead)" href="#" style="padding: 6px;" href="#"
-          class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh" aria-hidden="true"
-            title="Reload Lead"></span></a>
+      <a title="Edit" ng-click="crud(lead)" data-toggle="modal" data-target="#editModal" href="#" style="padding: 6px;"
+        href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"
+          title="Edit"></span> Edit</a>
 
-        <a title="Edit" ng-click="crud(lead)" data-toggle="modal" data-target="#editModal" href="#"
-          style="padding: 6px;" href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"
-            aria-hidden="true" title="Edit"></span> Edit</a>
+      <a title="Send Can't Reach E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
+        ng-click="sendCantReachEmail(lead, lead.client?lead.client:lead.contact)"><span
+          class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
 
-        <a title="Send Can't Reach E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
-          ng-click="sendCantReachEmail(lead, lead.client?lead.client:lead.contact)"><span
-            class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
+      <a title="Ask for Hiring Decision E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
+        ng-click="sendHiringDecisionEmail(lead, lead.client?lead.client:lead.contact)"><span
+          class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
+    </div>
+    <div class="panel-body">
 
-        <a title="Ask for Hiring Decision E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
-          ng-click="sendHiringDecisionEmail(lead, lead.client?lead.client:lead.contact)"><span
-            class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
+      <!-- LEAD DETAILS -->
+      <table class="table table-sm table-striped">
+        <tbody>
+          <tr>
 
+            <td>
+              <span ng-if="lead.company">
+                <p><i>{{lead.company.name}}</i></p>
+                <p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} ,
+                  {{lead.contact.email}}</p>
+              </span>
 
-      </div>
-      <div class="panel-body">
+              <p ng-if="lead.client"><i>{{lead.client.name}}</i> <br>{{lead.client.phone}} <br>{{lead.client.email}}
+              </p>
 
-        <!-- LEAD DETAILS -->
-        <table class="table table-sm table-striped">
-          <tbody>
-            <tr>
+              <p ng-if="lead.dueDate"><u><i>Due Date: </i></u>{{lead.dueDate | date }}</p>
+              <span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
+              <p><i><small>{{lead.event}}</small></i></p>
+            </td>
 
-              <td>
-                <span ng-if="lead.company">
-                  <p><i>{{lead.company.name}}</i></p>
-                  <p ng-if="lead.contact"><u><i>Contact:</i></u> {{lead.contact.name}} , {{lead.contact.phone}} ,
-                    {{lead.contact.email}}</p>
+            <td>
+              <p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
+              <p ng-if="lead.visit">Visit: {{lead.visit | date}}</p>
+              <span ng-if="lead.description"><small>{{lead.description}}</small></span>
+            </td>
+
+            <!-- MENU -->
+            <td nowrap="nowrap">
+              <strong>Mark an Event</strong>
+              <div class="list-group">
+                <span ng-repeat="event in lead.nextEvents" ng-switch="event">
+                  <a c; style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#"
+                    class="list-group-item">{{event.action}}</a>
                 </span>
-
-                <p ng-if="lead.client"><i>{{lead.client.name}}</i> <br>{{lead.client.phone}} <br>{{lead.client.email}}
-                </p>
-
-                <p ng-if="lead.dueDate"><u><i>Due Date: </i></u>{{lead.dueDate | date }}</p>
-                <span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
-                <p><i><small>{{lead.event}}</small></i></p>
-              </td>
-
-              <td>
-                <p ng-if="lead.title"><strong>{{lead.title}}</strong></p>
-                <p ng-if="lead.visit">Visit: {{lead.visit | date}}</p>
-                <span ng-if="lead.description"><small>{{lead.description}}</small></span>
-              </td>
-
-              <!-- MENU -->
-              <td nowrap="nowrap">
-                <strong>Mark an Event</strong>
-                <div class="list-group">
-                  <span ng-repeat="event in lead.nextEvents" ng-switch="event">
-                    <a c; style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#"
-                      class="list-group-item">{{event.action}}</a>
-                  </span>
-                </div>
-              </td>
-
-            </tr>
-          </tbody>
-        </table>
-
-
-
-        <!-- BOTTOM NAV TABS -->
-        <div class="col-sm-12">
-          <div>
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#proposals" aria-controls="proposals" role="tab"
-                  data-toggle="tab">Proposals</a></li>
-              <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
-              <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a>
-              </li>
-              <li role="presentation"><a href="#media" aria-controls="media" role="tab" data-toggle="tab">Media</a></li>
-              <li role="presentation"><a href="#invitations" aria-controls="invitations" role="tab"
-                  data-toggle="tab">Invitations</a>
-              </li>
-            </ul>
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane active" id="proposals">
-                <app-lead-proposal lead="lead"></app-lead-proposal>
               </div>
-              <div role="tabpanel" class="tab-pane" id="notes">
-                <app-lead-note lead="lead"></app-lead-note>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="events">
-                <app-lead-event lead="lead"></app-lead-event>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="media">
-                <app-lead-media lead="lead"></app-lead-media>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="invitations">
-                <app-lead-invitation lead="lead"></app-lead-invitation>
-              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- BOTTOM NAV TABS -->
+      <div class="col-sm-12">
+        <div>
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#proposals" aria-controls="proposals" role="tab"
+                data-toggle="tab">Proposals</a></li>
+            <li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+            <li role="presentation"><a href="#events" aria-controls="events" role="tab" data-toggle="tab">Events</a>
+            </li>
+            <li role="presentation"><a href="#media" aria-controls="media" role="tab" data-toggle="tab">Media</a></li>
+            <li role="presentation"><a href="#invitations" aria-controls="invitations" role="tab"
+                data-toggle="tab">Invitations</a>
+            </li>
+          </ul>
+          <!-- Tab panes -->
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="proposals">
+              <app-lead-proposal lead="lead"></app-lead-proposal>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="notes">
+              <app-lead-note lead="lead"></app-lead-note>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="events">
+              <app-lead-event lead="lead"></app-lead-event>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="media">
+              <app-lead-media lead="lead"></app-lead-media>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="invitations">
+              <app-lead-invitation lead="lead"></app-lead-invitation>
             </div>
           </div>
-
-
         </div>
-
       </div>
     </div>
+  </div>
 </div>
