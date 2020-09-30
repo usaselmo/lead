@@ -1,4 +1,4 @@
-<div ng-if="leads">
+<div ng-if="leadEntity.leads">
   <table class="table table-sm table-striped">
     <tr>
       <td>
@@ -31,7 +31,7 @@
           ng-change="applyFilter(filter.event, filter.searchText)" />
       </td>
       <td>
-        <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter.event"
+        <select class="form-control" ng-options="et.name as et.status for et in leadEntity.events" ng-model="filter.event"
           ng-change="applyFilter(filter.event, filter.searchText)">
           <option value="">All</option>
         </select>
@@ -41,7 +41,7 @@
 
   <table class="table table-sm table-striped">
     <tbody>
-      <tr ng-repeat="lead in leads">
+      <tr ng-repeat="lead in leadEntity.leads">
         <td>
           <a href="#" class="btn btn-sm btn-default" ng-click="detail(lead)">View</a>
         </td>
@@ -90,6 +90,6 @@
     </tbody>
   </table>
 </div>
-<div ng-if="!leads">
+<div ng-if="!leadEntity.leads">
   <app-loading></app-loading>
 </div>

@@ -53,11 +53,11 @@ var leadController = function ($scope, leadService, companyService, personServic
 		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';
 		if (!$scope.filter.searchText) $scope.filter.searchText = '';
 		leadService.find_Leads($scope).success(data => {
-			$scope.leads = data.leads
+			$scope.leadEntity.leads = data.leads
 			$scope.leadEntity.leadsTotalPrice = data.leadsTotalPrice
 			$scope.leadEntity.totalLeads = data.totalLeads
-			$scope.leadTypes = data.leadTypes;
-			$scope.events = data.events;
+			$scope.leadEntity.leadTypes = data.leadTypes;
+			$scope.leadEntity.events = data.events;
 		})
 	}
 
@@ -78,7 +78,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 			$scope.filter.pageRange--
 		else
 			return
-		$scope.leads = null;
+		$scope.leadEntity.leads = null;
 		findLeads($scope)
 	}
 
@@ -86,7 +86,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 		$scope.filter.event = event;
 		$scope.filter.searchText = search;
 		$scope.filter.pageRange = 0;
-		$scope.leads = null;
+		$scope.leadEntity.leads = null;
 		findLeads($scope)
 	}
 
@@ -103,7 +103,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.crud = function (lead) {
 		$scope.crudLead = lead;
-		$scope.leads = null;
+		$scope.leadEntity.leads = null;
 		$scope.lead = null;
 		companyService.findCompanies($scope)
 		personService.findPersons($scope)
@@ -138,7 +138,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.detail = function (lead) {
 		$scope.lead = lead;
 		$scope.crudLead = null;
-		$scope.leads = null;
+		$scope.leadEntity.leads = null;
 	}
 
 	$scope.fireEvent = function (lead, event) {
