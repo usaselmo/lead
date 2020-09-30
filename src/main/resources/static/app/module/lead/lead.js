@@ -41,12 +41,25 @@ applead.directive('appLead', function () {
 	};
 });
 
-
 export default applead
 
 var leadController = function ($scope, leadService, companyService, personService, userService) {
 
 	$scope.filter = new Filter(0, 5, '', '');
+
+	$scope.leadEntity = {};
+
+	var findLeads = function () {
+		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';
+		if (!$scope.filter.searchText) $scope.filter.searchText = '';
+		leadService.find_Leads($scope).success(data => {
+			$scope.leads = data.leads
+			$scope.leadsTotalPrice = data.leadsTotalPrice
+			$scope.totalLeads = data.totalLeads
+			$scope.leadTypes = data.leadTypes;
+			$scope.events = data.events;
+		})
+	}
 
 	$scope.createNewPerson = function () {
 		$scope.person = {};
@@ -66,7 +79,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 		else
 			return
 		$scope.leads = null;
-		leadService.findLeads($scope)
+		findLeads($scope)
 	}
 
 	$scope.reload = function (event, search) {
@@ -74,20 +87,19 @@ var leadController = function ($scope, leadService, companyService, personServic
 		$scope.filter.searchText = search;
 		$scope.filter.pageRange = 0;
 		$scope.leads = null;
-		leadService.findLeads($scope)
+		findLeads($scope)
 	}
 
 	$scope.applyFilter = function (event, search) {
 		$scope.filter.pageRange = 0;
-		leadService.findLeads($scope)
+		findLeads($scope)
 	}
 
 	var init = function () {
-		leadService.findLeads($scope)
+		findLeads($scope)
 	}
 
 	init();
-
 
 	$scope.crud = function (lead) {
 		$scope.crudLead = lead;
