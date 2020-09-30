@@ -22,6 +22,8 @@ import lombok.NoArgsConstructor;
 @Table(name="person")
 public class Person implements Serializable, Client{
 
+	private static final String REGEX = "\\(|\\)|\\-|\\.| ";
+
 	private static final long serialVersionUID = -2053753047318969493L;
 
 	@Id @GeneratedValue	private Long id;
@@ -40,11 +42,11 @@ public class Person implements Serializable, Client{
 	}
 
 	public void setCellPhone(String phone) {
-		this.cellPhone = StringUtils.isEmpty(phone)?null:phone.replaceAll("\\(|\\)|\\-| ", "");
+		this.cellPhone = StringUtils.isEmpty(phone)?null:phone.replaceAll(REGEX, "");
 	}
 
 	public void setPhone(String phone) {
-		phone = !StringUtils.isEmpty(phone)?phone.replaceAll("\\(|\\)|\\-| ", ""):"";
+		this.phone = !StringUtils.isEmpty(phone)?phone.replaceAll(REGEX, ""):"";
 	}
 	
 }
