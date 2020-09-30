@@ -54,8 +54,8 @@ var leadController = function ($scope, leadService, companyService, personServic
 		if (!$scope.filter.searchText) $scope.filter.searchText = '';
 		leadService.find_Leads($scope).success(data => {
 			$scope.leads = data.leads
-			$scope.leadsTotalPrice = data.leadsTotalPrice
-			$scope.totalLeads = data.totalLeads
+			$scope.leadEntity.leadsTotalPrice = data.leadsTotalPrice
+			$scope.leadEntity.totalLeads = data.totalLeads
 			$scope.leadTypes = data.leadTypes;
 			$scope.events = data.events;
 		})
@@ -72,7 +72,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.getNextListRange = function (numero) {
-		if (numero > 0 && (($scope.filter.pageRange + 1) * $scope.filter.lines) < $scope.totalLeads)
+		if (numero > 0 && (($scope.filter.pageRange + 1) * $scope.filter.lines) < $scope.leadEntity.totalLeads)
 			$scope.filter.pageRange++
 		else if (numero < 0 && $scope.filter.pageRange > 0)
 			$scope.filter.pageRange--
