@@ -33,17 +33,10 @@ export default function leadService($http) {
 			return res;
 		},
 
-		save: function (scope, lead) {
-			$http.post(local_server_url + "/leads", lead).then(function (response) {
-				if (response.data.errorMessages) {
-					scope.errorMessages = response.data.errorMessages
-				} else {
-					scope.lead = response.data.lead
-					scope.successMessages = response.data.successMessages
-				}
-			}, function (response) {
-				console.log(response)
-			});
+		save: function (lead) {
+			var res = $http.post(local_server_url + "/leads", lead);
+			res.error( error => console.log(error))
+			return res;
 		},
 
 		fireEvent: function (scope, lead, event) {

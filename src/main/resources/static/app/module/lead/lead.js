@@ -113,7 +113,10 @@ var leadController = function ($scope, leadService, companyService, personServic
 		if (lead.id)
 			leadService.update(lead).success( data => lead = data.lead)
 		else
-			leadService.save($scope, lead);
+			leadService.save(lead).success( data => {
+				$scope.leads.unshift(data.lead);
+				$scope.totalLeads++
+			})
 		$scope.cancel(lead)
 	}
 
