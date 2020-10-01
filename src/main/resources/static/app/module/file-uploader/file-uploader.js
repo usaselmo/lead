@@ -21,13 +21,11 @@ var fileUploaderController = function ($scope, FileUploader) {
 
   $scope.uploadd = function (uploader) {
 
-    uploader.onSuccessItem = function (fileItem, response, status, headers) {
-     
-    };
+    uploader.onSuccessItem = function (fileItem, response, status, headers) {};
 
     uploader.onCompleteAll = function () {
-      uploader.clearQueue();
       $scope.onCompleteAll()
+      uploader.clearQueue();
     }
 
     uploader.queue.forEach(item => {

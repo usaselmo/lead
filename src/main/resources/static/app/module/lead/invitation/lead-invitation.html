@@ -57,8 +57,7 @@
       Invitation</a>
 
     <!-- UPLOAD -->
-    <app-file-uploader ng-if="uploading['processing'] && !invitation" url="'/main/leads/' + lead.id + '/invitations/' + uploading['invitation'].id"></app-file-uploader>
-
+    <app-file-uploader on-complete-all="onCompleteAll()" ng-if="uploading['processing'] && !invitation" url="'/main/leads/' + lead.id + '/invitations/' + uploading['invitation'].id" ></app-file-uploader>
 
     <!-- CRUD -->
     <div class="panel panel-default" ng-if="invitation">

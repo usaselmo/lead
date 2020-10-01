@@ -15,7 +15,7 @@ proposalMedia.directive('appLeadMedia', function () {
       lead: '=',
     },
     templateUrl: '/app/module/lead/media/lead-media.html',
-    controller: mediaController,
+    controller: ['$scope', 'FileUploader', 'leadService', mediaController],
   };
 });
 
@@ -23,9 +23,7 @@ var mediaController = function ($scope, FileUploader, leadService) {
 
   $scope.url = '/main/leads/' + $scope.lead.id + '/file-upload';
 
-  $scope.onCompleteAll = function (){
-    leadService.reloadLead($scope.lead).success( data => $scope.lead = data.lead )
-  }
+  $scope.onCompleteAll = function (){leadService.reloadLead($scope.lead).success( data => $scope.lead = data.lead )}
 
 }
 
