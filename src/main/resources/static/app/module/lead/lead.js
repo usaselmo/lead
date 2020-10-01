@@ -7,6 +7,7 @@ import loading from '/app/module/loading/loading.js'
 import personCrud from '/app/module/person/person-crud.js'
 import modal from '/app/module/modal/modal.js'
 import Filter from '/app/model/filter.js'
+import email from '/app/module/email/email.js'
 
 import companyService from '/app/service/company-service.js'
 import leadService from '/app/service/lead-service.js'
@@ -24,6 +25,7 @@ var applead = angular.module('app.module.lead', [
 	'app.module.loading',
 	'app.module.lead.person.crud',
 	'app.module.modal',
+	'app.module.email',
 ]);
 
 applead.service('companyService', companyService);
@@ -47,6 +49,7 @@ export default applead
 var leadController = function ($scope, leadService, companyService, personService, userService) {
 
 	$scope.filter = new Filter(0, 2, '', '');
+	$scope.lead = null;
 
 	var findLeads = function () {
 		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';

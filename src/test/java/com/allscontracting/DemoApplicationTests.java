@@ -95,20 +95,18 @@ public class DemoApplicationTests {
 		JasperRunManager.runReportToHtmlFile(sourceFile, destFile, map, dataSource.getConnection());
 	}
 	
-	@Test
-	public void testHtmlProposal()  {
-		try {
-			Proposal proposal = this.proposalRepo.findAll().get(2);
-			Person person = proposal.getLead().getClient();
-			String sourceFile = getSourceFile();
-			String htmlContent = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
-			HashMap<String, Object> map = getParams(proposal, person);
-			JasperRunManager.runReportToHtmlFile(sourceFile, htmlContent, map, dataSource.getConnection());
-			new Mail("anselmo.sr@gmail.com", "HTML test", new String(Files.readAllBytes(Paths.get(htmlContent)))).onError( System.out::println ).send();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * @Test public void testHtmlProposal() { try { Proposal proposal =
+	 * this.proposalRepo.findAll().get(2); Person person =
+	 * proposal.getLead().getClient(); String sourceFile = getSourceFile(); String
+	 * htmlContent = "D:/temp/proposal" + System.currentTimeMillis() + ".html";
+	 * HashMap<String, Object> map = getParams(proposal, person);
+	 * JasperRunManager.runReportToHtmlFile(sourceFile, htmlContent, map,
+	 * dataSource.getConnection()); new Mail("anselmo.sr@gmail.com", "HTML test",
+	 * new String(Files.readAllBytes(Paths.get(htmlContent)))).onError(
+	 * System.out::println ).send(); } catch (Exception e) { e.printStackTrace(); }
+	 * }
+	 */
 
 	@Test
 	public void test_runToPdfFile() throws Exception {

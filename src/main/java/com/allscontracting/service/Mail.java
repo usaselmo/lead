@@ -15,6 +15,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import com.allscontracting.dto.MailDTO;
+
 public class Mail {
 
 	private static final String GMAIL_PASSWORD = "Getalife2009!";
@@ -25,18 +27,17 @@ public class Mail {
 	private Runnable runnableOnSuccess = () -> {};
 
 	private String subject;
-	private String emailTo;
+	private String[] emailTo;
+	private String[] bcc;
 	private String text;
 	private File[] attachmentFiles = {} ;
 
-	public Mail(String emailTo, String subject, String text, File... attachmentFiles) {
+	public Mail(String[] emailTo, String[] bcc, String subject, String text, File[] attachments) {
 		this.emailTo = emailTo;
 		this.subject = subject;
 		this.text = text;
-		if (attachmentFiles != null)
-			this.attachmentFiles = attachmentFiles;
-		else
-			this.attachmentFiles = new File[]{};
+		this.bcc = (bcc != null)?bcc:new String[] {};
+		this.attachmentFiles=(attachments != null)?attachments:new File[]{};
 	}
 
 	public void send() {
@@ -44,7 +45,7 @@ public class Mail {
 		emailExecutor.execute(() -> {
 			try {
 				MimeMessage mimeMessage = emailSender().createMimeMessage();
-				MimeMessageHelper helper = getMiniMessageHelper(mimeMessage, subject, emailTo);
+				MimeMessageHelper helper = getMiniMessageHelper(mimeMessage, subject, emailTo, bcc);
 				helper.setText(text, true);
 				for (File af : attachmentFiles) {
 					FileSystemResource file = new FileSystemResource(af);
@@ -88,10 +89,12 @@ public class Mail {
 		return mailSender;
 	}
 
-	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, String emailTo)
+	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, String[] emailTo, String[] bcc)
 			throws MessagingException, UnsupportedEncodingException {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setTo(emailTo);
+		if(bcc!=null)
+			helper.setBcc(bcc);
 		helper.setSubject(title);
 		helper.setFrom(GMAIL_USER, "All's Contracting Inc");
 		return helper;
