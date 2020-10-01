@@ -27,17 +27,10 @@ export default function leadService($http) {
 			});
 		},
 
-		update: function (scope, lead) {
-			$http.put(local_server_url + "/leads", lead).then(function (response) {
-				if (response.data.errorMessages) {
-					scope.errorMessages = response.data.errorMessages
-				} else {
-					scope.lead = response.data.lead
-					scope.successMessages = response.data.successMessages
-				}
-			}, function (response) {
-				console.log(response)
-			});
+		update: function (lead) {
+			var res = $http.put(local_server_url + "/leads", lead);
+			res.error(error => console.log(error))
+			return res;
 		},
 
 		save: function (scope, lead) {

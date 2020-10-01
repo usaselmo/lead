@@ -82,8 +82,8 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.reload = function (event, search) {
-		$scope.filter.event = event;
-		$scope.filter.searchText = search;
+		//$scope.filter.event = event;
+		//$scope.filter.searchText = search;
 		$scope.filter.pageRange = 0;
 		$scope.leads = null;
 		findLeads($scope)
@@ -111,7 +111,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.save = function (lead) {
 		if (lead.id)
-			leadService.update($scope, lead)
+			leadService.update(lead).success( data => lead = data.lead)
 		else
 			leadService.save($scope, lead);
 		$scope.cancel(lead)
