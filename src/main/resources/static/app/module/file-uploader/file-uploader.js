@@ -7,7 +7,8 @@ fileUploader.directive('appFileUploader', function () {
   return {
     restrict: 'E',
     scope: {
-      url: '=',
+      url: '=', 
+      onCompleteAll: '&', 
     },
     templateUrl: '/app/module/file-uploader/file-uploader.html',
     controller: fileUploaderController,
@@ -15,17 +16,18 @@ fileUploader.directive('appFileUploader', function () {
 });
 
 var fileUploaderController = function ($scope, FileUploader) {
-  
+
   $scope.uploader = new FileUploader();
 
   $scope.uploadd = function (uploader) {
 
     uploader.onSuccessItem = function (fileItem, response, status, headers) {
-        console.log('onSuccessItem called')
+     
     };
 
     uploader.onCompleteAll = function () {
       uploader.clearQueue();
+      $scope.onCompleteAll()
     }
 
     uploader.queue.forEach(item => {

@@ -22,29 +22,10 @@ proposalMedia.directive('appLeadMedia', function () {
 var mediaController = function ($scope, FileUploader, leadService) {
 
   $scope.url = '/main/leads/' + $scope.lead.id + '/file-upload';
-  
-  // $scope.uploader = new FileUploader();
 
-  // $scope.uploadd = function (uploader, lead) {
-
-  //   uploader.onSuccessItem = function (fileItem, response, status, headers) {
-  //     if (!lead.medias)
-  //       lead.medias = [];
-  //     lead.medias.push({ id: '', type: fileItem.file.type, name: fileItem.file.name })
-  //     $scope.lead = lead;
-  //   };
-
-  //   uploader.onCompleteAll = function () {
-  //     uploader.clearQueue();
-  //     leadService.findLead(lead.id).success(data=> $scope.lead = data.lead )	
-  //   }
-
-  //   uploader.queue.forEach(item => {
-  //     item.url = '/main/leads/' + lead.id + '/file-upload'
-  //     item.upload();
-  //   })
-
-  // }
+  $scope.onCompleteAll = function (){
+    leadService.reloadLead($scope.lead).success( data => $scope.lead = data.lead )
+  }
 
 }
 

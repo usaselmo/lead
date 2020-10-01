@@ -4,7 +4,11 @@ export default function leadService($http) {
 	return {
 
 		reloadLead: function (lead) {
-			$http.get(local_server_url + '/leads/' + lead.id).success(data => lead = data.lead)
+			var res = $http.get(local_server_url + '/leads/' + lead.id);
+			res.success(data =>{
+				lead = data.lead
+			}  )
+			return res;
 		},
 
 		find_Leads: function (scope) {
