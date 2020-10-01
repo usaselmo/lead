@@ -64,9 +64,11 @@ var leadController = function ($scope, leadService, companyService, personServic
 		$scope.person = {};
 	}
 
+
 	$scope.list = function () {
 		$scope.crudLead = null;
-		$scope.leads = $scope.leads.map(l => l.id == $scope.lead.id ? $scope.lead : l)
+		if ($scope.lead.id)
+			$scope.leads = $scope.leads.map(l => l.id == $scope.lead.id ? $scope.lead : l)
 		$scope.lead = null;
 	}
 
@@ -111,9 +113,9 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.save = function (lead) {
 		if (lead.id)
-			leadService.update(lead).success( data => lead = data.lead)
+			leadService.update(lead).success(data => lead = data.lead)
 		else
-			leadService.save(lead).success( data => {
+			leadService.save(lead).success(data => {
 				$scope.leads.unshift(data.lead);
 				$scope.totalLeads++
 			})
@@ -123,7 +125,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.cancel = function (lead) {
 		if (lead.id)
 			$scope.detail(lead)
-		else{
+		else {
 			$scope.lead = null;
 			$scope.crudLead = null;
 		}
@@ -132,8 +134,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.companyOnChange = function (company) {
 		personService.findPersons($scope)
 			.success(() => {
-				var persons = $scope.persons
-					.filter(p => p.company && p.company.id && p.company.id == company.id);
+				var persons = $scope.persons.filter(p => p.company && p.company.id && p.company.id == company.id);
 				if (persons.length > 0)
 					$scope.persons = persons;
 			});
