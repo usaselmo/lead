@@ -1,8 +1,10 @@
-import leadService from '/app/service/lead-service.js'
+
 import proposalService from '/app/service/proposal-service.js'
+
 var proposalCrud = angular.module('app.module.lead.proposal.crud', []);
+
 proposalCrud.service('proposalService', proposalService);
-proposalCrud.service('leadService', leadService);
+
 proposalCrud.directive('proposalCrud', function () {
     return {
         restrict: 'E',
@@ -11,13 +13,15 @@ proposalCrud.directive('proposalCrud', function () {
             lead: '=',
         },
         templateUrl: '/app/module/lead/proposal/lead-proposal-crud.html',
-        controller: proposalCrudController,
+        controller: ['$scope', 'proposalService', proposalCrudController],
     };
 });
-var proposalCrudController = function ($scope, proposalService, leadService) {
+var proposalCrudController = function ($scope, proposalService) {
+
     $scope.proposalCancel = function () {
         // $scope.proposal = null;
     }
+    
     $scope.proposalEncreaseItem = function (proposal) {
         $scope.proposal.items.push({
             price: 0, title: 'ITEM ' + (proposal.items.length + 1) + ' - '
@@ -30,12 +34,12 @@ var proposalCrudController = function ($scope, proposalService, leadService) {
     }
     $scope.proposalSave = function (lead, proposal) {
         if (proposal.id) {
-            proposalService.update($scope, proposal, lead.id).success((response) => {
-                $scope.lead.proposals = $scope.lead.proposals.filter(p => p.id != proposal.id)
-                $scope.lead.proposals.push(response.proposal)
+            proposalService.update(proposal, lead.id).success( response => {
+                lead.proposals = lead.proposals.filter(p => p.id != proposal.id)
+                lead.proposals.push(response.proposal)
             });
         } else {
-            proposalService.save($scope, proposal, lead.id)
+            proposalService.save(proposal, lead.id).success( data => lead.proposals.push(data.proposal) )
         }
     }
 };

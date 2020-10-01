@@ -60,31 +60,16 @@ var proposalService = function($http){
 			});
 		},
 		
-		update: function (scope, proposal, lead_id) {
+		update: function (proposal, lead_id) {
 			var result = $http.put(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(proposal));
-			result.then(function (response) {
-				if(response.data.proposal){
-					scope.lead.proposals = scope.lead.proposals.map(p=>p.id==response.data.proposal.id?response.data.proposal:p)
-					proposal = response.data.proposal
-				}
-				scope.successMessages = response.data.successMessages
-				scope.errorMessages = response.data.errorMessages
-			}, function (response) {
-				console.log(response)
-			});
+			result.error( error => console.log(error))
 			return result;
 		},
 		
-		save: function (scope, proposal, lead_id) {
-			$http.post(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(proposal)).then(function (response) {
-				if(response.data.proposal){
-					scope.lead.proposals.push(response.data.proposal);
-				}
-				scope.successMessages = response.data.successMessages
-				scope.errorMessages = response.data.errorMessages
-			}, function (response) {
-				console.log(response)
-			});
+		save: function (proposal, lead_id) {
+			var res = $http.post(local_server_url + "/proposals?leadId=" + lead_id, convertToServerFormat(proposal));
+			res.error( error => console.log(error))
+			return res;
 		},
 		
 		delete: function (proposal, lead_id) {

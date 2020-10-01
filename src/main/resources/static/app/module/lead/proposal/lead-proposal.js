@@ -32,6 +32,7 @@ var leadProposalController = function ($scope, proposalService) {
             proposalService.sendByEmail($scope, proposal)
         }
     }
+
     $scope.proposalCopy = function (proposal) {
         var nproposal = convertToClientFormat(proposal);
         nproposal.total = 0;
@@ -48,7 +49,6 @@ var leadProposalController = function ($scope, proposalService) {
     $scope.proposalCrud = function (proposal, lead) {
         if (!proposal.id) proposal = createProposal(lead);
         else proposal = convertToClientFormat(proposal);
-        $scope.currentProposal = proposal;
         $scope.proposal = proposal;
     }
 
@@ -72,7 +72,6 @@ var createProposal = function () {
         'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
         'total': 0,
     }
-    //$scope.currentProposal = prop;
     return prop;
 }
 
