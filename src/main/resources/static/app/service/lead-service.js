@@ -56,7 +56,7 @@ export default function leadService($http) {
 			});
 		},
 
-		saveNote: function (scope, lead, note) {
+		saveNote: function (lead, note) {
 			var res = $http.post(local_server_url + '/leads/' + lead.id + '/addNote', note);
 			return res;
 		},

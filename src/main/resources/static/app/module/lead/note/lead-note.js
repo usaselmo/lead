@@ -14,7 +14,7 @@ proposalNote.directive('appLeadNote', function() {
 		controller : function($scope, leadService) {
 
 			$scope.saveNote = function(lead, newNote) {
-				leadService.saveNote($scope, lead, newNote)
+				leadService.saveNote(lead, newNote)
 				.success(data=>{
 					$scope.lead = data.lead
 					$scope.newNote = ''
