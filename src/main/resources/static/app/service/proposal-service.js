@@ -87,16 +87,10 @@ var proposalService = function($http){
 			});
 		},
 		
-		delete: function (scope, proposal, lead_id) {
-			$http.delete(local_server_url + "/proposals?leadId=" + lead_id + "&proposalId=" + proposal.id ).then(function (response) {
-				if(!response.data.errorMessages){
-					scope.lead.proposals = scope.lead.proposals.filter(p=>p.id != proposal.id)
-				}
-				scope.successMessages = response.data.successMessages
-				scope.errorMessages = response.data.errorMessages
-			}, function (response) {
-				console.log(response)
-			});
+		delete: function (proposal, lead_id) {
+			var res = $http.delete(local_server_url + "/proposals?leadId=" + lead_id + "&proposalId=" + proposal.id );
+			res.error( error => console.log(error))
+			return res;
 		},
 
 	} 

@@ -54,7 +54,7 @@ var leadProposalController = function ($scope, proposalService) {
 
     $scope.deleteProposal = function (lead, proposal) {
         if (confirm(' Are you sure you want to delete? ')) {
-            proposalService.delete($scope, proposal, lead.id)
+            proposalService.delete(proposal, lead.id).success( data => lead.proposals = lead.proposals.filter(p => p.id != proposal.id))
         }
     }
 }
