@@ -13,73 +13,81 @@ leadProposal.directive('appLeadProposal', function () {
         scope: {
             lead: '=',
         },
-        controller: ['$scope', 'proposalService', function ($scope, proposalService) {
-
-            $scope.originalLines = [];
-
-            $scope.markAsEmailed = function (proposal) {
-                if (confirm('Confirm mark this document as e-mailed ? ')) {
-                    proposalService.markAsEmailed(proposal).success(data => {
-                        $scope.lead.proposals = $scope.lead.proposals.map( p => p.id==data.proposal.id?data.proposal:p )
-                    })
-                }
-            }
-
-            var convertToClientFormat = function (proposal) {
-                var prop = copy(proposal)
-                var items = []
-                prop.items.forEach(item => {
-                    item.lines = item.lines.map(line => {
-                        $scope.originalLines[item.id + line.description] = line.id;
-                        return line.description;
-                    }).join("\n")
-                    items.push(item)
-                })
-                prop.items = items;
-                return prop;
-            }
-            $scope.emailProposal = function (proposal) {
-                if (confirm('Send Proposal #' + proposal.number + ' via E-mail ? ')) {
-                    proposalService.sendByEmail($scope, proposal)
-                }
-            }
-            $scope.proposalCopy = function (proposal) {
-                var nproposal = convertToClientFormat(proposal);
-                nproposal.total = 0;
-                nproposal.id = null;
-                nproposal.emailed = false;
-                nproposal.number = null;
-                nproposal.items.forEach(item => {
-                    item.id = null;
-                })
-                originalLines = [];
-                $scope.proposal = nproposal;
-            }
-            $scope.proposalCrud = function (proposal, lead) {
-                if (!proposal.id) proposal = createProposal(lead);
-                else proposal = convertToClientFormat(proposal);
-                $scope.proposal = proposal;
-            }
-            var createProposal = function () {
-                var prop = {
-                    'items': [{
-                        'price': 0, title: 'ITEM 1 - '
-                    }],
-                    'callMissUtility': true,
-                    'scopeOfWork': 'Concrete work as per visit',
-                    'paymentSchedule': '1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.',
-                    'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
-                    'total': 0,
-                }
-                $scope.currentProposal = prop;
-                return prop;
-            }
-            $scope.deleteProposal = function (lead, proposal) {
-                if (confirm(' Are you sure you want to delete? ')) {
-                    proposalService.delete($scope, proposal, lead.id)
-                }
-            }
-        }],
+        controller: ['$scope', 'proposalService', leadProposalController],
     }
 })
+
+var leadProposalController = function ($scope, proposalService) {
+
+    $scope.markAsEmailed = function (proposal) {
+        if (confirm('Confirm mark this document as e-mailed ? ')) {
+            proposalService.markAsEmailed(proposal).success(data => {
+                $scope.lead.proposals = $scope.lead.proposals.map(p => p.id == data.proposal.id ? data.proposal : p)
+            })
+        }
+    }
+
+    $scope.emailProposal = function (proposal) {
+        if (confirm('Send Proposal #' + proposal.number + ' via E-mail ? ')) {
+            proposalService.sendByEmail($scope, proposal)
+        }
+    }
+    $scope.proposalCopy = function (proposal) {
+        var nproposal = convertToClientFormat(proposal);
+        nproposal.total = 0;
+        nproposal.id = null;
+        nproposal.emailed = false;
+        nproposal.number = null;
+        nproposal.items.forEach(item => {
+            item.id = null;
+        })
+        originalLines = [];
+        $scope.proposal = nproposal;
+    }
+
+    $scope.proposalCrud = function (proposal, lead) {
+        if (!proposal.id) proposal = createProposal(lead);
+        else proposal = convertToClientFormat(proposal);
+        $scope.currentProposal = proposal;
+        $scope.proposal = proposal;
+    }
+
+    $scope.deleteProposal = function (lead, proposal) {
+        if (confirm(' Are you sure you want to delete? ')) {
+            proposalService.delete($scope, proposal, lead.id)
+        }
+    }
+}
+
+var originalLines = [];
+
+var createProposal = function () {
+    var prop = {
+        'items': [{
+            'price': 0, title: 'ITEM 1 - '
+        }],
+        'callMissUtility': true,
+        'scopeOfWork': 'Concrete work as per visit',
+        'paymentSchedule': '1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.',
+        'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
+        'total': 0,
+    }
+    //$scope.currentProposal = prop;
+    return prop;
+}
+
+var convertToClientFormat = function (proposal) {
+    var prop = copy(proposal)
+    var items = []
+    prop.items.forEach(item => {
+        item.lines = item.lines.map(line => {
+            originalLines[item.id + line.description] = line.id;
+            return line.description;
+        }).join("\n")
+        items.push(item)
+    })
+    prop.items = items;
+    return prop;
+}
+
 export default proposalCrud
