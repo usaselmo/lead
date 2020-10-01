@@ -65,9 +65,9 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.list = function () {
-		$scope.lead = null;
 		$scope.crudLead = null;
-		$scope.reload($scope.filter.event, $scope.filter.searchText);
+		$scope.leads = $scope.leads.map(l => l.id == $scope.lead.id ? $scope.lead : l)
+		$scope.lead = null;
 	}
 
 	$scope.getNextListRange = function (numero) {
@@ -102,7 +102,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.crud = function (lead) {
 		$scope.crudLead = lead;
-		$scope.leads = null;
+		//$scope.leads = null;
 		$scope.lead = null;
 		companyService.findCompanies($scope)
 		personService.findPersons($scope)
@@ -120,8 +120,10 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.cancel = function (lead) {
 		if (lead.id)
 			$scope.detail(lead)
-		else
-			$scope.list()
+		else{
+			$scope.lead = null;
+			$scope.crudLead = null;
+		}
 	}
 
 	$scope.companyOnChange = function (company) {
@@ -137,7 +139,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.detail = function (lead) {
 		$scope.lead = lead;
 		$scope.crudLead = null;
-		$scope.leads = null;
+		//$scope.leads = null;
 	}
 
 	$scope.fireEvent = function (lead, event) {
