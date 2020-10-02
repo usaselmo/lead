@@ -10,6 +10,11 @@ modal.directive('appModal', function() {
 		},
 		templateUrl : '/app/module/modal/modal.html',
 		controller: function($scope){
+
+			$scope.code = (Math.random() + '_').replace(".", "")
+
+			console.log($scope.code)
+
 			if(!$scope.spanClass)
 				$scope.spanClass = 'glyphicon glyphicon-th'
 		}

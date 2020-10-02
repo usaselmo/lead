@@ -21,12 +21,12 @@
       <a title="Send Can't Reach E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
         ng-click="sendCantReachEmail(lead, lead.client?lead.client:lead.contact)"><span
           class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
-          {{lead.id}}
-          <app-email lead="lead" type="cantreach" ></app-email>
+          <app-email lead="lead" type="cantreach" >Send e-mail saying that you can't reach the Client</app-email>
 
       <a title="Ask for Hiring Decision E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
         ng-click="sendHiringDecisionEmail(lead, lead.client?lead.client:lead.contact)"><span
           class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
+          <app-email lead="lead" type="hiringdecision">Send e-mail asking for a Hiring Decision</app-email>
     </div>
     <div class="panel-body">
 

@@ -1,17 +1,53 @@
-
-<app-modal span-class="'glyphicon glyphicon-export'" >
+<app-modal span-class="'glyphicon glyphicon-export'">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">E-mail</h3>
+            <h class="panel-title">
+                <ng-transclude></ng-transclude>
+                </h4>
         </div>
         <div class="panel-body">
-            <form class="form-horizontal">
-                <div class="form-group"><div class="col-sm-4">
-                    <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal" ng-click="cancel(crudLead)">Cancel</button>
-                </div><div class="col-sm-4">
-                    <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" ng-click="sendEmail()">Send
-                        E-mail</button>
+            <form class="form-horizontal" style="margin-top: 50px;">
+                <div class="form-group">
+                    <label for="002jgo4n49" class="col-sm-2 control-label">To</label>
+                    <div class="col-sm-9">
+                        <span ng-repeat="to in email.to">
+                            <select id="002jgo4n49" class="form-control"
+                                ng-options="person as person.name for person in persons track by person.id"
+                                ng-model="email.to[$index]">
+                                <option value="">Select...</option>
+                            </select><br />
+                        </span>
+                    </div>
+                    <div class="col-sm-1"><a href="#" ng-click="increaseTo()" class="btn btn-default btn-sm"><span
+                                class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
                 </div>
+                <div class="form-group">
+                    <label for="3893jfnrn4" class="col-sm-2 control-label">BCC</label>
+                    <div class="col-sm-9">
+                        <span ng-repeat="to in email.bcc">
+                            <select id="3893jfnrn4" class="form-control"
+                                ng-options="person as person.name for person in persons track by person.id"
+                                ng-model="email.bcc[$index]">
+                                <option value="">Select...</option>
+                            </select><br />
+                        </span>
+                    </div>
+                    <div class="col-sm-1"><a href="#" ng-click="increaseBcc()" class="btn btn-default btn-sm"><span
+                                class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
+                </div>
+                <div class="form-group">
+                    <label for="235jgiisngio" class="col-sm-2 control-label">Addtional Text</label>
+                    <div class="col-sm-9">
+                        <textarea name="" class="form-control" id="" ng-model="email.text" rows="6"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-4">
+                        <button type="button" class="btn btn-primary btn-block" data-dismiss="modal"
+                            ng-click="sendEmail()">Send E-mail</button>
+                    </div>
                 </div>
             </form>
         </div>

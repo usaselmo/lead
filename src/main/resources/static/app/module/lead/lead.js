@@ -48,7 +48,7 @@ export default applead
 
 var leadController = function ($scope, leadService, companyService, personService, userService) {
 
-	$scope.filter = new Filter(0, 2, '', '');
+	$scope.filter = new Filter(0, 10, '', '');
 	$scope.lead = null;
 
 	var findLeads = function () {
