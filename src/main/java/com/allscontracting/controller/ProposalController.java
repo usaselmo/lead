@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.LeadEntity;
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
@@ -39,9 +40,9 @@ public class ProposalController {
 	}
 
 	@GetMapping(value = "{proposalId}/email")
-	public LeadEntity sendByEmail(@PathVariable long proposalId, @Autowired Authentication authentication) {
+	public LeadEntity sendByEmail(@PathVariable long proposalId, MailDTO mailDTO, @Autowired Authentication authentication) {
 		try {
-			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
 			return LeadEntity.builder().build().addSuccessMessage("Email is being sent.");
 		} catch (Exception e) {
 			e.printStackTrace();

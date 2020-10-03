@@ -25,7 +25,6 @@ import com.allscontracting.model.Person;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.LeadService;
-import com.allscontracting.service.Mail;
 
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;

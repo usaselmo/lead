@@ -32,13 +32,6 @@ public class FileService {
 	private final LogService logService;
 	private final MediaRepo mediaRepo;
 	private final InvitationRepo invitationRepo;
-	
-/*	public void sendByEmail(Proposal proposal, String leadId) throws IOException {
-		Lead lead = leadRepository.findOne(leadId);
-		File proposalPdfFile = new File(PROPOSALS_FOLDER + "\\" + proposal.getFileName());
-		Person person = lead.getPerson();
-		this.mailService.sendProposalByEmail(proposal, person, proposalPdfFile);
-	}*/
 
 	@SuppressWarnings("unchecked")
 	public void loadLeadFile(MultipartFile file, Vendor vendor, User user) throws Exception {

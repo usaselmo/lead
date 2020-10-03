@@ -18,6 +18,7 @@ import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
@@ -158,9 +159,9 @@ public class LeadController {
 	}
 
 	@PostMapping("/{leadId}/invitations/{invitationId}/email")
-	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
+	public LeadEntity sendInvitationByEmail(@RequestBody InvitationDTO invitationDTO, MailDTO mailDTO, @Autowired Authentication authentication) {
 		try {
-			leadService.sendInvitationByEmail(invitationDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			leadService.sendInvitationByEmail(invitationDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
 			return LeadEntity.builder().build().addSuccessMessage("Invitation sent by e-mail.");
 		} catch (Exception e) {
 			e.printStackTrace();

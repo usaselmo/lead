@@ -1,6 +1,5 @@
 package com.allscontracting.service;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -8,12 +7,15 @@ import javax.transaction.Transactional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.PersonRepository;
+import com.allscontracting.service.mail.Mail;
+import com.allscontracting.service.mail.MailProviderSelector;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonService {
 
 	private final PersonRepository personRepo;
-	private final MailService mailService;
+	private final MailProviderSelector mailProviderSelector;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
 	
@@ -46,19 +48,19 @@ public class PersonService {
 	 * Collectors.toList()); }
 	 */
 
-	public void sendCantReachEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
-		Person person = this.personRepo.findById(Long.valueOf(id)).orElseThrow(() -> new LeadsException("Person not found"));
-		this.mailService.sendCantReachEmail(person)
+	public void sendCantReachEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
+		Mail mail = MailDTO.to(emailDTO);
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail)
 				.onError((error) -> log.error("Error sending e-mail: " + error))
-				.onSuccess(() -> { logg.eventCantReachEmailSent(leadId, person, user); })
+				.onSuccess(() -> { logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user); })
 				.send();
 	}
 
-	public void sendHiringDecisionEmail(String id, String leadId, User user) throws IOException, NumberFormatException, LeadsException {
-		Person person = this.personRepo.findById(Long.valueOf(id)).orElseThrow(()->new LeadsException("Person not found"));
-		this.mailService.sendHiringDecisionEmail(person)
+	public void sendHiringDecisionEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
+		Mail mail = MailDTO.to(emailDTO);
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail)
 			.onError( (error)->log.error("Error sending e-mail: "+error) )
-			.onSuccess( () -> logg.eventHiringDecisionEmailSent(leadId, person, user))
+			.onSuccess( () -> logg.eventHiringDecisionEmailSent(leadId, emailDTO.getTo().get(0).getName(), user))
 			.send();
 	}
 

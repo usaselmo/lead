@@ -1,6 +1,5 @@
 package com.allscontracting.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.LeadDTO;
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
@@ -28,6 +28,8 @@ import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.LineRepository;
 import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.repo.ProposalRepository;
+import com.allscontracting.service.mail.Mail;
+import com.allscontracting.service.mail.MailProviderSelector;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,7 @@ public class ProposalService {
 	public final ItemRepository itemRepository;
 	public final LineRepository lineRepository;
 	public final ReportService reportService;
-	public final MailService mailService;
+	public final MailProviderSelector mailProviderSelector;
 	public final LogService logService;
 	public final MediaRepo mediaRepo;
 
@@ -65,28 +67,6 @@ public class ProposalService {
 	public ProposalDTO update(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException{
 		proposalRepository.deleteById(Long.valueOf(proposalDTO.getId()));
 		return this.save(proposalDTO, leadId, user);
-	}
-
-	private void defineItems(Proposal proposal) {
-		proposal.getItems().forEach(item -> {
-			proposal.addItem(item);
-			item.getLines().forEach(line -> item.addLine(line));
-		});
-	}
-
-	private void defineNumber(Proposal proposal, Lead lead) {
-		if (proposal.getNumber() == null) {
-			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
-				long max = 0;
-				if(proposal.isChangeorder())
-					max = lead.getProposals().stream().filter(p->p.isChangeorder()).mapToLong(p->p.getNumber()).max().orElse(0L);
-				else
-					max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
-				proposal.setNumber(max+1);
-			}else {
-				proposal.setNumber(1L); 
-			}
-		}
 	}
 
 	@Transactional
@@ -120,13 +100,11 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public void sendPdfByEmail(long proposalId, User user) throws JRException, SQLException, IOException, LeadsException {
+	public void sendPdfByEmail(long proposalId, User user, MailDTO mailDTO) throws Exception {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
-		HashMap<String, Object> map = getProposalParameters(proposal, person);
-		String streamFileName = getProposalFileName(proposal, person, "pdf");
-		File res = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		this.mailService.sendProposalByEmail(proposal, person, res)
+		Mail mail = MailDTO.to(mailDTO);
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail, proposal)
 			.onError((error) -> {
 				log.error("Error sending mail: " + error);
 			})
@@ -137,6 +115,43 @@ public class ProposalService {
 				logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 			})
 			.send(); 
+	}
+
+	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
+		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
+		this.reportService.getFileAsStream(response, media.getName(), media.getContent(), media.getType());
+	}
+
+	public ProposalDTO markAsEmailed(long proposalId, User user) throws LeadsException {
+		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow( ()-> new LeadsException("Could not find Proposal"));
+		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
+		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+		proposal.setEmailed(true);
+		this.proposalRepository.save(proposal);
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		return ProposalDTO.of(proposal);
+	}
+
+	private void defineItems(Proposal proposal) {
+		proposal.getItems().forEach(item -> {
+			proposal.addItem(item);
+			item.getLines().forEach(line -> item.addLine(line));
+		});
+	}
+
+	private void defineNumber(Proposal proposal, Lead lead) {
+		if (proposal.getNumber() == null) {
+			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
+				long max = 0;
+				if(proposal.isChangeorder())
+					max = lead.getProposals().stream().filter(p->p.isChangeorder()).mapToLong(p->p.getNumber()).max().orElse(0L);
+				else
+					max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
+				proposal.setNumber(max+1);
+			}else {
+				proposal.setNumber(1L); 
+			}
+		}
 	}
 
 	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
@@ -156,21 +171,6 @@ public class ProposalService {
 		map.put("PROPOSAL_ID", proposal.getId());
 		map.put("LEAD", LeadDTO.of(proposal.getLead()));
 		return map;
-	}
-
-	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
-		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
-		this.reportService.getFileAsStream(response, media.getName(), media.getContent(), media.getType());
-	}
-
-	public ProposalDTO markAsEmailed(long proposalId, User user) throws LeadsException {
-		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow( ()-> new LeadsException("Could not find Proposal"));
-		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
-		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-		proposal.setEmailed(true);
-		this.proposalRepository.save(proposal);
-		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
-		return ProposalDTO.of(proposal);
 	}
 	
 }

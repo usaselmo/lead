@@ -51,4 +51,8 @@ public class PersonDTO {
 	public static List<PersonDTO> of(List<Person> persons) {
 		return persons.stream().map(person -> of(person)).collect(Collectors.toList());
 	}
+	
+	public static final List<Person> toPerson(List<PersonDTO> dtos) {
+		return dtos.stream().map(dto -> PersonDTO.toPerson(dto)).collect(Collectors.toList());
+	}
 }

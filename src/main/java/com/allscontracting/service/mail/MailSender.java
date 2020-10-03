@@ -1,7 +1,9 @@
-package com.allscontracting.service;
+package com.allscontracting.service.mail;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,9 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import com.allscontracting.dto.MailDTO;
-
-public class Mail {
+public class MailSender {
 
 	private static final String GMAIL_PASSWORD = "Getalife2009!";
 	private static final String GMAIL_USER = "allscontractingdc@gmail.com";
@@ -27,17 +27,17 @@ public class Mail {
 	private Runnable runnableOnSuccess = () -> {};
 
 	private String subject;
-	private String[] emailTo;
-	private String[] bcc;
+	private List<String> emailTo;
+	private List<String> bcc;
 	private String text;
-	private File[] attachmentFiles = {} ;
+	private List<File> attachmentFiles ;
 
-	public Mail(String[] emailTo, String[] bcc, String subject, String text, File[] attachments) {
+	public MailSender(List<String> emailTo, List<String> bcc, String subject, String text, List<File> attachments) {
 		this.emailTo = emailTo;
 		this.subject = subject;
 		this.text = text;
-		this.bcc = (bcc != null)?bcc:new String[] {};
-		this.attachmentFiles=(attachments != null)?attachments:new File[]{};
+		this.bcc = (bcc == null)?new ArrayList<String>(0):bcc;
+		this.attachmentFiles=(attachments == null)?new ArrayList<File>(0):attachments;
 	}
 
 	public void send() {
@@ -61,7 +61,7 @@ public class Mail {
 		emailExecutor.shutdown();
 	}
 
-	public Mail onSuccess(Runnable runnable) {
+	public MailSender onSuccess(Runnable runnable) {
 		this.runnableOnSuccess = runnable;
 		return this;
 	}
@@ -70,7 +70,7 @@ public class Mail {
 	 * Provides error message
 	 * @param consumer for the error message
 	 */
-	public Mail onError(Consumer<String> consumer) {
+	public MailSender onError(Consumer<String> consumer) {
 		this.runnableOnError = consumer;
 		return this;
 	}
@@ -89,12 +89,12 @@ public class Mail {
 		return mailSender;
 	}
 
-	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, String[] emailTo, String[] bcc)
+	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, List<String> emailTo, List<String> bcc)
 			throws MessagingException, UnsupportedEncodingException {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setTo(emailTo);
+		helper.setTo(emailTo.toArray(new String[0]));
 		if(bcc!=null)
-			helper.setBcc(bcc);
+			helper.setBcc(bcc.toArray(new String[0]));
 		helper.setSubject(title);
 		helper.setFrom(GMAIL_USER, "All's Contracting Inc");
 		return helper;

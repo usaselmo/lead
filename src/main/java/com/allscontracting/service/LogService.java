@@ -51,13 +51,13 @@ public class LogService {
 	}
 
 	@Transactional
-	public void eventCantReachEmailSent(String leadId, Person person, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + person.getName());
+	public void eventCantReachEmailSent(String leadId, String clientName, User user) {
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + clientName );
 	}
 
 	@Transactional
-	public void eventHiringDecisionEmailSent(String leadId, Person person, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " + person.getName());
+	public void eventHiringDecisionEmailSent(String leadId, String clientName, User user) {
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " +clientName);
 	}
 
 	@Transactional

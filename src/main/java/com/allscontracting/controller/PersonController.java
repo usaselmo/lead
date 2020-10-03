@@ -1,6 +1,5 @@
 package com.allscontracting.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.LeadEntity;
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
@@ -32,14 +31,14 @@ public class PersonController {
 		return res;
 	}
 
-	@GetMapping("{personId}/leads/{leadId}/cantreach")
-	public void sendCantReachEmail(@PathVariable String personId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
-		personService.sendCantReachEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+	@PostMapping("{personId}/leads/{leadId}/cantreach")
+	public void sendCantReachEmail(@PathVariable String leadId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) throws Exception {
+		personService.sendCantReachEmail(leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
 	}
 
-	@GetMapping("{personId}/leads/{leadId}/hiringdecision")
-	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @Autowired Authentication authentication) throws IOException, NumberFormatException, LeadsException {
-		personService.sendHiringDecisionEmail(personId, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+	@PostMapping("{personId}/leads/{leadId}/hiringdecision")
+	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) throws Exception {
+		personService.sendHiringDecisionEmail(leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
 	}
 	
 	@PutMapping("")

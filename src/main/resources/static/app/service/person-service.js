@@ -15,15 +15,14 @@
  			return res;
  		},
  		
- 		sendCantReachEmail: function (lead, person) {
- 			$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach').then(function (response) {
- 			}, function (response) {
- 				console.log(response)
- 			});
+ 		sendCantReachEmail: function (lead, person, email) {
+			 var res = $http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach', email);
+			 res.error( error => console.log(error))
+			 return res;
  		},
  		
- 		sendHiringDecisionEmail: function (lead, person) {
- 			$http.get(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision').then(function (response) {
+ 		sendHiringDecisionEmail: function (lead, person, mail) {
+ 			$http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision', mail).then(function (response) {
  			}, function (response) {
  				console.log(response)
  			});

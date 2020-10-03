@@ -38,12 +38,10 @@ var emailController = function ($scope, personService) {
     init();
 
     $scope.sendEmail = function () {
-        if ($scope.type == 'cantreach') {
-            personService.sendCantReachEmail($scope.lead, person);
-        }
-        else if ($scope.type == 'hiringdecision') {
-            personService.sendHiringDecisionEmail($scope.lead, person);
-        }
+        if ($scope.type == 'cantreach') 
+            personService.sendCantReachEmail($scope.lead, person, $socpe.email);
+        else if ($scope.type == 'hiringdecision') 
+            personService.sendHiringDecisionEmail($scope.lead, person, $scope.email);
     }
 
     $scope.increaseTo = function () {

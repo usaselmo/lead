@@ -1,11 +1,7 @@
 package com.allscontracting.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +21,7 @@ import com.allscontracting.dto.EventLogDTO;
 import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.event.EventDispatcher;
 import com.allscontracting.exception.LeadsException;
@@ -39,6 +36,8 @@ import com.allscontracting.repo.InvitationRepo;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.UserRepository;
+import com.allscontracting.service.mail.Mail;
+import com.allscontracting.service.mail.MailProviderSelector;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +54,7 @@ public class LeadService {
 	private final UserRepository userRepo;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
-	private final MailService mailService;
+	private final MailProviderSelector mailProviderSelector;
 	private final InvitationRepo invitationRepo;
 	private final ReportService reportService;
 
@@ -199,15 +198,10 @@ public class LeadService {
 	}
 
 	@Transactional
-	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user) throws LeadsException, IOException {
+	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user, MailDTO mailDTO) throws Exception {
 		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow(() -> new LeadsException("Could not find Invitation"));
-		invitation.setLead(this.leadRepo.findById(Long.valueOf(invitationDTO.getLead().getId())).orElseThrow(() -> new LeadsException("Could not find Lead")));
-		List<File> attachments = new ArrayList<>();
-		for (Media media : invitation.getMedias()) {
-			Path tempFile = Files.createTempFile("", "_" + media.getName());
-			attachments.add(Files.write(tempFile, media.getContent()).toFile());
-		}
-		this.mailService.sendInvitationToBid(invitation, attachments.toArray(new File[0]))
+		Mail mail = MailDTO.to(mailDTO);
+		this.mailProviderSelector.get(Mail.TYPE.INVITATION_TO_BID).getMailProvider(mail, invitation)
 		.onError((error) -> {
 			log.error(error);
 		})

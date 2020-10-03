@@ -32,6 +32,9 @@ public class ReportService {
 
 	@Autowired
 	DataSource dataSource;
+	@Autowired
+	ProposalRepository proposalRepo;
+	private Path tempFile;
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";
 	private static final String JRXML_SUFFIX = ".jrxml";
@@ -52,10 +55,6 @@ public class ReportService {
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
 	}
-
-	@Autowired
-	ProposalRepository proposalRepo;
-	private Path tempFile;
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName)
 			throws JRException, SQLException, IOException, Exception {
