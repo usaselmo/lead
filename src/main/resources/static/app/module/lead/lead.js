@@ -157,18 +157,6 @@ var leadController = function ($scope, leadService, companyService, personServic
 		leadService.saveNote($scope, lead, newNote)
 	}
 
-	$scope.sendCantReachEmail = function (lead, person) {
-		if (person && confirm('Send Can\'t Reach E-mail to ' + person.name + ' ? ')) {
-			personService.sendCantReachEmail(lead, person);
-		}
-	}
-
-	$scope.sendHiringDecisionEmail = function (lead, person) {
-		if (person && confirm('Send e-mail asking about ' + person.name + '\'s  hiring decision ? ')) {
-			personService.sendHiringDecisionEmail(lead, person);
-		}
-	}
-
 	$scope.reloadLead = function (lead) {
 		leadService.findLead(lead.id).success(data => $scope.lead = data.lead)
 	}

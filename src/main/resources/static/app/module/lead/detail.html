@@ -18,15 +18,10 @@
         href="#" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"
           title="Edit"></span> Edit</a>
 
-      <a title="Send Can't Reach E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
-        ng-click="sendCantReachEmail(lead, lead.client?lead.client:lead.contact)"><span
-          class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
-          <app-email lead="lead" type="'CANT_REACH'" >Send e-mail saying that you can't reach the Client</app-email>
+      <span title="Send Can't Reach Email"><app-email lead="lead" type="'CANT_REACH'" >Send e-mail saying that you can't reach the Client</app-email></span>
 
-      <a title="Ask for Hiring Decision E-mail" style="padding: 6px;" href="#" class="btn btn-default btn-sm"
-        ng-click="sendHiringDecisionEmail(lead, lead.client?lead.client:lead.contact)"><span
-          class="glyphicon glyphicon-export" aria-hidden="true"></span> Email</a>
-          <app-email lead="lead" type="'HIRING_DECISION'">Send e-mail asking for a Hiring Decision</app-email>
+      <span title="Send Hiring Decision Email"><app-email lead="lead" type="'HIRING_DECISION'">Send e-mail asking for a Hiring Decision</app-email></span>
+      
     </div>
     <div class="panel-body">
 

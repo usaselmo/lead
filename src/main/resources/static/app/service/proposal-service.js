@@ -51,13 +51,10 @@ var proposalService = function($http){
 			return res;
 		},
 
-		sendByEmail: function (scope, proposal) {
-			$http.get(local_server_url + "/proposals/" + proposal.id + "/email").then(function (response) {
-				scope.successMessages = response.data.successMessages;
-				scope.errorMessages = response.data.errorMessages;
-			}, function (response) {
-				console.log(response)
-			});
+		sendByEmail: function (proposal, email) {
+			var res = $http.get(local_server_url + "/proposals/" + proposal.id + "/email", email);
+			res.error(error => console.log(error))
+			return res;
 		},
 		
 		update: function (proposal, lead_id) {
