@@ -53,7 +53,8 @@ public class PersonService {
 		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail)
 				.onError((error) -> log.error("Error sending e-mail: " + error))
 				.onSuccess(() -> { logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user); })
-				.send();
+				.send()
+				;
 	}
 
 	public void sendHiringDecisionEmail(String leadId, User user, MailDTO emailDTO) throws Exception {

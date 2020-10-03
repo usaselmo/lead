@@ -13,8 +13,6 @@ modal.directive('appModal', function() {
 
 			$scope.code = (Math.random() + '_').replace(".", "")
 
-			console.log($scope.code)
-
 			if(!$scope.spanClass)
 				$scope.spanClass = 'glyphicon glyphicon-th'
 		}

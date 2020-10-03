@@ -28,8 +28,13 @@ public class MailDTO {
 	public static Mail to(MailDTO dto) {
 		if (dto == null)
 			return null;
-		Mail mail = new Mail(PersonDTO.toPerson(dto.getTo()), PersonDTO.toPerson(dto.getBcc()), dto.getText(),
-				MediaDTO.toMedia(dto.getAttachments()), Mail.TYPE.valueOf(dto.getType()), dto.getSubject());
+		Mail mail = new Mail(
+				PersonDTO.toPerson(dto.getTo()), 
+				PersonDTO.toPerson(dto.getBcc()), 
+				dto.getText(),
+				MediaDTO.toMedia(dto.getAttachments()), 
+				dto.getType()==null?null:Mail.TYPE.valueOf(dto.getType()), 
+				dto.getSubject());
 		return mail;
 	}
 

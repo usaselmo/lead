@@ -15,7 +15,7 @@ email.directive('appEmail', function () {
         transclude: true,
         scope: {
             lead: '=', 
-            type: '@',
+            type: '=',
         },
         templateUrl: '/app/module/email/email.html',
         controller: ['$scope', 'personService', emailController], 
@@ -24,23 +24,22 @@ email.directive('appEmail', function () {
 
 var emailController = function ($scope, personService) {
 
-    console.log($scope.type)
-
     var person = $scope.lead.client ? $scope.lead.client : $scope.lead.contact;
 
     var init = function(){
         personService.findPersons($scope).success( data => $scope.persons = data );
 
         $scope.email = new Email()
+        $scope.email.type = $scope.type
         $scope.email.to[0] = person;
     }
 
     init();
 
     $scope.sendEmail = function () {
-        if ($scope.type == 'cantreach') 
-            personService.sendCantReachEmail($scope.lead, person, $socpe.email);
-        else if ($scope.type == 'hiringdecision') 
+        if ($scope.type == 'CANT_REACH') 
+            personService.sendCantReachEmail($scope.lead, person, $scope.email);
+        else if ($scope.type == 'HIRING_DECISION') 
             personService.sendHiringDecisionEmail($scope.lead, person, $scope.email);
     }
 
