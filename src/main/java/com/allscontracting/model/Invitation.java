@@ -45,7 +45,7 @@ public class Invitation implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dueDate;
-	
+
 	private BigDecimal price;
 
 	@ManyToOne

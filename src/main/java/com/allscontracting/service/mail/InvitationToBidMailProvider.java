@@ -22,12 +22,9 @@ public class InvitationToBidMailProvider implements MailProvider {
 	@Override
 	public MailSender getMailProvider(Mail mail, Object... obj) throws IOException, LeadsException {
 		final Invitation invitation = (Invitation) obj[0];
-		MailSender mailSender = new MailSender(
-				mail.getTo().stream().map(to->to.getEmail()).collect(Collectors.toList()),
-				mail.getBcc().stream().map(to->to.getEmail()).collect(Collectors.toList()),
-				"REQUEST FOR PROPOSAL - " + invitation.getLead().getTitle(), 
-				this.getInvitationText(invitation),
-				this.getFiles(mail));
+		MailSender mailSender = new MailSender(mail.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
+		    mail.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "REQUEST FOR PROPOSAL - " + invitation.getLead().getTitle(),
+		    this.getInvitationText(invitation), this.getFiles(mail));
 		return mailSender;
 	}
 
@@ -47,16 +44,13 @@ public class InvitationToBidMailProvider implements MailProvider {
 			File file = getFile("templates/email/invitation-to-bid.html");
 			String string = new String(Files.readAllBytes(file.toPath()));
 			string = string.replace("{companyName}", invitation.getCompany().getName());
-			string = string.replace("{companyAddress}",
-					StringUtils.isNotBlank(invitation.getCompany().getAddress()) ? invitation.getCompany().getAddress()
-							: "");
+			string = string.replace("{companyAddress}", StringUtils.isNotBlank(invitation.getCompany().getAddress()) ? invitation.getCompany().getAddress() : "");
 			string = string.replace("{contactName}", invitation.getContact().getName());
 			string = string.replace("{contactPhone}", invitation.getContact().getPhone());
 			string = string.replace("{leadDescription}", invitation.getLead().getDescription());
 			string = string.replace("{leadTitle}", invitation.getLead().getTitle());
 			string = string.replace("{leadAddress}", invitation.getLead().getAddress());
-			string = string.replace("{leadDueDate}",
-					Converter.dateToString(invitation.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
+			string = string.replace("{leadDueDate}", Converter.dateToString(invitation.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
 			return string;
 		} catch (Exception e) {
 			e.printStackTrace();

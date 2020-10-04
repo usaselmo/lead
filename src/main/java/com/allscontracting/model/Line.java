@@ -19,18 +19,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity(name = "line")
-@Table(name="line")
+@Table(name = "line")
 public class Line implements Entity<Long> {
 
 	private static final long serialVersionUID = -8805126155137619614L;
 
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private String description;
 
 	@JsonIgnore
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Item item;
 
 }

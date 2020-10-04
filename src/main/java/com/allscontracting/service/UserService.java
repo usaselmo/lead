@@ -46,6 +46,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	public UserDTO createUser(UserDTO userDTO) {
 		try {
 			User user = UserDTO.toUser(userDTO);
@@ -62,6 +63,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	private void removeProfiles(User user) {
 		for (int i = 0; i < user.getProfiles().size(); i++) {
 			if(user.getProfiles().get(i)!=null) { 
@@ -70,6 +72,7 @@ public class UserService {
 		}
 	}
 
+	@Transactional
 	private void addProfiles(UserDTO userDTO, final User user) {
 		userDTO.getProfiles().stream().forEach(p->{
 			user.addUserProfile(userProfileRepo.save(UserProfile.builder().user(user).profile(UserProfile.Description.valueOf(p)).build()));

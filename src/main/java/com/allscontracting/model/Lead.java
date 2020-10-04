@@ -37,46 +37,57 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="lead2")
+@Table(name = "lead2")
 public class Lead implements Serializable {
 
 	private static final long serialVersionUID = -6183199069186068646L;
-	
-	//SINGLE PROPERTIES
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
-	@Temporal(TemporalType.DATE)	private Date date;
-	@Temporal(TemporalType.TIMESTAMP)	private Date visit;
+
+	// SINGLE PROPERTIES
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@Temporal(TemporalType.DATE)
+	private Date date;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date visit;
 	private String description;
 	private String notes;
 	private String title;
 	private String address;
-	@Temporal(TemporalType.TIMESTAMP)	private Date dueDate;
-  @NotNull	@Enumerated(EnumType.STRING)	private Event event;
-	@ManyToOne private User estimator;
-	
-	@ManyToOne private Company company;
-	@ManyToOne private Person contact;
-	@ManyToOne @JoinColumn(name = "client_id")	private Person client;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date dueDate;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Event event;
+	@ManyToOne
+	private User estimator;
+
+	@ManyToOne
+	private Company company;
+	@ManyToOne
+	private Person contact;
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private Person client;
 
 	// LISTS
-	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)	private List<Proposal> proposals;
-	
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<Proposal> proposals;
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-	@JoinTable(
-		  name = "lead_media", 
-		  joinColumns = @JoinColumn(name = "lead_id"), 
-		  inverseJoinColumns = @JoinColumn(name = "media_id"))
+	@JoinTable(name = "lead_media", joinColumns = @JoinColumn(name = "lead_id"), inverseJoinColumns = @JoinColumn(name = "media_id"))
 	List<Media> medias;
-	
-	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true) private List<Invitation> invitations;
-	
+
+	@OneToMany(mappedBy = "lead", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+	private List<Invitation> invitations;
+
 	// DEPRECATED
-	private String oldid; 
+	private String oldid;
 	private BigDecimal fee;
 	private String type;
-	@Enumerated(EnumType.STRING)	private Vendor vendor;
-	
-	
+	@Enumerated(EnumType.STRING)
+	private Vendor vendor;
+
 	/*******************
 	 * 
 	 * METHODS
@@ -87,54 +98,54 @@ public class Lead implements Serializable {
 		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
 	}
 
-	public void addMedia (Media media) {
-		if(this.medias == null)
+	public void addMedia(Media media) {
+		if (this.medias == null)
 			this.medias = new ArrayList<Media>();
-		if(!this.medias.contains(media)) 
+		if (!this.medias.contains(media))
 			this.medias.add(media);
 	}
-	
+
 	public void removeMedia(Media media) {
-		if(this.medias != null) {
-			if(this.medias.contains(media))
+		if (this.medias != null) {
+			if (this.medias.contains(media))
 				this.medias.remove(media);
 		}
 	}
 
-	public void addInvitation (Invitation invitation) {
-		if(this.invitations == null)
+	public void addInvitation(Invitation invitation) {
+		if (this.invitations == null)
 			this.invitations = new ArrayList<Invitation>();
-		if(!this.invitations.contains(invitation)) {
+		if (!this.invitations.contains(invitation)) {
 			this.invitations.add(invitation);
-			if(!invitation.getLead().equals(this))
+			if (!invitation.getLead().equals(this))
 				invitation.setLead(this);
 		}
 	}
-	
+
 	public void removeInvitation(Invitation invitation) {
-		if(this.invitations != null) {
-			if(this.invitations.contains(invitation))
+		if (this.invitations != null) {
+			if (this.invitations.contains(invitation))
 				this.invitations.remove(invitation);
-			if(invitation.getLead().equals(this))
+			if (invitation.getLead().equals(this))
 				invitation.setLead(null);
 		}
 	}
 
-	public void addProposal (Proposal proposal) {
-		if(this.proposals == null)
+	public void addProposal(Proposal proposal) {
+		if (this.proposals == null)
 			this.proposals = new ArrayList<Proposal>();
-		if(!this.proposals.contains(proposal)) {
+		if (!this.proposals.contains(proposal)) {
 			this.proposals.add(proposal);
-			if(!proposal.getLead().equals(this))
+			if (!proposal.getLead().equals(this))
 				proposal.setLead(this);
 		}
 	}
-	
+
 	public void removeProposal(Proposal proposal) {
-		if(this.proposals != null) {
-			if(this.proposals.contains(proposal))
+		if (this.proposals != null) {
+			if (this.proposals.contains(proposal))
 				this.proposals.remove(proposal);
-			if(proposal.getLead().equals(this))
+			if (proposal.getLead().equals(this))
 				proposal.setLead(null);
 		}
 	}
@@ -142,17 +153,10 @@ public class Lead implements Serializable {
 	public void setNote(String note) throws Exception {
 		throw new Exception();
 	}
-	
+
 	public void addNote(String note) {
-		this.notes = 
-				note = new StringBuilder()
-					.append(Converter.dateToString(new Date()))
-					.append(System.lineSeparator())
-					.append(note)
-					.append(System.lineSeparator())
-					.append(System.lineSeparator()) 
-					.append((!StringUtils.isEmpty(this.notes)? this.notes:"")  ) 
-					.toString();
+		this.notes = note = new StringBuilder().append(Converter.dateToString(new Date())).append(System.lineSeparator()).append(note)
+		    .append(System.lineSeparator()).append(System.lineSeparator()).append((!StringUtils.isEmpty(this.notes) ? this.notes : "")).toString();
 	}
-	
+
 }

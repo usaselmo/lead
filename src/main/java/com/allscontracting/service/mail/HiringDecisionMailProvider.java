@@ -15,12 +15,8 @@ public class HiringDecisionMailProvider implements MailProvider {
 
 	@Override
 	public MailSender getMailProvider(Mail mail, Object... obj) throws IOException {
-		MailSender mailSender = new MailSender(
-				mail.getTo().stream().map(to->to.getEmail()).collect(Collectors.toList()),
-				mail.getBcc().stream().map(to->to.getEmail()).collect(Collectors.toList()),
-				"Have you made a decision ?", 
-				getHiringDecisionText(mail), 
-				null);
+		MailSender mailSender = new MailSender(mail.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
+		    mail.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "Have you made a decision ?", getHiringDecisionText(mail), null);
 		return mailSender;
 	}
 

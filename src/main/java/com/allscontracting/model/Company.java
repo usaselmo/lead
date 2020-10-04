@@ -21,18 +21,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="company")
-public class Company implements Serializable, Client{
-	
+@Table(name = "company")
+public class Company implements Serializable, Client {
+
 	private static final long serialVersionUID = -8940683804972801566L;
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private String name;
 	private String email;
 	private String address;
 	private String website;
 
-	@OneToMany(fetch=FetchType.LAZY) private List<User> users;
+	@OneToMany(fetch = FetchType.LAZY)
+	private List<User> users;
 
 	@Override
 	public String getPhone() {
@@ -40,7 +43,7 @@ public class Company implements Serializable, Client{
 	}
 
 	@Override
-	public void setPhone(String phone) {		
+	public void setPhone(String phone) {
 	}
-	
+
 }

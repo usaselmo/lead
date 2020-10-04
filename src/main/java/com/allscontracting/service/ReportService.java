@@ -12,11 +12,9 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.allscontracting.repo.ProposalRepository;
-
+import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -28,12 +26,11 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 
 @Service
+@AllArgsConstructor
 public class ReportService {
 
-	@Autowired
-	DataSource dataSource;
-	@Autowired
-	ProposalRepository proposalRepo;
+	private DataSource dataSource;
+	
 	private Path tempFile;
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";

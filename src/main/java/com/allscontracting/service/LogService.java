@@ -18,23 +18,24 @@ import com.allscontracting.repo.EventoLogRepository;
 @Service
 public class LogService {
 
-	@Autowired EventoLogRepository eventLogRepo;
-	
+	@Autowired
+	EventoLogRepository eventLogRepo;
+
 	@Transactional
 	private void fireEvent(Class<?> clazz, String objectId, Event eventType, User user, String message) {
 		eventLogRepo.save(new EventLog(clazz.getSimpleName(), objectId, eventType.name(), new Date(), user, message));
 	}
-	
+
 	@Transactional
 	public void event(Class<?> object, String id, Event eventType, User user) {
 		fireEvent(object, id, eventType, user, "");
 	}
-	
+
 	@Transactional
 	public void event(Class<?> object, Long id, Event eventType, User user, String message) {
 		fireEvent(object, String.valueOf(id), eventType, user, message);
 	}
-	
+
 	@Transactional
 	public void event(Class<?> object, Long id, Event eventType, User user) {
 		fireEvent(object, String.valueOf(id), eventType, user, "");
@@ -52,12 +53,12 @@ public class LogService {
 
 	@Transactional
 	public void eventCantReachEmailSent(String leadId, String clientName, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + clientName );
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Can't Reach E-mail sent to " + clientName);
 	}
 
 	@Transactional
 	public void eventHiringDecisionEmailSent(String leadId, String clientName, User user) {
-		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " +clientName);
+		fireEvent(Lead.class, leadId, Event.EMAIL_SENT, user, "Hiring Decision Question E-mailed to " + clientName);
 	}
 
 	@Transactional
@@ -67,7 +68,7 @@ public class LogService {
 
 	@Transactional
 	public void newInvitationCreated(Long leadId, Invitation inv, User user) {
-		fireEvent(Lead.class, String.valueOf(leadId), Event.CREATE, user, "New Invitation #"+inv.getId()+" created to " + inv.getCompany().getName());
+		fireEvent(Lead.class, String.valueOf(leadId), Event.CREATE, user, "New Invitation #" + inv.getId() + " created to " + inv.getCompany().getName());
 	}
 
 }

@@ -18,12 +18,12 @@ import lombok.Getter;
 public class LeadUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = -1890744816765055526L;
-	
+
 	private final User user;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return this.user.getProfiles().stream().map(pf->new SimpleGrantedAuthority("ROLE_" + pf.getProfile().name().toUpperCase())).collect(Collectors.toList());
+		return this.user.getProfiles().stream().map(pf -> new SimpleGrantedAuthority("ROLE_" + pf.getProfile().name().toUpperCase())).collect(Collectors.toList());
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		if(!StringUtils.isEmpty(this.user.getName()))
+		if (!StringUtils.isEmpty(this.user.getName()))
 			return this.user.getName();
 		return this.user.getEmail();
 	}

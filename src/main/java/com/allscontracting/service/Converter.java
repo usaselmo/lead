@@ -32,15 +32,15 @@ public class Converter {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return LocalDate.parse(date, formatter);
 	}
-	
-	public static Date stringToDate(String dateToConvert, String pattern){
+
+	public static Date stringToDate(String dateToConvert, String pattern) {
 		try {
 			return new SimpleDateFormat(pattern).parse(dateToConvert);
 		} catch (Exception e) {
 			return null;
-		} 
+		}
 	}
-	
+
 	public static String dateToString(Date date) {
 		try {
 			return new SimpleDateFormat(MM_dd_yy_hh_mm).format(date);
@@ -48,7 +48,7 @@ public class Converter {
 			return "";
 		}
 	}
-	
+
 	public static String dateToString(Date date, String format) {
 		try {
 			return new SimpleDateFormat(format).format(date);
@@ -85,5 +85,5 @@ public class Converter {
 			}
 		}
 	}
-	
+
 }

@@ -23,21 +23,23 @@ public class MailSender {
 	private static final String GMAIL_USER = "allscontractingdc@gmail.com";
 	private static final int PORT = 465;
 	private static final String HOST = "smtp.gmail.com";
-	private Consumer<String> runnableOnError = (s) -> {};
-	private Runnable runnableOnSuccess = () -> {};
+	private Consumer<String> runnableOnError = (s) -> {
+	};
+	private Runnable runnableOnSuccess = () -> {
+	};
 
 	private String subject;
 	private List<String> emailTo;
 	private List<String> bcc;
 	private String text;
-	private List<File> attachmentFiles ;
+	private List<File> attachmentFiles;
 
 	public MailSender(List<String> emailTo, List<String> bcc, String subject, String text, List<File> attachments) {
 		this.emailTo = emailTo;
 		this.subject = subject;
 		this.text = text;
-		this.bcc = (bcc == null)?new ArrayList<String>(0):bcc;
-		this.attachmentFiles=(attachments == null)?new ArrayList<File>(0):attachments;
+		this.bcc = (bcc == null) ? new ArrayList<String>(0) : bcc;
+		this.attachmentFiles = (attachments == null) ? new ArrayList<File>(0) : attachments;
 	}
 
 	public void send() {
@@ -68,6 +70,7 @@ public class MailSender {
 
 	/**
 	 * Provides error message
+	 * 
 	 * @param consumer for the error message
 	 */
 	public MailSender onError(Consumer<String> consumer) {
@@ -90,10 +93,10 @@ public class MailSender {
 	}
 
 	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, List<String> emailTo, List<String> bcc)
-			throws MessagingException, UnsupportedEncodingException {
+	    throws MessagingException, UnsupportedEncodingException {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setTo(emailTo.toArray(new String[0]));
-		if(bcc!=null)
+		if (bcc != null)
 			helper.setBcc(bcc.toArray(new String[0]));
 		helper.setSubject(title);
 		helper.setFrom(GMAIL_USER, "All's Contracting Inc");

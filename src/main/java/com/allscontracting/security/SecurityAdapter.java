@@ -10,19 +10,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//@formatter:off
-    http.csrf().disable();
-    super.configure(http);
-    //@formatter:off
+		// @formatter:off
+		http.csrf().disable();
+		super.configure(http);
+		// @formatter:off
 	}
-	
-  
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
-  
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
 }

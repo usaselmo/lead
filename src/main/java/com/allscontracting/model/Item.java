@@ -25,36 +25,38 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="item")
-public class Item implements Entity<Long>{
+@Table(name = "item")
+public class Item implements Entity<Long> {
 
 	private static final long serialVersionUID = -7942592928182519301L;
 
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)	private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private String title;
 	private BigDecimal price;
 
 	@JsonIgnore
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Proposal proposal;
-	
-  @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)
+
+	@OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Line> lines;
-  
-  public void addLine(Line line) {
-  	if(this.lines==null)
-  		this.lines = new ArrayList<Line>();
-  	if(!this.lines.contains(line)) 
-  		this.lines.add(line);
-  	line.setItem(this);
-  }
-  
-  public void removeLine(Line line) {
-  	if(this.lines==null)
-  		this.lines = new ArrayList<Line>();
-  	if(this.lines.contains(line))
-  		this.lines.remove(line);
-  	line.setItem(null);
-  }
-	
+
+	public void addLine(Line line) {
+		if (this.lines == null)
+			this.lines = new ArrayList<Line>();
+		if (!this.lines.contains(line))
+			this.lines.add(line);
+		line.setItem(this);
+	}
+
+	public void removeLine(Line line) {
+		if (this.lines == null)
+			this.lines = new ArrayList<Line>();
+		if (this.lines.contains(line))
+			this.lines.remove(line);
+		line.setItem(null);
+	}
+
 }

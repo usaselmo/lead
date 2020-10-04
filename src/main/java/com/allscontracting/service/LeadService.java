@@ -134,10 +134,14 @@ public class LeadService {
 	public LeadDTO update(LeadDTO leadDTO, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany(
+		    leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null
+		    : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null
+		    : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null
+		    : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit(), Converter.MM_dd_yyyy_hh_mm));
 		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
 		lead.setAddress(leadDTO.getAddress());
@@ -175,11 +179,9 @@ public class LeadService {
 	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {
 		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-		LeadEntity res = LeadEntity.builder().leads(leads)
-				.leadsTotalPrice(leadsTotalPrice)
-				.leadTypes(getLeadTypes())
-				.events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-				.totalLeads(getLeadsTotal(leads, event)).build();
+		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
+		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
+		    .totalLeads(getLeadsTotal(leads, event)).build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});
@@ -201,30 +203,30 @@ public class LeadService {
 	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user, MailDTO mailDTO) throws Exception {
 		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow(() -> new LeadsException("Could not find Invitation"));
 		Mail mail = MailDTO.to(mailDTO);
-		this.mailProviderSelector.get(Mail.TYPE.INVITATION_TO_BID).getMailProvider(mail, invitation)
-		.onError((error) -> {
+		this.mailProviderSelector.get(Mail.TYPE.INVITATION_TO_BID).getMailProvider(mail, invitation).onError((error) -> {
 			log.error(error);
-		})
-		.onSuccess(() -> {
+		}).onSuccess(() -> {
 			invitation.setEmailed((invitation.getEmailed() == null) ? 1L : invitation.getEmailed() + 1L);
 			this.invitationRepo.save(invitation);
-			logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
-		})
-		.send();
+			logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user,
+			    "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
+		}).send();
 	}
-	
+
 	@Transactional
 	public InvitationDTO markAsEmailed(Long invitationId, User user) throws LeadsException {
-		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow( ()-> new LeadsException("Could not find Invitation"));
-		invitation.setEmailed(invitation.getEmailed()+1L);
+		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow(() -> new LeadsException("Could not find Invitation"));
+		invitation.setEmailed(invitation.getEmailed() + 1L);
 		invitation = this.invitationRepo.save(invitation);
-		logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user, "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
+		logg.event(Lead.class, invitation.getLead().getId(), Event.EMAIL_SENT, user,
+		    "Invitation #" + invitation.getId() + " e-mailed to " + invitation.getContact().getName() + " - " + user.getName());
 		return InvitationDTO.of(invitation);
 	}
 
 	public void getInvitationAsPdfStream(HttpServletResponse response, Long invitationId, Long proposalId) throws IOException, LeadsException {
 		Invitation invitation = this.invitationRepo.findById(invitationId).orElseThrow(() -> new LeadsException("Could not find Invitation"));
-		Media proposal = invitation.getProposals().stream().filter(prop -> prop.getId().equals(proposalId)).findFirst().orElseThrow(() -> new LeadsException("Could not find Proposal"));
+		Media proposal = invitation.getProposals().stream().filter(prop -> prop.getId().equals(proposalId)).findFirst()
+		    .orElseThrow(() -> new LeadsException("Could not find Proposal"));
 		this.reportService.getFileAsPdfStream(response, proposal.getName(), proposal.getContent());
 	}
 

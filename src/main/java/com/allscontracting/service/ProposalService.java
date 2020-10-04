@@ -64,7 +64,7 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public ProposalDTO update(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException{
+	public ProposalDTO update(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
 		proposalRepository.deleteById(Long.valueOf(proposalDTO.getId()));
 		return this.save(proposalDTO, leadId, user);
 	}
@@ -82,7 +82,7 @@ public class ProposalService {
 	public void getProposalAsPdfStream(HttpServletResponse response, String proposalId) throws Exception {
 		try {
 			Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-			Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
+			Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
 			HashMap<String, Object> map = getProposalParameters(proposal, person);
 			String streamFileName = getProposalFileName(proposal, person, "pdf");
 			this.reportService.getReportAsPdfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -91,9 +91,10 @@ public class ProposalService {
 		}
 	}
 
-	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId) throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
+	public void getProposalAsRtfStream(HttpServletResponse response, String proposalId)
+	    throws IOException, JRException, SQLException, NumberFormatException, LeadsException {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getCompany();
+		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getCompany();
 		HashMap<String, Object> map = getProposalParameters(proposal, person);
 		String streamFileName = getProposalFileName(proposal, person, "rtf");
 		this.reportService.getReportAsRtfStream(response, map, streamFileName, PROPOSAL_FILE_NAME);
@@ -102,33 +103,33 @@ public class ProposalService {
 	@Transactional
 	public void sendPdfByEmail(long proposalId, User user, MailDTO mailDTO) throws Exception {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
-		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
+		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
 		Mail mail = MailDTO.to(mailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail, proposal)
-			.onError((error) -> {
-				log.error("Error sending mail: " + error);
-			})
-			.onSuccess(()->{
-				proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-				proposal.setEmailed(true);
-				this.proposalRepository.save(proposal);
-				logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
-			})
-			.send(); 
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail, proposal).onError((error) -> {
+			log.error("Error sending mail: " + error);
+		}).onSuccess(() -> {
+			proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+			proposal.setEmailed(true);
+			this.proposalRepository.save(proposal);
+			logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
+			    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		}).send();
 	}
 
 	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
-		Media media = this.mediaRepo.findById(mediaId).orElseThrow( ()-> new LeadsException("Could not find Media"));
+		Media media = this.mediaRepo.findById(mediaId).orElseThrow(() -> new LeadsException("Could not find Media"));
 		this.reportService.getFileAsStream(response, media.getName(), media.getContent(), media.getType());
 	}
 
+	@Transactional
 	public ProposalDTO markAsEmailed(long proposalId, User user) throws LeadsException {
-		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow( ()-> new LeadsException("Could not find Proposal"));
-		Client person = proposal.getLead().getClient()!=null?proposal.getLead().getClient():proposal.getLead().getContact();
+		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
+		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
 		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
 		proposal.setEmailed(true);
 		this.proposalRepository.save(proposal);
-		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # " + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
+		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 		return ProposalDTO.of(proposal);
 	}
 
@@ -141,36 +142,42 @@ public class ProposalService {
 
 	private void defineNumber(Proposal proposal, Lead lead) {
 		if (proposal.getNumber() == null) {
-			if(lead.getProposals()!=null && lead.getProposals().size()>0) {
+			if (lead.getProposals() != null && lead.getProposals().size() > 0) {
 				long max = 0;
-				if(proposal.isChangeorder())
-					max = lead.getProposals().stream().filter(p->p.isChangeorder()).mapToLong(p->p.getNumber()).max().orElse(0L);
+				if (proposal.isChangeorder())
+					max = lead.getProposals().stream().filter(p -> p.isChangeorder()).mapToLong(p -> p.getNumber()).max().orElse(0L);
 				else
-					max = lead.getProposals().stream().mapToLong(p->p.getNumber()).max().orElse(0L);
-				proposal.setNumber(max+1);
-			}else {
-				proposal.setNumber(1L); 
+					max = lead.getProposals().stream().mapToLong(p -> p.getNumber()).max().orElse(0L);
+				proposal.setNumber(max + 1);
+			} else {
+				proposal.setNumber(1L);
 			}
 		}
 	}
 
-	private String getProposalFileName(Proposal proposal, Client client, String suffix) {
-		StringBuilder streamFileName = new StringBuilder(client.getName())
-				.append(" - ")
-				.append( !StringUtils.isEmpty(proposal.getLead().getAddress())?proposal.getLead().getAddress():client.getAddress() ).append(" - ")
-				.append(proposal.isChangeorder()? "Change Order "+Converter.dateToString(proposal.getDate(), Converter.MM_dd_yy) : "Proposal #"+proposal.getNumber())
-				.append("." + suffix);
+	public String getProposalFileName(Proposal proposal, Client client, String suffix) {
+		StringBuilder streamFileName = new StringBuilder(client.getName()).append(" - ")
+		    .append(!StringUtils.isEmpty(proposal.getLead().getAddress()) ? proposal.getLead().getAddress() : client.getAddress()).append(" - ")
+		    .append(
+		        proposal.isChangeorder() ? "Change Order " + Converter.dateToString(proposal.getDate(), Converter.MM_dd_yy) : "Proposal #" + proposal.getNumber())
+		    .append("." + suffix);
 		return streamFileName.toString();
 	}
 
-	private HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
-		HashMap<String, Object> map = new HashMap<>(); new StringBuilder().append(!StringUtils.isEmpty(proposal.getNote())?proposal.getNote():"").append(proposal.isCallMissUtility()&&!StringUtils.isEmpty(proposal.getNote())?"\r\n":"").append(proposal.isCallMissUtility()?"We will call Miss Utility":"").toString();
+	public HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
+		HashMap<String, Object> map = new HashMap<>();
+		new StringBuilder().append(!StringUtils.isEmpty(proposal.getNote()) ? proposal.getNote() : "")
+		    .append(proposal.isCallMissUtility() && !StringUtils.isEmpty(proposal.getNote()) ? "\r\n" : "")
+		    .append(proposal.isCallMissUtility() ? "We will call Miss Utility" : "").toString();
 		map.put("CLIENT", client);
-		map.put("ESTIMATOR", proposal.getLead()!=null && proposal.getLead().getEstimator()!=null && !StringUtils.isEmpty(proposal.getLead().getEstimator().getName()) ?proposal.getLead().getEstimator().getName():"Eddie Lopes");
+		map.put("ESTIMATOR",
+		    proposal.getLead() != null && proposal.getLead().getEstimator() != null && !StringUtils.isEmpty(proposal.getLead().getEstimator().getName())
+		        ? proposal.getLead().getEstimator().getName()
+		        : "Eddie Lopes");
 		map.put("PROPOSAL", ProposalDTO.of(proposal));
 		map.put("PROPOSAL_ID", proposal.getId());
 		map.put("LEAD", LeadDTO.of(proposal.getLead()));
 		return map;
 	}
-	
+
 }

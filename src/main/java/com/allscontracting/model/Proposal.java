@@ -26,14 +26,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Entity
-@Table(name="proposal2")
+@Table(name = "proposal2")
 public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializable {
 
 	private static final long serialVersionUID = -8804397870000139075L;
 
-	//SINGLE PROPERTIES
-	@Id	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id; 
+	// SINGLE PROPERTIES
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private Long number;
 	private BigDecimal total;
 	private String fileName;
@@ -46,22 +47,25 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private String note;
 	private Date date;
 	private boolean changeorder;
-	
-  @ManyToOne  @JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)	private Lead lead;
-  
-  //LISTS
-  @OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade=CascadeType.ALL, orphanRemoval = true)	private List<Item> items;
 
-  /************************
-   * METHODS
-   ************************/
-  boolean isFinished() { 
-  	return this.signedProposal != null; 
-  }
+	@ManyToOne
+	@JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)
+	private Lead lead;
+
+	// LISTS
+	@OneToMany(mappedBy = "proposal", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Item> items;
+
+	/************************
+	 * METHODS
+	 ************************/
+	boolean isFinished() {
+		return this.signedProposal != null;
+	}
 
 	@Override
 	public int compareTo(Proposal o) {
-    return this.id.compareTo(o.id);
+		return this.id.compareTo(o.id);
 	}
 
 	public void addItem(Item item) {
@@ -72,20 +76,19 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 		}
 		item.setProposal(this);
 	}
-	
+
 	public void removeItem(Item item) {
 		if (this.items == null)
 			this.items = new ArrayList<Item>();
-		if(this.items.contains(item))
+		if (this.items.contains(item))
 			this.items.remove(item);
 		item.setProposal(null);
 	}
 
 	@Override
-	public String toString() { 
-		return "Proposal [id=" + id + ", number=" + number + ", total=" + total + ", scopeOfWork=" + scopeOfWork + ", callMissUtility=" + callMissUtility + ", paymentSchedule="
-				+ paymentSchedule + ", workWarranty=" + workWarranty + ", emailed=" + emailed
-				+ "]";
+	public String toString() {
+		return "Proposal [id=" + id + ", number=" + number + ", total=" + total + ", scopeOfWork=" + scopeOfWork + ", callMissUtility=" + callMissUtility
+		    + ", paymentSchedule=" + paymentSchedule + ", workWarranty=" + workWarranty + ", emailed=" + emailed + "]";
 	}
-	
+
 }

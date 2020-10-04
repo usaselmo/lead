@@ -12,8 +12,9 @@ import com.allscontracting.repo.UserRepository;
 @Service
 public class LeadDetailsService implements UserDetailsService {
 
-	@Autowired UserRepository userRepository;
-	
+	@Autowired
+	UserRepository userRepository;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = this.userRepository.findUserByEmail(username);

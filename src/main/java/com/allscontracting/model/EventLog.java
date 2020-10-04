@@ -27,7 +27,8 @@ public class EventLog {
 	private String eventType;
 	@NotNull
 	private Date eventTime;
-	@ManyToOne private User user;
+	@ManyToOne
+	private User user;
 	private String message;
 
 	public EventLog() {

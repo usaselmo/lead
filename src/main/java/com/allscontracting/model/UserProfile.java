@@ -22,22 +22,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="user_profile")
-public class UserProfile implements Serializable{
+@Table(name = "user_profile")
+public class UserProfile implements Serializable {
 
 	private static final long serialVersionUID = -1113102765450097516L;
-	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
 
-  @ManyToOne() 
-  private User user;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-  @NotNull
-	@Enumerated(EnumType.STRING) 
-  private Description profile;
-	
+	@ManyToOne()
+	private User user;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Description profile;
+
 	public enum Description {
 		GUEST, USER, ESTIMATOR, MANAGER, ADMIN;
 	}
-	
+
 }

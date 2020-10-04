@@ -29,40 +29,30 @@ public class PersonService {
 	private final MailProviderSelector mailProviderSelector;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
-	
+
 	@Transactional
 	public PersonDTO updatePerson(PersonDTO personDTO, User user) throws NumberFormatException, LeadsException {
-		Person person = this.personRepo.findById(Long.valueOf(personDTO.getId())).orElseThrow(()->new LeadsException("Person not found"));
+		Person person = this.personRepo.findById(Long.valueOf(personDTO.getId())).orElseThrow(() -> new LeadsException("Person not found"));
 		person.setAddress(personDTO.getAddress());
 		person.setEmail(personDTO.getEmail());
 		person.setName(personDTO.getName());
 		person.setPhone(personDTO.getPhone());
-		person.setCompany(personDTO.getCompany()!=null?this.companyRepo.findById(personDTO.getCompany().getId()).orElse(null):null);
+		person.setCompany(personDTO.getCompany() != null ? this.companyRepo.findById(personDTO.getCompany().getId()).orElse(null) : null);
 		logg.eventUpdated(Person.class, person.getId(), user, "");
 		return PersonDTO.of(personRepo.save(person));
 	}
 
-	/*
-	 * public List<PersonDTO> findByName(String name) { return
-	 * this.personRepo.findLikeName(name).stream().map(c->PersonDTO.of(c)).collect(
-	 * Collectors.toList()); }
-	 */
-
 	public void sendCantReachEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
 		Mail mail = MailDTO.to(emailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail)
-				.onError((error) -> log.error("Error sending e-mail: " + error))
-				.onSuccess(() -> { logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user); })
-				.send()
-				;
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail).onError((error) -> log.error("Error sending e-mail: " + error)).onSuccess(() -> {
+			logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user);
+		}).send();
 	}
 
 	public void sendHiringDecisionEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
 		Mail mail = MailDTO.to(emailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail)
-			.onError( (error)->log.error("Error sending e-mail: "+error) )
-			.onSuccess( () -> logg.eventHiringDecisionEmailSent(leadId, emailDTO.getTo().get(0).getName(), user))
-			.send();
+		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail).onError((error) -> log.error("Error sending e-mail: " + error))
+		    .onSuccess(() -> logg.eventHiringDecisionEmailSent(leadId, emailDTO.getTo().get(0).getName(), user)).send();
 	}
 
 	public List<PersonDTO> findAll() {
@@ -73,5 +63,5 @@ public class PersonService {
 		Person person = PersonDTO.toPerson(personDTO);
 		return PersonDTO.of(this.personRepo.save(person));
 	}
-	
+
 }
