@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
-	
+
 	private final FileService fileService;
 
 	@GetMapping(path = { "/", "" })
@@ -50,11 +50,12 @@ public class MainController {
 
 	@PostMapping("/main/leads/{leadId}/file-upload")
 	@ResponseBody
-	public void handleFileUpload(HttpServletResponse response,@PathVariable Long leadId, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
+	public void handleFileUpload(HttpServletResponse response, @PathVariable Long leadId, @RequestParam("file") MultipartFile file,
+	    RedirectAttributes redirectAttributes) throws IOException {
 		fileService.storeLeadMedia(file, leadId);
 		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 	}
-	
+
 	@PostMapping("/main/leads/{leadId}/invitations/{invitationId}")
 	@ResponseBody
 	public void uploadInvitaionProposal(@PathVariable Long invitationId, @RequestParam("file") MultipartFile file) {

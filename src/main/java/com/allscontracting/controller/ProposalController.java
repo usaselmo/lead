@@ -21,17 +21,20 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ProposalService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("proposals")
+@AllArgsConstructor
 public class ProposalController {
-	
+
 	private static final String UNEXPECTED_ERROR = "Unexpected error.";
-	@Autowired private ProposalService proposalService;
+	private final ProposalService proposalService;
 
 	@GetMapping(value = "{proposalId}/markasemailed")
 	public LeadEntity markAsEmailed(@PathVariable long proposalId, @Autowired Authentication authentication) {
 		try {
-			ProposalDTO proposalDTO = this.proposalService.markAsEmailed(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			ProposalDTO proposalDTO = this.proposalService.markAsEmailed(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Email is being sent.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -42,19 +45,19 @@ public class ProposalController {
 	@GetMapping(value = "{proposalId}/email")
 	public LeadEntity sendByEmail(@PathVariable long proposalId, MailDTO mailDTO, @Autowired Authentication authentication) {
 		try {
-			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
+			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
 			return LeadEntity.builder().build().addSuccessMessage("Email is being sent.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
 		}
 	}
-	
+
 	@PutMapping
 	public LeadEntity update(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
-			proposalDTO =  proposalService.update(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
-			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created."); 
+			proposalDTO = proposalService.update(proposalDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal Created.");
 		} catch (LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -67,7 +70,7 @@ public class ProposalController {
 	@PostMapping(value = "")
 	public LeadEntity saveProposal(@RequestBody ProposalDTO proposalDTO, @RequestParam String leadId, @Autowired Authentication authentication) {
 		try {
-			proposalDTO =  proposalService.save(proposalDTO, leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			proposalDTO = proposalService.save(proposalDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().proposal(proposalDTO).build();
 		} catch (LeadsException e) {
 			e.printStackTrace();
@@ -79,15 +82,15 @@ public class ProposalController {
 	}
 
 	@DeleteMapping
-	public LeadEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication){
+	public LeadEntity deleteProposal(@RequestParam String leadId, @RequestParam String proposalId, @Autowired Authentication authentication) {
 		try {
-			proposalService.delete(leadId, proposalId, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+			proposalService.delete(leadId, proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 			return new LeadEntity().addSuccessMessage("Proposal Deleted");
 		} catch (Exception e) {
 			return new LeadEntity().addErrorMessage(e.getMessage());
 		}
 	}
-	
+
 	@GetMapping(value = "{proposalId}/pdf")
 	public void getProposalpdf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
 		this.proposalService.getProposalAsPdfStream(response, proposalId);
@@ -97,10 +100,10 @@ public class ProposalController {
 	public void getProposalRtf(HttpServletResponse response, @PathVariable String proposalId) throws Exception {
 		this.proposalService.getProposalAsRtfStream(response, proposalId);
 	}
-	
+
 	@GetMapping(value = "/medias/{mediaId}/pdf")
 	public void getMediapdf(HttpServletResponse response, @PathVariable Long mediaId) throws Exception {
-			this.proposalService.getMediaAsPdfStream(mediaId, response);
+		this.proposalService.getMediaAsPdfStream(mediaId, response);
 	}
 
 }

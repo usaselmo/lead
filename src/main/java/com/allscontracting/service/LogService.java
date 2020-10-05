@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.event.Event;
@@ -15,11 +14,13 @@ import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.EventoLogRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class LogService {
 
-	@Autowired
-	EventoLogRepository eventLogRepo;
+	private final EventoLogRepository eventLogRepo;
 
 	@Transactional
 	private void fireEvent(Class<?> clazz, String objectId, Event eventType, User user, String message) {

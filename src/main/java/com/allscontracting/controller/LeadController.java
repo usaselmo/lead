@@ -53,7 +53,8 @@ public class LeadController {
 	@PutMapping
 	public LeadEntity update(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().lead(leadService.update(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead updated.");
+			return LeadEntity.builder().lead(leadService.update(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build()
+			    .addSuccessMessage("Lead updated.");
 		} catch (NumberFormatException | LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -66,7 +67,8 @@ public class LeadController {
 	@PostMapping
 	public LeadEntity save(@RequestBody LeadDTO leadDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build().addSuccessMessage("Lead Created.");
+			return LeadEntity.builder().lead(leadService.save(leadDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build()
+			    .addSuccessMessage("Lead Created.");
 		} catch (NumberFormatException | LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -103,11 +105,12 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
-	
+
 	@PostMapping("{leadId}/invitations")
 	public LeadEntity createInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
+			return LeadEntity.builder().invitation(invitationService.save(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser()))
+			    .build();
 		} catch (LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -116,11 +119,12 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
-	
+
 	@PutMapping("{leadId}/invitations")
 	public LeadEntity updateInvitation(@PathVariable Long leadId, @RequestBody InvitationDTO invitationDTO, @Autowired Authentication authentication) {
 		try {
-			return LeadEntity.builder().invitation(invitationService.update(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser() )).build();
+			return LeadEntity.builder().invitation(invitationService.update(invitationDTO, leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser()))
+			    .build();
 		} catch (LeadsException e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage(e.getMessage());
@@ -129,11 +133,11 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
-	
+
 	@DeleteMapping("{leadId}/invitations/{invitationId}")
 	public LeadEntity deleteInvitation(@PathVariable Long leadId, @PathVariable Long invitationId, @Autowired Authentication authentication) {
 		try {
-			invitationService.deleteInvitation(leadId, invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser() );
+			invitationService.deleteInvitation(leadId, invitationId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 			return LeadEntity.builder().build().addSuccessMessage("Invitation deleted.");
 		} catch (LeadsException e) {
 			e.printStackTrace();
@@ -143,7 +147,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
-	
+
 	@GetMapping("{leadId}")
 	public LeadEntity getLead(@PathVariable Long leadId) {
 		try {
@@ -179,23 +183,7 @@ public class LeadController {
 			return LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR);
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping(value = "{leadId}/invitations/{invitationId}/proposals/{proposalId}/pdf")
 	public LeadEntity getInvitationPdf(HttpServletResponse response, @PathVariable Long invitationId, @PathVariable Long proposalId) {
 		try {

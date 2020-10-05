@@ -19,11 +19,14 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.PersonService;
 
+import lombok.AllArgsConstructor;
+
 @RestController
 @RequestMapping("/persons")
+@AllArgsConstructor
 public class PersonController { 
 
-	@Autowired PersonService personService;
+	private final PersonService personService;
 	
 	@GetMapping("")
 	public List<PersonDTO> list() {
