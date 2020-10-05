@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.allscontracting.event.Event;
 import com.allscontracting.model.Lead;
-import com.allscontracting.model.Proposal;
 import com.allscontracting.model.Lead.Vendor;
+import com.allscontracting.model.Proposal;
 
 public interface LeadRepository extends JpaRepository<Lead, Long> {
 
@@ -24,7 +24,10 @@ public interface LeadRepository extends JpaRepository<Lead, Long> {
 	@Query("SELECT p FROM Lead l, Proposal p WHERE p.id = ?1 ")
 	List<Proposal> findProposals(Long leadId);
 
-	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.title LIKE %?1% OR l.description LIKE %?1% ) ")
+	@Query("SELECT l FROM Lead l WHERE l.event IN ?1 ")
+	List<Lead> search(List<Event> events, Pageable pageable);
+
+	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.title LIKE %?1% OR l.description LIKE %?1% )")
 	List<Lead> search(String text, List<Event> events, Pageable pageable);
 
 	@Query("SELECT l FROM Lead l WHERE l.event IN ?2 AND (l.client.name LIKE %?1% OR l.client.email LIKE %?1% OR l.client.phone LIKE %?1% OR l.client.address LIKE %?1% ) ")
