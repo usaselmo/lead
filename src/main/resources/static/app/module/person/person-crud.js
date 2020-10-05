@@ -33,9 +33,9 @@ var personCrudController = function ($scope, personService, companyService) {
 
     $scope.save = function (person) {
         if (person.id) {
-            personService.update($scope, person).success(data => person = data.person)
+            personService.update(person).success(data => person = data.person)
         } else {
-            personService.save($scope, person).success(data => $scope.persons.unshift(data.person))
+            personService.save(person).success(data => $scope.persons.unshift(data.person))
         }
         $scope.cancel();
     }

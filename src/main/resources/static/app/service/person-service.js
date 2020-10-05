@@ -36,13 +36,13 @@
  			});
  		},
  		
- 		update: function (scope, client) {
+ 		update: function (client) {
  			var res = $http.put(local_server_url + "/persons", client);
  			res.error(error=>console.log(error))
  			return res;
  		},
  		
- 		save: function (scope, client) {
+ 		save: function (client) {
  			var res = $http.post(local_server_url + "/persons", client);
  			res.error(error=>console.log(error))
  			return res;

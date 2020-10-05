@@ -21,10 +21,25 @@ person.directive('appPerson', function() {
 	};
 });
 
+var datatables = function(){
+	$(document).ready(function () {
+		$('#94irjrn494h').DataTable();
+	});
+}
+
+function sleep(time) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 var personController = function ($scope, $http, $timeout, personService, companyService) {
 
 	var init = function(){
-		personService.findPersons($scope);
+		personService.findPersons($scope).success(data => {
+			$scope.persons = data
+			sleep(200).then(() => {
+				datatables();
+			});
+		} )
 	}
 
 	$scope.crud = function(person){
