@@ -35,7 +35,7 @@
               <option value="">Select...</option>
             </select>
             <div class="input-group-addon">
-              <app-modal ng-click="createNewPerson()">
+              <app-modal ng-click="createNewPerson(crudLead.contact)">
                 <app-person-crud person="person" persons="persons" hide-cancel-button="true">
                 </app-person-crud>
               </app-modal>
@@ -52,7 +52,7 @@
               <option value="">Select...</option>
             </select>
             <div class="input-group-addon">
-              <app-modal ng-click="createNewPerson()">
+              <app-modal ng-click="createNewPerson(crudLead.client)">
                 <app-person-crud person="person" persons="persons" hide-cancel-button="true">
                 </app-person-crud>
               </app-modal>

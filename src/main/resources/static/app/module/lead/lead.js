@@ -63,8 +63,8 @@ var leadController = function ($scope, leadService, companyService, personServic
 		})
 	}
 
-	$scope.createNewPerson = function () {
-		$scope.person = {};
+	$scope.createNewPerson = function (p) {
+		$scope.person = p?p:{};
 	}
 
 
