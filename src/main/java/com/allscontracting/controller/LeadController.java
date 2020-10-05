@@ -198,26 +198,4 @@ public class LeadController {
 		}
 	}
 
-	/*
-	 * @GetMapping("eventtypes") public LeadEntity findEventTypes() { try { return
-	 * LeadEntity.builder().events(Stream.of(Event.values()).filter(e ->
-	 * e.isShowInMenu() == true).map(et ->
-	 * EventDTO.of(et)).collect(Collectors.toList())).build(); } catch (Exception e)
-	 * { e.printStackTrace(); return
-	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
-	 */
-
-	/*
-	 * @GetMapping("/types") public LeadEntity getLeadTypes() { try { return
-	 * LeadEntity.builder().leadTypes(this.leadService.getLeadTypes()).build(); }
-	 * catch (Exception e) { e.printStackTrace(); return
-	 * LeadEntity.builder().build().addErrorMessage(UNEXTECTED_ERROR); } }
-	 */
-
-	/*
-	 * @GetMapping(value = "/total") public Long findTotal(@RequestParam Event
-	 * eventType) { try { long res = leadService.getLeadsTotal(eventType); return
-	 * res; } catch (Exception e) { e.printStackTrace(); return null; } }
-	 */
-
 }

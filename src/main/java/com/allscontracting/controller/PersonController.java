@@ -24,10 +24,10 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/persons")
 @AllArgsConstructor
-public class PersonController { 
+public class PersonController {
 
 	private final PersonService personService;
-	
+
 	@GetMapping("")
 	public List<PersonDTO> list() {
 		List<PersonDTO> res = this.personService.findAll();
@@ -36,42 +36,30 @@ public class PersonController {
 
 	@PostMapping("{personId}/leads/{leadId}/cantreach")
 	public void sendCantReachEmail(@PathVariable String leadId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) throws Exception {
-		personService.sendCantReachEmail(leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
+		personService.sendCantReachEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
 	}
 
 	@PostMapping("{personId}/leads/{leadId}/hiringdecision")
-	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) throws Exception {
-		personService.sendHiringDecisionEmail(leadId, ((LeadUserDetails)authentication.getPrincipal()).getUser(), mailDTO);
+	public void sendHiringDecisionEmail(@PathVariable String personId, @PathVariable String leadId, @RequestBody MailDTO mailDTO,
+	    @Autowired Authentication authentication) throws Exception {
+		personService.sendHiringDecisionEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
 	}
-	
+
 	@PutMapping("")
 	public LeadEntity updatePerson(@RequestBody PersonDTO personDTO, @Autowired Authentication authentication) throws LeadsException {
-		PersonDTO res = this.personService.updatePerson(personDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser());
+		PersonDTO res = this.personService.updatePerson(personDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser());
 		return LeadEntity.builder().person(res).build();
 	}
-	
+
 	@PostMapping("")
 	public LeadEntity save(@RequestBody PersonDTO personDTO, @Autowired Authentication authentication) throws LeadsException {
 		try {
-			return LeadEntity.builder().person(this.personService.save(personDTO, ((LeadUserDetails)authentication.getPrincipal()).getUser())).build().addSuccessMessage("Person saved.");
+			return LeadEntity.builder().person(this.personService.save(personDTO, ((LeadUserDetails) authentication.getPrincipal()).getUser())).build()
+			    .addSuccessMessage("Person saved.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return LeadEntity.builder().build().addErrorMessage("Could not save.");
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
 
-	
-	/*
-	 * @GetMapping("search") public List<PersonDTO> searchPerson(@RequestParam
-	 * String name) { List<PersonDTO> res = this.personService.findByName(name);
-	 * return res; }
-	 */
-	
 }
