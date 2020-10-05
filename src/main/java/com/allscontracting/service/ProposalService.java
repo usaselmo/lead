@@ -23,9 +23,7 @@ import com.allscontracting.model.Lead;
 import com.allscontracting.model.Media;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.model.User;
-import com.allscontracting.repo.ItemRepository;
 import com.allscontracting.repo.LeadRepository;
-import com.allscontracting.repo.LineRepository;
 import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.mail.Mail;
@@ -41,14 +39,13 @@ import net.sf.jasperreports.engine.JRException;
 public class ProposalService {
 
 	private static final String PROPOSAL_FILE_NAME = "estimate";
-	public final ProposalRepository proposalRepository;
-	public final LeadRepository leadRepository;
-	public final ItemRepository itemRepository;
-	public final LineRepository lineRepository;
-	public final ReportService reportService;
-	public final MailProviderSelector mailProviderSelector;
-	public final LogService logService;
-	public final MediaRepo mediaRepo;
+	private final ProposalRepository proposalRepository;
+	private final LeadRepository leadRepository;
+	private final ReportService reportService;
+	private final LogService logService;
+	private final MediaRepo mediaRepo;
+
+	private final MailProviderSelector mailProviderSelector;
 
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
@@ -155,7 +152,7 @@ public class ProposalService {
 		}
 	}
 
-	public String getProposalFileName(Proposal proposal, Client client, String suffix) {
+	public static String getProposalFileName(Proposal proposal, Client client, String suffix) {
 		StringBuilder streamFileName = new StringBuilder(client.getName()).append(" - ")
 		    .append(!StringUtils.isEmpty(proposal.getLead().getAddress()) ? proposal.getLead().getAddress() : client.getAddress()).append(" - ")
 		    .append(
@@ -164,7 +161,7 @@ public class ProposalService {
 		return streamFileName.toString();
 	}
 
-	public HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
+	public static HashMap<String, Object> getProposalParameters(Proposal proposal, Client client) {
 		HashMap<String, Object> map = new HashMap<>();
 		new StringBuilder().append(!StringUtils.isEmpty(proposal.getNote()) ? proposal.getNote() : "")
 		    .append(proposal.isCallMissUtility() && !StringUtils.isEmpty(proposal.getNote()) ? "\r\n" : "")

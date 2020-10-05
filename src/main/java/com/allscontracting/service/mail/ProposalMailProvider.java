@@ -23,16 +23,14 @@ import net.sf.jasperreports.engine.JRException;
 public class ProposalMailProvider implements MailProvider {
 
 	private final ReportService reportService;
-	private final ProposalService proposalService;
-
 	private static final String PROPOSAL_FILE_NAME = "estimate";
 
 	@Override
 	public MailSender getMailProvider(Mail mail, Object... obj) throws IOException, JRException, SQLException {
 		final Proposal proposal = (Proposal) obj[0];
 		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
-		HashMap<String, Object> map = this.proposalService.getProposalParameters(proposal, person);
-		String streamFileName = this.proposalService.getProposalFileName(proposal, person, "pdf");
+		HashMap<String, Object> map = ProposalService.getProposalParameters(proposal, person);
+		String streamFileName = ProposalService.getProposalFileName(proposal, person, "pdf");
 		File file = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 
 		MailSender mailSender = new MailSender(mail.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),

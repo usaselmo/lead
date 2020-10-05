@@ -10,8 +10,9 @@ public class MailProviderSelector {
 
 	private final CantReachMailProvider cantReachMailProvider;
 	private final HiringDecisionMailProvider hiringDecisionMailProvider;
-	private final ProposalMailProvider proposalMailProvider;
 	private final InvitationToBidMailProvider invitationToBidMailProvider;
+
+	private final ProposalMailProvider proposalMailProvider;
 
 	public MailProvider get(Mail.TYPE type) {
 		switch (type) {

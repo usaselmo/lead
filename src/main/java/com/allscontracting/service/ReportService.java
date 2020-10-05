@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -26,18 +26,18 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportService {
 
 	private DataSource dataSource;
-	
+
 	private Path tempFile;
 	private static final String JASPER_FOLDER = "jasper/";
 	private static final String JASPER_SUFFIX = ".jasper";
 	private static final String JRXML_SUFFIX = ".jrxml";
 
 	public void getReportAsRtfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName)
-			throws IOException, JRException, SQLException {
+	    throws IOException, JRException, SQLException {
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		final JasperPrint jasperPrint = JasperFillManager.fillReport(getSourceFileName(jasperReportFileName), map, dataSource.getConnection());
 		final JRRtfExporter saida = new JRRtfExporter();
@@ -54,7 +54,7 @@ public class ReportService {
 	}
 
 	public void getReportAsPdfStream(HttpServletResponse response, HashMap<String, Object> map, String streamFileName, String jasperReportFileName)
-			throws JRException, SQLException, IOException, Exception {
+	    throws JRException, SQLException, IOException, Exception {
 		try {
 			InputStream is = getClass().getClassLoader().getResourceAsStream(JASPER_FOLDER + jasperReportFileName + JRXML_SUFFIX);
 			JasperReport compiledJasperReport = JasperCompileManager.compileReport(is);
@@ -67,8 +67,8 @@ public class ReportService {
 
 	public void getFileAsPdfStream(HttpServletResponse response, String userFriendlyFileNmae, byte[] fileContentBytes) throws IOException {
 		this.getFileAsStream(response, userFriendlyFileNmae, fileContentBytes, "application/pdf");
-	}	
-	
+	}
+
 	public void getFileAsStream(HttpServletResponse response, String userFriendlyFileNmae, byte[] fileContentBytes, String contentType) throws IOException {
 		response.setContentType(contentType);
 		response.setHeader("content-disposition", "attachment; filename=\"" + userFriendlyFileNmae + "\"");
