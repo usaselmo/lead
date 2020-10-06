@@ -52,7 +52,7 @@ var proposalService = function($http){
 		},
 
 		sendByEmail: function (proposal, email) {
-			var res = $http.get(local_server_url + "/proposals/" + proposal.id + "/email", email);
+			var res = $http.put(local_server_url + "/proposals/" + proposal.id + "/email", email);
 			res.error(error => console.log(error))
 			return res;
 		},

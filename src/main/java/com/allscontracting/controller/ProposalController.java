@@ -42,8 +42,8 @@ public class ProposalController {
 		}
 	}
 
-	@GetMapping(value = "{proposalId}/email")
-	public LeadEntity sendByEmail(@PathVariable long proposalId, MailDTO mailDTO, @Autowired Authentication authentication) {
+	@PutMapping(value = "{proposalId}/email")
+	public LeadEntity sendByEmail(@PathVariable long proposalId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) {
 		try {
 			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
 			return LeadEntity.builder().build().addSuccessMessage("Email is being sent.");

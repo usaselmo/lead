@@ -53,6 +53,7 @@ public class PersonDTO {
 	}
 	
 	public static final List<Person> toPerson(List<PersonDTO> dtos) {
+		if(null==dtos) return null;
 		return dtos.stream().map(dto -> PersonDTO.toPerson(dto)).collect(Collectors.toList());
 	}
 }
