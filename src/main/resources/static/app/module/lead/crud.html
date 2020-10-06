@@ -34,7 +34,7 @@
               ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.contact">
               <option value="">Select...</option>
             </select>
-            <div class="input-group-addon">
+            <div class="input-group-addon" style="padding: 0px;">
               <app-modal ng-click="createNewPerson(crudLead.contact)">
                 <app-person-crud person="person" persons="persons" hide-cancel-button="true">
                 </app-person-crud>
@@ -51,7 +51,7 @@
               ng-options="person as person.name for person in persons track by person.id" ng-model="crudLead.client">
               <option value="">Select...</option>
             </select>
-            <div class="input-group-addon">
+            <div class="input-group-addon" style="padding: 0px;">
               <app-modal ng-click="createNewPerson(crudLead.client)">
                 <app-person-crud person="person" persons="persons" hide-cancel-button="true">
                 </app-person-crud>
