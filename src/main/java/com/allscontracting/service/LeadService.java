@@ -59,20 +59,15 @@ public class LeadService {
 	private final ReportService reportService;
 
 	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws LeadsException {
-		PageRequest pageable = PageRequest.of(pageRange < 0?0:pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
+		PageRequest pageable = PageRequest.of(pageRange < 0 ? 0 : pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
 		if (StringUtils.isEmpty(event) && StringUtils.isEmpty(text))// nada
 			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 		else {
 			List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
-			if (StringUtils.isEmpty(text)) { // so' event
-				return this.leadRepo.search(events, pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-			} else {
-				List<Lead> leads = leadRepo.search(text, events, pageable);
-				leads.addAll(leadRepo.search2(text, events, pageable));
-				leads.addAll(leadRepo.search3(text, events, pageable));
-				leads.addAll(leadRepo.search4(text, events, pageable));
-				return leads.stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-			}
+			if (StringUtils.isEmpty(text))
+				return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+			else
+				return leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 		}
 	}
 

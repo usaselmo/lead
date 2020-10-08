@@ -26,10 +26,10 @@
           &gt;&gt;
         </button>
       </td>
-      <td>
-        <input type="text" class="form-control" placeholder="Search" autofocus="autofocus" ng-model="filter.searchText"
-          ng-change="applyFilter(filter.event, filter.searchText)" />
-      </td>
+      <td style="" nowrap="nowrap" width="30%"><input type="text" class="form-control"
+        style="display: inline; position: relative; z-index: 2; float: left;" placeholder="Search" autofocus="autofocus"
+        ng-model="filter.searchText" ng-change="applyFilter(filter.event, filter.searchText)" /> <span ng-if="searching"
+        style="position: relative; left: -46px; top: 6px; z-index: 25; display: inline; color: gray;">wait...</span></td>
       <td>
         <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter.event"
           ng-change="applyFilter(filter.event, filter.searchText)">

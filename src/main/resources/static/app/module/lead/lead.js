@@ -54,13 +54,29 @@ var leadController = function ($scope, leadService, companyService, personServic
 	var findLeads = function () {
 		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';
 		if (!$scope.filter.searchText) $scope.filter.searchText = '';
-		leadService.find_Leads($scope).success(data => {
+		var res = leadService.find_Leads($scope);
+		res.success(data => {
 			$scope.leads = data.leads
 			$scope.leadsTotalPrice = data.leadsTotalPrice
 			$scope.totalLeads = data.totalLeads
 			$scope.leadTypes = data.leadTypes;
 			$scope.events = data.events;
 		})
+		return res;
+	}
+
+	$scope.searching = false;
+	$scope.applyFilter = function (event, search) {
+		if(search.length > 2 || search.length == 0 ){
+			if (!$scope.searching) {
+				$scope.searching = true;
+				findLeads().success(data => {
+					$scope.searching = false;
+				})
+			} else {
+				setTimeout( ()=>$scope.applyFilter(event, search), 20);
+			}
+		}
 	}
 
 	$scope.createNewPerson = function (p) {
@@ -91,11 +107,6 @@ var leadController = function ($scope, leadService, companyService, personServic
 		//$scope.filter.searchText = search;
 		$scope.filter.pageRange = 0;
 		$scope.leads = null;
-		findLeads($scope)
-	}
-
-	$scope.applyFilter = function (event, search) {
-		$scope.filter.pageRange = 0;
 		findLeads($scope)
 	}
 
