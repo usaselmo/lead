@@ -43,21 +43,10 @@ export default function leadService($http) {
 			return res;
 		},
 
-		fireEvent: function (scope, lead, event) {
-			$http.post(local_server_url + "/leads/" + lead.id + "/fireevent", event).then(function (response) {
-				if (response.data.errorMessages) {
-					scope.errorMessages = response.data.errorMessages
-				} else {
-					if (scope.leads) {
-						scope.leads = scope.leads.map(lead => lead.id == response.data.lead.id ? response.data.lead : lead);
-					} else {
-						scope.lead = response.data.lead
-					}
-					scope.successMessages = response.data.successMessages
-				}
-			}, function (response) {
-				console.log(response)
-			});
+		fireEvent: function (lead, event) {
+			var res = $http.post(local_server_url + "/leads/" + lead.id + "/fireevent", event);
+			res.error( error => console.log(error))
+			return res;
 		},
 
 		saveNote: function (lead, note) {

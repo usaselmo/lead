@@ -46,17 +46,18 @@ var leadProposalController = function ($scope, proposalService) {
         $scope.proposal = nproposal;
     }
 
-    $scope.proposalCrud = function (proposal, lead) {
-        if (!proposal.id) proposal = createProposal(lead);
+    $scope.proposalCrud = function (proposal) {
+        if (!proposal.id) proposal = createProposal($scope.lead);
         else proposal = convertToClientFormat(proposal);
         $scope.proposal = proposal;
     }
 
-    $scope.deleteProposal = function (lead, proposal) {
+    $scope.deleteProposal = function (proposal) {
         if (confirm(' Are you sure you want to delete? ')) {
-            proposalService.delete(proposal, lead.id).success( data => lead.proposals = lead.proposals.filter(p => p.id != proposal.id))
+            proposalService.delete(proposal, $scope.lead.id).success(data => $scope.lead.proposals = $scope.lead.proposals.filter(p => p.id != proposal.id))
         }
     }
+
 }
 
 var originalLines = [];

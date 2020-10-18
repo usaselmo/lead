@@ -50,6 +50,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.filter = new Filter(0, 10, '', '');
 	$scope.lead = null;
+	$scope.leads = {};
 
 	var findLeads = function () {
 		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';
@@ -67,20 +68,20 @@ var leadController = function ($scope, leadService, companyService, personServic
 
 	$scope.searching = false;
 	$scope.applyFilter = function (event, search) {
-		if(search.length > 2 || search.length == 0 ){
+		if (search.length > 2 || search.length == 0) {
 			if (!$scope.searching) {
 				$scope.searching = true;
 				findLeads().success(data => {
 					$scope.searching = false;
 				})
 			} else {
-				setTimeout( ()=>$scope.applyFilter(event, search), 20);
+				setTimeout(() => $scope.applyFilter(event, search), 20);
 			}
 		}
 	}
 
 	$scope.createNewPerson = function (p) {
-		$scope.person = p?p:{};
+		$scope.person = p ? p : {};
 	}
 
 
@@ -161,7 +162,10 @@ var leadController = function ($scope, leadService, companyService, personServic
 	}
 
 	$scope.fireEvent = function (lead, event) {
-		leadService.fireEvent($scope, lead, event)
+		leadService.fireEvent(lead, event).success(data => {
+			$scope.leads = $scope.leads.map(lead => lead.id == data.lead.id ? data.lead : lead);
+			$scope.lead = data.lead;
+		})
 	}
 
 	$scope.saveNote = function (lead, newNote) {
