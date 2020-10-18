@@ -22,24 +22,24 @@ var proposalCrudController = function ($scope, proposalService) {
         // $scope.proposal = null;
     }
     
-    $scope.proposalEncreaseItem = function (proposal) {
+    $scope.proposalEncreaseItem = function () {
         $scope.proposal.items.push({
-            price: 0, title: 'ITEM ' + (proposal.items.length + 1) + ' - '
+            price: 0, title: 'ITEM ' + ($scope.proposal.items.length + 1) + ' - '
         })
     }
-    $scope.proposalRemoveItem = function (proposal) {
+    $scope.proposalRemoveItem = function () {
         if ($scope.proposal.items.length > 1) {
             $scope.proposal.items.pop();
         }
     }
-    $scope.proposalSave = function (lead, proposal) {
-        if (proposal.id) {
-            proposalService.update(proposal, lead.id).success( response => {
-                lead.proposals = lead.proposals.filter(p => p.id != proposal.id)
-                lead.proposals.push(response.proposal)
+    $scope.proposalSave = function () {
+        if ($scope.proposal.id) {
+            proposalService.update($scope.proposal, $scope.lead.id).success( response => {
+                $scope.lead.proposals = $scope.lead.proposals.filter(p => p.id != $scope.proposal.id)
+                $scope.lead.proposals.push(response.proposal)
             });
         } else {
-            proposalService.save(proposal, lead.id).success( data => lead.proposals.push(data.proposal) )
+            proposalService.save($scope.proposal, $scope.lead.id).success(data => $scope.lead.proposals.push(data.proposal) )
         }
     }
 };
