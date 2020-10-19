@@ -12,20 +12,18 @@ import com.allscontracting.model.UserProfile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserDTO {
-	private String id;
-	private String email; 
-	private String password;
-	private String name; 
-	private boolean enabled;
-	private CompanyDTO company;
-  private List<String> profiles;
+	private final String id;
+	private final String email; 
+	private final String password;
+	private final String name; 
+	private final boolean enabled;
+	private final CompanyDTO company;
+  private final List<String> profiles;
   
 	public static final UserDTO of(User user ) {
 		if(user==null)

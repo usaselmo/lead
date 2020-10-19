@@ -8,17 +8,15 @@ import com.allscontracting.model.Media;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class MediaDTO {
-	private Long id;
-	private byte[] content;
-	private String type;
-	private String name;
+	private final Long id;
+	private final byte[] content;
+	private final String type;
+	private final String name;
 
 	public static final MediaDTO of(Media media) {
 		if(media== null)

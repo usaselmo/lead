@@ -16,7 +16,7 @@ public class MailDTO {
 	private final List<PersonDTO> bcc;
 	private final String text;
 	private final List<MediaDTO> attachments;
-	private final String type;
+	private final String type; 
 	private final String subject;
 
 	public static MailDTO of(Mail mail) {

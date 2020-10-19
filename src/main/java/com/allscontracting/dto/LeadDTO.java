@@ -74,7 +74,7 @@ public class LeadDTO {
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit(), Converter.MM_dd_yyyy_hh_mm):"")
 				.dueDate(lead.getDueDate()!=null?Converter.dateToString(lead.getDueDate(), Converter.MM_dd_yyyy_hh_mm):"")
 				.price(getTotalPrice(lead))
-				.estimator(lead.getEstimator()==null?new UserDTO():UserDTO.of(lead.getEstimator()))
+				.estimator(lead.getEstimator()==null?UserDTO.builder().build():UserDTO.of(lead.getEstimator()))
 				.company(CompanyDTO.of(lead.getCompany()))
 				.contact(PersonDTO.of(lead.getContact()))
 				.title(lead.getTitle())

@@ -14,27 +14,25 @@ import com.allscontracting.service.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class ProposalDTO {
-	private String id;
-	private String number;
-	private String total;
-	private String formattedTotal;
-	private String scopeOfWork;
-	private boolean callMissUtility;
-	private String paymentSchedule;
-	private String workWarranty;
-	private boolean emailed;
-	private String note;
-	private List<ItemDTO> items;
-	private Person estimator;
-	private String date;
-	private boolean changeorder;
+	private final String id;
+	private final String number;
+	private final String total;
+	private final String formattedTotal;
+	private final String scopeOfWork;
+	private final boolean callMissUtility;
+	private final String paymentSchedule;
+	private final String workWarranty;
+	private final boolean emailed;
+	private final String note;
+	private final List<ItemDTO> items;
+	private final Person estimator;
+	private final String date;
+	private final boolean changeorder;
 	
 	public static final ProposalDTO of(Proposal proposal) {
 		if(proposal==null)

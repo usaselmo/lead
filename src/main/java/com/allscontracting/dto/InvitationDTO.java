@@ -10,24 +10,22 @@ import com.allscontracting.service.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class InvitationDTO {
 
-	private Long id;
-	private String date;
-	private String dueDate;
-	private LeadDTO lead;
-	private CompanyDTO company;
-	private PersonDTO contact;
-	private List<MediaDTO> medias;
-	private List<MediaDTO> proposals;
-	private Long emailed;
-	private BigDecimal price;
+	private final Long id;
+	private final String date;
+	private final String dueDate;
+	private final LeadDTO lead;
+	private final CompanyDTO company;
+	private final PersonDTO contact;
+	private final List<MediaDTO> medias;
+	private final List<MediaDTO> proposals;
+	private final Long emailed;
+	private final BigDecimal price;
 	
 	public static final InvitationDTO of(Invitation invitation) {
 		if(invitation==null)

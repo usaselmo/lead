@@ -7,18 +7,16 @@ import com.allscontracting.event.Event;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class EventDTO {
 
-	private String name;
-	private String status ; 
-	private String action ;
-	private String abbreviation;
+	private final String name;
+	private final String status ; 
+	private final String action ;
+	private final String abbreviation;
 	
 	public static EventDTO of(Event event) {
 		if(event==null)

@@ -10,21 +10,19 @@ import com.allscontracting.model.Person;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class PersonDTO {
 
-	private String id;
-	private String email;
-	private String name;
-	private String address;
-	private String cellPhone;
-	private String phone;
-	private CompanyDTO company;
+	private final String id;
+	private final String email;
+	private final String name;
+	private final String address;
+	private final String cellPhone;
+	private final String phone;
+	private final CompanyDTO company;
 
 	public static final PersonDTO of(Person person) {
 		if (person == null)

@@ -11,17 +11,15 @@ import com.allscontracting.model.Item;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class ItemDTO {
-	private String id;
-	private String title;
-	private String price;
-	private List<LineDTO> lines;
+	private final String id;
+	private final String title;
+	private final String price;
+	private final List<LineDTO> lines;
 
 	public static final ItemDTO of(Item item) {
 		if(item==null)

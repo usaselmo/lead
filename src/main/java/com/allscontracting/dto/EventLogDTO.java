@@ -6,20 +6,18 @@ import com.allscontracting.service.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class EventLogDTO {
-	private Long id;
-	private String objectName;
-	private String objectId;
-	private String eventType;
-	private String eventTime;
-	private UserDTO user;
-	private String message;
+	private final Long id;
+	private final String objectName;
+	private final String objectId;
+	private final String eventType;
+	private final String eventTime;
+	private final UserDTO user;
+	private final String message;
 	
 	public static EventLogDTO of(EventLog e) {
 		if(e==null)

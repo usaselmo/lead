@@ -5,15 +5,13 @@ import com.allscontracting.model.Line;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class LineDTO {
-	private String id;
-	private String description;
+	private final String id;
+	private final String description;
 	
 	public static final LineDTO of(Line line) {
 		if(line==null)
