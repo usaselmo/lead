@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import com.allscontracting.dto.EventDTO;
 import com.allscontracting.dto.EventLogDTO;
+import com.allscontracting.dto.FilterDTO;
 import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
@@ -57,19 +58,6 @@ public class LeadService {
 	private final MailProviderSelector mailProviderSelector;
 	private final InvitationRepo invitationRepo;
 	private final ReportService reportService;
-
-	public List<LeadDTO> listLeads(int pageRange, int lines, String text, Event event) throws LeadsException {
-		PageRequest pageable = PageRequest.of(pageRange < 0 ? 0 : pageRange, lines, new Sort(Sort.Direction.DESC, "date"));
-		if (StringUtils.isEmpty(event) && StringUtils.isEmpty(text))// nada
-			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		else {
-			List<Event> events = (event == null) ? Arrays.asList(Event.values()) : Arrays.asList(event);
-			if (StringUtils.isEmpty(text))
-				return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-			else
-				return leadRepo.search(text, events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		}
-	}
 
 	public List<EventDTO> findNextEvents(String leadId) {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElse(null);
@@ -172,12 +160,12 @@ public class LeadService {
 		return leadDTO;
 	}
 
-	public LeadEntity list(int pageRange, int lines, Event event, String text) throws LeadsException {
-		List<LeadDTO> leads = listLeads(pageRange, lines, text, event);
+	public LeadEntity list(FilterDTO filter) throws LeadsException {
+		List<LeadDTO> leads = listLeads(filter);
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
 		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
 		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-		    .totalLeads(getLeadsTotal(leads, event)).build();
+		    .totalLeads(getLeadsTotal(leads, EventDTO.to(filter.getEvent()))).build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});
@@ -187,6 +175,19 @@ public class LeadService {
 	private void completeLead(LeadDTO lead) {
 		lead.setEventLogs(findLeadEventLogs(lead.getId()));
 		lead.setNextEvents(findNextEvents(lead.getId()));
+	}
+
+	private List<LeadDTO> listLeads(FilterDTO filter) throws LeadsException {
+		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "date"));
+		if (filter.getEvent()==null && StringUtils.isEmpty(filter.getSearchText()))// nada
+			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		else {
+			List<Event> events = (filter.getEvent() == null) ? Arrays.asList(Event.values()) : Arrays.asList(EventDTO.to(filter.getEvent()));
+			if (StringUtils.isEmpty(filter.getSearchText()))
+				return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+			else
+				return leadRepo.search(filter.getSearchText(), events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		}
 	}
 
 	public LeadDTO findLead(Long leadId) throws LeadsException {

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.EventDTO;
+import com.allscontracting.dto.FilterDTO;
 import com.allscontracting.dto.InvitationDTO;
 import com.allscontracting.dto.LeadDTO;
 import com.allscontracting.dto.LeadEntity;
@@ -39,7 +40,7 @@ public class LeadController {
 	@GetMapping
 	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
 		try {
-			LeadEntity res = this.leadService.list(pageRange, lines, event, text);
+			LeadEntity res = this.leadService.list(new FilterDTO(pageRange, lines, text, EventDTO.of(event)));
 			return res;
 		} catch (LeadsException e) {
 			e.printStackTrace();
