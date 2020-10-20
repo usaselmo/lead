@@ -178,7 +178,7 @@ public class LeadService {
 	}
 
 	private List<LeadDTO> listLeads(FilterDTO filter) throws LeadsException {
-		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "date"));
+		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
 		if (filter.getEvent()==null && StringUtils.isEmpty(filter.getSearchText()))// nada
 			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 		else {
