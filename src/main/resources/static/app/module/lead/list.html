@@ -29,11 +29,11 @@
       <td style="" nowrap="nowrap" width="30%"><input type="text" class="form-control"
         style="display: inline; position: relative; z-index: 2; float: left;" placeholder="Search" autofocus="autofocus"
         ng-model="filter.searchText" ng-change="applyFilter(filter.event, filter.searchText)" /> <span ng-if="searching"
-        style="position: relative; left: -46px; top: 6px; z-index: 25; display: inline; color: gray;">wait...</span></td>
+        style="position: relative; left: -46px; top: 6px; z-index: 25; display: inline; color: rgb(168, 64, 104);">wait...</span></td>
       <td>
         <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter.event"
           ng-change="applyFilter(filter.event, filter.searchText)">
-          <option value="">All</option>
+          <option value="">Select...</option>
         </select>
       </td>
     </tr>
@@ -49,7 +49,7 @@
         <td>
           <span ng-if="lead.company">
             <p><i>{{lead.company.name}}</i></p>
-            <p ng-if="lead.contact">
+            <p ng-if="lead.contact" nowrap="nowrap">
               <u><i>Contact:</i></u> {{lead.contact.name}} ,
               {{lead.contact.phone}} , {{lead.contact.email}}
             </p>
@@ -62,6 +62,9 @@
           </span>
           <p ng-if="lead.dueDate">
             <u><i>Due Date: </i></u>{{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}
+          </p>
+          <p ng-if="lead.visit">
+            <u><i>Visit: </i></u>{{lead.visit | date:'MM/dd/yyyy @h:mma' }}
           </p>
           <span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
           <p>

@@ -3,6 +3,7 @@ package com.allscontracting.service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -179,16 +180,18 @@ public class LeadService {
 
 	private List<LeadDTO> listLeads(FilterDTO filter) throws LeadsException {
 		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
-		if (filter.getEvent()==null && StringUtils.isEmpty(filter.getSearchText()))// nada
-			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		else {
-			List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
-			events = events.size()<=0?Stream.of(Event.values()).collect(Collectors.toList()):events;
-			if (StringUtils.isEmpty(filter.getSearchText()))
-				return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-			else
-				return leadRepo.search(filter.getSearchText(), events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		}
+		List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
+		events = events.size()<=0?null:events;
+		boolean ev = events!=null;
+		boolean te = !StringUtils.isEmpty(filter.getSearchText());
+		if (ev && te)// nada
+			return leadRepo.search(filter.getSearchText(), events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		else if (!ev && te)// text only
+			return leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		else if( ev )
+			return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
+		else
+			return Collections.emptyList();
 	}
 
 	public LeadDTO findLead(Long leadId) throws LeadsException {
