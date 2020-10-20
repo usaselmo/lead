@@ -25,6 +25,7 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.InvitationService;
 import com.allscontracting.service.LeadService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,9 +39,10 @@ public class LeadController {
 	private final InvitationService invitationService;
 
 	@GetMapping
-	public LeadEntity list(@RequestParam int pageRange, @RequestParam int lines, @RequestParam Event event, @RequestParam String text) throws Exception {
+	public LeadEntity list(@RequestParam String filter) throws Exception {
 		try {
-			LeadEntity res = this.leadService.list(new FilterDTO(pageRange, lines, text, EventDTO.of(event)));
+			FilterDTO filterDTO = new ObjectMapper().readValue(filter, FilterDTO.class);
+			LeadEntity res = this.leadService.list(filterDTO);
 			return res;
 		} catch (LeadsException e) {
 			e.printStackTrace();

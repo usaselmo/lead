@@ -1,5 +1,7 @@
 package com.allscontracting.dto;
 
+import java.util.stream.Stream;
+
 import org.springframework.util.StringUtils;
 
 import com.allscontracting.event.Event;
@@ -33,7 +35,7 @@ public class EventDTO {
 		if(eventTypeDTO==null) 
 			return null;
 		if(!StringUtils.isEmpty(eventTypeDTO.getAction()))
-			return java.util.stream.Stream.of(Event.values()).filter(e -> e.getAction().equals(eventTypeDTO.getAction())).findFirst().orElse(null);
+			return Stream.of(Event.values()).filter(e -> e.getAction().equals(eventTypeDTO.getAction())).findFirst().orElse(null);
 		else
 			return Event.valueOf(eventTypeDTO.getStatus());
 	}

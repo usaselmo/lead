@@ -165,7 +165,7 @@ public class LeadService {
 		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
 		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
 		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-		    .totalLeads(getLeadsTotal(leads, EventDTO.to(filter.getEvent()))).build();
+		    .totalLeads(getLeadsTotal(leads, Stream.of(Event.values()).filter(e->e.getAction().equals(filter.getEvent())).findFirst().orElse(null) )).build();
 		res.getLeads().stream().forEach(lead -> {
 			completeLead(lead);
 		});
@@ -182,7 +182,8 @@ public class LeadService {
 		if (filter.getEvent()==null && StringUtils.isEmpty(filter.getSearchText()))// nada
 			return this.leadRepo.findAll(pageable).stream().distinct().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 		else {
-			List<Event> events = (filter.getEvent() == null) ? Arrays.asList(Event.values()) : Arrays.asList(EventDTO.to(filter.getEvent()));
+			List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
+			events = events.size()<=0?Stream.of(Event.values()).collect(Collectors.toList()):events;
 			if (StringUtils.isEmpty(filter.getSearchText()))
 				return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
 			else

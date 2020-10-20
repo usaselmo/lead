@@ -1,3 +1,5 @@
+import Filter from '/app/model/filter.js'
+
 var local_server_url = "";
 
 export default function leadService($http) {
@@ -12,23 +14,9 @@ export default function leadService($http) {
 		},
 
 		find_Leads: function (scope) {
-			var res = $http.get(local_server_url + "/leads?pageRange=" + scope.filter.pageRange + "&lines=" + scope.filter.lines + "&event=" + scope.filter.event + "&text=" + scope.filter.searchText);
+			var res = $http.get(local_server_url + "/leads?filter=" + window.encodeURIComponent(JSON.stringify( scope.filter )));
 			res.error(error=>console.log(error))
 			return res;
-		},
-
-		findLeads: function (scope) {
-			if (scope.filter.event == 'ALL' || !scope.filter.event) scope.filter.event = '';
-			if (!scope.filter.searchText) scope.filter.searchText = '';
-			$http.get(local_server_url + "/leads?pageRange=" + scope.filter.pageRange + "&lines=" + scope.filter.lines + "&event=" + scope.filter.event + "&text=" + scope.filter.searchText).then(function (response) {
-				scope.leads = response.data.leads
-				scope.leadsTotalPrice = response.data.leadsTotalPrice
-				scope.totalLeads = response.data.totalLeads
-				scope.leadTypes = response.data.leadTypes;
-				scope.events = response.data.events;
-			}, function (response) {
-				console.log(response)
-			});
 		},
 
 		update: function (lead) {
