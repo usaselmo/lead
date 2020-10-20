@@ -55,7 +55,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	var findLeads = function () {
 		if ($scope.filter.event == 'ALL' || !$scope.filter.event) $scope.filter.event = '';
 		if (!$scope.filter.searchText) $scope.filter.searchText = '';
-		var res = leadService.find_Leads($scope);
+		var res = leadService.find_Leads($scope.filter);
 		res.success(data => {
 			$scope.leads = data.leads
 			$scope.leadsTotalPrice = data.leadsTotalPrice

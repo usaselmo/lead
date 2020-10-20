@@ -13,8 +13,9 @@ export default function leadService($http) {
 			return res;
 		},
 
-		find_Leads: function (scope) {
-			var res = $http.get(local_server_url + "/leads?filter=" + window.encodeURIComponent(JSON.stringify( scope.filter )));
+		find_Leads: function (filter) {
+			var filt = window.encodeURIComponent(JSON.stringify(filter));
+			var res = $http.get(local_server_url + "/leads?filter=" + filt);
 			res.error(error=>console.log(error))
 			return res;
 		},
