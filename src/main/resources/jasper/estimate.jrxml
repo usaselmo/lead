@@ -249,7 +249,7 @@ WHERE
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<printWhenExpression><![CDATA[!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility()]]></printWhenExpression>
 						</reportElement>
-						<textFieldExpression><![CDATA[new StringBuilder().append(!StringUtils.isEmpty($P{PROPOSAL}.getNote())?$P{PROPOSAL}.getNote():"").append($P{PROPOSAL}.isCallMissUtility()&&!StringUtils.isEmpty($P{PROPOSAL}.getNote())?"\r\n\r\n":"").append($P{PROPOSAL}.isCallMissUtility()?"** We will call Miss Utility for this job. Contact Miss Utility before any excavation/concrete removal and determine if any utility cable/conduits or pipes need to be relocated after Miss Utility reports.":"").toString()]]></textFieldExpression>
+						<textFieldExpression><![CDATA[new StringBuilder().append(!StringUtils.isEmpty($P{PROPOSAL}.getNote())?$P{PROPOSAL}.getNote():"").append($P{PROPOSAL}.isCallMissUtility()&&!StringUtils.isEmpty($P{PROPOSAL}.getNote())?"\r\n\r\n":"").append($P{PROPOSAL}.isCallMissUtility()?"* We will call Miss Utility for this job. Contact Miss Utility before any excavation/concrete removal and determine if any utility cable/conduits or pipes need to be relocated after Miss Utility reports.":"").toString()]]></textFieldExpression>
 					</textField>
 				</frame>
 				<frame>
