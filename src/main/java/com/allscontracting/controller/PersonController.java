@@ -2,6 +2,8 @@ package com.allscontracting.controller;
 
 import java.util.List;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allscontracting.dto.LeadEntity;
@@ -31,6 +34,12 @@ public class PersonController {
 	@GetMapping("")
 	public List<PersonDTO> list() {
 		List<PersonDTO> res = this.personService.findAll();
+		return res;
+	}
+
+	@GetMapping("/search/{text}")
+	public List<PersonDTO> search(@PathVariable String text) {
+		List<PersonDTO> res = this.personService.search(text);
 		return res;
 	}
 

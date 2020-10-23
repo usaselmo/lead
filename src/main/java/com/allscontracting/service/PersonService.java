@@ -64,4 +64,8 @@ public class PersonService {
 		return PersonDTO.of(this.personRepo.save(person));
 	}
 
+	public List<PersonDTO> search(String text) {
+		return PersonDTO.of(this.personRepo.findByName(text));
+	}
+
 }

@@ -3,17 +3,22 @@
 
  var personService = function($http){
  
- 	return {
- 	
- 		findPersons: function (scope) {
- 			var res = $http.get(local_server_url + "/persons");
- 			res.then(function (response) {
- 				scope.persons = response.data
- 			}, function (response) {
- 				console.log(response)
- 			});
- 			return res;
- 		},
+	 return {
+
+		 findByName: function (text) {
+			 var res = $http.get(local_server_url + "/persons/search/"+text);
+			 return res;
+		 },
+
+		 findPersons: function (scope) {
+			 var res = $http.get(local_server_url + "/persons");
+			 res.then(function (response) {
+				 scope.persons = response.data
+			 }, function (response) {
+				 console.log(response)
+			 });
+			 return res;
+		 },
  		
  		sendCantReachEmail: function (lead, person, email) {
 			 var res = $http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach', email);

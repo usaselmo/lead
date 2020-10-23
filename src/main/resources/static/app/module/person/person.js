@@ -33,20 +33,22 @@ function sleep(time) {
 
 var personController = function ($scope, $http, $timeout, personService, companyService) {
 
-	var init = function(){
-		personService.findPersons($scope).success(data => {
-			$scope.persons = data
-			sleep(200).then(() => {
-				datatables();
-			});
-		} )
+	$scope.findByName = function (text) {
+		if(!text) $scope.persons = []
+		else if(text.length < 3) return
+		else {
+			personService.findByName(text)
+				.success(data => {
+					$scope.persons = data
+				})
+				.error(error => console.log(error))
+		}
 	}
 
 	$scope.crud = function(person){
 		$scope.person = person; 
 	}
 
-	init();
 }
 
 export default person
