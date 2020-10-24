@@ -1,5 +1,8 @@
 package com.allscontracting.dto;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.allscontracting.model.Company;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +29,10 @@ public class CompanyDTO {
 			.name(company.getName())
 			.website(company.getWebsite())
 		.build();
+	}
+	
+	public static final List<CompanyDTO> of(List<Company>  companies){
+		return companies.stream().map(c-> CompanyDTO.of(c)).collect(Collectors.toList());
 	}
 
 	public static final Company toCompany(CompanyDTO cd) {

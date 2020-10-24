@@ -36,4 +36,8 @@ public class CompanyService {
 		return CompanyDTO.of(this.companyRepo.save(company));
 	}
 
+	public List<CompanyDTO> search(String text) {
+		return CompanyDTO.of(this.companyRepo.search(text));
+	}
+
 }

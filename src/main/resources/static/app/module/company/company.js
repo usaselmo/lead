@@ -10,8 +10,14 @@ company.directive('appCompany', function() {
 });
 
 var companyController = function ($scope, $http, $timeout, companyService) {
-	var init = function(){
-		companyService.findCompanies($scope);
+
+	$scope.text = '';
+	$scope.search = function (text) {
+		if (!text) $scope.companies = []
+		else if (text.length < 3) return
+		companyService.search(text).success(data=> {
+			$scope.companies = data;
+		} )
 	}
 
 	$scope.crud = function(company){
@@ -30,8 +36,6 @@ var companyController = function ($scope, $http, $timeout, companyService) {
 		}
 		$scope.cancel();
 	}
-
-	init();
 }
 
 export default company

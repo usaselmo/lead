@@ -3,6 +3,7 @@ package com.allscontracting.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,11 @@ public class CompanyController {
 	@GetMapping
 	public List<CompanyDTO> getCompanies() {
 		return this.companyService.getCompanies();
+	}
+
+	@GetMapping("/search/{text}")
+	public List<CompanyDTO> search(@PathVariable String text) {
+		return this.companyService.search(text);
 	}
 
 	@PutMapping
