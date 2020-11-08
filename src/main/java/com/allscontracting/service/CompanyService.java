@@ -3,6 +3,7 @@ package com.allscontracting.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.allscontracting.dto.CompanyDTO;
@@ -19,7 +20,7 @@ public class CompanyService {
 	private CompanyRepository companyRepo;
 
 	public List<CompanyDTO> getCompanies() {
-		return this.companyRepo.findAll().stream().map(c -> CompanyDTO.of(c)).collect(Collectors.toList());
+		return this.companyRepo.findAll(Sort.by("name")).stream().map(c -> CompanyDTO.of(c)).collect(Collectors.toList());
 	}
 
 	public CompanyDTO update(CompanyDTO companyDTO) throws LeadsException {

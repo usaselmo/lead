@@ -2,6 +2,8 @@ package com.allscontracting.service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -31,6 +33,14 @@ public class Converter {
 	public static LocalDate stringToLocalDate(String date, String pattern) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
 		return LocalDate.parse(date, formatter);
+	}
+
+	public static LocalDate toLocalDate(Date dateToConvert) {
+		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public static LocalDateTime toLocalDateTime(Date dateToConvert) {
+		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
 	}
 
 	public static Date stringToDate(String dateToConvert, String pattern) {

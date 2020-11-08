@@ -27,9 +27,11 @@
         </button>
       </td>
       <td style="" nowrap="nowrap" width="30%"><input type="text" class="form-control"
-        style="display: inline; position: relative; z-index: 2; float: left;" placeholder="Search" autofocus="autofocus"
-        ng-model="filter.searchText" ng-change="applyFilter(filter.event, filter.searchText)" /> <span ng-if="searching"
-        style="position: relative; left: -46px; top: 6px; z-index: 25; display: inline; color: rgb(168, 64, 104);">wait...</span></td>
+          style="display: inline; position: relative; z-index: 2; float: left;" placeholder="Search"
+          autofocus="autofocus" ng-model="filter.searchText" ng-change="applyFilter(filter.event, filter.searchText)" />
+        <span ng-if="searching"
+          style="position: relative; left: -46px; top: 6px; z-index: 25; display: inline; color: rgb(168, 64, 104);">wait...</span>
+      </td>
       <td>
         <select class="form-control" ng-options="et.name as et.status for et in events" ng-model="filter.event"
           ng-change="applyFilter(filter.event, filter.searchText)">
@@ -45,31 +47,64 @@
         <td>
           <a href="#" class="btn btn-sm btn-default" ng-click="detail(lead)">View</a>
         </td>
-
         <td>
+
+          <!-- COMPANY -->
           <span ng-if="lead.company">
-            <p><i>{{lead.company.name}}</i></p>
-            <p ng-if="lead.contact" nowrap="nowrap">
-              <u><i>Contact:</i></u> {{lead.contact.name}} ,
-              {{lead.contact.phone}} , {{lead.contact.email}}
+            <span class="label label-default">{{lead.company.name}}</span>
+            <p style="margin-top: 8px;" ng-if="lead.contact" nowrap="nowrap">
+
+              {{lead.contact.name}}, {{lead.contact.phone}}, {{lead.contact.email}}
             </p>
           </span>
+
+          <!-- CLIENT -->
           <span ng-if="lead.client">
             <p>
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               {{lead.client.name}} , {{lead.client.phone}} ,
               {{lead.client.email}}, {{lead.client.address}}
             </p>
           </span>
-          <p ng-if="lead.dueDate">
-            <u><i>Due Date: </i></u>{{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}
-          </p>
-          <p ng-if="lead.visit">
-            <u><i>Visit: </i></u>{{lead.visit | date:'MM/dd/yyyy @h:mma' }}
-          </p>
+
+          <!-- DUE DATE -->
+          <span ng-if="lead.dueDate">
+            <p>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <i>Due Date:</i>
+                  <strong ng-if="lead.daysLeft > 0">{{lead.daysLeft}} days left</strong>
+                  <span ng-if="lead.daysLeft <= 0 ">Past due</span>
+                </p>
+                {{lead.dueDate | date:'MM/dd/yyyy @h:mma' }}
+              </div>
+            </div>
+            </p>
+          </span>
+          
+          <!-- VISIT -->
+          <span ng-if="lead.visit">
+            <p>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <p><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> <i>Visit:</i>
+                  <strong ng-if="lead.visitDaysLeft > 0">{{lead.visitDaysLeft}} days left</strong>
+                  <span ng-if="lead.visitDaysLeft <= 0 ">Past due</span>
+                </p>
+                {{lead.visit | date:'MM/dd/yyyy @h:mma' }}
+              </div>
+            </div>
+            </p>
+          </span>
+
+          <!-- PRICE -->
           <span ng-if="lead.price && lead.price > 0"><strong>{{lead.price|currency}}</strong></span>
+
+          <!-- EVENT -->
           <p>
             <i><small>{{lead.event}}</small></i>
           </p>
+
         </td>
 
         <td>

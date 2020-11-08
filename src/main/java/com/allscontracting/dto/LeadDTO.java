@@ -3,7 +3,9 @@ package com.allscontracting.dto;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
@@ -29,6 +31,7 @@ public class LeadDTO {
 	private String id;
 	private String date;
 	private String visit;
+	private Long visitDaysLeft;
 	private String description;
 	private String notes;
 	private String event;//EventType
@@ -38,6 +41,7 @@ public class LeadDTO {
 	private PersonDTO client;
 	private String title;
 	private String dueDate;
+	private Long daysLeft;
 	private String address;
 
 	//LISTS
@@ -72,7 +76,9 @@ public class LeadDTO {
 				.event(lead.getEvent().getStatus())
 				.date(Converter.dateToString(lead.getDate(), Converter.dd_MM_yyyy))
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit(), Converter.MM_dd_yyyy_hh_mm):"")
+				.visitDaysLeft(lead.getVisit()==null?null:TimeUnit.DAYS.convert(lead.getVisit().getTime() - new Date().getTime(), TimeUnit.MILLISECONDS))
 				.dueDate(lead.getDueDate()!=null?Converter.dateToString(lead.getDueDate(), Converter.MM_dd_yyyy_hh_mm):"")
+				.daysLeft(lead.getDueDate()==null?null:TimeUnit.DAYS.convert(lead.getDueDate().getTime() - new Date().getTime(), TimeUnit.MILLISECONDS) )
 				.price(getTotalPrice(lead))
 				.estimator(lead.getEstimator()==null?UserDTO.builder().build():UserDTO.of(lead.getEstimator()))
 				.company(CompanyDTO.of(lead.getCompany()))
