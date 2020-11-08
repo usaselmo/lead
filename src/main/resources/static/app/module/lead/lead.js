@@ -166,6 +166,12 @@ var leadController = function ($scope, leadService, companyService, personServic
 	$scope.fireEvent = function (lead, event) {
 		leadService.fireEvent(lead, event).success(data => {
 			$scope.leads = $scope.leads.map(lead => lead.id == data.lead.id ? data.lead : lead);
+		})
+	}
+
+	$scope.fireEventAndRefresh = function (lead, event) {
+		leadService.fireEvent(lead, event).success(data => {
+			$scope.leads = $scope.leads.map(lead => lead.id == data.lead.id ? data.lead : lead);
 			$scope.lead = data.lead;
 		})
 	}

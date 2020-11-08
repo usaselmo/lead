@@ -56,7 +56,7 @@
               <strong>Mark an Event</strong>
               <div class="list-group">
                 <span ng-repeat="event in lead.nextEvents" ng-switch="event">
-                  <a c; style="padding: 4px;" ng-switch-default ng-click="fireEvent(lead, event)" href="#"
+                  <a c; style="padding: 4px;" ng-switch-default ng-click="fireEventAndRefresh(lead, event)" href="#"
                     class="list-group-item">{{event.action}}</a>
                 </span>
               </div>
