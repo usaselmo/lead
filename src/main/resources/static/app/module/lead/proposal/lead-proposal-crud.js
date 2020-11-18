@@ -27,6 +27,7 @@ var proposalCrudController = function ($scope, proposalService) {
             price: 0, title: 'ITEM ' + ($scope.proposal.items.length + 1) + ' - '
         })
     }
+    
     $scope.proposalRemoveItem = function () {
         if ($scope.proposal.items.length > 1) {
             $scope.proposal.items.pop();
