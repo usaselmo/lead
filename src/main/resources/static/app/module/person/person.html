@@ -2,12 +2,18 @@
   <!-- LIST -->
   <div ng-if="!person">
 
-    <a style="margin-bottom: 6px;" title="New Person" ng-click="crud({})" href="#" class="btn btn-default btn-sm"><span
-        class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Person</a>
+    <h2>Person
 
-    <input style="margin-top: 16px;" type="text" class="form-control" placeholder="Search" ng-model="text" ng-change="findByName(text)" autofocus>
+      <a style="margin-bottom: 6px;" title="New Person" ng-click="crud({})" href="#"
+        class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add </a>
 
-    <table ng-if="persons && persons.length > 0" id="94irjrn494h" class="table table-striped table-bordered" style="width: 100%">
+    </h2>
+
+    <input style="margin-top: 16px;" type="text" class="form-control" placeholder="Search" ng-model="text"
+      ng-change="findByName(text)" autofocus>
+
+    <table ng-if="persons && persons.length > 0" id="94irjrn494h" class="table table-striped table-bordered"
+      style="width: 100%">
       <tbody>
         <tr ng-repeat="person in persons">
           <td><a title="Edit {{person.name}}" ng-click="crud(person)" href="#" class="btn btn-default btn-sm"><span

@@ -1,5 +1,6 @@
-package com.allscontracting.service;
+ package com.allscontracting.service;
 
+import java.io.File;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,8 +15,8 @@ import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.PersonRepository;
-import com.allscontracting.service.mail.Mail;
-import com.allscontracting.service.mail.MailProviderSelector;
+import com.allscontracting.service.mail.CantReachMailProvider;
+import com.allscontracting.service.mail.HiringDecisionMailProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonService {
 
 	private final PersonRepository personRepo;
-	private final MailProviderSelector mailProviderSelector;
+	private final CantReachMailProvider cantReachMailProvider;
+	private final HiringDecisionMailProvider hiringDecisionMailProvider;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
 
@@ -42,17 +44,22 @@ public class PersonService {
 		return PersonDTO.of(personRepo.save(person));
 	}
 
-	public void sendCantReachEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
-		Mail mail = MailDTO.to(emailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail).onError((error) -> log.error("Error sending e-mail: " + error)).onSuccess(() -> {
-			logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user);
-		}).send();
+	public void sendCantReachEmail(String leadId, User user, MailDTO emailDTO, List<File> attachments) throws Exception {
+		this.cantReachMailProvider
+		.email(emailDTO, attachments)
+			.onError((error) -> log.error("Error sending e-mail: " + error))
+	    .onSuccess(() -> logg.eventCantReachEmailSent(leadId, emailDTO.getTo().get(0).getName(), user))
+			.send()
+	    ;
 	}
 
-	public void sendHiringDecisionEmail(String leadId, User user, MailDTO emailDTO) throws Exception {
-		Mail mail = MailDTO.to(emailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail).onError((error) -> log.error("Error sending e-mail: " + error))
-		    .onSuccess(() -> logg.eventHiringDecisionEmailSent(leadId, emailDTO.getTo().get(0).getName(), user)).send();
+	public void sendHiringDecisionEmail(String leadId, User user, MailDTO emailDTO, List<File> attachments) throws Exception {
+		this.hiringDecisionMailProvider
+		.email(emailDTO, attachments)
+			.onError( error -> log.error("Error sending e-mail: " + error))
+			.onSuccess(() -> logg.eventHiringDecisionEmailSent(leadId, emailDTO.getTo().get(0).getName(), user))
+			.send()
+			;
 	}
 
 	public List<PersonDTO> findAll() {

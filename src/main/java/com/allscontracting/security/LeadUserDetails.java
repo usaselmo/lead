@@ -40,13 +40,11 @@ public class LeadUserDetails implements UserDetails {
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
 		return user.isEnabled();
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
 		return user.isEnabled();
 	}
 

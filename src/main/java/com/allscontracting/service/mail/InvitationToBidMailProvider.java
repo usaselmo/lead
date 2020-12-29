@@ -9,42 +9,47 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.allscontracting.dto.MailDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Invitation;
 import com.allscontracting.service.Converter;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 @Component
 public class InvitationToBidMailProvider implements MailProvider {
 
+	private static final String FILE_LOCATION_NAME = "templates/email/invitation-to-bid.html";
+	private static final String TEMP_FILE_SUFFIX = "";
+	private static final String TEMP_FILE_PREFIX = "leadsdc-";
+	private static final String SUBJECT = "REQUEST FOR PROPOSAL - ";
+
 	@Override
-	public MailSender getMailProvider(Mail mail, Object... obj) throws IOException, LeadsException {
+	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, LeadsException {
 		final Invitation invitation = (Invitation) obj[0];
-		MailSender mailSender = new MailSender(mail.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
-		    mail.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "REQUEST FOR PROPOSAL - " + invitation.getLead().getTitle(),
-		    this.getInvitationText(invitation), this.getFiles(mail));
+		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), SUBJECT + invitation.getLead().getTitle(),
+		    this.getInvitationText(invitation), this.getFiles(mailDTO, attachments));
 		return mailSender;
 	}
 
-	private List<File> getFiles(Mail mail) {
-		return mail.getAttachments().stream().map(att -> {
+	private List<File> getFiles(MailDTO mailDTO, List<File> attachments) {
+		List<File> files = mailDTO.getAttachments().stream().map(att -> {
 			try {
-				return Files.write(Files.createTempFile("leadsdc-", ""), att.getContent()).toFile();
+				return Files.write(Files.createTempFile(TEMP_FILE_PREFIX, TEMP_FILE_SUFFIX), att.getContent()).toFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			return null;
 		}).collect(Collectors.toList());
+		files.addAll(attachments);
+		return files;
 	}
 
 	private String getInvitationText(Invitation invitation) throws LeadsException {
 		try {
-			File file = getFile("templates/email/invitation-to-bid.html");
+			File file = getFile(FILE_LOCATION_NAME);
 			String string = new String(Files.readAllBytes(file.toPath()));
 			string = string.replace("{companyName}", invitation.getCompany().getName());
-			string = string.replace("{companyAddress}", StringUtils.isNotBlank(invitation.getCompany().getAddress()) ? invitation.getCompany().getAddress() : "");
+			string = string.replace("{companyAddress}", StringUtils.isNotBlank(invitation.getCompany().getAddress()) ? invitation.getCompany().getAddress() : TEMP_FILE_SUFFIX);
 			string = string.replace("{contactName}", invitation.getContact().getName());
 			string = string.replace("{contactPhone}", invitation.getContact().getPhone());
 			string = string.replace("{leadDescription}", invitation.getLead().getDescription());

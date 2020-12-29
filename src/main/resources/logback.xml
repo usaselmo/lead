@@ -21,18 +21,18 @@
   <!-- ALLS CONTRACTING -->
   <logger name="com.allscontracting" level="INFO">
     <appender-ref ref="CONSOLE" />
-    <!-- <appender-ref ref="FILE" /> -->
+    <appender-ref ref="FILE" />
   </logger> 
   
    <logger name="org.springframework" level="ERROR">
     <appender-ref ref="CONSOLE" />
-    <!-- <appender-ref ref="FILE" /> --> 
+    <appender-ref ref="FILE" />
   </logger>
 
   <!-- TODO RESTO -->
   <logger name="*" level="ERROR">
     <appender-ref ref="CONSOLE" />
-    <!-- <appender-ref ref="FILE" /> -->
+    <appender-ref ref="FILE" />
   </logger>
 
 </configuration>

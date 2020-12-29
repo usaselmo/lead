@@ -1,7 +1,5 @@
 package com.allscontracting.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,23 +13,23 @@ import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.service.CompanyService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("companies")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompanyController {
 
 	private final CompanyService companyService;
 
 	@GetMapping
-	public List<CompanyDTO> getCompanies() {
-		return this.companyService.getCompanies();
+	public LeadEntity getCompanies() {
+		return LeadEntity.builder().companies(this.companyService.getCompanies()).build();
 	}
 
 	@GetMapping("/search/{text}")
-	public List<CompanyDTO> search(@PathVariable String text) {
-		return this.companyService.search(text);
+	public LeadEntity search(@PathVariable String text) {
+		return LeadEntity.builder().companies(this.companyService.search(text)).build();
 	}
 
 	@PutMapping

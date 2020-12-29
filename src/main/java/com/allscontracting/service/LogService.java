@@ -14,10 +14,10 @@ import com.allscontracting.model.Person;
 import com.allscontracting.model.User;
 import com.allscontracting.repo.EventoLogRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LogService {
 
 	private final EventoLogRepository eventLogRepo;

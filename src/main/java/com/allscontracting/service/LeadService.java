@@ -38,8 +38,7 @@ import com.allscontracting.repo.InvitationRepo;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.repo.UserRepository;
-import com.allscontracting.service.mail.Mail;
-import com.allscontracting.service.mail.MailProviderSelector;
+import com.allscontracting.service.mail.InvitationToBidMailProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +55,7 @@ public class LeadService {
 	private final UserRepository userRepo;
 	private final LogService logg;
 	private final CompanyRepository companyRepo;
-	private final MailProviderSelector mailProviderSelector;
+	private final InvitationToBidMailProvider invitationToBidMailProvider;
 	private final InvitationRepo invitationRepo;
 	private final ReportService reportService;
 
@@ -162,36 +161,37 @@ public class LeadService {
 	}
 
 	public LeadEntity list(FilterDTO filter) throws LeadsException {
-		List<LeadDTO> leads = listLeads(filter);
-		long leadsTotalPrice = leads.stream().mapToLong(l -> l.getPrice()).sum();
-		LeadEntity res = LeadEntity.builder().leads(leads).leadsTotalPrice(leadsTotalPrice).leadTypes(getLeadTypes())
-		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-		    .totalLeads(getLeadsTotal(leads, Stream.of(Event.values()).filter(e->e.getAction().equals(filter.getEvent())).findFirst().orElse(null) )).build();
-		res.getLeads().stream().forEach(lead -> {
-			completeLead(lead);
-		});
-		return res;
-	}
-
-	private void completeLead(LeadDTO lead) {
-		lead.setEventLogs(findLeadEventLogs(lead.getId()));
-		lead.setNextEvents(findNextEvents(lead.getId()));
-	}
-
-	private List<LeadDTO> listLeads(FilterDTO filter) throws LeadsException {
 		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
 		List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
-		events = events.size()<=0?null:events;
-		boolean ev = events!=null;
+		events = events.size() <= 0 ? null : events;
+		boolean ev = events != null;
 		boolean te = !StringUtils.isEmpty(filter.getSearchText());
-		if (ev && te)// nada
-			return leadRepo.search(filter.getSearchText(), events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		else if (!ev && te)// text only
-			return leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		else if( ev )
-			return this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).collect(Collectors.toList());
-		else
-			return Collections.emptyList();
+		List<LeadDTO> leads;
+		long totalLeads;
+		if (ev && te) { // event and text
+			leads = leadRepo.search(filter.getSearchText(), events, pageable).stream().map(l -> LeadDTO.of(l)).map(l -> completeLead(l)).collect(Collectors.toList());
+			totalLeads = leadRepo.searchTotal(filter.getSearchText(), events);
+		} else if (!ev && te) { // text only
+			leads = leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable).stream().map(l -> LeadDTO.of(l)).map(lead -> completeLead(lead)).collect(Collectors.toList());
+			totalLeads = leadRepo.searchTotal(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()));
+		} else if (ev && !te) { // event only
+			leads = this.leadRepo.search(events, pageable).stream().map(l -> LeadDTO.of(l)).map(lead -> completeLead(lead)).collect(Collectors.toList());
+			totalLeads = this.leadRepo.searchTotal(events);
+		} else { // neither event or text
+			leads = Collections.emptyList();
+			totalLeads = leadRepo.count();
+		}
+		return LeadEntity.builder().leads(leads).totalLeads(totalLeads)
+				.leadsTotalPrice(leads.stream().mapToLong(l -> l.getPrice()).sum())
+				.leadTypes(getLeadTypes())
+		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
+		    .totalLeads(getLeadsTotal(leads, Stream.of(Event.values()).filter(e -> e.getAction().equals(filter.getEvent())).findFirst().orElse(null))).build();
+	}
+
+	private LeadDTO completeLead(LeadDTO lead) {
+		lead.setEventLogs(findLeadEventLogs(lead.getId()));
+		lead.setNextEvents(findNextEvents(lead.getId()));
+		return lead;
 	}
 
 	public LeadDTO findLead(Long leadId) throws LeadsException {
@@ -203,8 +203,7 @@ public class LeadService {
 	@Transactional
 	public void sendInvitationByEmail(InvitationDTO invitationDTO, User user, MailDTO mailDTO) throws Exception {
 		Invitation invitation = this.invitationRepo.findById(invitationDTO.getId()).orElseThrow(() -> new LeadsException("Could not find Invitation"));
-		Mail mail = MailDTO.to(mailDTO);
-		this.mailProviderSelector.get(Mail.TYPE.INVITATION_TO_BID).getMailProvider(mail, invitation).onError((error) -> {
+		this.invitationToBidMailProvider.email(mailDTO, Collections.emptyList(), invitation).onError((error) -> {
 			log.error(error);
 		}).onSuccess(() -> {
 			invitation.setEmailed((invitation.getEmailed() == null) ? 1L : invitation.getEmailed() + 1L);

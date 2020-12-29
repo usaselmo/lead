@@ -13,7 +13,7 @@
 		 findPersons: function (scope) {
 			 var res = $http.get(local_server_url + "/persons");
 			 res.then(function (response) {
-				 scope.persons = response.data
+				 scope.persons = response.data.persons
 			 }, function (response) {
 				 console.log(response)
 			 });
@@ -24,14 +24,25 @@
 			 var res = $http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/cantreach', email);
 			 res.error( error => console.log(error))
 			 return res;
- 		},
+		 },
  		
  		sendHiringDecisionEmail: function (lead, person, mail) {
- 			$http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision', mail).then(function (response) {
- 			}, function (response) {
- 				console.log(response)
- 			});
- 		},
+			 var res = $http.post(local_server_url + '/persons/'+person.id+'/leads/'+lead.id+'/hiringdecision', mail);
+			 res.error( error => console.log(error))
+			 return res;
+		 },
+
+		 findEmailAttachments: function (lead, person) {
+			 var res = $http.get(local_server_url + '/persons/' + person.id + '/leads/' + lead.id + '/emailattachments');
+			 res.error(error => console.log(error))
+			 return res;
+		 },
+
+		 deleteAttachment: function (lead, person, f) {
+			 var res = $http.delete(local_server_url + '/persons/' + person.id + '/leads/' + lead.id + '/emailattachments/' + f );
+			 res.error(error => console.log(error))
+			 return res;
+		 },
 
  		findClients: function (scope) {
  			$http.get(local_server_url + "/persons").then(function (response) {

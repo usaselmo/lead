@@ -39,7 +39,7 @@ var personController = function ($scope, $http, $timeout, personService, company
 		else {
 			personService.findByName(text)
 				.success(data => {
-					$scope.persons = data
+					$scope.persons = data.persons
 				})
 				.error(error => console.log(error))
 		}

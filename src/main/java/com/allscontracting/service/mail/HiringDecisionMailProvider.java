@@ -3,28 +3,32 @@ package com.allscontracting.service.mail;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
+import com.allscontracting.dto.MailDTO;
 
-@AllArgsConstructor
 @Component
 public class HiringDecisionMailProvider implements MailProvider {
 
+	private static final String FILE_LOCATION_NAME = "templates/email/hiring-decision.html";
+	private static final String SUBJECT = "Have you made a decision ?";
+
 	@Override
-	public MailSender getMailProvider(Mail mail, Object... obj) throws IOException {
-		MailSender mailSender = new MailSender(mail.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
-		    mail.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "Have you made a decision ?", getHiringDecisionText(mail), null);
+	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException {
+		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), SUBJECT, getHiringDecisionText(mailDTO),
+		    attachments);
 		return mailSender;
 	}
 
-	private String getHiringDecisionText(Mail mail) throws IOException {
-		File file = getFile("templates/email/hiring-decision.html");
+	private String getHiringDecisionText(MailDTO mailDTO) throws IOException {
+		File file = getFile(FILE_LOCATION_NAME);
 		String string = new String(Files.readAllBytes(file.toPath()));
-		string = string.replace("{person.name}", mail.getTo().get(0).getName());
-		string = string.replace("{additionalText}", mail.getText());
+		string = string.replace("{person.name}", mailDTO.getTo().get(0).getName());
+		string = string.replace("{additionalText}", mailDTO.getText());
 		return string;
 	}
 

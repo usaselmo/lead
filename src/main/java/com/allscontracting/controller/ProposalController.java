@@ -21,12 +21,12 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.security.LeadUserDetails;
 import com.allscontracting.service.ProposalService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("proposals")
-@AllArgsConstructor
-public class ProposalController {
+@RequiredArgsConstructor
+public class ProposalController extends EmailSenderAbstractController{
 
 	private static final String UNEXPECTED_ERROR = "Unexpected error.";
 	private final ProposalService proposalService;
@@ -42,15 +42,10 @@ public class ProposalController {
 		}
 	}
 
-	@PutMapping(value = "{proposalId}/email")
-	public LeadEntity sendByEmail(@PathVariable long proposalId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) {
-		try {
-			this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO);
-			return LeadEntity.builder().build().addSuccessMessage("Email is being sent.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return LeadEntity.builder().build().addErrorMessage("Could not send e-mail");
-		}
+	@PutMapping(value = "{proposalId}/email/{personId}/{leadId}")
+	public void sendProposalByEmail(@PathVariable long proposalId, @RequestBody MailDTO mailDTO, @PathVariable String personId,  @PathVariable String leadId, @Autowired Authentication authentication) throws Exception {
+		this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, generateAttachments(personId+leadId));
+		removeAttachments(personId+leadId); 
 	}
 
 	@PutMapping

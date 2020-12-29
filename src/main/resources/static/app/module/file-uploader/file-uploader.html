@@ -3,11 +3,11 @@
     <input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br />
     <div ng-if="uploader.queue.length > 0 ">
         <ul ng-repeat="item in uploader.queue">
-            <li><span ng-bind="item.file.name"></span><br /></li>
+            <li><span style="color: #7d7c7c;" ng-bind="item.file.name"></span><br /></li>
         </ul>
         <div>
             <div>
-                <div class="progress" style="">
+                <div class="progress" >
                     <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>

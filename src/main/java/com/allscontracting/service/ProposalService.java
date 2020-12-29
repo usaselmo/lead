@@ -1,11 +1,13 @@
 package com.allscontracting.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -26,8 +28,7 @@ import com.allscontracting.model.User;
 import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.repo.ProposalRepository;
-import com.allscontracting.service.mail.Mail;
-import com.allscontracting.service.mail.MailProviderSelector;
+import com.allscontracting.service.mail.ProposalMailProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class ProposalService {
 	private final LogService logService;
 	private final MediaRepo mediaRepo;
 
-	private final MailProviderSelector mailProviderSelector;
+	private final ProposalMailProvider proposalMailProvider;
 
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
@@ -98,19 +99,22 @@ public class ProposalService {
 	}
 
 	@Transactional
-	public void sendPdfByEmail(long proposalId, User user, MailDTO mailDTO) throws Exception {
+	public void sendPdfByEmail(long proposalId, User user, MailDTO mailDTO, List<File> attachments) throws Exception {
 		Proposal proposal = this.proposalRepository.findById(Long.valueOf(proposalId)).orElseThrow(() -> new LeadsException("Proposal not found"));
 		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
-		Mail mail = MailDTO.to(mailDTO);
-		this.mailProviderSelector.get(mail.getType()).getMailProvider(mail, proposal).onError((error) -> {
-			log.error("Error sending mail: " + error);
-		}).onSuccess(() -> {
-			proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-			proposal.setEmailed(true);
-			this.proposalRepository.save(proposal);
-			logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
-			    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
-		}).send();
+		this.proposalMailProvider
+			.email(mailDTO, attachments, proposal)
+			.onError((error) -> {
+				log.error("Error sending mail: " + error);
+			})
+			.onSuccess(() -> {
+				proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+				proposal.setEmailed(true);
+				this.proposalRepository.save(proposal);
+				logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
+				    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+			})
+			.send();
 	}
 
 	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
@@ -128,28 +132,6 @@ public class ProposalService {
 		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
 		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 		return ProposalDTO.of(proposal);
-	}
-
-	private void defineItems(Proposal proposal) {
-		proposal.getItems().forEach(item -> {
-			proposal.addItem(item);
-			item.getLines().forEach(line -> item.addLine(line));
-		});
-	}
-
-	private void defineNumber(Proposal proposal, Lead lead) {
-		if (proposal.getNumber() == null) {
-			if (lead.getProposals() != null && lead.getProposals().size() > 0) {
-				long max = 0;
-				if (proposal.isChangeorder())
-					max = lead.getProposals().stream().filter(p -> p.isChangeorder()).mapToLong(p -> p.getNumber()).max().orElse(0L);
-				else
-					max = lead.getProposals().stream().mapToLong(p -> p.getNumber()).max().orElse(0L);
-				proposal.setNumber(max + 1);
-			} else {
-				proposal.setNumber(1L);
-			}
-		}
 	}
 
 	public static String getProposalFileName(Proposal proposal, Client client, String suffix) {
@@ -175,6 +157,28 @@ public class ProposalService {
 		map.put("PROPOSAL_ID", proposal.getId());
 		map.put("LEAD", LeadDTO.of(proposal.getLead()));
 		return map;
+	}
+
+	private void defineItems(Proposal proposal) {
+		proposal.getItems().forEach(item -> {
+			proposal.addItem(item);
+			item.getLines().forEach(line -> item.addLine(line));
+		});
+	}
+
+	private void defineNumber(Proposal proposal, Lead lead) {
+		if (proposal.getNumber() == null) {
+			if (lead.getProposals() != null && lead.getProposals().size() > 0) {
+				long max = 0;
+				if (proposal.isChangeorder())
+					max = lead.getProposals().stream().filter(p -> p.isChangeorder()).mapToLong(p -> p.getNumber()).max().orElse(0L);
+				else
+					max = lead.getProposals().stream().mapToLong(p -> p.getNumber()).max().orElse(0L);
+				proposal.setNumber(max + 1);
+			} else {
+				proposal.setNumber(1L);
+			}
+		}
 	}
 
 }

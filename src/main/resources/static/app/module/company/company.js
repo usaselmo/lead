@@ -16,7 +16,7 @@ var companyController = function ($scope, $http, $timeout, companyService) {
 		if (!text) $scope.companies = []
 		else if (text.length < 3) return
 		companyService.search(text).success(data=> {
-			$scope.companies = data;
+			$scope.companies = data.companies;
 		} )
 	}
 

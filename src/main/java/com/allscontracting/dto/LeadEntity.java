@@ -19,16 +19,29 @@ public class LeadEntity {
 
 	private List<String> successMessages ;
 	private List<String> errorMessages ;
+	
 	private LeadDTO lead;
 	private List<LeadDTO> leads;
+	
 	private Long leadsTotalPrice;
 	private List<EventDTO> events;
 	private List<String> leadTypes;
 	private Long totalLeads;
+	
 	private CompanyDTO company;
+	private List<CompanyDTO> companies;
+	
 	private ProposalDTO proposal;
+	
 	private PersonDTO person;
+	private List<PersonDTO> persons;
+	
 	private InvitationDTO invitation;
+
+	private UserDTO user;
+	private List<UserDTO> users;
+	
+	private List<String> profiles;
 	
 	public LeadEntity addSuccessMessage(String successMessage) {
 		if(this.successMessages == null)

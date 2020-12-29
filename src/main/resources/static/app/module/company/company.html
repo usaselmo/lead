@@ -4,10 +4,15 @@
 
 <div ng-if="!company">
 
-  <a style="" title="New Company" ng-click="crud({})" href="#" class="btn btn-default btn-sm"><span
-      class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Company</a>
+  <h2>Company
 
-  <input type="text" class="form-control" ng-model="text" ng-change="search(text)" autofocus style="margin-top: 16px;" placeholder="Search">
+    <a style="" title="New Company" ng-click="crud({})" href="#" class="btn btn-default btn-sm"><span
+        class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add </a>
+
+  </h2>
+
+  <input type="text" class="form-control" ng-model="text" ng-change="search(text)" autofocus style="margin-top: 16px;"
+    placeholder="Search">
 
   <table class="table table-striped table-bordered" ng-if="companies">
     <tr ng-repeat="company in companies">

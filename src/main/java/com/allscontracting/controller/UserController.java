@@ -1,6 +1,5 @@
 package com.allscontracting.controller;
 
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,42 +11,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.allscontracting.dto.LeadEntity;
 import com.allscontracting.dto.UserDTO;
 import com.allscontracting.model.UserProfile;
 import com.allscontracting.service.UserService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @RequestMapping("users")
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
 	private final UserService userService;
 
 	@GetMapping("estimators")
-	public List<UserDTO> getEstimators() {
-		return userService.findEstimators();
+	public LeadEntity getEstimators() {
+		return LeadEntity.builder().users(userService.findEstimators()).build();
 	}
 
 	@GetMapping("")
-	public List<UserDTO> getUsersByName(@RequestParam String userName) {
-		return this.userService.findLikeName(userName);
+	public LeadEntity getUsersByName(@RequestParam String userName) {
+		return LeadEntity.builder().users(this.userService.findLikeName(userName)).build();
 	}
 
 	@PostMapping("")
-	public UserDTO createUser(@RequestBody UserDTO userDTO) throws Exception {
-		return userService.createUser(userDTO);
+	public LeadEntity createUser(@RequestBody UserDTO userDTO) throws Exception {
+		return LeadEntity.builder().user(userService.createUser(userDTO)).build();
 	}
 
 	@PutMapping("")
-	public UserDTO updateUser(@RequestBody UserDTO userDTO) throws Exception {
-		return userService.update(userDTO);
+	public LeadEntity updateUser(@RequestBody UserDTO userDTO) throws Exception {
+		return LeadEntity.builder().user(userService.update(userDTO)).build();
 	}
 
 	@GetMapping("profiles")
-	public List<String> getProfiles() {
-		return Stream.of(UserProfile.Description.values()).map(p -> p.name()).collect(Collectors.toList());
+	public LeadEntity getProfiles() {
+		return LeadEntity.builder().profiles(Stream.of(UserProfile.Description.values()).map(p -> p.name()).collect(Collectors.toList())).build();
 	}
 
 }

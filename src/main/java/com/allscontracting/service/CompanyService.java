@@ -11,13 +11,13 @@ import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Company;
 import com.allscontracting.repo.CompanyRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CompanyService {
 
-	private CompanyRepository companyRepo;
+	private final CompanyRepository companyRepo;
 
 	public List<CompanyDTO> getCompanies() {
 		return this.companyRepo.findAll(Sort.by("name")).stream().map(c -> CompanyDTO.of(c)).collect(Collectors.toList());

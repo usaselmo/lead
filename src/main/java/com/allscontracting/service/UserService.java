@@ -16,10 +16,10 @@ import com.allscontracting.repo.CompanyRepository;
 import com.allscontracting.repo.UserProfileRepository;
 import com.allscontracting.repo.UserRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
 
 	private final UserRepository userRepo;
@@ -60,7 +60,6 @@ public class UserService {
 			addProfiles(userDTO, user);
 			return UserDTO.of(userRepo.save(user));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw e;
 		}

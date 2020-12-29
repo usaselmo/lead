@@ -6,12 +6,15 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 
+import com.allscontracting.dto.MailDTO;
+
 public interface MailProvider {
 
-	MailSender getMailProvider(Mail mail, Object... obj) throws Exception;
+	MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws Exception;
 
 	default File getFile(String fileName) throws IOException {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);

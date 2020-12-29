@@ -9,7 +9,7 @@ var local_server_url = "";
 
 		 findCompanies: function (scope) {
 			 $http.get(local_server_url + "/companies").then(function (response) {
-				 scope.companies = response.data
+				 scope.companies = response.data.companies
 			 }, function (response) {
 				 console.log(response)
 			 });

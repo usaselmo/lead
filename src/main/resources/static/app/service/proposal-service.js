@@ -51,8 +51,9 @@ var proposalService = function($http){
 			return res;
 		},
 
-		sendByEmail: function (proposal, email) {
-			var res = $http.put(local_server_url + "/proposals/" + proposal.id + "/email", email);
+		sendByEmail: function (proposal, email, personId, leadId) {
+			console.log(proposal, email);
+			var res = $http.put(local_server_url + "/proposals/" + proposal.id + "/email/" + personId +'/' + leadId, email);
 			res.error(error => console.log(error))
 			return res;
 		},
