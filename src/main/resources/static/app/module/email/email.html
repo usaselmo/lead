@@ -57,7 +57,7 @@
                                 <li>{{f}} <a href="#" ng-click="deleteAttachment(f)" title="Delete {{f}}" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a> </li>
                             </ul>
                         </div>
-                        <app-file-uploader ng-if="!email.uploaded" url="urlUpload" on-complete-all="onCompleteAll()"></app-file-uploader>
+                        <app-file-uploader ng-if="!email.uploaded" url="urlUpload" on-complete-all="onCompleteAll(uploader)"></app-file-uploader>
                     </div>
                 </div>
 

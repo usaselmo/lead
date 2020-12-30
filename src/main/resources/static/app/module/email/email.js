@@ -53,8 +53,7 @@ var emailController = function ($scope, personService, proposalService) {
             .error(error=>{findAttachments(); console.log(error); })
     } 
 
-    $scope.onCompleteAll = function () {
-        console.log($scope.email)
+    $scope.onCompleteAll = function (uploader) {
         findAttachments();
     }
 

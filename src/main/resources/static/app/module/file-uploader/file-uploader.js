@@ -24,7 +24,7 @@ var fileUploaderController = function ($scope, FileUploader) {
     uploader.onSuccessItem = function (fileItem, response, status, headers) {};
 
     uploader.onCompleteAll = function () {
-      $scope.onCompleteAll()
+      $scope.onCompleteAll({ 'uploader': uploader })
       uploader.clearQueue();
     }
 
