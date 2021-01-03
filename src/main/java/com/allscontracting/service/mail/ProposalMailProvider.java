@@ -29,16 +29,19 @@ public class ProposalMailProvider implements MailProvider {
 	@Override
 	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, JRException, SQLException {
 		final Proposal proposal = (Proposal) obj[0];
-		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
-		HashMap<String, Object> map = ProposalService.getProposalParameters(proposal, person);
-		String streamFileName = ProposalService.getProposalFileName(proposal, person, "pdf");
-		File file = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		attachments.add(file);
-
+		attachments.add(getFile(proposal));
 		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "Your Proposal from All's Contracting",
 		    this.getProposalText(proposal, mailDTO), attachments);
 		return mailSender;
+	}
+
+	private File getFile(final Proposal proposal) throws JRException, SQLException, IOException {
+		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
+		HashMap<String, Object> map = ProposalService.getProposalParameters(proposal, person);
+		String streamFileName = ProposalService.getProposalFileName(proposal, person, "pdf");
+		File file = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
+		return file;
 	}
 
 	private String getProposalText(Proposal proposal, MailDTO mailDTO) throws IOException {
