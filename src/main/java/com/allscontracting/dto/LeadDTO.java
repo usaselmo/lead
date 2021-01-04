@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.util.StringUtils;
 
@@ -94,8 +95,11 @@ public class LeadDTO {
 		if(lead.getProposals()==null || lead.getProposals().size()<=0)
 			return BigDecimal.ZERO.longValue();
 		
-		BigDecimal total = lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal();
-		return total.longValue();
+		if(lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).count()>0) {
+			return lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).map(p->p.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
+		}else {
+			return lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
+		}
 	}
 
 	public static final Lead toLead(LeadDTO leadDTO) throws LeadsException {
