@@ -31,6 +31,17 @@ public class ProposalController extends EmailSenderAbstractController{
 	private static final String UNEXPECTED_ERROR = "Unexpected error.";
 	private final ProposalService proposalService;
 
+	@GetMapping(value = "{proposalId}/markasaccepted")
+	public LeadEntity markAsAccepted(@PathVariable long proposalId, @Autowired Authentication authentication) {
+		try {
+			ProposalDTO proposalDTO = this.proposalService.markAsAccepted(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser());
+			return LeadEntity.builder().proposal(proposalDTO).build().addSuccessMessage("Proposal has been marked as Accepted.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return LeadEntity.builder().build().addErrorMessage("Could not mark proposal as Accepted");
+		}
+	}
+
 	@GetMapping(value = "{proposalId}/markasemailed")
 	public LeadEntity markAsEmailed(@PathVariable long proposalId, @Autowired Authentication authentication) {
 		try {

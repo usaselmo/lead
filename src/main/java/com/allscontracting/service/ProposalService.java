@@ -134,6 +134,14 @@ public class ProposalService {
 		return ProposalDTO.of(proposal);
 	}
 
+	@Transactional
+	public ProposalDTO markAsAccepted(long proposalId, User user) throws LeadsException {
+		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
+		proposal.setAccepted(true);
+		this.proposalRepository.save(proposal);
+		return ProposalDTO.of(proposal);
+	}
+
 	public static String getProposalFileName(Proposal proposal, Client client, String suffix) {
 		StringBuilder streamFileName = new StringBuilder(client.getName()).append(" - ")
 		    .append(!StringUtils.isEmpty(proposal.getLead().getAddress()) ? proposal.getLead().getAddress() : client.getAddress()).append(" - ")

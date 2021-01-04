@@ -47,6 +47,7 @@ public class Proposal implements Entity<Long>, Comparable<Proposal>, Serializabl
 	private String note;
 	private Date date;
 	private boolean changeorder;
+	private boolean accepted;
 
 	@ManyToOne
 	@JoinColumn(name = "lead_id", insertable = true, updatable = false, nullable = false)

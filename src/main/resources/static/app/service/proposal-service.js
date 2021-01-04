@@ -46,6 +46,11 @@ var convertToServerFormat = function (proposal) {
 var proposalService = function($http){
 	return { 
 
+		markAsAccepted: function (proposal) {
+			var res = $http.get(local_server_url + '/proposals/' + proposal.id + '/markasaccepted');
+			return res;
+		},
+
 		markAsEmailed: function(proposal){
 			var res = $http.get(local_server_url + '/proposals/' + proposal.id + '/markasemailed');
 			return res;

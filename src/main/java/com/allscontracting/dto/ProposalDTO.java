@@ -33,6 +33,7 @@ public class ProposalDTO {
 	private final Person estimator;
 	private final String date;
 	private final boolean changeorder;
+	private final boolean accepted;
 	
 	public static final ProposalDTO of(Proposal proposal) {
 		if(proposal==null)
@@ -51,6 +52,7 @@ public class ProposalDTO {
 				.items(proposal.getItems().stream().map(i->ItemDTO.of(i)).collect(Collectors.toList()))
 				.date(Converter.dateToString(proposal.getDate(), Converter.MM_dd_yyyy))
 				.changeorder(proposal.isChangeorder())
+				.accepted(proposal.isAccepted())
 				.build();
 	}
 	
@@ -71,6 +73,7 @@ public class ProposalDTO {
 		proposal.setItems(proposalDTO.getItems().stream().map(i->ItemDTO.toItem(i)).collect(Collectors.toList()));
 		proposal.setDate(Converter.stringToDate(proposalDTO.getDate(), Converter.MM_dd_yy));
 		proposal.setChangeorder(proposalDTO.isChangeorder());
+		proposal.setAccepted(proposalDTO.isAccepted());
 		return proposal;
 	}
 	

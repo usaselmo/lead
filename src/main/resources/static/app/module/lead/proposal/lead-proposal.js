@@ -19,6 +19,14 @@ leadProposal.directive('appLeadProposal', function () {
 
 var leadProposalController = function ($scope, proposalService) {
 
+    $scope.markAsAccepted = function (proposal) {
+        if (confirm('Confirm mark this document as Accepted ? ')) {
+            proposalService.markAsAccepted(proposal).success(data => {
+                $scope.lead.proposals = $scope.lead.proposals.map(p => p.id == data.proposal.id ? data.proposal : p)
+            })
+        }
+    }
+
     $scope.markAsEmailed = function (proposal) {
         if (confirm('Confirm mark this document as e-mailed ? ')) {
             proposalService.markAsEmailed(proposal).success(data => {

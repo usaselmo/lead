@@ -9,6 +9,7 @@
             <th>Price ($)</th>
             <th>Date</th>
             <th>E-mailed</th>
+            <th>Accepted</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -20,6 +21,10 @@
             <td>{{prop.date | date}}</td>
             <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /><input
                 ng-if="!prop.emailed" type="checkbox" readonly disabled class="" /></td>
+            <td>
+              <span ng-if="prop.accepted"  class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              <input ng-if="!prop.accepted" type="checkbox" class="checkbox" ng-click="markAsAccepted(prop)" />
+            </td>
             <td>
 
               <a title="Donload PDF" href="proposals/{{prop.id}}/pdf" class="btn btn-default btn-sml"><span
