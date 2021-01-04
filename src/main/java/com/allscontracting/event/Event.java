@@ -21,6 +21,7 @@ public enum Event {
 	UPDATE("UPDATED", "UPDATE", "U", false),
 	EMAIL_SENT("EMAIL SENT", "SEND EMAIL", "SE", false),
 	DELETE("DELETED", "DELETED", "DE", false),
+	PROPOSAL_ACCEPTED("PROPOSAL ACCEPTED","PROPOSAL ACCEPTED","PAC",false);
 	;
 	
 	private String status;

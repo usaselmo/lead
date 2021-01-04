@@ -139,6 +139,10 @@ public class ProposalService {
 		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
 		proposal.setAccepted(true);
 		this.proposalRepository.save(proposal);
+		
+		logService.event(Lead.class, proposal.getLead().getId(), Event.PROPOSAL_ACCEPTED, user, "Proposal marked as Accepted. Proposal # "
+		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		
 		return ProposalDTO.of(proposal);
 	}
 
