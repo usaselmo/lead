@@ -20,7 +20,7 @@ leadProposal.directive('appLeadProposal', function () {
 var leadProposalController = function ($scope, proposalService) {
 
     $scope.markAsAccepted = function (proposal) {
-        if (confirm('Confirm mark this document as Accepted ? ')) {
+        if (confirm('Confirm change Accepted status ? ')) {
             proposalService.markAsAccepted(proposal).success(data => {
                 $scope.lead.proposals = $scope.lead.proposals.map(p => p.id == data.proposal.id ? data.proposal : p)
             })

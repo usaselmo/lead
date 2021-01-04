@@ -137,10 +137,10 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO markAsAccepted(long proposalId, User user) throws LeadsException {
 		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
-		proposal.setAccepted(true);
+		proposal.setAccepted(!proposal.isAccepted());
 		this.proposalRepository.save(proposal);
 		
-		logService.event(Lead.class, proposal.getLead().getId(), Event.PROPOSAL_ACCEPTED, user, "Proposal marked as Accepted. Proposal # "
+		logService.event(Lead.class, proposal.getLead().getId(), Event.PROPOSAL_ACCEPTED, user, "Proposal marked as "+ proposal.isAccepted() +" Accepted. Proposal # "
 		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 		
 		return ProposalDTO.of(proposal);

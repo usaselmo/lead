@@ -22,7 +22,7 @@
             <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /><input
                 ng-if="!prop.emailed" type="checkbox" readonly disabled class="" /></td>
             <td>
-              <span ng-if="prop.accepted"  class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              <input ng-if="prop.accepted" type="checkbox" class="checkbox" checked ng-click="markAsAccepted(prop)" />
               <input ng-if="!prop.accepted" type="checkbox" class="checkbox" ng-click="markAsAccepted(prop)" />
             </td>
             <td>

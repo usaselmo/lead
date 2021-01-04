@@ -44,7 +44,7 @@ var convertToServerFormat = function (proposal) {
 };
 
 var proposalService = function($http){
-	return { 
+	return {
 
 		markAsAccepted: function (proposal) {
 			var res = $http.get(local_server_url + '/proposals/' + proposal.id + '/markasaccepted');
