@@ -46,6 +46,7 @@ var leadProposalController = function ($scope, proposalService) {
         nproposal.total = 0;
         nproposal.id = null;
         nproposal.emailed = false;
+        nproposal.accepted = false;
         nproposal.number = null;
         nproposal.items.forEach(item => {
             item.id = null;
