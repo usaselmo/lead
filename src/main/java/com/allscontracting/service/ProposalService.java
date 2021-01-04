@@ -125,12 +125,16 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO markAsEmailed(long proposalId, User user) throws LeadsException {
 		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
-		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
-		proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-		proposal.setEmailed(true);
+		proposal.setEmailed(!proposal.isEmailed());
 		this.proposalRepository.save(proposal);
-		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
-		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		
+		if(proposal.isEmailed()) {
+			Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
+			proposal.getLead().setEvent(Event.SEND_PROPOSAL);
+			logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
+			    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
+		}
+
 		return ProposalDTO.of(proposal);
 	}
 

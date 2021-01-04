@@ -19,12 +19,20 @@
                 ng-if="!prop.changeorder">Proposal #{{prop.number}}</span></th>
             <td>{{prop.formattedTotal}}</td>
             <td>{{prop.date | date}}</td>
-            <td><input ng-if="prop.emailed" type="checkbox" checked readonly disabled class="" /><input
-                ng-if="!prop.emailed" type="checkbox" readonly disabled class="" /></td>
+
+            <!-- emailed -->
             <td>
-              <input ng-if="prop.accepted" type="checkbox" class="checkbox" checked ng-click="markAsAccepted(prop)" />
-              <input ng-if="!prop.accepted" type="checkbox" class="checkbox" ng-click="markAsAccepted(prop)" />
+              <input ng-if="prop.emailed" type="checkbox" ng-click="markAsEmailed(prop)" class="checkbox" checked disabled />
+              <input ng-if="!prop.emailed" type="checkbox" ng-click="markAsEmailed(prop)" class="checkbox" />
             </td>
+
+            <!-- accepted -->
+            <td>
+              <input ng-if=" prop.accepted" type="checkbox" class="checkbox" checked ng-click="markAsAccepted(prop)" />
+              <input ng-if="!prop.accepted && !prop.emailed" type="checkbox" class="checkbox" disabled />
+              <input ng-if="!prop.accepted &&  prop.emailed" type="checkbox" class="checkbox" ng-click="markAsAccepted(prop)" />
+            </td>
+
             <td>
 
               <a title="Donload PDF" href="proposals/{{prop.id}}/pdf" class="btn btn-default btn-sml"><span
