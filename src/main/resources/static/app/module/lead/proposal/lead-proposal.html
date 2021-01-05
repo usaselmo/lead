@@ -22,18 +22,22 @@
 
             <!-- emailed -->
             <td>
-              <a ng-if="!prop.emailed" href="#" title="Mark as E-mailed" class="btn btn-default btn-sml"
-                ng-click="markAsEmailed(prop)"><span class="glyphicon glyphicon-saved"
-                  aria-hidden="true"></span></a>
-              <span ng-if="prop.emailed" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              <a ng-if="!prop.emailed" href="#" title="Mark as E-mailed" class="btn btn-default btn-sml" ng-click="markAsEmailed(prop)">
+                <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+              </a>
+              <a disabled style="color: green;" ng-if="prop.emailed" href="#" title="Marked as E-mailed" class="btn btn-default btn-sml" >
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+              </a>
             </td>
 
             <!-- accepted -->
             <td>
-              <input ng-if="!(!prop.accepted && !prop.emailed)" type="checkbox" ng-click="markAsAccepted(prop)" class="checkbox"
-                ng-model="prop.accepted" />
-              <input ng-if="!prop.accepted && !prop.emailed" disabled type="checkbox" ng-click="markAsAccepted(prop)" class="checkbox"
-                ng-model="prop.accepted" />
+              <a style="color: grey;" ng-if="prop.emailed && !prop.accepted" href="#" title="Mark as Accepted" class="btn btn-default btn-sml" ng-click="markAsAccepted(prop)">
+                <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+              </a>
+              <a style="color: green;" ng-if="prop.emailed && prop.accepted" href="#" title="Marked as Accepted" class="btn btn-default btn-sml"  ng-click="markAsAccepted(prop)">
+                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+              </a>
             </td>
 
             <td>

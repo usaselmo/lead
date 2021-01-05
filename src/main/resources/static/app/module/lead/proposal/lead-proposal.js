@@ -24,8 +24,6 @@ var leadProposalController = function ($scope, proposalService) {
             proposalService.markAsAccepted(proposal).success(data => {
                 $scope.lead.proposals = $scope.lead.proposals.map(p => p.id == data.proposal.id ? data.proposal : p)
             })
-        }else{
-            $scope.lead.proposals.filter(p=>p.id==proposal.id).find(p=>p.id==proposal.id).accepted = !proposal.accepted
         }
     }
 
