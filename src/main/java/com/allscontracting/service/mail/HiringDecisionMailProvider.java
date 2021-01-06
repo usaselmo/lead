@@ -12,13 +12,12 @@ import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
 
 @Component
-public class HiringDecisionMailProvider implements MailProvider {
+public class HiringDecisionMailProvider extends AbstractMailProvider {
 
 	private static final String FILE_LOCATION_NAME = "templates/email/hiring-decision.html";
 	private static final String SUBJECT = "Have you made a decision ?";
 
-	@Override
-	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException {
+	public MailSender email(MailDTO mailDTO, List<File> attachments) throws IOException {
 		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getHiringDecisionText(mailDTO),
 		    attachments);

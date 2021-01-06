@@ -12,13 +12,12 @@ import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
 
 @Component
-public class CantReachMailProvider implements MailProvider {
+public class CantReachMailProvider extends AbstractMailProvider {
 
 	private static final String FILE_LOCATION_NAME = "templates/email/cantreach.html";
 	private static final String SUBJECT = "We are trying to reach you for your job";
 
-	@Override
-	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException {
+	public MailSender email(MailDTO mailDTO, List<File> attachments) throws IOException {
 
 		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getCantReachText(mailDTO), attachments);

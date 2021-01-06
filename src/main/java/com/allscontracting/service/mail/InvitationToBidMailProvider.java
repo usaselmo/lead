@@ -16,16 +16,14 @@ import com.allscontracting.model.Invitation;
 import com.allscontracting.service.Converter;
 
 @Component
-public class InvitationToBidMailProvider implements MailProvider {
+public class InvitationToBidMailProvider extends AbstractMailProvider {
 
 	private static final String FILE_LOCATION_NAME = "templates/email/invitation-to-bid.html";
 	private static final String TEMP_FILE_SUFFIX = "";
 	private static final String TEMP_FILE_PREFIX = "leadsdc-";
 	private static final String SUBJECT = "REQUEST FOR PROPOSAL - ";
 
-	@Override
-	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, LeadsException {
-		final Invitation invitation = (Invitation) obj[0];
+	public MailSender email(MailDTO mailDTO, List<File> attachments, Invitation invitation) throws IOException, LeadsException {
 		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT + invitation.getLead().getTitle(),
 		    this.getInvitationText(invitation), this.getFiles(mailDTO, attachments));

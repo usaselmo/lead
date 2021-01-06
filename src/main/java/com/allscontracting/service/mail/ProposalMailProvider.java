@@ -22,14 +22,12 @@ import net.sf.jasperreports.engine.JRException;
 
 @RequiredArgsConstructor
 @Component
-public class ProposalMailProvider implements MailProvider {
+public class ProposalMailProvider extends AbstractMailProvider {
 
 	private final ReportService reportService;
 	private static final String PROPOSAL_FILE_NAME = "estimate";
 
-	@Override
-	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, JRException, SQLException {
-		final Proposal proposal = (Proposal) obj[0];
+	public MailSender email(MailDTO mailDTO, List<File> attachments, Proposal proposal) throws IOException, JRException, SQLException {
 		attachments.add(getFile(proposal));
 		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), "Your Proposal from All's Contracting",
