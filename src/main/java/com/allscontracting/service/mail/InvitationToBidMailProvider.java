@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.allscontracting.dto.MailDTO;
+import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.exception.LeadsException;
 import com.allscontracting.model.Invitation;
 import com.allscontracting.service.Converter;
@@ -25,8 +26,8 @@ public class InvitationToBidMailProvider implements MailProvider {
 	@Override
 	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, LeadsException {
 		final Invitation invitation = (Invitation) obj[0];
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
-		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), SUBJECT + invitation.getLead().getTitle(),
+		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT + invitation.getLead().getTitle(),
 		    this.getInvitationText(invitation), this.getFiles(mailDTO, attachments));
 		return mailSender;
 	}

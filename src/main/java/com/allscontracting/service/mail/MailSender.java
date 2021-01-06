@@ -23,10 +23,8 @@ public class MailSender {
 	private static final String GMAIL_USER = "allscontractingdc@gmail.com";
 	private static final int PORT = 465;
 	private static final String HOST = "smtp.gmail.com";
-	private Consumer<String> runnableOnError = (s) -> {
-	};
-	private Runnable runnableOnSuccess = () -> {
-	};
+	private Consumer<String> runnableOnError = (s) -> {};
+	private Runnable runnableOnSuccess = () -> {};
 
 	private String subject;
 	private List<String> emailTo;

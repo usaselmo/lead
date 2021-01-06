@@ -182,7 +182,7 @@ public class LeadService {
 			totalLeads = leadRepo.count();
 		}
 		return LeadEntity.builder().leads(leads).totalLeads(totalLeads)
-				.leadsTotalPrice(leads.stream().mapToLong(l -> l.getPrice()).sum())
+				.leadsTotalPrice(leads.stream().mapToLong(LeadDTO::getPrice).sum())
 				.leadTypes(getLeadTypes())
 		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
 		    .totalLeads(getLeadsTotal(leads, Stream.of(Event.values()).filter(e -> e.getAction().equals(filter.getEvent())).findFirst().orElse(null))).build();

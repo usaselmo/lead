@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.allscontracting.dto.MailDTO;
+import com.allscontracting.dto.PersonDTO;
 
 @Component
 public class HiringDecisionMailProvider implements MailProvider {
@@ -18,8 +19,8 @@ public class HiringDecisionMailProvider implements MailProvider {
 
 	@Override
 	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException {
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
-		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), SUBJECT, getHiringDecisionText(mailDTO),
+		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getHiringDecisionText(mailDTO),
 		    attachments);
 		return mailSender;
 	}

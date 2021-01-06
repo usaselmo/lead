@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.springframework.util.StringUtils;
 
@@ -95,8 +94,9 @@ public class LeadDTO {
 		if(lead.getProposals()==null || lead.getProposals().size()<=0)
 			return BigDecimal.ZERO.longValue();
 		
-		if(lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).count()>0) {
-			return lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).map(p->p.getTotal()).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
+		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).collect(Collectors.toList());
+		if(acceptedProposals==null || acceptedProposals.size()<=0) {
+			return acceptedProposals.stream().map(Proposal::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
 		}else {
 			return lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
 		}

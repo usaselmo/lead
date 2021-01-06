@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.allscontracting.dto.MailDTO;
+import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.model.Client;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.ProposalService;
@@ -30,8 +31,8 @@ public class ProposalMailProvider implements MailProvider {
 	public MailSender email(MailDTO mailDTO, List<File> attachments, Object... obj) throws IOException, JRException, SQLException {
 		final Proposal proposal = (Proposal) obj[0];
 		attachments.add(getFile(proposal));
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(to -> to.getEmail()).collect(Collectors.toList()),
-		    mailDTO.getBcc().stream().map(to -> to.getEmail()).collect(Collectors.toList()), "Your Proposal from All's Contracting",
+		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), "Your Proposal from All's Contracting",
 		    this.getProposalText(proposal, mailDTO), attachments);
 		return mailSender;
 	}

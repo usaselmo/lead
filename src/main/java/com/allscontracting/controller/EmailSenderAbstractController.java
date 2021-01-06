@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +24,7 @@ public abstract class EmailSenderAbstractController {
 	private static final Map<String, File> FILES = new HashMap<String, File>();
 
 	protected final List<File> generateAttachments(String key) {
-		List<File> attachments = FILES.entrySet().stream().filter(f->f.getKey().startsWith(key)).map(f->f.getValue()).collect(Collectors.toList());
+		List<File> attachments = FILES.entrySet().stream().filter(f->f.getKey().startsWith(key)).map(Entry::getValue).collect(Collectors.toList());
 		return attachments;
 	}	
 
