@@ -31,6 +31,7 @@ public class MailSender {
 	private List<String> bcc;
 	private String text;
 	private List<File> attachmentFiles;
+	private JavaMailSenderImpl mailSender;
 
 	public MailSender(List<String> emailTo, List<String> bcc, String subject, String text, List<File> attachments) {
 		this.emailTo = emailTo;
@@ -38,27 +39,6 @@ public class MailSender {
 		this.text = text;
 		this.bcc = (bcc == null) ? new ArrayList<String>(0) : bcc;
 		this.attachmentFiles = (attachments == null) ? new ArrayList<File>(0) : attachments;
-	}
-
-	public void send() {
-		ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
-		emailExecutor.execute(() -> {
-			try {
-				MimeMessage mimeMessage = emailSender().createMimeMessage();
-				MimeMessageHelper helper = getMiniMessageHelper(mimeMessage, subject, emailTo, bcc);
-				helper.setText(text, true);
-				for (File af : attachmentFiles) {
-					FileSystemResource file = new FileSystemResource(af);
-					helper.addAttachment(file.getFilename(), file);
-				}
-				emailSender().send(mimeMessage);
-				this.runnableOnSuccess.run();
-			} catch (Exception e) {
-				e.printStackTrace();
-				this.runnableOnError.accept(e.getMessage());
-			}
-		});
-		emailExecutor.shutdown();
 	}
 
 	public MailSender onSuccess(Runnable runnable) {
@@ -76,7 +56,39 @@ public class MailSender {
 		return this;
 	}
 
-	private JavaMailSender emailSender() {
+	public void send() {
+		ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+		emailExecutor.execute(() -> {
+			try {	
+				MimeMessage mimeMessage = createMimeMessage();
+				getEmailSender().send(mimeMessage);
+				this.runnableOnSuccess.run();
+			} catch (Exception e) {
+				e.printStackTrace();
+				this.runnableOnError.accept(e.getMessage());
+			}
+		});
+		emailExecutor.shutdown();
+	}
+
+	private MimeMessage createMimeMessage() throws MessagingException, UnsupportedEncodingException {
+		MimeMessage mimeMessage = getEmailSender().createMimeMessage();
+		MimeMessageHelper helper = getMiniMessageHelper(mimeMessage, subject, emailTo, bcc);
+		helper.setText(text, true);
+		addAttachmentsTo(helper);
+		return mimeMessage;
+	}
+
+	private void addAttachmentsTo(MimeMessageHelper helper) throws MessagingException {
+		for (File af : attachmentFiles) {
+			FileSystemResource file = new FileSystemResource(af);
+			helper.addAttachment(file.getFilename(), file);
+		}
+	}
+
+	private JavaMailSender getEmailSender() {
+		if (this.mailSender != null)
+			return this.mailSender;
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost(HOST);
 		mailSender.setPort(PORT);
@@ -87,7 +99,8 @@ public class MailSender {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.ssl.enable", "true");
-		return mailSender;
+		this.mailSender = mailSender;
+		return this.mailSender;
 	}
 
 	private MimeMessageHelper getMiniMessageHelper(MimeMessage message, String title, List<String> emailTo, List<String> bcc)
