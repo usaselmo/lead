@@ -17,6 +17,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+import lombok.NonNull;
+
 public class MailSender {
 
 	private static final String MAIL_TRANSPORT_PROTOCOL = "smtp";
@@ -35,7 +37,7 @@ public class MailSender {
 	private Consumer<String> runnableOnError = (s) -> {};
 	private Runnable runnableOnSuccess = () -> {};
 
-	public MailSender(List<String> emailTo, List<String> bcc, String subject, String text, List<File> attachments) {
+	public MailSender(@NonNull List<String> emailTo, @NonNull List<String> bcc, @NonNull String subject, @NonNull String text, @NonNull List<File> attachments) {
 		this.emailTo = Collections.unmodifiableList(emailTo); 
 		this.subject = subject;
 		this.text = text;
@@ -72,19 +74,12 @@ public class MailSender {
 		ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
 		emailExecutor.execute(() -> {
 			try {	
-				
 				MimeMessage mimeMessage = createMimeMessage();
-				this.mailSender.send(mimeMessage);
-				
-				//on success
+				this.mailSender.send(mimeMessage); //important. this actually sends the e-mail.
 				this.runnableOnSuccess.run();
-				
 			} catch (Exception e) {
 				e.printStackTrace();
-				
-				//on error
 				this.runnableOnError.accept(e.getMessage());
-				
 			}
 		});
 		emailExecutor.shutdown();
@@ -109,8 +104,7 @@ public class MailSender {
 	    throws MessagingException, UnsupportedEncodingException {
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
 		helper.setTo(emailTo.toArray(new String[0]));
-		if (bcc != null)
-			helper.setBcc(bcc.toArray(new String[0]));
+		helper.setBcc(bcc.toArray(new String[0]));
 		helper.setSubject(title);
 		helper.setFrom(GMAIL_USER, "All's Contracting Inc");
 		return helper;
