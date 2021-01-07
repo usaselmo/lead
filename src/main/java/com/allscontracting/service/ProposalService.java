@@ -106,6 +106,7 @@ public class ProposalService {
 			.email(mailDTO, attachments, proposal)
 			.onError((error) -> {
 				log.error("Error sending mail: " + error);
+				logService.event(Lead.class, proposal.getLead().getId().toString(), "EMAIL FAILURE", user, "Error trying to send email.");
 			})
 			.onSuccess(() -> {
 				proposal.getLead().setEvent(Event.SEND_PROPOSAL);
