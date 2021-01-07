@@ -34,4 +34,9 @@ public class Line implements Entity<Long> {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Item item;
 
+	@Override
+	public String toString() {
+		return "Line [id=" + id + ", description=" + description + ", item=" + item + "]";
+	}
+	
 }

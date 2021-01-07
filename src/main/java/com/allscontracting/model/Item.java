@@ -59,4 +59,11 @@ public class Item implements Entity<Long> {
 		line.setItem(null);
 	}
 
+	@Override
+	public String toString() {
+		return "Item [id=" + id + ", title=" + title + ", price=" + price + "]";
+	}
+	
+	
+
 }
