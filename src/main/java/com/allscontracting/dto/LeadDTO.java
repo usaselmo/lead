@@ -95,7 +95,7 @@ public class LeadDTO {
 			return BigDecimal.ZERO.longValue();
 		
 		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).collect(Collectors.toList());
-		if(acceptedProposals==null || acceptedProposals.size()<=0) {
+		if(acceptedProposals!=null && acceptedProposals.size()>0) {
 			return acceptedProposals.stream().map(Proposal::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
 		}else {
 			return lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();

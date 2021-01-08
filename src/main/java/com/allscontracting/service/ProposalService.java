@@ -128,13 +128,10 @@ public class ProposalService {
 		Proposal proposal = this.proposalRepository.findById(proposalId).orElseThrow(() -> new LeadsException("Could not find Proposal"));
 		proposal.setEmailed(!proposal.isEmailed());
 		this.proposalRepository.save(proposal);
-		
-		if(proposal.isEmailed()) {
-			Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
-			proposal.getLead().setEvent(Event.SEND_PROPOSAL);
-			logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
-			    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
-		}
+
+		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
+		logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
+		    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 
 		return ProposalDTO.of(proposal);
 	}
