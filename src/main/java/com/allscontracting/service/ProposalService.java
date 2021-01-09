@@ -20,7 +20,6 @@ import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.ProposalDTO;
 import com.allscontracting.event.Event;
 import com.allscontracting.exception.LeadsException;
-import com.allscontracting.model.Client;
 import com.allscontracting.model.Lead;
 import com.allscontracting.model.Media;
 import com.allscontracting.model.Proposal;
@@ -29,6 +28,7 @@ import com.allscontracting.repo.LeadRepository;
 import com.allscontracting.repo.MediaRepo;
 import com.allscontracting.repo.ProposalRepository;
 import com.allscontracting.service.mail.ProposalMailProvider;
+import com.allscontracting.type.Client;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

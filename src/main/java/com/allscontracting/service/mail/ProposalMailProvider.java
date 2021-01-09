@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 
 import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
-import com.allscontracting.model.Client;
 import com.allscontracting.model.Proposal;
 import com.allscontracting.service.ProposalService;
 import com.allscontracting.service.ReportService;
+import com.allscontracting.type.Client;
 
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.JRException;

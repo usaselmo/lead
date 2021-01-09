@@ -1,4 +1,4 @@
-package com.allscontracting.model;
+package com.allscontracting.type;
 
 import java.io.Serializable;
 
