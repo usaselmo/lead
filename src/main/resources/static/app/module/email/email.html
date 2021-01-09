@@ -11,9 +11,11 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">To</label>
                     <div class="col-sm-9">
-                        <p class="form-control-static">{{email.to[0].name}} <{{email.to[0].email}}></p>
+                        <p class="form-control-static">{{email.to[0].name}} <{{email.to[0].email}}>
+                        </p>
                         <span ng-repeat="to in email.to">
-                            <select id="002jgo4n49" class="form-control" ng-if="!$first" style="margin: 1px; padding: 0px;"
+                            <select id="002jgo4n49" class="form-control" ng-if="!$first"
+                                style="margin: 1px; padding: 0px;"
                                 ng-options="person as person.name for person in persons track by person.id"
                                 ng-model="email.to[$index]">
                                 <option value="">Select...</option>
@@ -37,33 +39,27 @@
                     <div class="col-sm-1"><a href="#" ng-click="increaseBcc()" class="btn btn-default btn-sm"><span
                                 class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="fj4404jporjpe4nv" class="col-sm-2 control-label">Addtional Text</label>
                     <div class="col-sm-9">
-                        <textarea name="ta" class="form-control" ng-model="email.text" ></textarea>
+                        <textarea name="ta" class="form-control" ng-model="email.text"></textarea>
                     </div>
                 </div>
-
-
-
-
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Attachments</label>
                     <div class="col-sm-9">
-                        <div ng-if="email.attachs" >
+                        <div ng-if="email.attachs">
                             <ul ng-repeat="f in email.attachs">
-                                <li>{{f}} <a href="#" ng-click="deleteAttachment(f)" title="Delete {{f}}" ><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a> </li>
+                                <li>{{f}} <a href="#" ng-click="deleteAttachment(f)" title="Remove attachment"><span
+                                            class="glyphicon glyphicon-remove" aria-hidden="true"></span></a> </li>
                             </ul>
                         </div>
-                        <app-file-uploader ng-if="!email.uploaded"  suffix-url-with-file-name="true" url="urlUpload" on-complete-all="onCompleteAll(uploader)"></app-file-uploader>
+                        <app-file-uploader ng-if="!email.uploaded" url="urlUpload"
+                            on-complete-all="onCompleteAll(uploader)"></app-file-uploader>
                     </div>
                 </div>
-
-
-
-
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-4">

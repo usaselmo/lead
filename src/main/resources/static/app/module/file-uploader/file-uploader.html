@@ -1,28 +1,12 @@
 <!-- FILE UPLOADER -->
 <div>
-    <input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" /><br />
-    <div ng-if="uploader.queue.length > 0 ">
-        <ul ng-repeat="item in uploader.queue">
-            <li><span style="color: #7d7c7c;" ng-bind="item.file.name"></span><br /></li>
-        </ul>
-        <div>
-            <div>
-                <div class="progress" >
-                    <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-success btn-s" ng-click="uploadd(uploader)"
-                ng-disabled="!uploader.getNotUploadedItems().length">
-                <span class="glyphicon glyphicon-upload"></span> Upload all
-            </button>
-            <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()"
-                ng-disabled="!uploader.isUploading">
-                <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-            </button>
-            <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()"
-                ng-disabled="!uploader.queue.length">
-                <span class="glyphicon glyphicon-trash"></span> Remove all
-            </button>
-        </div>
+  <input ng-if="uploader.queue.length <= 0" type="file" name="file" nv-file-select uploader="uploader" multiple="multiple" ng-blur="uploadd(uploader)" />
+  <div ng-if="uploader.queue.length > 0 ">
+    <ul ng-repeat="item in uploader.queue">
+      <li><span style="color: #7d7c7c;" ng-bind="item.file.name"></span><br /></li>
+    </ul>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
     </div>
+  </div>
 </div>

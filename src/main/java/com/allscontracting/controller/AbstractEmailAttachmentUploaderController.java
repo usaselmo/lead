@@ -42,15 +42,16 @@ public abstract class AbstractEmailAttachmentUploaderController {
 	}
 
 	/**
-	 * Upload Email attachment - for sendCantReachEmail and sendHiringDecisionEmail
-	 * methods
+	 * Upload Email attachment - for sendCantReachEmail and sendHiringDecisionEmail methods
 	 */
-	@PostMapping("emailattachments/{emailId}/{fileId}")
-	public final void uploadEmailAttachments(@PathVariable String emailId, @PathVariable String fileId, @RequestParam("file") MultipartFile multiPartFile) throws IOException {
-		File file = Files.write(Files.createTempFile("", multiPartFile.getOriginalFilename()), multiPartFile.getBytes()).toFile();
-		file.deleteOnExit();
-		FILES.put(new AttachmentId(emailId, fileId), new Attachment(file, LocalDateTime.now()));
-		log.info("Attachment uploaded: {} {}", emailId, fileId);
+	@PostMapping("emailattachments/{emailId}")
+	public final void uploadEmailAttachments(@PathVariable String emailId, @RequestParam("file") List<MultipartFile> multiPartFiles) throws IOException {
+		for (MultipartFile multiPartFile : multiPartFiles) {
+			File file = Files.write(Files.createTempFile("", multiPartFile.getOriginalFilename()), multiPartFile.getBytes()).toFile();
+			file.deleteOnExit();
+			FILES.put(new AttachmentId(emailId, multiPartFile.getOriginalFilename()), new Attachment(file, LocalDateTime.now()));
+			log.info("Attachment uploaded: {} {}", emailId, multiPartFile.getOriginalFilename());
+		}
 	}
 
 	/**
@@ -72,7 +73,8 @@ public abstract class AbstractEmailAttachmentUploaderController {
 	
 	@Scheduled(fixedRate = CLEANUP_INTERVAL)
 	private final void cleanUp(){
-		FILES.entrySet().removeIf(f->f.getValue().getTime().isBefore(LocalDateTime.now().minus(5, ChronoUnit.MINUTES)));
+		log.info("cleanup method called...");
+		FILES.entrySet().removeIf(f->f.getValue().getTime().isBefore(LocalDateTime.now().minus(CLEANUP_INTERVAL/1000, ChronoUnit.SECONDS)));
 	}
 
 }
