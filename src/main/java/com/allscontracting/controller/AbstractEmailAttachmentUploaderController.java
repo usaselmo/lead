@@ -50,7 +50,7 @@ public abstract class AbstractEmailAttachmentUploaderController {
 		File file = Files.write(Files.createTempFile("", multiPartFile.getOriginalFilename()), multiPartFile.getBytes()).toFile();
 		file.deleteOnExit();
 		FILES.put(new AttachmentId(emailId, fileId), new Attachment(file, LocalDateTime.now()));
-		log.info("Attachment uploaded: " + multiPartFile.getOriginalFilename());
+		log.info("Attachment uploaded: {} {}", emailId, fileId);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public abstract class AbstractEmailAttachmentUploaderController {
 	@DeleteMapping("emailattachments/{emailId}/{fileId}")
 	public final void deleteEmailAttachment(@PathVariable String emailId, @PathVariable String fileId) throws Exception {
 		FILES.entrySet().removeIf(f -> f.getKey().getEmailId().equals(emailId) && f.getKey().getFileId().equals(fileId));
-		log.info("Attachment deleted: " + fileId);
+		log.info("Attachment deleted: {} {}", emailId, fileId);
 	}
 	
 	@Scheduled(fixedRate = CLEANUP_INTERVAL)

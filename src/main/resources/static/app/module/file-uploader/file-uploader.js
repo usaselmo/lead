@@ -8,7 +8,7 @@ fileUploader.directive('appFileUploader', function () {
     restrict: 'E',
     scope: {
       url: '=', 
-      suffixUrlWithFileName: '=',
+      suffixUrlWithFileName : '=',
       onCompleteAll: '&', 
     },
     templateUrl: '/app/module/file-uploader/file-uploader.html',
@@ -30,11 +30,7 @@ var fileUploaderController = function ($scope, FileUploader) {
     }
 
     uploader.queue.forEach(item => {
-      if (!$scope.suffixUrlWithFileName)
-        item.url = $scope.url + '/' + item.file.name 
-      else
-        item.url = $scope.url;
-      console.log(item.url)
+      item.url = ($scope.suffixUrlWithFileName) ? $scope.url + '/' + item.file.name : item.url = $scope.url;
       item.upload();
     })
 
