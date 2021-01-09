@@ -33,13 +33,13 @@
 		 },
 
 		 findEmailAttachments: function (lead, person) {
-			 var res = $http.get(local_server_url + '/persons/' + person.id + '/leads/' + lead.id + '/emailattachments');
+			 var res = $http.get(local_server_url + '/persons/emailattachments/' + person.id + lead.id );
 			 res.error(error => console.log(error))
 			 return res;
 		 },
 
 		 deleteAttachment: function (lead, person, f) {
-			 var res = $http.delete(local_server_url + '/persons/' + person.id + '/leads/' + lead.id + '/emailattachments/' + f );
+			 var res = $http.delete(local_server_url + '/persons/emailattachments/' + person.id + lead.id + '/' + f );
 			 res.error(error => console.log(error))
 			 return res;
 		 },

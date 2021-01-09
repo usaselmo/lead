@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.allscontracting.type.FileUploaded;
+import com.allscontracting.type.Attachment;
+import com.allscontracting.type.Attachment.AttachmentId;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,44 +30,44 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractEmailAttachmentUploaderController {
 
 	private static final int CLEANUP_INTERVAL = 1000*60*5; //every five minutes
-	private static final Map<String, FileUploaded> FILES = new HashMap<String, FileUploaded>();
+	private static final Map<AttachmentId, Attachment> FILES = new HashMap<AttachmentId, Attachment>();
 
-	protected final List<File> getAttachments(String key) {
-		List<FileUploaded> attachments = FILES.entrySet().stream().filter(f->f.getKey().startsWith(key)).map(Entry::getValue).collect(Collectors.toList());
+	protected final List<File> getAttachments(String emailId) {
+		List<Attachment> attachments = FILES.entrySet().stream().filter(f->f.getKey().getEmailId().equals(emailId)).map(Entry::getValue).collect(Collectors.toList());
 		return attachments.stream().map(fu->fu.getFile()).collect(Collectors.toList());
 	}	
 
-	protected final void removeAttachments(String key) {
-		FILES.entrySet().removeIf(f->f.getKey().startsWith(key));
+	protected final void removeAttachments(String emailId) {
+		FILES.entrySet().removeIf(f->f.getKey().getEmailId().equals(emailId));
 	}
 
 	/**
 	 * Upload Email attachment - for sendCantReachEmail and sendHiringDecisionEmail
 	 * methods
 	 */
-	@PostMapping("{personId}/{leadId}/emailattachment/upload")
-	public final void uploadEmailAttachments(@PathVariable String personId, @PathVariable String leadId, @RequestParam("file") MultipartFile file) throws IOException {
-		File f = Files.write(Files.createTempFile("", file.getOriginalFilename()), file.getBytes()).toFile();
-		f.deleteOnExit();
-		FILES.put(personId + leadId + file.getOriginalFilename(), new FileUploaded(f, LocalDateTime.now()));
-		log.info("Attachment uploaded: " + file.getOriginalFilename());
+	@PostMapping("emailattachments/{emailId}/{fileId}")
+	public final void uploadEmailAttachments(@PathVariable String emailId, @PathVariable String fileId, @RequestParam("file") MultipartFile multiPartFile) throws IOException {
+		File file = Files.write(Files.createTempFile("", multiPartFile.getOriginalFilename()), multiPartFile.getBytes()).toFile();
+		file.deleteOnExit();
+		FILES.put(new AttachmentId(emailId, fileId), new Attachment(file, LocalDateTime.now()));
+		log.info("Attachment uploaded: " + multiPartFile.getOriginalFilename());
 	}
 
 	/**
 	 * Find email attachments list
 	 */
-	@GetMapping("{personId}/leads/{leadId}/emailattachments")
-	public final List<String> findEmailAttachments(@PathVariable String personId, @PathVariable String leadId) throws Exception {
-		return FILES.entrySet().stream().filter(f -> f.getKey().startsWith(personId + leadId)).map(f -> f.getValue().getFile().getName()).collect(Collectors.toList());
+	@GetMapping("emailattachments/{emailId}")
+	public final List<String> findEmailAttachments(@PathVariable String emailId) throws Exception {
+		return FILES.entrySet().stream().filter(f -> f.getKey().getEmailId().equals(emailId)).map(f -> f.getKey().getFileId()).collect(Collectors.toList());
 	}
 
 	/**
 	 * Delete email attachment
 	 */
-	@DeleteMapping("{personId}/leads/{leadId}/emailattachments/{fileName}")
-	public final void deleteEmailAttachment(@PathVariable String personId, @PathVariable String leadId, @PathVariable String fileName) throws Exception {
-		FILES.entrySet().removeIf(f -> f.getKey().startsWith(personId + leadId) && f.getValue().getFile().getName().equals(fileName));
-		log.info("Attachment deleted: " + fileName);
+	@DeleteMapping("emailattachments/{emailId}/{fileId}")
+	public final void deleteEmailAttachment(@PathVariable String emailId, @PathVariable String fileId) throws Exception {
+		FILES.entrySet().removeIf(f -> f.getKey().getEmailId().equals(emailId) && f.getKey().getFileId().equals(fileId));
+		log.info("Attachment deleted: " + fileId);
 	}
 	
 	@Scheduled(fixedRate = CLEANUP_INTERVAL)

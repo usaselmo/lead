@@ -41,7 +41,7 @@ var emailController = function ($scope, personService, proposalService) {
         $scope.email.type = $scope.type
         $scope.email.to[0] = person;
         $scope.email.attachs = [];
-        $scope.urlUpload = '/persons/' + person.id + '/' + $scope.lead.id + '/emailattachment/upload';
+        $scope.urlUpload = 'persons/emailattachments/' + person.id + $scope.lead.id ;
         findAttachments();
     }
 
