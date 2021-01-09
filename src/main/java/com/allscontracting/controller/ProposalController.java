@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("proposals")
 @RequiredArgsConstructor
-public class ProposalController extends EmailSenderAbstractController{
+public class ProposalController extends AbstractEmailAttachmentUploaderController{
 
 	private static final String UNEXPECTED_ERROR = "Unexpected error.";
 	private final ProposalService proposalService;
@@ -55,7 +55,7 @@ public class ProposalController extends EmailSenderAbstractController{
 
 	@PutMapping(value = "{proposalId}/email/{personId}/{leadId}")
 	public void sendProposalByEmail(@PathVariable long proposalId, @RequestBody MailDTO mailDTO, @PathVariable String personId,  @PathVariable String leadId, @Autowired Authentication authentication) throws Exception {
-		this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, generateAttachments(personId+leadId));
+		this.proposalService.sendPdfByEmail(proposalId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, getAttachments(personId+leadId));
 		removeAttachments(personId+leadId); 
 	}
 

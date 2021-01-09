@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/persons")
 @RequiredArgsConstructor
-public class PersonController extends EmailSenderAbstractController{
+public class PersonController extends AbstractEmailAttachmentUploaderController{
 
 	private final PersonService personService;
 
@@ -42,13 +42,13 @@ public class PersonController extends EmailSenderAbstractController{
 
 	@PostMapping("{personId}/leads/{leadId}/cantreach")
 	public void sendCantReachEmail(@PathVariable String personId, @PathVariable String leadId, @RequestBody MailDTO mailDTO, @Autowired Authentication authentication) throws Exception {
-		personService.sendCantReachEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, generateAttachments(personId+leadId));
+		personService.sendCantReachEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, getAttachments(personId+leadId));
 		removeAttachments(personId+leadId);
 	}
 
 	@PostMapping("{personId}/leads/{leadId}/hiringdecision")
 	public void sendHiringDecisionEmail( @PathVariable String personId,  @PathVariable String leadId,  @RequestBody MailDTO mailDTO,  @Autowired Authentication authentication) throws Exception {
-		personService.sendHiringDecisionEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, generateAttachments(personId+leadId));
+		personService.sendHiringDecisionEmail(leadId, ((LeadUserDetails) authentication.getPrincipal()).getUser(), mailDTO, getAttachments(personId+leadId));
 		removeAttachments(personId+leadId); 
 	}
 	

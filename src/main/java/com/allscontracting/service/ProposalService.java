@@ -115,7 +115,8 @@ public class ProposalService {
 				logService.event(Lead.class, proposal.getLead().getId(), Event.EMAIL_SENT, user, "Proposal E-mailed to " + person.getName() + ". Proposal # "
 				    + proposal.getNumber() + " (" + NumberFormat.getCurrencyInstance().format(proposal.getTotal()) + ")");
 			})
-			.send();
+			.send()
+			;
 	}
 
 	public void getMediaAsPdfStream(Long mediaId, HttpServletResponse response) throws LeadsException, IOException {
