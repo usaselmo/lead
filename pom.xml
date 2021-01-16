@@ -6,7 +6,6 @@
 	<groupId>com.allscontracting.lead</groupId>
 	<artifactId>lead</artifactId>
 
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -14,13 +13,11 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
 		<maven.test.skip>true</maven.test.skip>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -145,8 +142,6 @@
 		    <artifactId>springfox-swagger-ui</artifactId>
 		    <version>2.9.2</version>
 		</dependency>
-
-
 
 	</dependencies>
 
