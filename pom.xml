@@ -2,9 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.allscontracting.lead</groupId>
 	<artifactId>lead</artifactId>
+	<version>2.2.13</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -17,7 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.test.skip>true</maven.test.skip>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 
 	<dependencies>
@@ -154,5 +156,4 @@
 		</plugins>
 	</build>
 
-	<version>2.2.12</version>
 </project>
