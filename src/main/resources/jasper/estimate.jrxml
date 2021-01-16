@@ -17,7 +17,7 @@
 	<import value="java.text.NumberFormat"/>
 	<parameter name="PROPOSAL_ID" class="java.lang.String"/>
 	<parameter name="PROPOSAL" class="com.allscontracting.dto.ProposalDTO"/>
-	<parameter name="CLIENT" class="com.allscontracting.model.Client"/>
+	<parameter name="CLIENT" class="com.allscontracting.type.Client"/>
 	<parameter name="ESTIMATOR" class="java.lang.String"/>
 	<parameter name="LEAD" class="com.allscontracting.dto.LeadDTO"/>
 	<queryString language="SQL">
@@ -72,7 +72,7 @@ WHERE
 					</reportElement>
 					<box padding="2">
 						<pen lineWidth="0.5"/>
-						<topPen lineWidth="0.5"/>
+						<topPen lineWidth="0.0"/>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
 						<rightPen lineWidth="0.5"/>
@@ -305,7 +305,7 @@ WHERE
 						<text><![CDATA[ACCEPTANCE OF PROPOSAL]]></text>
 					</staticText>
 					<staticText>
-						<reportElement positionType="Float" x="0" y="20" width="535" height="89" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
+						<reportElement positionType="Float" x="0" y="34" width="535" height="74" uuid="10db7b51-6c98-42f5-8f97-b50b00bb74c3">
 							<property name="com.jaspersoft.studio.unit.width" value="px"/>
 							<property name="com.jaspersoft.studio.unit.height" value="px"/>
 							<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -313,7 +313,7 @@ WHERE
 						</reportElement>
 						<box padding="2">
 							<pen lineWidth="0.5"/>
-							<topPen lineWidth="0.5"/>
+							<topPen lineWidth="0.0"/>
 							<leftPen lineWidth="0.5"/>
 							<bottomPen lineWidth="0.5"/>
 							<rightPen lineWidth="0.5"/>
@@ -325,9 +325,27 @@ WHERE
 
 
 
-
 Customer Signature: ____________________________ Amount Accepted: ________________ Date: _____________]]></text>
 					</staticText>
+					<textField>
+						<reportElement positionType="Float" x="0" y="20" width="535" height="14" uuid="27a40421-6573-487d-8662-f5b18966b574">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						</reportElement>
+						<box padding="2">
+							<pen lineWidth="0.5"/>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement textAlignment="Left" verticalAlignment="Middle">
+							<font size="7.5" isBold="false"/>
+						</textElement>
+						<textFieldExpression><![CDATA["This Proposal is good up to 120 days after " + $P{PROPOSAL}.getDate()]]></textFieldExpression>
+					</textField>
 				</frame>
 			</band>
 		</groupFooter>
