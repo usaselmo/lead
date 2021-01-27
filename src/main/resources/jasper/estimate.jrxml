@@ -237,7 +237,7 @@ WHERE
 					<reportElement x="0" y="26" width="535" height="46" isRemoveLineWhenBlank="true" uuid="ddb5e2aa-5efd-4622-af36-b3761445827a"/>
 					<staticText>
 						<reportElement x="0" y="0" width="220" height="25" isRemoveLineWhenBlank="true" uuid="37a9011e-bcdf-4000-b1be-787fb168c49f">
-							<printWhenExpression><![CDATA[(!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility()) && !$P{PROPOSAL}.isChangeorder()]]></printWhenExpression>
+							<printWhenExpression><![CDATA[(!StringUtils.isEmpty($P{PROPOSAL}.getNote()) || $P{PROPOSAL}.isCallMissUtility())]]></printWhenExpression>
 						</reportElement>
 						<textElement verticalAlignment="Bottom">
 							<font fontName="SansSerif" size="12" isBold="true" isUnderline="false"/>
