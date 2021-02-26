@@ -72,14 +72,14 @@ var leadProposalController = function ($scope, proposalService) {
 
 var originalLines = [];
 
-var createProposal = function () {
+var createProposal = function (lead) {
     var prop = {
         'items': [{
             'price': 0, title: 'ITEM 1 - '
         }],
         'callMissUtility': true,
-        'scopeOfWork': 'Concrete work as per visit',
-        'paymentSchedule': '1. 50% down payment upon start of the project\n2. 50% final payment upon completion of the project.',
+        'scopeOfWork': lead.title + ' at ' + lead.address + ' (Job #' + lead.id + ')\nConcrete work as per visit' ,
+        'paymentSchedule': '50% down payment upon start of the project\n50% final payment upon completion of the project.',
         'workWarranty': 'All new material and labor are guaranteed for 36 months from completion date. All work to be completed in a neat and workmanlike manner. Warranty applies for concrete cracks that are 3/8" or greater in separation or height difference for flat concrete work. Warranty excludes the following: concrete damage caused by deicers such as salt or any deicer or fertilizer containing ammonium nitrate or ammonium sulfate, concrete spider cracks, hairline cracks and color variance.',
         'total': 0,
     }
