@@ -98,10 +98,10 @@ public class LeadService {
 		lead.setEvent(Event.BEGIN);
 		lead.setDate(new Date());
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(leadDTO.getCompany() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact() == null ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient() == null ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator() == null ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany(leadDTO.getCompany() == null || leadDTO.getCompany().getId()==null? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || leadDTO.getContact().getId()==null? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null || leadDTO.getClient().getId()==null? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || leadDTO.getEstimator().getId()==null ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit()));
 		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate()));
 		lead.setDescription(leadDTO.getDescription());
