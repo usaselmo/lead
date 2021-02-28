@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableScheduling
 public abstract class AbstractEmailAttachmentUploaderController {
 
-	private static final int CLEANUP_INTERVAL = 1000*60*5; //every five minutes
+	private static final int CLEANUP_INTERVAL = 1000*60*15; //every 15 minutes
 	private static final Map<AttachmentId, Attachment> FILES = new HashMap<AttachmentId, Attachment>();
 
 	protected final List<File> getAttachments(String emailId) {
