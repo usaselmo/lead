@@ -59,8 +59,12 @@ public class LeadService {
 	private final InvitationRepo invitationRepo;
 	private final ReportService reportService;
 
-	public List<EventDTO> findNextEvents(String leadId) {
-		Lead lead = this.leadRepo.findById(Long.valueOf(leadId)).orElse(null);
+	public List<EventDTO> findNextEvents(Long leadId) {
+		if (leadId==null)
+			return Collections.emptyList();
+		Lead lead = this.leadRepo.findById(leadId).orElse(null);
+		if (lead == null)
+			return Collections.emptyList();
 		Event currentEvent = lead.getEvent();
 		if (null == currentEvent)
 			currentEvent = Event.BEGIN;
@@ -87,7 +91,7 @@ public class LeadService {
 
 	@Transactional
 	public LeadDTO save(LeadDTO leadDTO, User user) throws LeadsException {
-		Lead lead = new Lead();
+		final Lead lead = new Lead();
 
 		// deprecated properties
 		lead.setFee(BigDecimal.ZERO);
@@ -107,9 +111,10 @@ public class LeadService {
 		lead.setDescription(leadDTO.getDescription());
 		lead.setAddress(leadDTO.getAddress());
 
-		lead = this.leadRepo.save(lead);
-		logg.newLeadCreated(String.valueOf(lead.getId()), lead.getClient(), user);
-		leadDTO = LeadDTO.of(lead);
+		Lead persistedLead = this.leadRepo.save(lead);
+		logg.newLeadCreated(String.valueOf(persistedLead.getId()), persistedLead.getClient(), user);
+
+		leadDTO = LeadDTO.of(persistedLead);
 		completeLead(leadDTO);
 		return leadDTO;
 	}
@@ -118,14 +123,10 @@ public class LeadService {
 	public LeadDTO update(LeadDTO leadDTO, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
 		lead.setTitle(leadDTO.getTitle());
-		lead.setCompany(
-		    leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
-		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null
-		    : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
-		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null
-		    : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
-		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null
-		    : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
+		lead.setCompany( leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
+		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));
+		lead.setClient(leadDTO.getClient() == null || StringUtils.isEmpty(leadDTO.getClient().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getClient().getId())).orElse(null));
+		lead.setEstimator(leadDTO.getEstimator() == null || StringUtils.isEmpty(leadDTO.getEstimator().getId()) ? null : this.userRepo.findById(Long.valueOf(leadDTO.getEstimator().getId())).orElse(null));
 		lead.setVisit(Converter.convertToDate(leadDTO.getVisit(), Converter.MM_dd_yyyy_hh_mm));
 		lead.setDueDate(Converter.convertToDate(leadDTO.getDueDate(), Converter.MM_dd_yyyy_hh_mm));
 		lead.setAddress(leadDTO.getAddress());
@@ -190,7 +191,7 @@ public class LeadService {
 
 	private LeadDTO completeLead(LeadDTO lead) {
 		lead.setEventLogs(findLeadEventLogs(lead.getId()));
-		lead.setNextEvents(findNextEvents(lead.getId()));
+		lead.setNextEvents(findNextEvents(Long.valueOf(lead.getId())));
 		return lead;
 	}
 
