@@ -160,10 +160,6 @@ public class LeadService {
 		completeLead(leadDTO);
 		return leadDTO;
 	}
-	
-	private List<LeadDTO> toLeadDTOlist(List<Lead> leads){
-		return leads.stream().map(l -> LeadDTO.of(l)).map(lead -> completeLead(lead)).collect(Collectors.toList());
-	}
 
 	public LeadEntity list(FilterDTO filter) throws LeadsException {
 		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
@@ -171,29 +167,29 @@ public class LeadService {
 		events = events.size() <= 0 ? null : events;
 		boolean ev = events != null;
 		boolean te = !StringUtils.isEmpty(filter.getSearchText());
-		List<LeadDTO> leads;
+		List<Lead> leads;
 		long totalLeads;
 		if (ev && te) { // event and text
-			leads = toLeadDTOlist(leadRepo.search(filter.getSearchText(), events, pageable));
+			leads = leadRepo.search(filter.getSearchText(), events, pageable);
 			totalLeads = leadRepo.searchTotal(filter.getSearchText(), events);
 		} else if (!ev && te) { // text only
-			leads = toLeadDTOlist(leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable));
+			leads = leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable);
 			totalLeads = leadRepo.searchTotal(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()));
 		} else if (ev && !te) { // event only
-			leads = toLeadDTOlist(this.leadRepo.search(events, pageable));
+			leads = this.leadRepo.search(events, pageable);
 			totalLeads = this.leadRepo.searchTotal(events);
 		} else { // neither event or text
-			leads = toLeadDTOlist(this.leadRepo.findAll(pageable).getContent());
+			leads = this.leadRepo.findAll(pageable).getContent();
 			totalLeads = leadRepo.count();
 		}
 
 		return LeadEntity.builder()
-				.leads(leads)
+				.leads(leads.stream().map(l -> LeadDTO.of(l)).map(lead -> completeLead(lead)).collect(Collectors.toList()))
 				.totalLeads(totalLeads)
-				.leadsTotalPrice(leads.stream().mapToLong(LeadDTO::getPrice).sum())
+				.leadsTotalPrice(leads.stream().mapToLong(lead->LeadDTO.getTotalPrice(lead)).sum())
 				.leadTypes(getLeadTypes())
 		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-		    .build();
+		    .build(); 
 	}
 
 	private LeadDTO completeLead(LeadDTO lead) {

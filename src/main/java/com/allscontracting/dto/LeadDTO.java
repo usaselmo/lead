@@ -90,15 +90,16 @@ public class LeadDTO {
 				.build();
 	}
 	
-	private static long getTotalPrice(Lead lead) {
-		if(lead.getProposals()==null || lead.getProposals().size()<=0)
-			return BigDecimal.ZERO.longValue();
-		
-		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p->p.isAccepted()).collect(Collectors.toList());
-		if(acceptedProposals!=null && acceptedProposals.size()>0) {
+	public static long getTotalPrice(Lead lead) {
+		if (lead.getProposals() == null || lead.getProposals().size() <= 0)
+			return 0;
+
+		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p -> p.isAccepted()).collect(Collectors.toList());
+
+		if (acceptedProposals != null && acceptedProposals.size() > 0) {
 			return acceptedProposals.stream().map(Proposal::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
-		}else {
-			return lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
+		} else {
+			return lead.getProposals().stream().filter(p -> !p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
 		}
 	}
 
