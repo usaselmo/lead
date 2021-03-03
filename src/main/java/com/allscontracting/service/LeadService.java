@@ -162,34 +162,41 @@ public class LeadService {
 	}
 
 	public LeadEntity list(FilterDTO filter) throws LeadsException {
-		PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
-		List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
-		events = events.size() <= 0 ? null : events;
-		boolean ev = events != null;
-		boolean te = !StringUtils.isEmpty(filter.getSearchText());
-		List<Lead> leads;
-		long totalLeads;
-		if (ev && te) { // event and text
-			leads = leadRepo.search(filter.getSearchText(), events, pageable);
-			totalLeads = leadRepo.searchTotal(filter.getSearchText(), events);
+	
+		final PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
+		final List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
+	
+		final boolean ev = events.size() <= 0 ? false : events != null;
+		final boolean te = !StringUtils.isEmpty(filter.getSearchText());
+		
+		if (ev && te) { 				// event and text
+			return buildLeadEntity(
+					leadRepo.search(filter.getSearchText(), events.size() <= 0 ? null : events, pageable), 
+					leadRepo.searchTotal(filter.getSearchText(), events)); 
 		} else if (!ev && te) { // text only
-			leads = leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable);
-			totalLeads = leadRepo.searchTotal(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()));
+			return buildLeadEntity(
+					leadRepo.search(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()), pageable), 
+					leadRepo.searchTotal(filter.getSearchText(), Stream.of(Event.values()).collect(Collectors.toList()))); 
 		} else if (ev && !te) { // event only
-			leads = this.leadRepo.search(events, pageable);
-			totalLeads = this.leadRepo.searchTotal(events);
-		} else { // neither event or text
-			leads = this.leadRepo.findAll(pageable).getContent();
-			totalLeads = leadRepo.count();
+			return buildLeadEntity(
+					leadRepo.search(events.size() <= 0 ? null : events, pageable), 
+					leadRepo.searchTotal(events)); 
+		} else { 								// neither event or text
+			return buildLeadEntity(
+					leadRepo.findAll(pageable).getContent(), 
+					leadRepo.count()); 
 		}
 
+	}
+
+	private LeadEntity buildLeadEntity(List<Lead> leads, long totalLeads) {
 		return LeadEntity.builder()
 				.leads(leads.stream().map(l -> LeadDTO.of(l)).map(lead -> completeLead(lead)).collect(Collectors.toList()))
 				.totalLeads(totalLeads)
 				.leadsTotalPrice(leads.stream().mapToLong(lead->LeadDTO.getTotalPrice(lead)).sum())
 				.leadTypes(getLeadTypes())
 		    .events(Stream.of(Event.values()).filter(e -> e.isShowInMenu() == true).map(et -> EventDTO.of(et)).collect(Collectors.toList()))
-		    .build(); 
+		    .build();
 	}
 
 	private LeadDTO completeLead(LeadDTO lead) {
