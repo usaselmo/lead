@@ -15,8 +15,11 @@
         </thead>
         <tbody>
           <tr ng-repeat="prop in lead.proposals">
-            <th scope="row"><span ng-if="prop.changeorder">Change Order #{{prop.number}}</span><span
-                ng-if="!prop.changeorder">Proposal #{{prop.number}}</span></th>
+            <th scope="row">
+              <span style="margin-right: 12px;">ID {{prop.id}}</span>
+              <span ng-if="prop.changeorder">Change Order #{{prop.number}}</span>
+              <span ng-if="!prop.changeorder">Proposal #{{prop.number}}</span>
+            </th>
             <td>{{prop.formattedTotal}}</td>
             <td>{{prop.date | date}}</td>
 
