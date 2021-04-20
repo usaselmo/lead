@@ -96,7 +96,7 @@ public class LeadService {
 		// deprecated properties
 		lead.setFee(BigDecimal.ZERO);
 		lead.setType("Concrete");
-		lead.setVendor(Lead.Vendor.EMAIL);
+		lead.setVendor(StringUtils.isEmpty(leadDTO.getVendor())?null:Lead.Vendor.valueOf(leadDTO.getVendor()));
 
 		// actual properties
 		lead.setEvent(Event.BEGIN);
@@ -122,6 +122,7 @@ public class LeadService {
 	@Transactional
 	public LeadDTO update(LeadDTO leadDTO, User user) throws NumberFormatException, LeadsException {
 		Lead lead = this.leadRepo.findById(Long.valueOf(leadDTO.getId())).orElseThrow(() -> new LeadsException("Lead not found"));
+		lead.setVendor(StringUtils.isEmpty(leadDTO.getVendor())?null:Lead.Vendor.valueOf(leadDTO.getVendor()));
 		lead.setTitle(leadDTO.getTitle());
 		lead.setCompany( leadDTO.getCompany() == null || leadDTO.getCompany().getId() == null ? null : this.companyRepo.findById(leadDTO.getCompany().getId()).orElse(null));
 		lead.setContact(leadDTO.getContact() == null || StringUtils.isEmpty(leadDTO.getContact().getId()) ? null : this.personRepo.findById(Long.valueOf(leadDTO.getContact().getId())).orElse(null));

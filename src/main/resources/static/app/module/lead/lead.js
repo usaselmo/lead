@@ -120,6 +120,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	init();
 
 	$scope.crud = function (lead) {
+		if(!lead.vendor){ lead.vendor = 'EMAIL'}
 		$scope.crudLead = lead;
 		//$scope.leads = null;
 		$scope.lead = null;

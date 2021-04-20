@@ -108,7 +108,7 @@
         </td>
 
         <td>
-          Lead #{{lead.id}}, of {{lead.date | date }}
+          Lead #{{lead.id}}, of {{lead.date | date }} - ({{lead.vendor}})
           <p ng-if="lead.title">
             <strong>{{lead.title}}</strong>
             <span ng-if="lead.address"> at {{lead.address}}</span>

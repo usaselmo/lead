@@ -96,7 +96,7 @@ public class Lead implements Serializable {
 	 *******************/
 
 	public enum Vendor {
-		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
+		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL, FORM_PROCESSOR
 	}
 
 	public void addMedia(Media media) {
