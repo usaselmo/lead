@@ -1,4 +1,8 @@
+import proposalService from '/app/service/proposal-service.js'
+
 var list = angular.module('app.module.proposal.list', []);
+
+list.service('proposalService', proposalService);
 
 list.directive('proposalList', function() {
 	return {
@@ -8,7 +12,8 @@ list.directive('proposalList', function() {
 			lead: '=',
 		},
 		templateUrl: '/app/module/lead/proposal/list/list.html',
-		controller: ['$scope', function($scope) {
+		
+		controller: ['$scope', 'proposalService', function($scope, proposalService) {
 
 			$scope.markAsAccepted = function(proposal) {
 				if (confirm('Confirm change Accepted status ? ')) {
@@ -24,7 +29,6 @@ list.directive('proposalList', function() {
 						$scope.lead.proposals = $scope.lead.proposals.map(p => p.id == data.proposal.id ? data.proposal : p)
 					})
 				}
-
 			}
 
 			$scope.emailProposal = function(proposal) {
@@ -45,7 +49,6 @@ list.directive('proposalList', function() {
 				})
 				originalLines = [];
 				$scope.proposal = nproposal;
-				console.log($scope.proposal)
 			}
 
 			$scope.proposalCrud = function(proposal) {
