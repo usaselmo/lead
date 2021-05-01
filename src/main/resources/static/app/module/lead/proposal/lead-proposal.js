@@ -1,4 +1,4 @@
-import proposalCrud from '/app/module/lead/proposal/crud/lead-proposal-crud.js';
+import proposalCrud from '/app/module/lead/proposal/crud/crud.js';
 import proposalService from '/app/service/proposal-service.js'
 import list from '/app/module/lead/proposal/list/list.js'
 
