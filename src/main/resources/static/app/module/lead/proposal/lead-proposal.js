@@ -1,10 +1,17 @@
-import proposalCrud from '/app/module/lead/proposal/lead-proposal-crud.js';
+import proposalCrud from '/app/module/lead/proposal/crud/lead-proposal-crud.js';
 import proposalService from '/app/service/proposal-service.js'
+import list from '/app/module/lead/proposal/list/list.js'
+
 var copy = function (obj) {
     return JSON.parse(JSON.stringify(obj))
 };
-var leadProposal = angular.module('app.module.lead.proposal', ['app.module.lead.proposal.crud',]);
+
+var leadProposal = angular.module('app.module.lead.proposal', [
+	'app.module.proposal.list',
+	'app.module.lead.proposal.crud',]);
+
 leadProposal.service('proposalService', proposalService);
+
 leadProposal.directive('appLeadProposal', function () {
     var originalLines = [];
     return {
@@ -18,6 +25,8 @@ leadProposal.directive('appLeadProposal', function () {
 })
 
 var leadProposalController = function ($scope, proposalService) {
+	
+	$scope.proposal = {};
 
     $scope.markAsAccepted = function (proposal) {
         if (confirm('Confirm change Accepted status ? ')) {
