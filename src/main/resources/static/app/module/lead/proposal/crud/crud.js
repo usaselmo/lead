@@ -19,7 +19,7 @@ proposalCrud.directive('proposalCrud', function () {
 var proposalCrudController = function ($scope, proposalService) {
 
     $scope.proposalCancel = function () {
-        // $scope.proposal = null;
+        $scope.proposal = null;
     }
     
     $scope.proposalEncreaseItem = function () {
