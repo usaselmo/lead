@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.util.StringUtils;
 
@@ -57,7 +56,6 @@ public class Lead implements Serializable {
 	private String address;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dueDate;
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Event event;
 	@ManyToOne

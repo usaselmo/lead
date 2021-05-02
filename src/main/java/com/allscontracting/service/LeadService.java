@@ -164,7 +164,7 @@ public class LeadService {
 
 	public LeadEntity list(FilterDTO filter) throws LeadsException {
 	
-		final PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), new Sort(Sort.Direction.DESC, "id"));
+		final PageRequest pageable = PageRequest.of(filter.getPageRange() < 0 ? 0 : filter.getPageRange(), filter.getLines(), Sort.by(Sort.Direction.DESC, "id"));
 		final List<Event> events = Stream.of(Event.values()).filter(e -> e.name().equals(filter.getEvent())).collect(Collectors.toList());
 	
 		final boolean ev = events.size() <= 0 ? false : events != null;
