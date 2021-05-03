@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.allscontracting.dto.MailDTO;
 import com.allscontracting.dto.PersonDTO;
 import com.allscontracting.model.Person;
+import com.allscontracting.repo.EmailMarketingRepository;
 import com.allscontracting.repo.PersonRepository;
 import com.allscontracting.service.mail.EmailMarketingProvider;
 
@@ -25,12 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 public class EmailCampainService {
 
 	private static final int INTERVAL = 1000 * 60 * 15; // every 15 minutes
+	private static final String CAMPAIN = "Primeira Campanha";
 
 	private static boolean LIGADO = false;
 	private static int REGISTRY = 0;
 
 	private final EmailMarketingProvider emailService;
 	private final PersonRepository personRepo;
+	private final EmailMarketingRepository emailMarketingRepo;
 
 	public boolean ligaDesliga() {
 		LIGADO = !LIGADO;
