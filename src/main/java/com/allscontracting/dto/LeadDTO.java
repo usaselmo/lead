@@ -66,15 +66,15 @@ public class LeadDTO {
 		return LeadDTO.builder()
 				.id(String.valueOf(lead.getId()))
 				.oldid(lead.getOldid())
-				.vendor(lead.getVendor().toString())
+				.vendor((lead.getVendor()!=null)?lead.getVendor().name():null)
 				.description(lead.getDescription())
-				.fee(NumberFormat.getCurrencyInstance().format(lead.getFee())) 
+				.fee((lead.getFee()==null)?null:NumberFormat.getCurrencyInstance().format(lead.getFee())) 
 				.type(lead.getType())
 				.notes(lead.getNotes())
 				.client(PersonDTO.of(lead.getClient()))
 				.proposals(lead.getProposals()==null?null:lead.getProposals().stream().map(p->ProposalDTO.of(p)).collect(Collectors.toList()))
-				.event(lead.getEvent().getStatus())
-				.date(Converter.dateToString(lead.getDate(), Converter.dd_MM_yyyy))
+				.event((lead.getEvent()==null)?null:lead.getEvent().getStatus())
+				.date( (lead.getDate()==null)?null:Converter.dateToString(lead.getDate(), Converter.dd_MM_yyyy) )
 				.visit(lead.getVisit()!=null?Converter.dateToString(lead.getVisit(), Converter.MM_dd_yyyy_hh_mm):"")
 				.visitDaysLeft(lead.getVisit()==null?null:TimeUnit.DAYS.convert(lead.getVisit().getTime() - new Date().getTime(), TimeUnit.MILLISECONDS))
 				.dueDate(lead.getDueDate()!=null?Converter.dateToString(lead.getDueDate(), Converter.MM_dd_yyyy_hh_mm):"")
@@ -90,15 +90,16 @@ public class LeadDTO {
 				.build();
 	}
 	
-	private static long getTotalPrice(Lead lead) {
-		if(lead.getProposals()==null || lead.getProposals().size()<=0)
-			return BigDecimal.ZERO.longValue();
-		
-		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p->!p.isChangeorder()).filter(p->p.isAccepted()).collect(Collectors.toList());
-		if(acceptedProposals!=null && acceptedProposals.size()>0) {
+	public static long getTotalPrice(Lead lead) {
+		if (lead.getProposals() == null || lead.getProposals().size() <= 0)
+			return 0;
+
+		List<Proposal> acceptedProposals = lead.getProposals().stream().filter(p -> p.isAccepted()).collect(Collectors.toList());
+
+		if (acceptedProposals != null && acceptedProposals.size() > 0) {
 			return acceptedProposals.stream().map(Proposal::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add).longValue();
-		}else {
-			return lead.getProposals().stream().filter(p->!p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
+		} else {
+			return lead.getProposals().stream().filter(p -> !p.isChangeorder()).sorted(Comparator.reverseOrder()).findFirst().orElse(Proposal.builder().total(BigDecimal.ZERO).build()).getTotal().longValue();
 		}
 	}
 

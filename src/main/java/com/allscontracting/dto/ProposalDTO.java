@@ -57,6 +57,8 @@ public class ProposalDTO {
 	}
 	
 	public static final Proposal toProposal(ProposalDTO proposalDTO) {
+		
+		String res = new StringBuilder().append(proposalDTO.isChangeorder()?"":"").toString();
 		if(proposalDTO==null)
 			return null;
 		Proposal proposal = new Proposal();

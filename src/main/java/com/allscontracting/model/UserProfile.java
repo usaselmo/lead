@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +33,6 @@ public class UserProfile implements Serializable {
 	@ManyToOne()
 	private User user;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Description profile;
 

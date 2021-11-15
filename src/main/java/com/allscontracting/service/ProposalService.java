@@ -51,7 +51,8 @@ public class ProposalService {
 	@Transactional
 	public ProposalDTO save(ProposalDTO proposalDTO, String leadId, User user) throws LeadsException {
 		Proposal proposal = ProposalDTO.toProposal(proposalDTO);
-		proposal.setDate(new Date());
+		if(proposal.getDate()==null)
+			proposal.setDate(new Date());
 		Lead lead = this.leadRepository.findById(Long.valueOf(leadId)).orElseThrow(() -> new LeadsException("Lead not found"));
 		proposal.setLead(lead);
 		proposal.setTotal(proposal.getItems().stream().map(line -> line.getPrice()).reduce(BigDecimal.ZERO, BigDecimal::add));

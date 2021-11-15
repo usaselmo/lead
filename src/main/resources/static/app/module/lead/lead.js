@@ -48,7 +48,7 @@ export default applead
 
 var leadController = function ($scope, leadService, companyService, personService, userService) {
 
-	$scope.filter = new Filter(0, 100, '', '');
+	$scope.filter = new Filter(0, 10, '', '');
 	$scope.lead = null;
 	$scope.leads = {};
 
@@ -120,6 +120,7 @@ var leadController = function ($scope, leadService, companyService, personServic
 	init();
 
 	$scope.crud = function (lead) {
+		if(!lead.vendor){ lead.vendor = 'EMAIL'}
 		$scope.crudLead = lead;
 		//$scope.leads = null;
 		$scope.lead = null;
@@ -138,6 +139,28 @@ var leadController = function ($scope, leadService, companyService, personServic
 			})
 		$scope.cancel(lead)
 	}
+
+
+	$scope.copy = function (lead) {
+		if (confirm('Create a new Lead based on this one?')) {
+			lead.id = null;
+			lead.eventLogs = [];
+			lead.invitations = [];
+			lead.medias = [];
+			lead.proposals = [];
+
+			leadService.save(lead).success(data => {
+				$scope.leads.unshift(data.lead);
+				$scope.totalLeads++
+				$scope.lead = data.lead;
+				alert('New Lead created successfully.')
+				$scope.cancel($scope.lead)
+			})
+		}
+
+	}
+
+
 
 	$scope.cancel = function (lead) {
 		if (lead.id)

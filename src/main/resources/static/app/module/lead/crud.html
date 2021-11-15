@@ -62,12 +62,22 @@
       </div>
       <div class="form-group">
         <label for="dueDate" class="col-sm-2 control-label">Due Date</label>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
           <input type="text" class="form-control" id="dueDate" placeholder="mm/dd/yyyy" ng-model="crudLead.dueDate">
         </div>
         <label for="date" class="col-sm-1 control-label">Visit</label>
-        <div class="col-sm-3">
+        <div class="col-sm-1">
           <input type="text" class="form-control" id="date" placeholder="mm/dd/yyyy" ng-model="crudLead.visit">
+        </div>
+        <label for="date" class="col-sm-1 control-label">Vendor</label>
+        <div class="col-sm-2">
+          <select id="" class="form-control" ng-model="crudLead.vendor" required >
+            <option value="HOME_ADVISOR">HOME_ADVISOR</option>
+            <option value="NETWORX">NETWORX</option>
+            <option value="PHONE_CALL">PHONE_CALL</option>
+            <option value="EMAIL">EMAIL</option>
+            <option value="FORM_PROCESSOR">FORM_PROCESSOR</option>
+          </select>
         </div>
         <label for="estimator" class="col-sm-1 control-label">Estimator</label>
         <div class="col-sm-3">

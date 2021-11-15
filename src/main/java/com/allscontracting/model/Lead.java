@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.util.StringUtils;
 
@@ -57,7 +56,6 @@ public class Lead implements Serializable {
 	private String address;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dueDate;
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	private Event event;
 	@ManyToOne
@@ -96,7 +94,7 @@ public class Lead implements Serializable {
 	 *******************/
 
 	public enum Vendor {
-		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL
+		HOME_ADVISOR, NETWORX, PHONE_CALL, EMAIL, FORM_PROCESSOR
 	}
 
 	public void addMedia(Media media) {

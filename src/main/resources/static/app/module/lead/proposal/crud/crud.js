@@ -12,19 +12,20 @@ proposalCrud.directive('proposalCrud', function () {
             proposal: '=',
             lead: '=',
         },
-        templateUrl: '/app/module/lead/proposal/lead-proposal-crud.html',
+        templateUrl: '/app/module/lead/proposal/crud/crud.html',
         controller: ['$scope', 'proposalService', proposalCrudController],
     };
 });
 var proposalCrudController = function ($scope, proposalService) {
 
     $scope.proposalCancel = function () {
-        // $scope.proposal = null;
+        $scope.proposal = null;
     }
     
     $scope.proposalEncreaseItem = function () {
+		const num = $scope.proposal.items.length + 1;
         $scope.proposal.items.push({
-            price: 0, title: 'ITEM ' + ($scope.proposal.items.length + 1) + ' - '
+            price: 0, title: 'ITEM ' + num + ' - '
         })
     }
     
@@ -38,9 +39,13 @@ var proposalCrudController = function ($scope, proposalService) {
             proposalService.update($scope.proposal, $scope.lead.id).success( response => {
                 $scope.lead.proposals = $scope.lead.proposals.filter(p => p.id != $scope.proposal.id)
                 $scope.lead.proposals.push(response.proposal)
+				$scope.proposal = null;
             });
         } else {
-            proposalService.save($scope.proposal, $scope.lead.id).success(data => $scope.lead.proposals.push(data.proposal) )
+            proposalService.save($scope.proposal, $scope.lead.id).success(data => {
+				$scope.lead.proposals.push(data.proposal); 
+				$scope.proposal = null;
+			} )
         }
     }
 };
