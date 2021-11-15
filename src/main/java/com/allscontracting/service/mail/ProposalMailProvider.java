@@ -29,18 +29,16 @@ public class ProposalMailProvider extends AbstractMailProvider {
 
 	public MailSender email(MailDTO mailDTO, List<File> attachments, Proposal proposal) throws IOException, JRException, SQLException {
 		attachments.add(getFile(proposal));
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		return new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), "Your Proposal from All's Contracting",
-		    this.getProposalText(proposal, mailDTO), attachments);
-		return mailSender;
+		    this.getProposalText(proposal, mailDTO), attachments, getGmailPassword(), getGmailUser());
 	}
 
 	private File getFile(final Proposal proposal) throws JRException, SQLException, IOException {
 		Client person = proposal.getLead().getClient() != null ? proposal.getLead().getClient() : proposal.getLead().getContact();
 		HashMap<String, Object> map = ProposalService.getProposalParameters(proposal, person);
 		String streamFileName = ProposalService.getProposalFileName(proposal, person, "pdf");
-		File file = reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
-		return file;
+		return reportService.getReportAsPdfFile(streamFileName, map, PROPOSAL_FILE_NAME);
 	}
 
 	private String getProposalText(Proposal proposal, MailDTO mailDTO) throws IOException {

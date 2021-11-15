@@ -18,10 +18,9 @@ public class HiringDecisionMailProvider extends AbstractMailProvider {
 	private static final String SUBJECT = "Have you made a decision ?";
 
 	public MailSender email(MailDTO mailDTO, List<File> attachments) throws IOException {
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		return new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getHiringDecisionText(mailDTO),
-		    attachments);
-		return mailSender;
+		    attachments, getGmailPassword(), getGmailUser());
 	}
 
 	private String getHiringDecisionText(MailDTO mailDTO) throws IOException {
