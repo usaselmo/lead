@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +23,7 @@ import lombok.NonNull;
 public class MailSender {
 
 	private static final String MAIL_TRANSPORT_PROTOCOL = "smtp";
-	private static final String GMAIL_PASSWORD = "Getalife2009!";
+	private static final String GMAIL_PASSWORD = "Get@life1969!";
 	private static final String GMAIL_USER = "allscontractingdc@gmail.com";
 	private static final int PORT = 465;
 	private static final String HOST = "smtp.gmail.com";
@@ -32,9 +33,9 @@ public class MailSender {
 	private final List<String> emailTo;
 	private final List<String> bcc;
 	private final List<File> attachmentFiles;	
-	private final JavaMailSender mailSender;
+	private final JavaMailSender javaMailSender;
 	
-	private Consumer<String> runnableOnError = (s) -> {};
+	private Consumer<String> runnableOnError = s -> {};
 	private Runnable runnableOnSuccess = () -> {};
 
 	public MailSender(@NonNull List<String> emailTo, @NonNull List<String> bcc, @NonNull String subject, @NonNull String text, @NonNull List<File> attachments) {
@@ -43,21 +44,21 @@ public class MailSender {
 		this.text = text;
 		this.bcc = Collections.unmodifiableList(bcc);
 		this.attachmentFiles = Collections.unmodifiableList(attachments);
-		this.mailSender = createEmailSender();
+		this.javaMailSender = createEmailSender();
 	}
 
 	private JavaMailSender createEmailSender() {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost(HOST);
-		mailSender.setPort(PORT);
-		mailSender.setUsername(GMAIL_USER);
-		mailSender.setPassword(GMAIL_PASSWORD);
-		Properties props = mailSender.getJavaMailProperties();
+		JavaMailSenderImpl javaMailSenderImpl = new JavaMailSenderImpl();
+		javaMailSenderImpl.setHost(HOST);
+		javaMailSenderImpl.setPort(PORT);
+		javaMailSenderImpl.setUsername(GMAIL_USER);
+		javaMailSenderImpl.setPassword(GMAIL_PASSWORD);
+		Properties props = javaMailSenderImpl.getJavaMailProperties();
 		props.put("mail.transport.protocol", MAIL_TRANSPORT_PROTOCOL);
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.ssl.enable", "true");
-		return mailSender;
+		return javaMailSenderImpl;
 	}
 
 	public MailSender onSuccess(Runnable runnable) {
@@ -75,7 +76,7 @@ public class MailSender {
 		emailExecutor.execute(() -> {
 			try {	
 				MimeMessage mimeMessage = createMimeMessage();
-				this.mailSender.send(mimeMessage); //important. this actually sends the e-mail.
+				this.javaMailSender.send(mimeMessage); //important. this actually sends the e-mail.
 				this.runnableOnSuccess.run();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -86,7 +87,7 @@ public class MailSender {
 	}
 
 	private MimeMessage createMimeMessage() throws MessagingException, UnsupportedEncodingException {
-		MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+		MimeMessage mimeMessage = this.javaMailSender.createMimeMessage();
 		MimeMessageHelper helper = getMimeMessageHelper(mimeMessage, subject, emailTo, bcc);
 		helper.setText(text, true);
 		addAttachmentsTo(helper);
@@ -96,7 +97,7 @@ public class MailSender {
 	private void addAttachmentsTo(MimeMessageHelper helper) throws MessagingException {
 		for (File af : attachmentFiles) {
 			FileSystemResource file = new FileSystemResource(af);
-			helper.addAttachment(file.getFilename(), file);
+			helper.addAttachment(Objects.requireNonNull(file.getFilename()), file);
 		}
 	}
 
