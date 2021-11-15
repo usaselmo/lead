@@ -20,9 +20,8 @@ public class CantReachMailProvider extends AbstractMailProvider implements Email
 	@Override
 	public MailSender email(MailDTO mailDTO, List<File> attachments) throws IOException {
 
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
-		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getCantReachText(mailDTO), attachments);
-		return mailSender;
+		return new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT, getCantReachText(mailDTO), attachments, getGmailPassword(), getGmailUser());
 	}
 
 	private String getCantReachText(MailDTO mailDTO) throws IOException {

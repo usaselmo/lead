@@ -23,11 +23,10 @@ public class InvitationToBidMailProvider extends AbstractMailProvider {
 	private static final String TEMP_FILE_PREFIX = "leadsdc-";
 	private static final String SUBJECT = "REQUEST FOR PROPOSAL - ";
 
-	public MailSender email(MailDTO mailDTO, List<File> attachments, Invitation invitation) throws IOException, LeadsException {
-		MailSender mailSender = new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
+	public MailSender email(MailDTO mailDTO, List<File> attachments, Invitation invitation) throws LeadsException {
+		return new MailSender(mailDTO.getTo().stream().map(PersonDTO::getEmail).collect(Collectors.toList()),
 		    mailDTO.getBcc().stream().map(PersonDTO::getEmail).collect(Collectors.toList()), SUBJECT + invitation.getLead().getTitle(),
-		    this.getInvitationText(invitation), this.getFiles(mailDTO, attachments));
-		return mailSender;
+		    this.getInvitationText(invitation), this.getFiles(mailDTO, attachments), getGmailPassword(), getGmailUser());
 	}
 
 	private List<File> getFiles(MailDTO mailDTO, List<File> attachments) {
