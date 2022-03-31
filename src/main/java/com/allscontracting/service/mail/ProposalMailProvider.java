@@ -47,6 +47,8 @@ public class ProposalMailProvider extends AbstractMailProvider {
 		string = string.replace("{person.name}", mailDTO.getTo().get(0).getName());
 		string = string.replace("{number}", String.valueOf(proposal.getNumber()));
 		string = string.replace("{additionalText}", mailDTO.getText());
+		string = string.replace("{estimator.name}", proposal.getLead().getEstimator().getName());
+		string = string.replace("{estimator.phone}", proposal.getLead().getEstimator().getPhone());
 		return string;
 	}
 

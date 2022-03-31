@@ -40,6 +40,7 @@ public class User implements Serializable {
 	private String password;
 	private String name;
 	private boolean enabled;
+	private String phone;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Company company;
